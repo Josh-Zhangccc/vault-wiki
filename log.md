@@ -18,6 +18,8 @@
 
 ## 过往操作
 
+- 2026-08-28 00 状态对齐：docs/00 frontmatter draft→final，闭合与 README「已定稿」、宪法上游定位的口径不一致
+
 - 2026-08-28 撤销骨架定稿：应用户决定保留工作区回退（删 docs/01、log 同步回退）；AGENTS.md 指针、docs/00 §七、README 引用一并同步；旧版见提交 cb09895
 
 - 2026-08-28 初始化：清空旧副本内容（保留 .git）；AGENTS.md、log.md、.gitignore、目录结构就位；三个骨架分叉经用户授权代裁（代理层双目录 sources+notes；raw 归档区子结构实例自定；hot 预留位默认开），写入 docs/01；首次提交
