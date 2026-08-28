@@ -37,7 +37,6 @@
 
 - `log.md` — 项目日志：现状、阶段、下一步、过往操作 **ATTENTION**
 - `docs/00-principles.md` — 普世定义与设计原则（上游，冲突时以它为准）**ATTENTION**
-- `docs/01-skeleton.md` — 骨架最小集与目录结构（2026-08-28 定稿）**ATTENTION**
 - `skeleton/` — 通用骨架（产出）；`skills/` — 薄壳技能（产出）；`scripts/` — 工具（产出）
 - `README.md` — 项目章程（产出物清单与工作方式）
 - 设计谱系（讨论记录，只读）：个人库 `wiki/meta/2026-08-25-wiki运行时重构决策.md`、`wiki/sessions/2026-08-25-wiki架构调研与docs-first重构设计.md`
