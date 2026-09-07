@@ -18,6 +18,8 @@
 
 ## 过往操作
 
+- 2026-09-07 插件示例落地：依 user-write/2.md 插件布局建 .meta/plugins/test/（PLUGIN.yaml manifest + PLUGIN.md 主体 + scripts/check.py 静态自检；自举通过，负例可检出）；协议文档（.meta/docs/）待立稿
+
 - 2026-08-28 00 状态对齐：docs/00 frontmatter draft→final，闭合与 README「已定稿」、宪法上游定位的口径不一致
 
 - 2026-08-28 撤销骨架定稿：应用户决定保留工作区回退（删 docs/01、log 同步回退）；AGENTS.md 指针、docs/00 §七、README 引用一并同步；旧版见提交 cb09895
