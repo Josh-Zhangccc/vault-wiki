@@ -18,7 +18,7 @@
 
 ## 过往操作
 
-- 2026-09-07 插件示例落地：依 user-write/2.md 插件布局建 .meta/plugins/test/（PLUGIN.yaml manifest + PLUGIN.md 主体 + scripts/check.py 静态自检；自举通过，负例可检出）；协议文档（.meta/docs/）待立稿
+- 2026-09-07 插件规范草案：协议讨论（manifest / scope / 依赖 / 生命周期 / 合规检查）应用户要求写入 user-write/2.md；先前误落的 .meta/plugins/test/ 实体已撤（自检脚本留存于提交 959f353）
 
 - 2026-08-28 00 状态对齐：docs/00 frontmatter draft→final，闭合与 README「已定稿」、宪法上游定位的口径不一致
 
