@@ -41,3 +41,35 @@
 - `README.md` — 项目章程（产出物清单与工作方式）
 - 设计谱系（讨论记录，只读）：个人库 `wiki/meta/2026-08-25-wiki运行时重构决策.md`、`wiki/sessions/2026-08-25-wiki架构调研与docs-first重构设计.md`
 - 参考工程：`D:\My Programs\erp - ksbgs`（AGENTS.md 模式来源：宪法+指针、log 容量管理、指令集）；`D:\My Programs\aijia`（wiki 指针化引用）
+
+<!-- wiki-inject:start -->
+
+## wiki 注入区
+
+> 本区为插件注入的投影，装卸插件时同步增删对应标记块；手写内容不进此区。
+
+<!-- plugin:tag v0.1 -->
+- 页面 `tags` 字段：YAML 列表，中文为主、英文专名小写 kebab-case，层级 `父/子` ≤2，每页 ≤5；开放语义分类，禁止复述 type
+<!-- /plugin:tag -->
+
+<!-- plugin:vault v0.1 -->
+- 代理层 `wiki/vault/`：与根 `vault/` 1:1 镜像（代理名 = 原名 + .md），页面必有 raw_file / raw_sha256；路径即出身证明；命令对 VAULT 只增，删改自由属于人
+<!-- /plugin:vault -->
+
+<!-- plugin:log v0.1 -->
+- 运行日志 `wiki/log.md`：置顶追加、只增不删，条目 = 日期 + 类型（摄入/保存/检查/装卸/其他）+ 一句话；每次写操作后记一行
+<!-- /plugin:log -->
+
+<!-- plugin:hot v0.1 -->
+- 热缓存 `wiki/hot.md`：最近变更摘要（≤25 条且 <5 日），agent 进库先读此页
+<!-- /plugin:hot -->
+
+<!-- plugin:notes v0.1 -->
+- 原生笔记 `wiki/notes/`：出身在 wiki 的知识（概念/问答/决策/会话），细分靠 type 字段；不可再生区，命令只增不改
+<!-- /plugin:notes -->
+
+<!-- plugin:index v0.1 -->
+- 索引 `wiki/index.md`（全库清单）/ `wiki/tags.md`（tag 反向索引）：只聚合、永不手编，检索第二入口
+<!-- /plugin:index -->
+
+<!-- wiki-inject:end -->

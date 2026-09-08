@@ -1,0 +1,6 @@
+id: vault
+version: 0.1
+depends: []
+updated: 2026-09-08
+attachment:
+  - "wiki/vault/ —— 代理层目录，与根下 vault/ 一比一镜像"
