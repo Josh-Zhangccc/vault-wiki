@@ -4,7 +4,7 @@
 
 ## 现状（2026-09-09）
 
-工程处于原型验证期（阶段②）。架构：七结构插件（vault/log/hot/tag/index/notes/link）+ 五命令（check/ingest/save/query/plugin）+ 协议工件（`.meta/protocol/`）+ 机械脚本（`.meta/scripts/plugin_cli.py`：合规/依赖/注入/注册表/副本，幂等）。地基齐备：写入锚点、滚动机制、动作分级、装卸机械化（manifest 七字段，含 inject 投影行）。分工定则：确定性结构操作走脚本，语义判断走 LLM。规范 doc 后置；user-write/ 为用户手稿（agent 只读）。
+工程处于原型验证期（阶段②）。架构：七结构插件（vault/log/hot/tag/index/notes/link）+ 五命令（check/ingest/save/query/plugin）+ 协议工件（`.meta/protocol/`）+ 机械脚本（`.meta/scripts/`：plugin_cli 装卸五合一 + wikilib 承重件 + 插件附检 audit——发现式执行各插件 scripts/check.py，tag/vault 已带示例）。地基齐备：写入锚点、滚动机制、动作分级、装卸与检查机械化。分工定则：确定性结构操作走脚本，语义判断走 LLM。规范 doc 后置；user-write/ 为用户手稿（agent 只读）。
 
 ## 阶段
 
@@ -17,6 +17,8 @@
 - 后续插件按依赖序：trust 时效 → 问题队列 → 画像 / todo（薄）；规范蒸馏与 README 随后
 
 ## 过往操作
+
+- 2026-09-09 代码注入机制（两提交）：audit 附检——插件携 scripts/check.py（check(ctx) 契约，只读零副作用），运行时发现式执行（在场即注册，不做文本拼接）；wikilib 承重件单次扫描共享 ctx.pages；tag/vault 附检示例落地（阴性测试通过）；解析器加固（行内注释/顶层列表守卫）。check 命令机械项移交脚本，注入区块保留语义项
 
 - 2026-09-09 装卸机械化（三提交）：plugin_cli.py 机械核心（validate/inject/registry/deploy/all，幂等，中文输出）；plugin 装卸命令落地（脚本驱动）；check 底座硬检查接入脚本。manifest 增 inject 字段成七字段；actions.md 执行原则修订为「确定性走脚本、语义走 LLM」
 
