@@ -22,19 +22,19 @@ protocol:
     note: YYYY-MM-DD，任何写操作刷新
 
 plugins:
+  link:
+    aliases:
+      note: YAML 列表，别名/短名，供链接解析
+    related:
+      note: YAML 列表，相关页全名 wikilink
+  tag:
+    tags:
+      note: YAML 列表 ≤5；中文为主，英文 kebab-case；层级 父/子 ≤2；禁复述 type
   vault:
     raw_file:
       note: 根相对路径，代理页必有
     raw_sha256:
       note: 十六进制 SHA-256，可从 VAULT 机械重算
-  tag:
-    tags:
-      note: YAML 列表 ≤5；中文为主，英文 kebab-case；层级 父/子 ≤2；禁复述 type
-  link:
-    related:
-      note: YAML 列表，相关页全名 wikilink
-    aliases:
-      note: YAML 列表，别名/短名，供链接解析
 
 reserved:
   confidence:

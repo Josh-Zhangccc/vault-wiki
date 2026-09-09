@@ -7,3 +7,4 @@ attachment:
 fields:
   related: "YAML 列表，相关页全名 wikilink"
   aliases: "YAML 列表，别名/短名，供链接解析"
+inject: "链接语法 `[[页面全名]]`（禁截断式引用，同名歧义带路径）；字段 `related` / `aliases`；断链 = error，孤儿（无入链无引用）= warning"

@@ -4,3 +4,5 @@ depends: []
 updated: 2026-09-09
 attachment:
   - "wiki/notes/ —— 原生笔记区"
+fields: {}
+inject: "原生笔记 `wiki/notes/`：出身在 wiki 的知识（概念/问答/决策/会话），细分靠 type 字段；不可再生区，命令只增不改"

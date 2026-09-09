@@ -6,3 +6,5 @@ updated: 2026-09-08
 attachment:
   - "wiki/index.md —— 全库清单"
   - "wiki/tags.md —— tag 反向索引"
+fields: {}
+inject: "索引 `wiki/index.md`（全库清单）/ `wiki/tags.md`（tag 反向索引）：只聚合、永不手编，检索第二入口"

@@ -36,7 +36,7 @@
 > 指针需主动更新。跨 session 的重要指针标注 **ATTENTION**；易变状态（进度等）放 `log.md`，不写入本文件。
 
 - `log.md` — 项目日志：现状、阶段、下一步、过往操作 **ATTENTION**
-- `.meta/` — 原型核心：结构插件（`plugins/`）与命令主本（`command/`）与协议工件（`protocol/`：字段注册表、动作纪律）；AGENTS.md 注入区为其投影 **ATTENTION**
+- `.meta/` — 原型核心：结构插件（`plugins/`）与命令主本（`command/`）与协议工件（`protocol/`：字段注册表、动作纪律）与机械脚本（`scripts/`：装卸/合规/注入/副本）；AGENTS.md 注入区为其投影 **ATTENTION**
 - `user-write/` — 用户手稿（概述、设计初衷、插件规范草案），agent 只读
 - `wiki/`、`vault/` — 数据区（当前为种子状态）；`.agents/skills/` — 命令部署副本
 - `docs/00-principles.md` — 历史设计档案（已精简，规范蒸馏时归并）
@@ -50,6 +50,26 @@
 
 > 本区为插件注入的投影，装卸插件时同步增删对应标记块；手写内容不进此区。
 
+<!-- plugin:hot v0.2 -->
+- 热缓存 `wiki/hot.md`：最近变更摘要（≤25 条、<5 日、单条 ≤200 字），agent 进库先读此页；写前先淘汰越界
+<!-- /plugin:hot -->
+
+<!-- plugin:index v0.1 -->
+- 索引 `wiki/index.md`（全库清单）/ `wiki/tags.md`（tag 反向索引）：只聚合、永不手编，检索第二入口
+<!-- /plugin:index -->
+
+<!-- plugin:link v0.1 -->
+- 链接语法 `[[页面全名]]`（禁截断式引用，同名歧义带路径）；字段 `related` / `aliases`；断链 = error，孤儿（无入链无引用）= warning
+<!-- /plugin:link -->
+
+<!-- plugin:log v0.2 -->
+- 运行日志 `wiki/log.md`：置顶追加、条目不改写，条目 = 日期 + 类型（摄入/保存/检索/检查/装卸/其他）+ 一句话；窗口 ≤100 条，超限机械归档至 `wiki/log-archive-YYYY-MM.md`
+<!-- /plugin:log -->
+
+<!-- plugin:notes v0.2 -->
+- 原生笔记 `wiki/notes/`：出身在 wiki 的知识（概念/问答/决策/会话），细分靠 type 字段；不可再生区，命令只增不改
+<!-- /plugin:notes -->
+
 <!-- plugin:tag v0.1 -->
 - 页面 `tags` 字段：YAML 列表，中文为主、英文专名小写 kebab-case，层级 `父/子` ≤2，每页 ≤5；开放语义分类，禁止复述 type
 <!-- /plugin:tag -->
@@ -57,25 +77,5 @@
 <!-- plugin:vault v0.2 -->
 - 代理层 `wiki/vault/`：与根 `vault/` 1:1 镜像（代理名 = 原名 + .md），页面必有 raw_file / raw_sha256；路径即出身证明；命令对 VAULT 只增，删改自由属于人
 <!-- /plugin:vault -->
-
-<!-- plugin:log v0.2 -->
-- 运行日志 `wiki/log.md`：置顶追加、条目不改写，条目 = 日期 + 类型（摄入/保存/检索/检查/装卸/其他）+ 一句话；窗口 ≤100 条，超限机械归档至 `wiki/log-archive-YYYY-MM.md`
-<!-- /plugin:log -->
-
-<!-- plugin:hot v0.2 -->
-- 热缓存 `wiki/hot.md`：最近变更摘要（≤25 条、<5 日、单条 ≤200 字），agent 进库先读此页；写前先淘汰越界
-<!-- /plugin:hot -->
-
-<!-- plugin:notes v0.1 -->
-- 原生笔记 `wiki/notes/`：出身在 wiki 的知识（概念/问答/决策/会话），细分靠 type 字段；不可再生区，命令只增不改
-<!-- /plugin:notes -->
-
-<!-- plugin:link v0.1 -->
-- 链接语法 `[[页面全名]]`（禁截断式引用，同名歧义带路径）；字段 `related` / `aliases`；断链 = error，孤儿（无入链无引用）= warning
-<!-- /plugin:link -->
-
-<!-- plugin:index v0.1 -->
-- 索引 `wiki/index.md`（全库清单）/ `wiki/tags.md`（tag 反向索引）：只聚合、永不手编，检索第二入口
-<!-- /plugin:index -->
 
 <!-- wiki-inject:end -->

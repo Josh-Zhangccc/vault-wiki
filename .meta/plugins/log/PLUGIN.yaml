@@ -5,3 +5,5 @@ updated: 2026-09-09
 attachment:
   - "wiki/log.md —— 单文件操作流水（滚动窗口）"
   - "wiki/log-archive-YYYY-MM.md —— 归档分流（不可变区）"
+fields: {}
+inject: "运行日志 `wiki/log.md`：置顶追加、条目不改写，条目 = 日期 + 类型（摄入/保存/检索/检查/装卸/其他）+ 一句话；窗口 ≤100 条，超限机械归档至 `wiki/log-archive-YYYY-MM.md`"
