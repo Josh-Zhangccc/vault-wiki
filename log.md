@@ -2,21 +2,23 @@
 
 > 追加与修改须标注日期（精确到天）；总量 <2k 字；整合压缩须用户同意。
 
-## 现状（2026-08-28）
+## 现状（2026-09-08）
 
-工程立项并完成初始化：宪法 AGENTS.md、README、docs/00（原则）、本 log、.gitignore 就位；skeleton/skills/scripts 目录就位（内容待建）。骨架定稿（docs/01）经用户决定撤销、待重做，旧版留存于提交 cb09895。目录暂名 agent-obsidian-template，工程暂名 vault-wiki，正式名待用户定。
+工程转入原型驱动，仓库兼框架工程与原型实例。插件+命令架构落地：六结构插件（vault/log/hot/tag/index/notes）+ 四命令（check/ingest/save/query，lint 已并入 check），.meta/ 主本、.agents/skills/ 副本、AGENTS.md 注入区、wiki 种子就位（提交 98d9a73）。原个人库思想已全部转化（只读）；规范 doc 后置；user-write/ 为用户手稿（agent 只读）；工程正式名待定。
 
 ## 阶段
 
-① 架构定稿（原则 ✓ 骨架待重做 准则篇目待写）→ ② skeleton 落地 → ③ skills 薄壳 → ④ scripts（lint / 解析器）→ ⑤ 实例回填（个人库，须用户指令）。当前：①。
+① 架构与原型（✓ 讨论收敛 + 落地）→ ② 真实操作验证（ingest/check 首轮，暴露盲点并修）→ ③ 规范蒸馏（从原型回写 docs）→ ④ 普世化（新实例复制）→ ⑤ 个人库回填（须用户指令）。当前：②。
 
 ## 下一步
 
-- docs/01 骨架最小集重立稿（旧版三处分叉裁决留存于提交 cb09895，是否沿用待重新讨论）
-- docs/02 起分篇立稿通用准则（按流水线工位：进入 / 存 / 解析 / 索引 / 沉淀 / 重组 / 运营），每篇先讨论后定稿
-- 实例宪法模板（skeleton/AGENTS.md）与空态模板文件（index / log / hot）
+- 往 vault/ 放入首批资产，跑 ingest 全链路 + check 首审
+- 验证暴露的问题回修插件/命令与注入块
+- 规范蒸馏（docs 后置回写）；README 随现状更新
 
 ## 过往操作
+
+- 2026-09-08 对齐现状：AGENTS.md 改写（框架+原型双定位、原型先行准则、指针更新），log 阶段重写；docs/00 用户精简一并入库
 
 - 2026-09-08 原型落地：原 wiki 思想转化为六结构插件（vault/log/hot/tag/index/notes）与四命令（check/ingest/save/query，lint 并入 check），.meta/ 主本 + .agents/skills/ 部署副本 + AGENTS.md 注入区 + wiki 种子就位；doc 后置，user-write 未动，个人库只读
 
