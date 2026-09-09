@@ -24,7 +24,7 @@ description: "审计库的健康状态：底座与插件硬结构检查 + 插件
    - `.meta/protocol/registry.yaml` 在位且 protocol / reserved 段完好（脚本不触碰这两段，缺段即报错）
    - **值集越界**：扫 wiki/ 全部页面 frontmatter，type / status 取值不在注册表值集 → error
    - `.meta/command/` 每个 SKILL.md 有 frontmatter（name / description）
-2. **插件检查**：逐插件执行下方注入区的检查块
+2. **插件检查**：先跑附检 `python .meta/scripts/plugin_cli.py audit`（机械项：各插件 scripts/check.py 发现式执行，只读报告，error 计入 FAIL）；再执行下方注入区块中标注「语义」的项
 3. **语义检查**：读插件与命令文件，查悬挂引用（命令涉及不存在的结构）、幽灵字段（页面字段无拥有插件且非注册表预留）、注入区块与 PLUGIN.md 检查节不一致
 4. 汇总输出：PASS / WARN / FAIL 计数 + 分级明细 + VAULT 积压计数（信息项）
 5. **修复按动作纪律分级执行**（`.meta/protocol/actions.md`）：机械自动项直接做（重建索引 / 淘汰 hot / 归档 log / 重算哈希 / 重写注册表），机械确认项呈清单问一次，语义项只报告；历史条目永不自动改
@@ -42,9 +42,8 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 ## 注入区（各插件检查块）
 
 <!-- check:vault -->
-- 镜像 diff：vault/ 有文件无代理 → 信息项（积压计数与清单）；代理无 VAULT 对应物 → error
-- raw_sha256 失配 → 描述仍适用则机械重算自动修复；描述疑似失效 → warning（人决重摄入或删）
-- 代理复制原文全文 → error（日记类以登记为主可豁免）；无一行描述且 updated 超 90 天 → warning（新 stub 免告）
+- 机械项（audit 覆盖）：镜像 diff（积压 = 信息 / 孤儿 = error）、raw_file 悬挂 = error、raw_sha256 失配 = warning、疑似全文复制 = warning、stub 超 90 天 = warning
+- 语义：失配处置分诊（描述仍适用 → 机械重算自动修复；疑似失效 → 人决重摄入或删）；日记类全文复制豁免
 <!-- /check:vault -->
 
 <!-- check:log -->
@@ -56,7 +55,8 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 <!-- /check:hot -->
 
 <!-- check:tag -->
-- 近重复 tag → warning 提示合并（合并 = 机械确认项：呈清单，确认后批量改 frontmatter）；单页 >5 → warning；复述 type → warning
+- 机械项（audit 覆盖）：单页 >5 → warning；复述 type → warning
+- 语义：近重复 tag → warning 提示合并（合并 = 机械确认项：呈清单，确认后批量改 frontmatter）
 <!-- /check:tag -->
 
 <!-- check:notes -->

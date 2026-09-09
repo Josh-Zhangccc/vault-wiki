@@ -70,11 +70,11 @@
 - 原生笔记 `wiki/notes/`：出身在 wiki 的知识（概念/问答/决策/会话），细分靠 type 字段；不可再生区，命令只增不改
 <!-- /plugin:notes -->
 
-<!-- plugin:tag v0.1 -->
+<!-- plugin:tag v0.2 -->
 - 页面 `tags` 字段：YAML 列表，中文为主、英文专名小写 kebab-case，层级 `父/子` ≤2，每页 ≤5；开放语义分类，禁止复述 type
 <!-- /plugin:tag -->
 
-<!-- plugin:vault v0.2 -->
+<!-- plugin:vault v0.3 -->
 - 代理层 `wiki/vault/`：与根 `vault/` 1:1 镜像（代理名 = 原名 + .md），页面必有 raw_file / raw_sha256；路径即出身证明；命令对 VAULT 只增，删改自由属于人
 <!-- /plugin:vault -->
 

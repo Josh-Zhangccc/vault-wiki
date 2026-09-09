@@ -19,7 +19,7 @@ description: "插件生命周期管理：装/升/卸/清单。机械步骤（合
    - PLUGIN.md 结构：职责 → 结构 → 不变量 → 检查 → 注入 → 附件 → 变更记录
 2. `python .meta/scripts/plugin_cli.py validate` —— 合规与依赖检查，错误阻断
 3. `python .meta/scripts/plugin_cli.py all` —— 注入区 / registry / 命令副本同步
-4. 流程冒烟：按新插件 PLUGIN.md 的关键流程对测试资产走一遍（草案三级检查之行为层）
+4. 流程冒烟：`python .meta/scripts/plugin_cli.py audit <id>`（如插件带附检脚本）+ 按新插件 PLUGIN.md 的关键流程对测试资产走一遍（草案三级检查之行为层）
 5. wiki/log.md 置顶追加一行（类型「装卸」）
 
 ## 升 <id>
@@ -42,5 +42,6 @@ description: "插件生命周期管理：装/升/卸/清单。机械步骤（合
 ## 边界
 
 - 脚本只碰四处：插件目录进出、注入区标记块、registry 插件段、命令副本；protocol / reserved 段与 AGENTS.md 手写区永不动
+- 附检契约（可选）：`scripts/check.py` 定义 `check(ctx)`，返回 issue 列表（级别 + 消息），只读零副作用，中文消息、无第三方依赖；ctx.root = 仓库根，ctx.pages = 单次扫描的 wiki 页面集
 - 卸载归档与删除分离：移出 = 卸，删除属人
 - 脚本输出的错误一律阻断操作，修复后重跑；警告（如孤儿副本）仅报告
