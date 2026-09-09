@@ -9,18 +9,27 @@ registry.yaml 插件段、.agents/skills/ 命令副本；protocol / reserved 段
 用法:
   python .meta/scripts/plugin_cli.py ls          # 清单 + 依赖图
   python .meta/scripts/plugin_cli.py validate    # 合规与依赖检查（只读，错误退出码 1）
+  python .meta/scripts/plugin_cli.py audit       # 插件附检（发现式执行各插件 scripts/check.py）
   python .meta/scripts/plugin_cli.py inject      # 重建 AGENTS.md 注入区（幂等）
   python .meta/scripts/plugin_cli.py registry    # 重建 registry.yaml 插件段（幂等）
   python .meta/scripts/plugin_cli.py deploy      # 同步命令部署副本（幂等）
   python .meta/scripts/plugin_cli.py all         # validate + inject + registry + deploy
 
 manifest 最小 YAML 子集：顶层 `key: value`、`key: []`、块式列表（`  - 项`）、
-一层字段字典（`  name: 描述`）；双引号包裹的值去引号；# 注释行跳过。
+一层字段字典（`  name: 描述`）；双引号包裹的值去引号；行内注释（` #` 起）剥离。
+
+插件附检契约（scripts/check.py，可选）：
+- 必须定义 check(ctx)，返回 issue 列表：{"级别": "error"|"warning"|"信息", "消息": str}
+- ctx.root = 仓库根；ctx.pages = [(wiki 相对路径, frontmatter dict, 正文)]，单次扫描共享
+- 只读零副作用：修复动作归命令/人，附检只报告；中文消息，无第三方依赖
 """
+import ast
+import importlib.util
 import os
 import re
 import shutil
 import sys
+import types
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
@@ -45,14 +54,21 @@ def strip_quotes(s):
     return s
 
 
+def strip_comment(s):
+    """剥离行内注释（` #` 起）；完整值含 # 前须加引号。"""
+    return re.split(r"\s+#", s, maxsplit=1)[0].strip()
+
+
 def parse_manifest(path):
     """解析 manifest 的最小 YAML 子集；失败抛出 ValueError。"""
     data, target = {}, None
     for raw in open(path, encoding="utf-8").read().splitlines():
         if not raw.strip() or raw.lstrip().startswith("#"):
             continue
-        if raw.startswith("  - ") or raw.startswith("- "):
-            item = strip_quotes(raw.strip()[2:].strip())
+        if raw.startswith("  - "):
+            if target is None:
+                raise ValueError(f"列表项出现在任何键之前: {raw!r}")
+            item = strip_quotes(strip_comment(raw.strip()[2:]))
             if not isinstance(data.get(target), list):
                 data[target] = []
             data[target].append(item)
@@ -60,8 +76,10 @@ def parse_manifest(path):
         m = re.match(r"^(\s*)([A-Za-z_][\w-]*):\s*(.*)$", raw)
         if not m:
             raise ValueError(f"无法解析的行: {raw!r}")
-        key, val = m.group(2), m.group(3).strip()
+        key, val = m.group(2), strip_comment(m.group(3))
         if m.group(1):  # 缩进行：fields 字典项
+            if target is None:
+                raise ValueError(f"字段项出现在任何键之前: {raw!r}")
             if not isinstance(data.get(target), dict):
                 data[target] = {}
             data[target][key] = strip_quotes(val)
@@ -116,6 +134,16 @@ def validate(plugins, errors):
             errors.append(f"[错误] {name}/：depends 应为列表")
         if not m.get("inject"):
             errors.append(f"[错误] {name}/：inject（注入区投影行）为空")
+        # 附检契约（可选）：scripts/check.py 存在则必须定义 check(ctx)——AST 静态查，不执行
+        cpath = os.path.join(PLUGINS_DIR, name, "scripts", "check.py")
+        if os.path.exists(cpath):
+            try:
+                tree = ast.parse(open(cpath, encoding="utf-8").read())
+            except SyntaxError as e:
+                errors.append(f"[错误] {name}/scripts/check.py 语法错误：{e}")
+            else:
+                if not any(isinstance(n, ast.FunctionDef) and n.name == "check" for n in tree.body):
+                    errors.append(f"[错误] {name}/scripts/check.py 未定义 check(ctx)（附检契约）")
     # 依赖存在性
     for name, m in sorted(plugins.items()):
         for dep in m.get("depends") or []:
@@ -139,6 +167,47 @@ def validate(plugins, errors):
     for k in sorted(plugins):
         if color[k] == WHITE:
             dfs(k, [])
+
+
+def do_audit(plugins, only=None):
+    """插件附检：发现式执行各插件 scripts/check.py（契约见模块 docstring）。
+
+    这是「代码注入」的机制形态：插件目录里存在契约合规的附检脚本即自动入列，
+    卸载目录移出即自动出列——与 AGENTS.md 注入区同构（在场即注册），但代码
+    不做文本拼接（避免命名空间与合并噪音），改为发现 + 调用。
+    """
+    import wikilib
+
+    pages = list(wikilib.walk_pages(ROOT))  # 单次扫描，全部插件共享（调用节俭）
+    ctx = types.SimpleNamespace(root=ROOT, pages=pages)
+    counts = {"error": 0, "warning": 0, "信息": 0}
+    ran = 0
+    for pid in sorted(plugins):
+        if only and pid != only:
+            continue
+        cpath = os.path.join(PLUGINS_DIR, pid, "scripts", "check.py")
+        if not os.path.exists(cpath):
+            continue
+        spec = importlib.util.spec_from_file_location(f"plugin_check_{pid}", cpath)
+        mod = importlib.util.module_from_spec(spec)
+        try:
+            spec.loader.exec_module(mod)
+            issues = mod.check(ctx) or []
+        except Exception as e:  # 附检脚本自身故障按 error 报告，不拖垮其余插件
+            print(f"[error] ({pid}) 附检脚本执行失败：{e}")
+            counts["error"] += 1
+            ran += 1
+            continue
+        ran += 1
+        for it in issues:
+            level = str(it.get("级别", "warning"))
+            counts[level] = counts.get(level, 0) + 1
+            print(f"[{level}] ({pid}) {it.get('消息', '')}")
+    if ran == 0:
+        print("[附检] 无插件携带 scripts/check.py（可选契约，当前为纯语义检查）")
+        return 0
+    print(f"[附检] {ran} 个插件，error {counts['error']} / warning {counts.get('warning', 0)} / 信息 {counts.get('信息', 0)}")
+    return 1 if counts["error"] else 0
 
 
 def do_inject(plugins):
@@ -235,7 +304,13 @@ def main():
     plugins, errors = load_plugins()
     if cmd == "ls":
         do_ls(plugins)
+        if errors:
+            print(f"[警告] {len(errors)} 个 manifest 加载错误——运行 validate 查看明细")
         return 0
+    if cmd == "audit":
+        for e in errors:
+            print(e)
+        return do_audit(plugins, sys.argv[2] if len(sys.argv) > 2 else None)
     if cmd not in ("validate", "inject", "registry", "deploy", "all"):
         print(__doc__)
         return 2
