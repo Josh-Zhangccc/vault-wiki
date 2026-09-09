@@ -58,12 +58,12 @@
 - 代理层 `wiki/vault/`：与根 `vault/` 1:1 镜像（代理名 = 原名 + .md），页面必有 raw_file / raw_sha256；路径即出身证明；命令对 VAULT 只增，删改自由属于人
 <!-- /plugin:vault -->
 
-<!-- plugin:log v0.1 -->
-- 运行日志 `wiki/log.md`：置顶追加、只增不删，条目 = 日期 + 类型（摄入/保存/检查/装卸/其他）+ 一句话；每次写操作后记一行
+<!-- plugin:log v0.2 -->
+- 运行日志 `wiki/log.md`：置顶追加、条目不改写，条目 = 日期 + 类型（摄入/保存/检索/检查/装卸/其他）+ 一句话；窗口 ≤100 条，超限机械归档至 `wiki/log-archive-YYYY-MM.md`
 <!-- /plugin:log -->
 
-<!-- plugin:hot v0.1 -->
-- 热缓存 `wiki/hot.md`：最近变更摘要（≤25 条且 <5 日），agent 进库先读此页
+<!-- plugin:hot v0.2 -->
+- 热缓存 `wiki/hot.md`：最近变更摘要（≤25 条、<5 日、单条 ≤200 字），agent 进库先读此页；写前先淘汰越界
 <!-- /plugin:hot -->
 
 <!-- plugin:notes v0.1 -->

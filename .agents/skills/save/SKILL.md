@@ -10,7 +10,7 @@ description: "把当前对话、答案或洞见存为 wiki 原生笔记。先去
 ## 涉及结构
 
 写：notes（原生笔记）、log、hot、index
-读：tag（字段规范）、index / hot（去重前置）
+读：registry（`.meta/protocol/registry.yaml`，字段与值集锚点）、tag（词表 `wiki/tags.md`）、index / hot（去重前置）
 
 ## 落档前去重（必做）
 
@@ -28,19 +28,23 @@ description: "把当前对话、答案或洞见存为 wiki 原生笔记。先去
 | comparison | 并排对比 |
 | decision | 架构 / 项目 / 战略决策 |
 | session | 完整会话摘要（骨干页） |
+| entity | 人物 / 组织 / 产品等实体页 |
+
+类型集以 registry 值集为准（上表为建议项）；status 取值 seed / developing / done。
 
 统一落 `wiki/notes/`，细分靠 type 字段，不靠目录。source 型不在此列——有 VAULT 对应物的走 ingest。
 
 ## 工作流
 
-1. 扫描对话，识别高价值内容（非显然的洞见、带理由的决策、费力得出的分析、会被再次引用的对比）；跳过机械问答 / 调试过程 / 已在库内容
-2. 定 type（真歧义才问）与标题（歧义或冲突才问）
-3. 以陈述句现在时重写：写知识，不写对话
-4. 建 `wiki/notes/<标题>.md`：frontmatter（type / title / created / updated / status / tags / related）+ 正文
-5. 对话中提到的 wiki 页写入 related 并加 wikilink
-6. 重建 wiki/index.md 与 wiki/tags.md
-7. wiki/log.md 置顶追加（类型「保存」）；wiki/hot.md 置顶更新
-8. 回报：`Saved as [[标题]] in wiki/notes/`
+1. **锚点（一次读取）**：读 `.meta/protocol/registry.yaml` 与 `wiki/tags.md`——type / status 值集与既有词表写入前可见，tags 优先复用既有词
+2. 扫描对话，识别高价值内容（非显然的洞见、带理由的决策、费力得出的分析、会被再次引用的对比）；跳过机械问答 / 调试过程 / 已在库内容
+3. 定 type（真歧义才问）与标题（歧义或冲突才问）
+4. 以陈述句现在时重写：写知识，不写对话
+5. 建 `wiki/notes/<标题>.md`：frontmatter（type / title / created / updated / status / tags / related）+ 正文
+6. 对话中提到的 wiki 页写入 related 并加 wikilink
+7. 重建 wiki/index.md 与 wiki/tags.md
+8. wiki/log.md 置顶追加（类型「保存」，超 100 条先归档分流）；wiki/hot.md 先淘汰越界再置顶更新
+9. 回报：`Saved as [[标题]] in wiki/notes/`
 
 ## 长会话（分块提取）
 
