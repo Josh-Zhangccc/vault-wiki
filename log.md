@@ -4,7 +4,7 @@
 
 ## 现状（2026-09-09）
 
-工程处于原型验证期（阶段②）。架构：七结构插件（vault/log/hot/tag/index/notes/link）+ 四命令（check/ingest/save/query）+ 协议工件（`.meta/protocol/`：字段注册表 registry、动作纪律 actions）。地基已落地：写入锚点（值集/词表前置）、滚动机制（log 100 条归档、hot 单条 200 字）、check 分级修复（机械自动/确认/报告/属人）；权限纯语义化，无代码强制。参数依个人库实测校准。规范 doc 后置；user-write/ 为用户手稿（agent 只读）。
+工程处于原型验证期（阶段②）。架构：七结构插件（vault/log/hot/tag/index/notes/link）+ 五命令（check/ingest/save/query/plugin）+ 协议工件（`.meta/protocol/`）+ 机械脚本（`.meta/scripts/plugin_cli.py`：合规/依赖/注入/注册表/副本，幂等）。地基齐备：写入锚点、滚动机制、动作分级、装卸机械化（manifest 七字段，含 inject 投影行）。分工定则：确定性结构操作走脚本，语义判断走 LLM。规范 doc 后置；user-write/ 为用户手稿（agent 只读）。
 
 ## 阶段
 
@@ -17,6 +17,8 @@
 - 后续插件按依赖序：trust 时效 → 问题队列 → 画像 / todo（薄）；规范蒸馏与 README 随后
 
 ## 过往操作
+
+- 2026-09-09 装卸机械化（三提交）：plugin_cli.py 机械核心（validate/inject/registry/deploy/all，幂等，中文输出）；plugin 装卸命令落地（脚本驱动）；check 底座硬检查接入脚本。manifest 增 inject 字段成七字段；actions.md 执行原则修订为「确定性走脚本、语义走 LLM」
 
 - 2026-09-09 地基落地（四提交）：① registry + actions 协议工件与 manifest fields 声明；② link 插件新立（孤儿检查自 notes 移交）；③ ingest/save/query 锚点 + 滚动 + 预览前置 + 检索信号；④ check 升级（值集越界/断链/动作分级修复）。设计依据：个人库 128 页取证（哈希失配 40%、积压 41%、status 九值、hot 超规 50 倍、lint 停摆等）
 
