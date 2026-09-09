@@ -14,17 +14,15 @@ description: "审计库的健康状态：底座与插件硬结构检查 + 插件
 ## 涉及结构
 
 读：全部（.meta/、AGENTS.md 注入区、.agents/skills/、wiki/、vault/ 目录树）
-写：wiki/log.md 一行（类型「检查」）；可再生区按动作纪律直接重建（索引 / tags / 注册表 / hot 淘汰 / log 归档）
+写：wiki/log.md 一行（类型「检查」）；可再生区按动作纪律直接重建（脚本：注入区 / registry / 命令副本；语义：索引 / tags / hot 淘汰 / log 归档 / 哈希重算）
 
 ## 步骤
 
-1. **底座硬检查**（协议级，固定清单）：
-   - 每个 `.meta/plugins/<id>/` 有 PLUGIN.yaml 与 PLUGIN.md
-   - manifest 六字段齐全（id / version / depends / updated / attachment / fields）；id 与目录名一致；depends 指向存在的插件
-   - `.meta/protocol/registry.yaml` 在位；其插件段与各 PLUGIN.yaml 的 fields 一致（偏差 → 以 PLUGIN.yaml 为准重写注册表，机械自动）
+1. **底座硬检查**（协议级）：
+   - **静态自检脚本**：`python .meta/scripts/plugin_cli.py validate`（目录完整、manifest 七字段、id 一致、依赖存在、无环）——错误即 FAIL
+   - **幂等重建**：`python .meta/scripts/plugin_cli.py all`（注入区 / registry 插件段 / 命令副本——机械自动，漂移在此修复，脚本源码即规则清单）
+   - `.meta/protocol/registry.yaml` 在位且 protocol / reserved 段完好（脚本不触碰这两段，缺段即报错）
    - **值集越界**：扫 wiki/ 全部页面 frontmatter，type / status 取值不在注册表值集 → error
-   - AGENTS.md 注入区标记块与插件集双向一致：多块 = 幽灵，少块 = 未注入
-   - `.agents/skills/<name>/SKILL.md` 与 `.meta/command/<name>/SKILL.md` 逐字一致（漂移）
    - `.meta/command/` 每个 SKILL.md 有 frontmatter（name / description）
 2. **插件检查**：逐插件执行下方注入区的检查块
 3. **语义检查**：读插件与命令文件，查悬挂引用（命令涉及不存在的结构）、幽灵字段（页面字段无拥有插件且非注册表预留）、注入区块与 PLUGIN.md 检查节不一致
