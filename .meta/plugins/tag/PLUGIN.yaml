@@ -1,6 +1,8 @@
 id: tag
 version: 0.1
 depends: []
-updated: 2026-09-08
+updated: 2026-09-09
 attachment:
   - "横向插件，无自有文件：拥有全部页面的 frontmatter tags 字段与词表治理"
+fields:
+  tags: "YAML 列表 ≤5；中文为主，英文 kebab-case；层级 父/子 ≤2；禁复述 type"

@@ -1,0 +1,42 @@
+# vault-wiki 字段注册表（协议工件，聚合投影）
+#
+# 规则：
+# - 协议段（protocol）是权威源，修订须过 check
+# - 插件段（plugins）聚合自各 PLUGIN.yaml 的 fields 声明；check 校验一致，偏差以 PLUGIN.yaml 为准重写本表
+# - 预留段（reserved）是回填通道：合法暂存字段，ghost 检查豁免，待未来插件认领
+# - ingest / save 第 0 步必读本表（一次读取锚点：字段与值集在写入前可见，不扫描全库）
+# - 字段叠层组合：一个页面 = 协议字段 + 各插件字段（如 source 页 = 协议 + vault + tag）
+
+protocol:
+  type:
+    values: [source, entity, qa, concept, comparison, decision, session]
+    note: 出身枚举，给机器读；扩值须修订本表
+  status:
+    values: [seed, developing, done]
+    note: 成熟度三值；验证状态（时效/置信）不由本字段承载，见 reserved
+  title:
+    note: 页面标题，字符串，建议必填
+  created:
+    note: YYYY-MM-DD
+  updated:
+    note: YYYY-MM-DD，任何写操作刷新
+
+plugins:
+  vault:
+    raw_file:
+      note: 根相对路径，代理页必有
+    raw_sha256:
+      note: 十六进制 SHA-256，可从 VAULT 机械重算
+  tag:
+    tags:
+      note: YAML 列表 ≤5；中文为主，英文 kebab-case；层级 父/子 ≤2；禁复述 type
+
+reserved:
+  confidence:
+    note: high / medium / low，预留信任（时效）插件
+  last_verified:
+    note: YYYY-MM-DD，预留信任（时效）插件
+  possibly_outdated:
+    note: 布尔，预留信任（时效）插件
+  url:
+    note: 来源链接；URL 型资产本地化（下载入 VAULT）前暂存，预留 vault 扩展

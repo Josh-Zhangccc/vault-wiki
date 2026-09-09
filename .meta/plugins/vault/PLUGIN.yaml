@@ -1,6 +1,9 @@
 id: vault
 version: 0.1
 depends: []
-updated: 2026-09-08
+updated: 2026-09-09
 attachment:
   - "wiki/vault/ —— 代理层目录，与根下 vault/ 一比一镜像"
+fields:
+  raw_file: "根相对路径，代理页必有"
+  raw_sha256: "十六进制 SHA-256，可从 VAULT 机械重算"
