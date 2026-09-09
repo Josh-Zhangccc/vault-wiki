@@ -15,7 +15,6 @@
 ## 检查（注入 check）
 
 - 笔记被命令覆盖的痕迹 → error
-- 完全无入链且无引用的笔记（孤儿）→ warning
 - 近似重复笔记（Jaccard > 0.7）→ warning
 
 ## 注入
@@ -29,3 +28,4 @@ AGENTS.md 一行：原生笔记语义。
 ## 变更记录
 
 - 0.1（2026-09-08）自原 wiki concepts/questions/comparisons/sessions 诸区合并简化（细分第二批）
+- 0.2（2026-09-09）孤儿检查移交 link 插件（图性质归链接层）

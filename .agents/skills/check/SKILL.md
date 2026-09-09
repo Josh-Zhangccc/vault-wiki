@@ -59,8 +59,13 @@ grep / 读文件即够；脚本可后置（模板仓库提交 959f353 留有可�
 <!-- /check:tag -->
 
 <!-- check:notes -->
-- 笔记被命令覆盖痕迹 → error；孤儿笔记（无入链无引用）→ warning；近似重复（Jaccard > 0.7）→ warning
+- 笔记被命令覆盖痕迹 → error；近似重复（Jaccard > 0.7）→ warning
 <!-- /check:notes -->
+
+<!-- check:link -->
+- 断链（目标既非页面全名也非任何页 aliases）→ error；乱码链接（非 UTF-8 目标）→ error
+- 孤儿页（无入链且无 related 引用，结构页除外）→ warning；入链密度 top 榜 → 信息项（hub 涌现依据）
+<!-- /check:link -->
 
 <!-- check:index -->
 - 索引与实际页面集偏差 → error（重建即修复）；手编痕迹 → warning

@@ -70,6 +70,10 @@
 - 原生笔记 `wiki/notes/`：出身在 wiki 的知识（概念/问答/决策/会话），细分靠 type 字段；不可再生区，命令只增不改
 <!-- /plugin:notes -->
 
+<!-- plugin:link v0.1 -->
+- 链接语法 `[[页面全名]]`（禁截断式引用，同名歧义带路径）；字段 `related` / `aliases`；断链 = error，孤儿（无入链无引用）= warning
+<!-- /plugin:link -->
+
 <!-- plugin:index v0.1 -->
 - 索引 `wiki/index.md`（全库清单）/ `wiki/tags.md`（tag 反向索引）：只聚合、永不手编，检索第二入口
 <!-- /plugin:index -->
