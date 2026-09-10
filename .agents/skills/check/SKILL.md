@@ -64,8 +64,8 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 <!-- /check:notes -->
 
 <!-- check:link -->
-- 断链（目标既非页面全名也非任何页 aliases）→ error；乱码链接（非 UTF-8 目标）→ error
-- 孤儿页（无入链且无 related 引用，结构页除外）→ warning；入链密度 top 榜 → 信息项（hub 涌现依据）
+- 断链（目标既非页面全名，也非任何页 aliases）→ warning（尚未写下的知识，TODO 占位属正常）；乱码/畸形链接 → error
+- 孤儿页（无入链且无 related 引用；入链源只计概念页——index/hot/log/tags 与 archive/ 等派生页不算源）→ warning；入链密度 top 榜 → 信息项（hub 涌现依据）
 <!-- /check:link -->
 
 <!-- check:index -->

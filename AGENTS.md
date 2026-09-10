@@ -58,8 +58,8 @@
 - 代理层 `wiki/vault/`：与根 `vault/` 1:1 镜像（代理名 = 原名 + .md），页面必有 raw_file / raw_sha256；路径即出身证明；命令对 VAULT 只增，删改自由属于人
 <!-- /plugin:vault -->
 
-<!-- plugin:link v0.2 -->
-- 链接语法 `[[页面全名]]`（禁截断式引用，同名歧义带路径）；字段 `related` / `aliases`；断链 = error，孤儿（无入链无引用）= warning
+<!-- plugin:link v0.3 -->
+- 链接语法 `[[页面全名]]`（禁截断式引用，同名歧义带路径）；字段 `related` / `aliases`；断链 = warning（尚未写下），孤儿（无入链无引用，派生页不算源）= warning
 <!-- /plugin:link -->
 
 <!-- plugin:tag v0.3 -->

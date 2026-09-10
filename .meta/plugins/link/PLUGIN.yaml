@@ -1,5 +1,5 @@
 id: link
-version: 0.2
+version: 0.3
 layer: field
 depends: []
 updated: 2026-09-10
@@ -8,4 +8,4 @@ attachment:
 fields:
   related: "YAML 列表，相关页全名 wikilink"
   aliases: "YAML 列表，别名/短名，供链接解析"
-inject: "链接语法 `[[页面全名]]`（禁截断式引用，同名歧义带路径）；字段 `related` / `aliases`；断链 = error，孤儿（无入链无引用）= warning"
+inject: "链接语法 `[[页面全名]]`（禁截断式引用，同名歧义带路径）；字段 `related` / `aliases`；断链 = warning（尚未写下），孤儿（无入链无引用，派生页不算源）= warning"
