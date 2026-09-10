@@ -40,11 +40,10 @@ description: "把当前对话、答案或洞见存为 wiki 原生笔记。先去
 2. 扫描对话，识别高价值内容（非显然的洞见、带理由的决策、费力得出的分析、会被再次引用的对比）；跳过机械问答 / 调试过程 / 已在库内容
 3. 定 type（真歧义才问）与标题（歧义或冲突才问）
 4. 以陈述句现在时重写：写知识，不写对话
-5. 建 `wiki/notes/<标题>.md`：frontmatter（type / title / created / updated / status / tags / related）+ 正文
+5. 建 `wiki/notes/<标题>.md`：frontmatter（type / title / created / updated / status / tags / related + generated 块式：`by: agent/<当前模型>` / `at: 今日`）+ 正文
 6. 对话中提到的 wiki 页写入 related 并加 wikilink
-7. 重建 wiki/index.md 与 wiki/tags.md
-8. wiki/log.md 置顶追加（类型「保存」，超 100 条先归档分流）；wiki/hot.md 先淘汰越界再置顶更新
-9. 回报：`Saved as [[标题]] in wiki/notes/`
+7. **写后管道**（确定性，机械自动）：`python .meta/scripts/pipeline.py index` → `tags` → `hot 保存 "<wikilink + 一句话核心>"` → `log 保存 "<一句话>"` → `verify`（写后自证，未过即回修）
+8. 回报：`Saved as [[标题]] in wiki/notes/`
 
 ## 长会话（分块提取）
 

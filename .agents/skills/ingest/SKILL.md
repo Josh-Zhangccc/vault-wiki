@@ -17,12 +17,10 @@ description: "把 vault/ 中的资产登记为 wiki 代理页：SHA-256、镜像
 1. **锚点（一次读取）**：读 `.meta/protocol/registry.yaml` 与 `wiki/tags.md`——值集与既有词表在写入前可见；tags 优先复用既有词
 2. 读 vault/ 中目标资产；询问：「需要打磨原始文件吗（添加 frontmatter、清理格式、重命名）？」（日记免问）。打磨走派生副本：产出为新文件（VAULT 只增），不改既有文件
 3. 计算 SHA-256；按镜像规则定位代理路径：`wiki/vault/<原路径>.md`（原名 + .md，防碰撞）
-4. 组装代理页草稿（frontmatter：`type: source` + created / updated / status（值集内）+ raw_file / raw_sha256 / tags；正文一行描述起步），**呈摄入预览**（路径 / 哈希 / 描述 / tags），等用户确认
+4. 组装代理页草稿（frontmatter：`type: source` + created / updated / status（值集内）+ raw_file / raw_sha256 / tags + generated（块式：`by: agent/<当前模型>` / `at: 今日`）；正文一行描述起步），**呈摄入预览**（路径 / 哈希 / 描述 / tags），等用户确认
 5. 确认后写代理页；摘要 / 结构抽取为可选增强
-6. 重建 wiki/index.md 与 wiki/tags.md（机械自动，不询问）
-7. wiki/hot.md：先淘汰越界条目（>25 条 / ≥5 日 / 单条 >200 字），再置顶加条目（最近摄入节）
-8. wiki/log.md：容量检查（超 100 条先归档分流至 `wiki/archive/当月/log.md`），再置顶追加一行（类型「摄入」）
-9. 回报：路径 / 哈希 / 描述 / tags
+6. **写后管道**（确定性，机械自动不询问）：`python .meta/scripts/pipeline.py index` → `tags` → `hot 摄入 "<wikilink + 一句话核心>"` → `log 摄入 "<一句话>"` → `verify`（写后自证，未过即回修）
+7. 回报：路径 / 哈希 / 描述 / tags
 
 ## 禁止
 
