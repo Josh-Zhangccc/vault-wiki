@@ -2,6 +2,7 @@
 
 > 置顶追加、只增不删；条目 = `- YYYY-MM-DD <类型>：一句话`。规则见 `.meta/plugins/log/`，写走 `pipeline.py log`。
 
+- 2026-09-11 装卸：命令-插件绑定显式化：manifest 增 commands、命令增 owner（save=notes+sessions 双主），plugin_cli 校验无主/孤儿/单边
 - 2026-09-10 装卸：sessions 插件立设（origin 层，领地 wiki/sessions/，participants=actor 列表）；notes 缩界，save 会话段移交
 - 2026-09-10 检查：OKF 合规冒烟：临时 bundle 过三 MUST（UTF-8/type/保留名），viz.html 渲染成功（节点/边/信任字段/反链可显）
 - 2026-09-10 装卸：hot 0.4 / log 0.5 写入机械化走 pipeline；命令尾部改引写后管道（verify 自证）+ generated 署名；actions 增第四原则
