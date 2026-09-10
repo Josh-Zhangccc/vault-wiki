@@ -2,9 +2,9 @@
 
 > 追加与修改须标注日期（精确到天）；总量 <2k 字；整合压缩须用户同意。
 
-## 现状（2026-09-10）
+## 现状（2026-09-11）
 
-工程处于原型验证期（阶段②）。架构：八结构插件分三层（origin：vault/notes/sessions；field：tag/link；derived：index/hot/log，依赖方向由 plugin_cli 校验）+ 五命令（owner×commands 双向绑定：vault→ingest、notes/sessions→save，check/query/plugin=framework）+ 协议工件 + 双脚本（plugin_cli 生命周期；pipeline 写后管道 index/tags/hot/log/verify）。已对齐 OKF v0.2（status 三值、信任预留字段、actor 约定、渐进披露索引、归档改轨）；写后自证入纪律；冒烟通过（viz 渲染）。规范 doc 后置；user-write/ 为用户手稿（agent 只读）。
+工程处于原型验证期（阶段②）。架构：九结构插件分三层（origin：vault/notes/sessions；field：tag/link/trust；derived：index/hot/log，依赖方向由 plugin_cli 校验）+ 五命令（owner×commands 双向绑定：vault→ingest、notes/sessions→save，check/query/plugin=framework）+ 协议工件 + 双脚本（plugin_cli 生命周期；pipeline 写后管道 index/tags/hot/log/verify）。已对齐 OKF v0.2（status 三值、信任字段已由 trust 认领、actor 约定、渐进披露索引、归档改轨）；写后自证入纪律。附检覆盖 6/9 插件（vault/tag/sessions/trust/link/log），check 注入块由 plugin_cli 自 PLUGIN.md 检查节机械化投影。规范 doc 后置；user-write/ 为用户手稿（agent 只读）。
 
 ## 阶段
 
@@ -13,12 +13,11 @@
 ## 下一步
 
 - 往 vault/ 放入首批资产，跑 ingest 全链路 + check 首审（重点验证：写后管道与 verify 自证、锚点读取、预览前置）
-- 观察项：词表复用率、检索 log 行、stub 老化告警、verify 误报率
-- trust 插件按 OKF 形态设计：拥有 verified / stale_after / sources，层级推导不落盘
-- check 命令注入块仍为手工投影（无注入器），待机械化
+- 观察项：词表复用率、检索 log 行、stub 老化告警、verify 误报率；notes type→frontmatter 模板等首轮 save 漏写率实证；sessions 形状随首轮真实 save 校准
 
 ## 过往操作
 
+- 2026-09-11 优化三件落地（用户裁定「均可执行」）：① trust 插件立设（field 层，认领 registry 预留四字段 generated/verified/stale_after/sources 回填插件段；层级推导不落盘；附检契约+stale 清单+信任水位，日历非法日期加固）；② 机械项收编附检——link（断链/乱码/孤儿/别名二义 error/related 单向信息）、tag（层级深度）、log（日期契约），附检覆盖 6/9；③ check 注入块机械化（plugin_cli 自 PLUGIN.md 检查节投影，幂等，在场即注册），手写块与源头的漂移通道关闭
 - 2026-09-11 命令-插件绑定显式化（三提交）：manifest 增可选 commands、命令 frontmatter 增 owner（save=notes+sessions 双主；check/query/plugin=framework 跨切面显式无主），plugin_cli 校验无主/孤儿/单边 + ls 增命令列（正反测试通过）；user-write 两份手稿经隐私核查首次入库；smoke-tmp 冒烟遗留清理并 gitignore
 
 - 2026-09-10 sessions 独立插件立设（结构归位，命令回纯操作）：领地 `wiki/sessions/`（准则 3 目录枚举随改：代理层 + 原生区两分）；participants 字段用 actor 约定留多 agent 扩展点；附检（领地边界 / 契约）；notes 缩界 0.5（会话移出）；save 会话段移交插件、类型表去复读；multiagents 不预立（sessions 的演化方向）
