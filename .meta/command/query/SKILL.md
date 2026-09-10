@@ -32,4 +32,4 @@ description: "在 wiki 中检索并综合回答：热缓存→索引→grep→�
 
 ## 收尾
 
-- wiki/log.md 置顶追加一行（类型「检索」，一句话主题；超 100 条先归档分流）——读热度由此可测
+- 写 log 一行走管道：`python .meta/scripts/pipeline.py log 检索 "<一句话主题>"`（滚动窗口与归档由脚本机械执行）——读热度由此可测
