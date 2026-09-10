@@ -31,6 +31,9 @@ plugins:
       note: YAML 列表，别名/短名，供链接解析
     related:
       note: YAML 列表，相关页全名 wikilink
+  sessions:
+    participants:
+      note: YAML 列表，actor 约定（human:名字 / process:流程名 / agent/模型标识），多 agent 协作扩展点
   tag:
     tags:
       note: YAML 列表 ≤5；中文为主，英文 kebab-case；层级 父/子 ≤2；禁复述 type

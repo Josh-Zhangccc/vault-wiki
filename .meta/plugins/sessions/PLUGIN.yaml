@@ -1,0 +1,10 @@
+id: sessions
+version: 0.1
+layer: origin
+depends: []
+updated: 2026-09-10
+attachment:
+  - "wiki/sessions/ —— 原生会话区，session 型骨干页"
+fields:
+  participants: "YAML 列表，actor 约定（human:名字 / process:流程名 / agent/模型标识），多 agent 协作扩展点"
+inject: "原生会话 `wiki/sessions/`：会话骨干页（type: session，participants 必填=actor 列表，默认命名 YYYY-MM-DD-<主题>）；高价值主题提升为 `wiki/notes/` 独立页并回链；不可再生区，命令只增不改"
