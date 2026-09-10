@@ -22,6 +22,8 @@ def _file_set(root, sub, strip_md):
         for fn in sorted(files):
             if fn == ".gitkeep":
                 continue
+            if strip_md and fn == "index.md":
+                continue  # 目录索引：导航层保留名（index 插件每目录化），非概念页无对应物
             if strip_md and not fn.endswith(".md"):
                 continue
             rel = os.path.relpath(os.path.join(dirpath, fn), base).replace(os.sep, "/")

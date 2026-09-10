@@ -69,5 +69,5 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 <!-- /check:link -->
 
 <!-- check:index -->
-- 索引与实际页面集偏差 → 机械重建（自动，不询问）；手编痕迹 → warning
+- 索引与实际页面集偏差 → `pipeline.py index` 重建（自动，不询问）；tags 同理（`pipeline.py tags`）；手编痕迹 → warning
 <!-- /check:index -->

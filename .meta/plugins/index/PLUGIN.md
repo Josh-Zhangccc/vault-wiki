@@ -1,20 +1,22 @@
 # index：索引
 
-聚合各插件字段生成的索引页，检索的便宜入口（query 命令的第二层）。
+派生层聚合页：检索的便宜入口（query 命令的第二层）。每目录一份，渐进披露——agent 从根索引逐层下钻，不必全库进 context。
 
 ## 结构
 
-- `wiki/index.md`：全库页面清单，按 type 分组，每行 = wikilink + 一句话
+- 每目录一份 `index.md`（保留名，OKF 对齐）：根 `wiki/index.md` 带 `okf_version` frontmatter，只列顶层概念与子目录入口；各子目录（notes/、vault/<子目录>/……）各自的 index 只管本层
+- 条目 = wikilink + 描述（frontmatter `description` 字段优先，缺失取正文首个非空非结构行截 80 字）；概念页按 type 分组，子目录条目带子树页面计数
 - `wiki/tags.md`：tag → 页面反向索引（聚合 tag 插件的字段）
 
 ## 不变量
 
 - 索引页全部可再生、永不手编：只聚合、不原创
-- 与实际页面集一致
+- 与实际页面集一致；保留名文件（index / log）、wiki 根派生页（hot / tags）、archive/ 子树不视为概念页、不入索引
+- 重建走确定性脚本：`python .meta/scripts/pipeline.py index`（幂等；LLM 不手写索引）
 
 ## 检查（注入 check）
 
-- 索引与实际页面集偏差 → error（重建即修复）
+- 索引与实际页面集偏差 → 跑 `pipeline.py index` 重建即修复（幂等，无 diff 即一致）；tags 同理（`pipeline.py tags`）
 - 手编痕迹 → warning
 
 ## 注入
@@ -23,9 +25,10 @@ AGENTS.md 一行：检索入口指针。
 
 ## 附件
 
-无。
+无（重建逻辑在 `.meta/scripts/pipeline.py`，与 hot / log 共用管道）。
 
 ## 变更记录
 
 - 0.1（2026-09-08）自原 wiki index（master catalog）规则转化；改为只整体重建、不增量写
 - 0.2（2026-09-10）manifest 增 layer: derived（分层立设：派生层，只向下依赖 tag）
+- 0.3（2026-09-10）每目录化（渐进披露，OKF 对齐）：根页带 okf_version、子目录带计数；重建脚本化（pipeline.py index/tags，LLM 不手写）

@@ -54,7 +54,7 @@
 - 原生笔记 `wiki/notes/`：出身在 wiki 的知识（概念/问答/决策/会话），细分靠 type 字段；不可再生区，命令只增不改
 <!-- /plugin:notes -->
 
-<!-- plugin:vault v0.4 -->
+<!-- plugin:vault v0.5 -->
 - 代理层 `wiki/vault/`：与根 `vault/` 1:1 镜像（代理名 = 原名 + .md），页面必有 raw_file / raw_sha256；路径即出身证明；命令对 VAULT 只增，删改自由属于人
 <!-- /plugin:vault -->
 
@@ -70,8 +70,8 @@
 - 热缓存 `wiki/hot.md`：最近变更摘要（≤25 条、<5 日、单条 ≤200 字），agent 进库先读此页；写前先淘汰越界
 <!-- /plugin:hot -->
 
-<!-- plugin:index v0.2 -->
-- 索引 `wiki/index.md`（全库清单）/ `wiki/tags.md`（tag 反向索引）：只聚合、永不手编，检索第二入口
+<!-- plugin:index v0.3 -->
+- 索引 `wiki/index.md`（根，含 okf_version）与各目录 `index.md`（渐进披露，逐层下钻）/ `wiki/tags.md`（tag 反向索引）：只聚合、永不手编，重建走 `pipeline.py index`，检索第二入口
 <!-- /plugin:index -->
 
 <!-- plugin:log v0.4 -->
