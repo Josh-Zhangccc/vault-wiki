@@ -74,8 +74,8 @@
 - 索引 `wiki/index.md`（全库清单）/ `wiki/tags.md`（tag 反向索引）：只聚合、永不手编，检索第二入口
 <!-- /plugin:index -->
 
-<!-- plugin:log v0.3 -->
-- 运行日志 `wiki/log.md`：置顶追加、条目不改写，条目 = 日期 + 类型（摄入/保存/检索/检查/装卸/其他）+ 一句话；窗口 ≤100 条，超限机械归档至 `wiki/log-archive-YYYY-MM.md`
+<!-- plugin:log v0.4 -->
+- 运行日志 `wiki/log.md`：置顶追加、条目不改写，条目 = 日期 + 类型（摄入/保存/检索/检查/装卸/其他）+ 一句话；窗口 ≤100 条，超限机械归档至 `wiki/archive/月/log.md`
 <!-- /plugin:log -->
 
 <!-- wiki-inject:end -->

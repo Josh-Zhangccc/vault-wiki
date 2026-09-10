@@ -21,7 +21,7 @@ description: "把 vault/ 中的资产登记为 wiki 代理页：SHA-256、镜像
 5. 确认后写代理页；摘要 / 结构抽取为可选增强
 6. 重建 wiki/index.md 与 wiki/tags.md（机械自动，不询问）
 7. wiki/hot.md：先淘汰越界条目（>25 条 / ≥5 日 / 单条 >200 字），再置顶加条目（最近摄入节）
-8. wiki/log.md：容量检查（超 100 条先归档分流至 `wiki/log-archive-YYYY-MM.md`），再置顶追加一行（类型「摄入」）
+8. wiki/log.md：容量检查（超 100 条先归档分流至 `wiki/archive/当月/log.md`），再置顶追加一行（类型「摄入」）
 9. 回报：路径 / 哈希 / 描述 / tags
 
 ## 禁止
