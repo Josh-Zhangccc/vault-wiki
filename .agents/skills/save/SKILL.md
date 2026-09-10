@@ -30,7 +30,7 @@ description: "把当前对话、答案或洞见存为 wiki 原生笔记。先去
 | session | 完整会话摘要（骨干页） |
 | entity | 人物 / 组织 / 产品等实体页 |
 
-类型集以 registry 值集为准（上表为建议项）；status 取值 seed / developing / done。
+类型集以 registry 值集为准（上表为建议项）；status 取值 draft / stable / deprecated（生命周期，对齐 OKF）。
 
 统一落 `wiki/notes/`，细分靠 type 字段，不靠目录。source 型不在此列——有 VAULT 对应物的走 ingest。
 

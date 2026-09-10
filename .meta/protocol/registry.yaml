@@ -6,16 +6,20 @@
 # - 预留段（reserved）是回填通道：合法暂存字段，ghost 检查豁免，待未来插件认领
 # - ingest / save 第 0 步必读本表（一次读取锚点：字段与值集在写入前可见，不扫描全库）
 # - 字段叠层组合：一个页面 = 协议字段 + 各插件字段（如 source 页 = 协议 + vault + tag）
+# - actor 约定（一切署名字段的统一值格式，对齐 OKF）：human:名字 / process:流程名 / agent/模型标识
+# - status 与预留信任字段对齐 OKF v0.2；旧值迁移映射：seed→draft、developing→draft、done→stable
 
 protocol:
   type:
     values: [source, entity, qa, concept, comparison, decision, session]
-    note: 出身枚举，给机器读；扩值须修订本表
+    note: 出身枚举，给机器读；实例生产者封闭（扩值须修订本表），导入/互操作消费侧容忍未知 type
   status:
-    values: [seed, developing, done]
-    note: 成熟度三值；验证状态（时效/置信）不由本字段承载，见 reserved
+    values: [draft, stable, deprecated]
+    note: 生命周期三值；deprecated = 为链接与历史保留、但已非当前
   title:
     note: 页面标题，字符串，建议必填
+  description:
+    note: 一句话描述（≤80 字）；索引条目与 viewer 提示的数据源，缺失时索引取正文首句
   created:
     note: YYYY-MM-DD
   updated:
@@ -37,11 +41,13 @@ plugins:
       note: 十六进制 SHA-256，可从 VAULT 机械重算
 
 reserved:
-  confidence:
-    note: high / medium / low，预留信任（时效）插件
-  last_verified:
-    note: YYYY-MM-DD，预留信任（时效）插件
-  possibly_outdated:
-    note: 布尔，预留信任（时效）插件
+  generated:
+    note: 块式映射 by / at（actor 约定 + YYYY-MM-DD），页面由谁生成；预留 trust 插件
+  verified:
+    note: 事件列表 [{by: actor, at: 日期}]，可多次追加；信任层级由此推导——无记录=unverified，仅 process/agent=machine-confirmed，含 human=human-reviewed；预留 trust 插件
+  stale_after:
+    note: YYYY-MM-DD 绝对时刻；过期判定 = now ≥ stale_after 的纯比较；预留 trust 插件
+  sources:
+    note: 来源列表，项含 id / resource / 可信度信号（author、usage_count、last_modified）；预留 trust 插件
   url:
     note: 来源链接；URL 型资产本地化（下载入 VAULT）前暂存，预留 vault 扩展
