@@ -4,7 +4,7 @@
 
 ## 现状（2026-09-10）
 
-工程处于原型验证期（阶段②）。架构：七结构插件分三层（origin：vault/notes；field：tag/link；derived：index/hot/log，依赖方向由 plugin_cli 校验）+ 五命令 + 协议工件 + 双脚本（plugin_cli 生命周期；pipeline 写后管道 index/tags/hot/log/verify）。已对齐 OKF v0.2（status 三值、信任预留字段、actor 约定、渐进披露索引、归档改轨）；写后自证入纪律；冒烟通过（viz 渲染）。规范 doc 后置；user-write/ 为用户手稿（agent 只读）。
+工程处于原型验证期（阶段②）。架构：八结构插件分三层（origin：vault/notes/sessions；field：tag/link；derived：index/hot/log，依赖方向由 plugin_cli 校验）+ 五命令 + 协议工件 + 双脚本（plugin_cli 生命周期；pipeline 写后管道 index/tags/hot/log/verify）。已对齐 OKF v0.2（status 三值、信任预留字段、actor 约定、渐进披露索引、归档改轨）；写后自证入纪律；冒烟通过（viz 渲染）。规范 doc 后置；user-write/ 为用户手稿（agent 只读）。
 
 ## 阶段
 
@@ -12,12 +12,15 @@
 
 ## 下一步
 
+- 命令-插件绑定显式化（命令 frontmatter 增 owner / manifest 增 commands，plugin_cli 校验无主与孤儿）——已议待裁
 - 往 vault/ 放入首批资产，跑 ingest 全链路 + check 首审（重点验证：写后管道与 verify 自证、锚点读取、预览前置）
 - 观察项：词表复用率、检索 log 行、stub 老化告警、verify 误报率
 - trust 插件按 OKF 形态设计：拥有 verified / stale_after / sources，层级推导不落盘
 - check 命令注入块仍为手工投影（无注入器），待机械化
 
 ## 过往操作
+
+- 2026-09-10 sessions 独立插件立设（结构归位，命令回纯操作）：领地 `wiki/sessions/`（准则 3 目录枚举随改：代理层 + 原生区两分）；participants 字段用 actor 约定留多 agent 扩展点；附检（领地边界 / 契约）；notes 缩界 0.5（会话移出）；save 会话段移交插件、类型表去复读；multiagents 不预立（sessions 的演化方向）
 
 - 2026-09-10 分层与 OKF 对齐落地（七提交）：插件分 origin/field/derived 三层 + plugin_cli 依赖方向规则；registry 对齐 OKF v0.2（status=draft/stable/deprecated、预留 generated/verified/stale_after/sources、actor 约定、description 推荐）；link 断链降级 warning + 孤儿作用域明文；log 归档改轨 archive/月/log.md；index 每目录化（渐进披露，根页带 okf_version）+ vault 豁免 index.md；新增 pipeline.py 写后管道（index/tags/hot/log/verify=attester 最小形），命令尾部接管道 + generated 署名；OKF 冒烟通过（viz.html 渲染成功，反链/信任字段可显）
 
