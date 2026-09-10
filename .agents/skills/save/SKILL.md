@@ -11,7 +11,7 @@ description: "把当前对话、答案或洞见存为 wiki 原生笔记。先去
 ## 涉及结构
 
 写：sessions（会话骨干页）、notes（原生笔记）、log、hot、index
-读：registry（`.meta/protocol/registry.yaml`，字段与值集锚点）、sessions（骨干页结构 `.meta/plugins/sessions/`）、tag（词表 `wiki/tags.md`）、index / hot（去重前置）
+读：registry（`.meta/protocol/registry.yaml`，字段与值集锚点）、trust（信任字段契约 `.meta/plugins/trust/`，generated 随手写）、sessions（骨干页结构 `.meta/plugins/sessions/`）、tag（词表 `wiki/tags.md`）、index / hot（去重前置）
 
 ## 落档前去重（必做）
 

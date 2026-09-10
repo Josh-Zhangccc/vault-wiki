@@ -11,7 +11,7 @@ description: "把 vault/ 中的资产登记为 wiki 代理页：SHA-256、镜像
 ## 涉及结构
 
 写：vault（代理页）、log、hot、index
-读：registry（`.meta/protocol/registry.yaml`，字段与值集锚点）、tag（词表 `wiki/tags.md`）、vault（VAULT 原文）
+读：registry（`.meta/protocol/registry.yaml`，字段与值集锚点）、trust（信任字段契约 `.meta/plugins/trust/`，generated 随手写）、tag（词表 `wiki/tags.md`）、vault（VAULT 原文）
 
 ## 步骤
 

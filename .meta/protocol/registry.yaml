@@ -37,6 +37,15 @@ plugins:
   tag:
     tags:
       note: YAML 列表 ≤5；中文为主，英文 kebab-case；层级 父/子 ≤2；禁复述 type
+  trust:
+    generated:
+      note: 块式映射 by/at（actor 约定 + YYYY-MM-DD），页面由谁生成
+    sources:
+      note: 来源列表，项含 id / resource / 可信度信号（author、usage_count、last_modified）
+    stale_after:
+      note: YYYY-MM-DD 绝对时刻；过期判定 = now ≥ stale_after 的纯比较
+    verified:
+      note: 事件列表，项单行 `by: <actor>, at: <日期>`，可多次追加；信任层级由此推导
   vault:
     raw_file:
       note: 根相对路径，代理页必有
@@ -44,13 +53,6 @@ plugins:
       note: 十六进制 SHA-256，可从 VAULT 机械重算
 
 reserved:
-  generated:
-    note: 块式映射 by / at（actor 约定 + YYYY-MM-DD），页面由谁生成；预留 trust 插件
-  verified:
-    note: 事件列表 [{by: actor, at: 日期}]，可多次追加；信任层级由此推导——无记录=unverified，仅 process/agent=machine-confirmed，含 human=human-reviewed；预留 trust 插件
-  stale_after:
-    note: YYYY-MM-DD 绝对时刻；过期判定 = now ≥ stale_after 的纯比较；预留 trust 插件
-  sources:
-    note: 来源列表，项含 id / resource / 可信度信号（author、usage_count、last_modified）；预留 trust 插件
   url:
     note: 来源链接；URL 型资产本地化（下载入 VAULT）前暂存，预留 vault 扩展
+

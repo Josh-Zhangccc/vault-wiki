@@ -69,6 +69,12 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 - 语义：骨干页过度膨胀（该提升未提升）→ warning
 <!-- /check:sessions -->
 
+<!-- check:trust -->
+- 机械项（audit 覆盖）：信任字段契约——generated 缺 by/at 或 actor 格式错、verified 事件缺 by/at 或格式错、stale_after 非 YYYY-MM-DD、sources 非列表 → warning
+- 机械项（audit 覆盖，信息级）：stale 页清单（已过 stale_after）；信任水位（human-reviewed / machine-confirmed 计数）
+- 语义：stale 页处置分诊（刷新时刻 / 重验证 / 废弃）→ 人决
+<!-- /check:trust -->
+
 <!-- check:link -->
 - 断链（目标既非页面全名，也非任何页 aliases）→ warning（尚未写下的知识，TODO 占位属正常）；乱码/畸形链接 → error
 - 孤儿页（无入链且无 related 引用；入链源只计概念页——index/hot/log/tags 与 archive/ 等派生页不算源）→ warning；入链密度 top 榜 → 信息项（hub 涌现依据）

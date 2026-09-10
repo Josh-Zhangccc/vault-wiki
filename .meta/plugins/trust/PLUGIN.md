@@ -1,0 +1,43 @@
+# trust：信任字段
+
+知识会老化。本插件拥有四个信任字段（原 registry 预留段回填认领），让「这条知识还可信吗」从通读原文变成读字段；层级推导是读取时的纯计算，不落盘。
+
+## 结构（无 wiki 自有文件）
+
+- `generated`：块式映射 `by / at`（actor 约定 + YYYY-MM-DD）——页面由谁生成；ingest / save 写代理页与笔记时随手写
+- `verified`：事件列表，项单行 `by: <actor>, at: <日期>`；可多次追加（复核历史）；谁可写：human 复核、agent/process 机械核验（如哈希重算）
+- `stale_after`：YYYY-MM-DD 绝对时刻；语义是「此后无人复核就应视为过期」，刷新它 = 一次续期决策
+- `sources`：来源列表，项含 id / resource / 可信度信号（author、usage_count、last_modified）
+
+## 层级推导（读取时计算，不落盘）
+
+- **unverified**：无 verified 记录
+- **machine-confirmed**：仅含 agent / process 事件
+- **human-reviewed**：含 human 事件（最高级）
+- **stale**：now ≥ stale_after——独立于上述层级，覆盖显示
+
+推导禁止生成派生页：可再生区不造第二份会漂移的真相，消费方（query / check / viewer）按上表现算。
+
+## 不变量
+
+- verified 事件只追加不改写（事件是历史）；追加由复核动作触发，不为凑水位伪造
+- 层级与 stale 判定均为纯比较，无隐藏状态
+- 字段全部可选：不写 = unverified，不阻断任何读写
+
+## 检查（注入 check）
+
+- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：generated 缺 by/at 或 actor 格式错、verified 事件缺 by/at 或格式错、stale_after 非 YYYY-MM-DD、sources 非列表 → warning
+- 机械项（信息级）：stale 页清单（已过 stale_after）；信任水位（human-reviewed / machine-confirmed 计数）
+- 语义（check 命令）：stale 页处置分诊（刷新时刻 / 重验证 / 废弃）——人决
+
+## 注入
+
+AGENTS.md 一行：信任字段与层级推导。
+
+## 附件
+
+无 wiki 附件；附检脚本 `scripts/check.py`。
+
+## 变更记录
+
+- 0.1（2026-09-11）立设：认领 registry 预留段四字段（generated / verified / stale_after / sources）回填插件段；层级推导不落盘；附检覆盖字段契约 + stale 清单 + 信任水位
