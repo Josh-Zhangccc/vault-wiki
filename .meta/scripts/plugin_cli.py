@@ -10,7 +10,7 @@ registry.yaml 插件段、.agents/skills/ 命令副本；protocol / reserved 段
   python .meta/scripts/plugin_cli.py ls          # 清单 + 依赖图（按层分组）
   python .meta/scripts/plugin_cli.py validate    # 合规与依赖检查（只读，错误退出码 1）
   python .meta/scripts/plugin_cli.py audit       # 插件附检（发现式执行各插件 scripts/check.py）
-  python .meta/scripts/plugin_cli.py inject      # 重建 AGENTS.md 注入区（幂等）
+  python .meta/scripts/plugin_cli.py inject      # 重建 AGENTS.md 注入区与 check 检查块（幂等）
   python .meta/scripts/plugin_cli.py registry    # 重建 registry.yaml 插件段（幂等）
   python .meta/scripts/plugin_cli.py deploy      # 同步命令部署副本（幂等）
   python .meta/scripts/plugin_cli.py all         # validate + inject + registry + deploy
@@ -57,6 +57,16 @@ REQUIRED_KEYS = ["id", "version", "layer", "depends", "updated", "attachment", "
 LAYERS = ("origin", "field", "derived")
 INJECT_START = "<!-- wiki-inject:start -->"
 INJECT_END = "<!-- wiki-inject:end -->"
+CHECK_SKILL = os.path.join(COMMANDS_DIR, "check", "SKILL.md")
+CHECK_INJECT_START = "<!-- check-inject:start -->"
+CHECK_INJECT_END = "<!-- check-inject:end -->"
+CHECK_SECTION_RE = re.compile(r"^## 检查.*?\n(.*?)(?=^## |\Z)", re.S | re.M)
+
+
+def ordered_plugins(plugins):
+    """按层（origin → field → derived）再按 id 排序；投影区共用。"""
+    return sorted(plugins, key=lambda p: (
+        LAYERS.index(plugins[p]["layer"]) if plugins[p].get("layer") in LAYERS else len(LAYERS), p))
 
 
 def strip_quotes(s):
@@ -293,7 +303,7 @@ def do_inject(plugins):
     first = region.find("<!-- plugin:")
     preamble = region[:first].rstrip() if first != -1 else region.rstrip()
     blocks = []
-    for pid in sorted(plugins, key=lambda p: (LAYERS.index(plugins[p]["layer"]) if plugins[p].get("layer") in LAYERS else len(LAYERS), p)):
+    for pid in ordered_plugins(plugins):
         ver = plugins[pid].get("version")
         line = plugins[pid].get("inject", "")
         blocks.append(f"<!-- plugin:{pid} v{ver} -->\n- {line}\n<!-- /plugin:{pid} -->")
@@ -305,6 +315,36 @@ def do_inject(plugins):
         text[: m.start(1)] + new_region + text[m.end(1):]
     )
     print(f"[注入] 已重建（{len(blocks)} 个插件块）")
+    return True
+
+
+def do_check_inject(plugins):
+    """自各 PLUGIN.md「检查」节重建 check 命令注入区（在场即注册，幂等）。
+
+    与 AGENTS.md 注入区同构：PLUGIN.md 是本体，check 块是投影——改检查规则
+    改 PLUGIN.md「检查」节，本投影与手写块的漂移就此消失。
+    """
+    if not os.path.exists(CHECK_SKILL):
+        print("[check 注入] check 命令不在位，跳过")
+        return True
+    text = open(CHECK_SKILL, encoding="utf-8").read()
+    m = re.search(re.escape(CHECK_INJECT_START) + r"\n(.*?)" + re.escape(CHECK_INJECT_END), text, re.S)
+    if not m:
+        print("[错误] check/SKILL.md 未找到注入区标记块（check-inject:start/end）")
+        return False
+    blocks = []
+    for pid in ordered_plugins(plugins):
+        sec = CHECK_SECTION_RE.search(open(os.path.join(PLUGINS_DIR, pid, "PLUGIN.md"), encoding="utf-8").read())
+        if sec and sec.group(1).strip():
+            blocks.append(f"<!-- check:{pid} -->\n{sec.group(1).strip()}\n<!-- /check:{pid} -->")
+    new_region = "\n\n".join(blocks) + "\n"
+    if new_region == m.group(1):
+        print("[check 注入] 一致，无变化")
+        return True
+    open(CHECK_SKILL, "w", encoding="utf-8", newline="\n").write(
+        text[: m.start(1)] + new_region + text[m.end(1):]
+    )
+    print(f"[check 注入] 已重建（{len(blocks)} 个插件块）")
     return True
 
 
@@ -407,6 +447,8 @@ def main():
     print(f"[合规] {len(plugins)} 个插件全部通过（八字段 / id 一致 / layer 合法 / 依赖方向 / 无环 / 命令绑定）")
     if cmd in ("inject", "all"):
         if not do_inject(plugins):
+            return 1
+        if not do_check_inject(plugins):
             return 1
     if cmd in ("registry", "all"):
         if not do_registry(plugins):
