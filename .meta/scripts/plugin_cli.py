@@ -7,7 +7,7 @@
 registry.yaml 插件段、.agents/skills/ 命令副本；protocol / reserved 段与手写区永不动。
 
 用法:
-  python .meta/scripts/plugin_cli.py ls          # 清单 + 依赖图
+  python .meta/scripts/plugin_cli.py ls          # 清单 + 依赖图（按层分组）
   python .meta/scripts/plugin_cli.py validate    # 合规与依赖检查（只读，错误退出码 1）
   python .meta/scripts/plugin_cli.py audit       # 插件附检（发现式执行各插件 scripts/check.py）
   python .meta/scripts/plugin_cli.py inject      # 重建 AGENTS.md 注入区（幂等）
@@ -17,6 +17,10 @@ registry.yaml 插件段、.agents/skills/ 命令副本；protocol / reserved 段
 
 manifest 最小 YAML 子集：顶层 `key: value`、`key: []`、块式列表（`  - 项`）、
 一层字段字典（`  name: 描述`）；双引号包裹的值去引号；行内注释（` #` 起）剥离。
+
+分层（layer，三值）与依赖方向：
+- origin（出身：拥有页面领地）与 field（字段：拥有跨页 frontmatter 字段）是底，零依赖
+- derived（派生：拥有派生物与写路径义务）居上，只可依赖 origin/field，同层禁依赖
 
 插件附检契约（scripts/check.py，可选）：
 - 必须定义 check(ctx)，返回 issue 列表：{"级别": "error"|"warning"|"信息", "消息": str}
@@ -42,8 +46,9 @@ SKILLS_DIR = os.path.join(ROOT, ".agents", "skills")
 AGENTS_MD = os.path.join(ROOT, "AGENTS.md")
 REGISTRY = os.path.join(ROOT, ".meta", "protocol", "registry.yaml")
 
-# manifest 七字段（id / version / depends / updated / attachment / fields / inject）
-REQUIRED_KEYS = ["id", "version", "depends", "updated", "attachment", "fields", "inject"]
+# manifest 八字段（id / version / layer / depends / updated / attachment / fields / inject）
+REQUIRED_KEYS = ["id", "version", "layer", "depends", "updated", "attachment", "fields", "inject"]
+LAYERS = ("origin", "field", "derived")
 INJECT_START = "<!-- wiki-inject:start -->"
 INJECT_END = "<!-- wiki-inject:end -->"
 
@@ -132,6 +137,12 @@ def validate(plugins, errors):
         deps = m.get("depends")
         if deps is not None and not isinstance(deps, list):
             errors.append(f"[错误] {name}/：depends 应为列表")
+        # 分层依赖方向：origin/field 是底（零依赖）；derived 只可向下依赖（同层禁依赖）
+        layer = m.get("layer")
+        if layer not in LAYERS:
+            errors.append(f"[错误] {name}/：layer（{layer}）须为 origin/field/derived")
+        elif layer in ("origin", "field") and deps:
+            errors.append(f"[错误] {name}/（{layer} 层为底）：不得声明依赖（{', '.join(deps)}）")
         if not m.get("inject"):
             errors.append(f"[错误] {name}/：inject（注入区投影行）为空")
         # 附检契约（可选）：scripts/check.py 存在则必须定义 check(ctx)——AST 静态查，不执行
@@ -144,11 +155,13 @@ def validate(plugins, errors):
             else:
                 if not any(isinstance(n, ast.FunctionDef) and n.name == "check" for n in tree.body):
                     errors.append(f"[错误] {name}/scripts/check.py 未定义 check(ctx)（附检契约）")
-    # 依赖存在性
+    # 依赖存在性与同层禁依赖
     for name, m in sorted(plugins.items()):
         for dep in m.get("depends") or []:
             if dep not in plugins:
                 errors.append(f"[错误] {name}/：依赖的 {dep} 不存在")
+            elif m.get("layer") == "derived" and plugins[dep].get("layer") == "derived":
+                errors.append(f"[错误] {name}/：依赖的 {dep} 同为 derived 层（同层禁依赖）")
     # 环检测（DFS 三色标记）
     WHITE, GRAY, BLACK = 0, 1, 2
     color = {k: WHITE for k in plugins}
@@ -211,7 +224,7 @@ def do_audit(plugins, only=None):
 
 
 def do_inject(plugins):
-    """自 manifests 重建 AGENTS.md 注入区（保留前置说明，块按 id 排序，幂等）。"""
+    """自 manifests 重建 AGENTS.md 注入区（保留前置说明，块按层分组再按 id 排序，幂等）。"""
     text = open(AGENTS_MD, encoding="utf-8").read()
     m = re.search(re.escape(INJECT_START) + r"\n(.*?)" + re.escape(INJECT_END), text, re.S)
     if not m:
@@ -221,7 +234,7 @@ def do_inject(plugins):
     first = region.find("<!-- plugin:")
     preamble = region[:first].rstrip() if first != -1 else region.rstrip()
     blocks = []
-    for pid in sorted(plugins):
+    for pid in sorted(plugins, key=lambda p: (LAYERS.index(plugins[p]["layer"]) if plugins[p].get("layer") in LAYERS else len(LAYERS), p)):
         ver = plugins[pid].get("version")
         line = plugins[pid].get("inject", "")
         blocks.append(f"<!-- plugin:{pid} v{ver} -->\n- {line}\n<!-- /plugin:{pid} -->")
@@ -292,11 +305,21 @@ def do_deploy():
 
 
 def do_ls(plugins):
-    print(f"{'id':<10} {'版本':<6} 依赖")
-    for pid in sorted(plugins):
-        deps = ", ".join(plugins[pid].get("depends") or []) or "—"
-        print(f"{pid:<10} {plugins[pid].get('version', '?'):<6} {deps}")
-    print(f"共 {len(plugins)} 个插件（.meta/plugins/）")
+    lay_names = {"origin": "origin 出身", "field": "field 字段", "derived": "derived 派生"}
+    for lay in LAYERS:
+        names = [p for p in sorted(plugins) if plugins[p].get("layer") == lay]
+        if not names:
+            continue
+        print(f"[{lay_names[lay]}]")
+        for pid in names:
+            deps = ", ".join(plugins[pid].get("depends") or []) or "—"
+            print(f"  {pid:<10} {plugins[pid].get('version', '?'):<6} {deps}")
+    others = [p for p in sorted(plugins) if plugins[p].get("layer") not in LAYERS]
+    if others:
+        print("[未分层]")
+        for pid in others:
+            print(f"  {pid:<10} {plugins[pid].get('version', '?'):<6} ?")
+    print(f"共 {len(plugins)} 个插件（.meta/plugins/；底层零依赖，derived 只向下依赖）")
 
 
 def main():
@@ -320,7 +343,7 @@ def main():
     if errors:
         print(f"[结果] 合规检查未通过（{len(errors)} 项错误）——阻断后续机械动作")
         return 1
-    print(f"[合规] {len(plugins)} 个插件全部通过（七字段 / id 一致 / 依赖存在 / 无环）")
+    print(f"[合规] {len(plugins)} 个插件全部通过（八字段 / id 一致 / layer 合法 / 依赖方向 / 无环）")
     if cmd in ("inject", "all"):
         if not do_inject(plugins):
             return 1

@@ -32,3 +32,4 @@ AGENTS.md 一行：链接语法与解析规则。
 ## 变更记录
 
 - 0.1（2026-09-09）新立：链接语法与 related / aliases 字段；断链检查自原 lint 转化，孤儿检查自 notes 移交
+- 0.2（2026-09-10）manifest 增 layer: field（分层立设：字段层，零依赖）

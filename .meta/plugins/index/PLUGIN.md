@@ -28,3 +28,4 @@ AGENTS.md 一行：检索入口指针。
 ## 变更记录
 
 - 0.1（2026-09-08）自原 wiki index（master catalog）规则转化；改为只整体重建、不增量写
+- 0.2（2026-09-10）manifest 增 layer: derived（分层立设：派生层，只向下依赖 tag）

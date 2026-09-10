@@ -1,7 +1,8 @@
 id: link
-version: 0.1
+version: 0.2
+layer: field
 depends: []
-updated: 2026-09-09
+updated: 2026-09-10
 attachment:
   - "横向插件，无自有文件：拥有链接语法约定与 related / aliases 字段"
 fields:

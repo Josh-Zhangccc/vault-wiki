@@ -29,3 +29,4 @@ AGENTS.md 一行：原生笔记语义。
 
 - 0.1（2026-09-08）自原 wiki concepts/questions/comparisons/sessions 诸区合并简化（细分第二批）
 - 0.2（2026-09-09）孤儿检查移交 link 插件（图性质归链接层）
+- 0.3（2026-09-10）manifest 增 layer: origin（分层立设：出身层，零依赖）

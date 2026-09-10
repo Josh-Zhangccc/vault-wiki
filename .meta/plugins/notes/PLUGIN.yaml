@@ -1,7 +1,8 @@
 id: notes
-version: 0.2
+version: 0.3
+layer: origin
 depends: []
-updated: 2026-09-09
+updated: 2026-09-10
 attachment:
   - "wiki/notes/ —— 原生笔记区"
 fields: {}

@@ -1,7 +1,8 @@
 id: tag
-version: 0.2
+version: 0.3
+layer: field
 depends: []
-updated: 2026-09-09
+updated: 2026-09-10
 attachment:
   - "横向插件：拥有全部页面的 frontmatter tags 字段与词表治理"
   - "scripts/check.py —— 附检（单页 >5 / 复述 type）"

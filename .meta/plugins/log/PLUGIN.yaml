@@ -1,7 +1,8 @@
 id: log
-version: 0.2
+version: 0.3
+layer: derived
 depends: []
-updated: 2026-09-09
+updated: 2026-09-10
 attachment:
   - "wiki/log.md —— 单文件操作流水（滚动窗口）"
   - "wiki/log-archive-YYYY-MM.md —— 归档分流（不可变区）"
