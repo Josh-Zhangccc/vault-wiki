@@ -2,9 +2,9 @@
 
 > 追加与修改须标注日期（精确到天）；总量 <2k 字；整合压缩须用户同意。
 
-## 现状（2026-09-09）
+## 现状（2026-09-10）
 
-工程处于原型验证期（阶段②）。架构：七结构插件（vault/log/hot/tag/index/notes/link）+ 五命令（check/ingest/save/query/plugin）+ 协议工件（`.meta/protocol/`）+ 机械脚本（`.meta/scripts/`：plugin_cli 五合一 + wikilib 承重件 + 附检 audit）。分工定则：确定性走脚本，语义走 LLM。规范 doc 后置；user-write/ 为用户手稿（agent 只读）。
+工程处于原型验证期（阶段②）。架构：七结构插件分三层（origin：vault/notes；field：tag/link；derived：index/hot/log，依赖方向由 plugin_cli 校验）+ 五命令 + 协议工件 + 双脚本（plugin_cli 生命周期；pipeline 写后管道 index/tags/hot/log/verify）。已对齐 OKF v0.2（status 三值、信任预留字段、actor 约定、渐进披露索引、归档改轨）；写后自证入纪律；冒烟通过（viz 渲染）。规范 doc 后置；user-write/ 为用户手稿（agent 只读）。
 
 ## 阶段
 
@@ -12,11 +12,14 @@
 
 ## 下一步
 
-- 往 vault/ 放入首批资产，跑 ingest 全链路 + check 首审（重点验证：锚点读取、预览前置、滚动触发）
-- 观察项：词表复用率、检索 log 行、stub 老化告警
-- 后续插件按依赖序：trust 时效 → 问题队列 → 画像/todo（薄）
+- 往 vault/ 放入首批资产，跑 ingest 全链路 + check 首审（重点验证：写后管道与 verify 自证、锚点读取、预览前置）
+- 观察项：词表复用率、检索 log 行、stub 老化告警、verify 误报率
+- trust 插件按 OKF 形态设计：拥有 verified / stale_after / sources，层级推导不落盘
+- check 命令注入块仍为手工投影（无注入器），待机械化
 
 ## 过往操作
+
+- 2026-09-10 分层与 OKF 对齐落地（七提交）：插件分 origin/field/derived 三层 + plugin_cli 依赖方向规则；registry 对齐 OKF v0.2（status=draft/stable/deprecated、预留 generated/verified/stale_after/sources、actor 约定、description 推荐）；link 断链降级 warning + 孤儿作用域明文；log 归档改轨 archive/月/log.md；index 每目录化（渐进披露，根页带 okf_version）+ vault 豁免 index.md；新增 pipeline.py 写后管道（index/tags/hot/log/verify=attester 最小形），命令尾部接管道 + generated 署名；OKF 冒烟通过（viz.html 渲染成功，反链/信任字段可显）
 
 - 2026-09-09 附检机制（两提交）：audit 发现式执行插件 scripts/check.py（check(ctx) 契约、只读零副作用），在场即注册、不做文本拼接；wikilib 承重件单次扫描共享 ctx.pages；tag/vault 示例过阴性测试；解析器加固；check 机械项移交脚本，注入区块保留语义项
 
