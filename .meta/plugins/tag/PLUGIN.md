@@ -18,7 +18,7 @@
 
 ## 检查（注入 check）
 
-- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：单页 >5 个 tag → warning；tags 复述 type → warning
+- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：单页 >5 个 tag → warning；tags 复述 type → warning；层级超限（父/子 ≤2）或空段 → warning
 - 语义项（check 命令）：近重复 tag → warning 提示合并，合并由人执行
 
 ## 注入
@@ -34,3 +34,4 @@ AGENTS.md 一行：tags 字段规范要点。
 - 0.1（2026-09-08）新立，吸收原 lint 近重复检查思想
 - 0.2（2026-09-09）机械检查项落为附检脚本（scripts/check.py），本文件保留语义项
 - 0.3（2026-09-10）manifest 增 layer: field（分层立设：字段层，零依赖）
+- 0.4（2026-09-11）附检增层级深度校验（父/子 ≤2，空段告警）

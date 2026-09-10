@@ -1,10 +1,11 @@
 id: link
-version: 0.3
+version: 0.4
 layer: field
 depends: []
-updated: 2026-09-10
+updated: 2026-09-11
 attachment:
   - "横向插件，无自有文件：拥有链接语法约定与 related / aliases 字段"
+  - "scripts/check.py —— 附检（断链 / 乱码 / 别名歧义 / 孤儿 / related 单向）"
 fields:
   related: "YAML 列表，相关页全名 wikilink"
   aliases: "YAML 列表，别名/短名，供链接解析"

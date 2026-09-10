@@ -1,10 +1,11 @@
 id: log
-version: 0.5
+version: 0.6
 layer: derived
 depends: []
-updated: 2026-09-10
+updated: 2026-09-11
 attachment:
   - "wiki/log.md —— 单文件操作流水（滚动窗口）"
   - "wiki/archive/YYYY-MM/log.md —— 归档分流（不可变区，按条目月份分组）"
+  - "scripts/check.py —— 附检（条目日期契约）"
 fields: {}
 inject: "运行日志 `wiki/log.md`：置顶追加、条目不改写，条目 = 日期 + 类型（摄入/保存/检索/检查/装卸/其他）+ 一句话；窗口 ≤100 条，超限机械归档至 `wiki/archive/月/log.md`"

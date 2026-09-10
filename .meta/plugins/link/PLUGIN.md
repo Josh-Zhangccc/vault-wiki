@@ -16,10 +16,8 @@ wiki 的本体结构：页面间的引用关系。链接是知识的价值所在
 
 ## 检查（注入 check）
 
-- 断链（目标既非页面全名，也非任何页的 aliases）→ warning（尚未写下的知识）
-- 乱码链接（目标含非 UTF-8 乱码）→ error
-- 孤儿页（无入链且无 related 引用，作用域见不变量）→ warning
-- 入链密度 top 榜 → 信息项（hub 涌现依据，不告警）
+- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：断链（目标既非页面全名，也非任何页的 aliases）→ warning；乱码链接（目标含 U+FFFD 替换符，含 related 项）→ error；别名二义（两页声明同一 aliases，解析不确定）→ error；孤儿页（无入链且无 related 引用，入链源只计概念页）→ warning；related 单向（A 列 B 而 B 未回列）→ 信息
+- 语义项（check 命令）：入链密度 top 榜 → 信息项（hub 涌现依据，不告警）
 
 ## 注入
 
@@ -27,10 +25,11 @@ AGENTS.md 一行：链接语法与解析规则。
 
 ## 附件
 
-无。
+无 wiki 附件；附检脚本 `scripts/check.py`（机械检查项，audit 发现式执行）。
 
 ## 变更记录
 
 - 0.1（2026-09-09）新立：链接语法与 related / aliases 字段；断链检查自原 lint 转化，孤儿检查自 notes 移交
 - 0.2（2026-09-10）manifest 增 layer: field（分层立设：字段层，零依赖）
 - 0.3（2026-09-10）断链降级 warning（对齐 OKF：尚未写下的知识）；孤儿判定作用域明文（派生页不算入链源）
+- 0.4（2026-09-11）机械项收编附检脚本：断链 / 乱码 / 孤儿 / 新增别名二义（error）与 related 单向（信息）；hub 榜留语义项

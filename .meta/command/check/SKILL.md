@@ -48,7 +48,8 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 <!-- /check:vault -->
 
 <!-- check:log -->
-- 历史条目被修改（git 可核）→ error；无日期条目 → error；容量超限 → 机械归档后复查
+- 机械项（audit 覆盖）：无日期条目（主文件与归档同检）→ error
+- 语义：历史条目被修改（git 可核）→ error；容量超限 → 机械归档后复查
 <!-- /check:log -->
 
 <!-- check:hot -->
@@ -56,7 +57,7 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 <!-- /check:hot -->
 
 <!-- check:tag -->
-- 机械项（audit 覆盖）：单页 >5 → warning；复述 type → warning
+- 机械项（audit 覆盖）：单页 >5 → warning；复述 type → warning；层级超限（父/子 ≤2）或空段 → warning
 - 语义：近重复 tag → warning 提示合并（合并 = 机械确认项：呈清单，确认后批量改 frontmatter）
 <!-- /check:tag -->
 
@@ -76,8 +77,8 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 <!-- /check:trust -->
 
 <!-- check:link -->
-- 断链（目标既非页面全名，也非任何页 aliases）→ warning（尚未写下的知识，TODO 占位属正常）；乱码/畸形链接 → error
-- 孤儿页（无入链且无 related 引用；入链源只计概念页——index/hot/log/tags 与 archive/ 等派生页不算源）→ warning；入链密度 top 榜 → 信息项（hub 涌现依据）
+- 机械项（audit 覆盖）：断链（目标既非页面全名，也非任何页 aliases）→ warning；乱码链接（目标含 U+FFFD 替换符，含 related 项）→ error；别名二义（两页声明同一 aliases，解析不确定）→ error；孤儿页（无入链且无 related 引用，入链源只计概念页）→ warning；related 单向（A 列 B 而 B 未回列）→ 信息
+- 语义：入链密度 top 榜 → 信息项（hub 涌现依据）
 <!-- /check:link -->
 
 <!-- check:index -->
