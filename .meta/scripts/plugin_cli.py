@@ -22,6 +22,12 @@ manifest 最小 YAML 子集：顶层 `key: value`、`key: []`、块式列表（`
 - origin（出身：拥有页面领地）与 field（字段：拥有跨页 frontmatter 字段）是底，零依赖
 - derived（派生：拥有派生物与写路径义务）居上，只可依赖 origin/field，同层禁依赖
 
+命令-插件绑定（双向声明，validate 校验一致）：
+- 命令 frontmatter 增 owner：插件 id（多个用 [a, b] 列表）或 framework（跨切面，显式无主）
+- 插件 manifest 增可选字段 commands：本插件驱动的命令名列表
+- error 情形：命令缺 owner、owner 指向未装插件、framework 与其他 owner 并列、
+  插件声明不存在的命令、任一侧单边声明（owner 未被 commands 认领，或反之）
+
 插件附检契约（scripts/check.py，可选）：
 - 必须定义 check(ctx)，返回 issue 列表：{"级别": "error"|"warning"|"信息", "消息": str}
 - ctx.root = 仓库根；ctx.pages = [(wiki 相对路径, frontmatter dict, 正文)]，单次扫描共享
@@ -46,7 +52,7 @@ SKILLS_DIR = os.path.join(ROOT, ".agents", "skills")
 AGENTS_MD = os.path.join(ROOT, "AGENTS.md")
 REGISTRY = os.path.join(ROOT, ".meta", "protocol", "registry.yaml")
 
-# manifest 八字段（id / version / layer / depends / updated / attachment / fields / inject）
+# manifest 八字段（id / version / layer / depends / updated / attachment / fields / inject）+ 可选 commands
 REQUIRED_KEYS = ["id", "version", "layer", "depends", "updated", "attachment", "fields", "inject"]
 LAYERS = ("origin", "field", "derived")
 INJECT_START = "<!-- wiki-inject:start -->"
@@ -182,6 +188,59 @@ def validate(plugins, errors):
             dfs(k, [])
 
 
+def _owner_list(owner):
+    """owner 值规范化为 id 列表：list 原样，字符串按逗号拆（容忍 [a, b] 形态）。"""
+    if isinstance(owner, list):
+        vals = [str(v).strip() for v in owner]
+    else:
+        vals = [v.strip() for v in str(owner).replace("[", "").replace("]", "").split(",")]
+    return [v for v in vals if v]
+
+
+def validate_bindings(plugins, errors):
+    """命令-插件绑定：命令 frontmatter owner × 插件 manifest commands 双向一致。"""
+    import wikilib
+
+    commands, claimed = [], {}  # claimed: 命令 -> owner 集合（framework 除外）
+    for name in sorted(os.listdir(COMMANDS_DIR)):
+        cdir = os.path.join(COMMANDS_DIR, name)
+        path = os.path.join(cdir, "SKILL.md")
+        if not os.path.isdir(cdir) or not os.path.exists(path):
+            continue
+        commands.append(name)
+        fm = wikilib.parse_frontmatter(open(path, encoding="utf-8").read())
+        if fm.get("owner") is None:
+            errors.append(f"[错误] 命令 {name}/：frontmatter 缺 owner（插件 id 或 framework）")
+            continue
+        owners = _owner_list(fm["owner"])
+        if "framework" in owners:
+            if len(owners) > 1:
+                errors.append(f"[错误] 命令 {name}/：framework 不可与其他 owner 并列（{', '.join(owners)}）")
+            continue
+        claimed[name] = set(owners)
+        for pid in owners:
+            if pid not in plugins:
+                errors.append(f"[错误] 命令 {name}/：owner {pid} 不是已装插件")
+    for pid, m in sorted(plugins.items()):
+        cmds = m.get("commands")
+        if cmds is None:
+            continue
+        if not isinstance(cmds, list):
+            errors.append(f"[错误] {pid}/：commands 应为列表")
+            continue
+        for c in cmds:
+            if c not in commands:
+                errors.append(f"[错误] {pid}/：commands 声明的命令 {c} 不存在（.meta/command/{c}/）")
+            elif c not in claimed:
+                errors.append(f"[错误] 命令 {c}/：{pid} 单边声明（命令 owner 为 framework 或缺失）")
+            elif pid not in claimed[c]:
+                errors.append(f"[错误] 命令 {c}/：{pid} 单边声明（命令 owner 未含 {pid}）")
+    for c, owners in sorted(claimed.items()):
+        for pid in owners:
+            if pid in plugins and c not in (plugins[pid].get("commands") or []):
+                errors.append(f"[错误] 命令 {c}/：owner {pid} 未在 manifest commands 中认领（单边声明）")
+
+
 def do_audit(plugins, only=None):
     """插件附检：发现式执行各插件 scripts/check.py（契约见模块 docstring）。
 
@@ -313,7 +372,8 @@ def do_ls(plugins):
         print(f"[{lay_names[lay]}]")
         for pid in names:
             deps = ", ".join(plugins[pid].get("depends") or []) or "—"
-            print(f"  {pid:<10} {plugins[pid].get('version', '?'):<6} {deps}")
+            cmds = ", ".join(plugins[pid].get("commands") or []) or "—"
+            print(f"  {pid:<10} {plugins[pid].get('version', '?'):<6} 依赖 {deps}；命令 {cmds}")
     others = [p for p in sorted(plugins) if plugins[p].get("layer") not in LAYERS]
     if others:
         print("[未分层]")
@@ -338,12 +398,13 @@ def main():
         print(__doc__)
         return 2
     validate(plugins, errors)
+    validate_bindings(plugins, errors)
     for e in errors:
         print(e)
     if errors:
         print(f"[结果] 合规检查未通过（{len(errors)} 项错误）——阻断后续机械动作")
         return 1
-    print(f"[合规] {len(plugins)} 个插件全部通过（八字段 / id 一致 / layer 合法 / 依赖方向 / 无环）")
+    print(f"[合规] {len(plugins)} 个插件全部通过（八字段 / id 一致 / layer 合法 / 依赖方向 / 无环 / 命令绑定）")
     if cmd in ("inject", "all"):
         if not do_inject(plugins):
             return 1
