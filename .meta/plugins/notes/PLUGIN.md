@@ -33,3 +33,4 @@ AGENTS.md 一行：原生笔记语义。
 - 0.3（2026-09-10）manifest 增 layer: origin（分层立设：出身层，零依赖）
 - 0.4（2026-09-10）type 枚举表述修正：以 registry 值集为准（消与注册表封闭性的矛盾）
 - 0.5（2026-09-10）缩界：会话骨干页移交 sessions 插件（独立领地 `wiki/sessions/`），本区留概念/问答/决策/实体
+- 0.6（2026-09-11）manifest 增 commands: [save]（save 由本插件与 sessions 共同驱动）

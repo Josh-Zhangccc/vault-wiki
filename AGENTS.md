@@ -50,15 +50,15 @@
 
 > 本区为插件注入的投影，装卸插件时同步增删对应标记块；手写内容不进此区。
 
-<!-- plugin:notes v0.5 -->
+<!-- plugin:notes v0.6 -->
 - 原生笔记 `wiki/notes/`：出身在 wiki 的知识（概念/问答/决策/实体），细分靠 type 字段；不可再生区，命令只增不改；会话骨干页归 sessions 插件
 <!-- /plugin:notes -->
 
-<!-- plugin:sessions v0.1 -->
+<!-- plugin:sessions v0.2 -->
 - 原生会话 `wiki/sessions/`：会话骨干页（type: session，participants 必填=actor 列表，默认命名 YYYY-MM-DD-<主题>）；高价值主题提升为 `wiki/notes/` 独立页并回链；不可再生区，命令只增不改
 <!-- /plugin:sessions -->
 
-<!-- plugin:vault v0.5 -->
+<!-- plugin:vault v0.6 -->
 - 代理层 `wiki/vault/`：与根 `vault/` 1:1 镜像（代理名 = 原名 + .md），页面必有 raw_file / raw_sha256；路径即出身证明；命令对 VAULT 只增，删改自由属于人
 <!-- /plugin:vault -->
 

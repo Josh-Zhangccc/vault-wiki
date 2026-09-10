@@ -38,3 +38,4 @@ AGENTS.md 一行：代理层语义与出身规则。
 - 0.3（2026-09-09）机械检查项落为附检脚本（scripts/check.py），本文件保留语义项
 - 0.4（2026-09-10）manifest 增 layer: origin（分层立设：出身层，零依赖）
 - 0.5（2026-09-10）镜像豁免保留名 index.md（index 插件每目录化后 wiki/vault/ 出现目录索引页）
+- 0.6（2026-09-11）manifest 增 commands: [ingest]（命令-插件绑定显式化：ingest 由本插件驱动）

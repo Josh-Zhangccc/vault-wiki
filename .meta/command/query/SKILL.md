@@ -1,5 +1,6 @@
 ---
 name: query
+owner: framework
 description: "在 wiki 中检索并综合回答：热缓存→索引→grep→读页，产出带 wikilink 引用的答案。Triggers on: query, what do you know about, what is, explain, find in wiki, 检索."
 ---
 

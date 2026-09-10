@@ -1,5 +1,6 @@
 ---
 name: save
+owner: [notes, sessions]
 description: "把当前对话、答案或洞见存为 wiki 原生笔记。先去重再落档，推断类型与标题，长会话分块提取，更新索引/日志/热缓存。Triggers on: save this, /save, file this, save to wiki, 保存."
 ---
 

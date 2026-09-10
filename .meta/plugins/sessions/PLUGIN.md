@@ -31,3 +31,4 @@ AGENTS.md 一行：原生会话区语义。
 ## 变更记录
 
 - 0.1（2026-09-10）立设：自 save 命令长会话段与 notes 合并区抽出（2026-09-08「细分第二批」回归）；领地 `wiki/sessions/`，participants 用 actor 约定留多 agent 扩展点
+- 0.2（2026-09-11）manifest 增 commands: [save]（save 由本插件与 notes 共同驱动）

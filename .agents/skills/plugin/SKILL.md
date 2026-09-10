@@ -1,5 +1,6 @@
 ---
 name: plugin
+owner: framework
 description: "插件生命周期管理：装/升/卸/清单。机械步骤（合规、依赖、注入区、注册表、副本同步）由 .meta/scripts/plugin_cli.py 执行，agent 只做语义部分。Triggers on: plugin, 插件, 装插件, 卸插件, install plugin, uninstall plugin."
 ---
 

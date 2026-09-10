@@ -1,5 +1,6 @@
 ---
 name: check
+owner: framework
 description: "审计库的健康状态：底座与插件硬结构检查 + 插件与页面语义检查。Triggers on: check, 健康检查, 检查插件, lint."
 ---
 

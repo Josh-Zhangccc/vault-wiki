@@ -1,9 +1,11 @@
 id: notes
-version: 0.5
+version: 0.6
 layer: origin
 depends: []
-updated: 2026-09-10
+updated: 2026-09-11
 attachment:
   - "wiki/notes/ —— 原生笔记区"
 fields: {}
+commands:
+  - save
 inject: "原生笔记 `wiki/notes/`：出身在 wiki 的知识（概念/问答/决策/实体），细分靠 type 字段；不可再生区，命令只增不改；会话骨干页归 sessions 插件"

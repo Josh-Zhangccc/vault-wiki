@@ -1,5 +1,6 @@
 ---
 name: ingest
+owner: vault
 description: "把 vault/ 中的资产登记为 wiki 代理页：SHA-256、镜像路径、frontmatter、索引/热缓存/日志联动。Triggers on: ingest, 摄入, process this source, add this to the wiki."
 ---
 
