@@ -9,8 +9,8 @@ description: "把当前对话、答案或洞见存为 wiki 原生笔记。先去
 
 ## 涉及结构
 
-写：notes（原生笔记）、log、hot、index
-读：registry（`.meta/protocol/registry.yaml`，字段与值集锚点）、tag（词表 `wiki/tags.md`）、index / hot（去重前置）
+写：sessions（会话骨干页）、notes（原生笔记）、log、hot、index
+读：registry（`.meta/protocol/registry.yaml`，字段与值集锚点）、sessions（骨干页结构 `.meta/plugins/sessions/`）、tag（词表 `wiki/tags.md`）、index / hot（去重前置）
 
 ## 落档前去重（必做）
 
@@ -19,20 +19,9 @@ description: "把当前对话、答案或洞见存为 wiki 原生笔记。先去
 3. 已有相关页：更新它而非新建；部分重叠：向用户展示差异，由用户选合并 / 更新 / 新建
 4. 确认无覆盖页后才新建
 
-## 类型裁决
+## 类型与落点
 
-| type | 用于 |
-|------|------|
-| qa | 具体问题及其答案 |
-| concept | 解释或定义一个概念 / 模式 / 框架 |
-| comparison | 并排对比 |
-| decision | 架构 / 项目 / 战略决策 |
-| session | 完整会话摘要（骨干页） |
-| entity | 人物 / 组织 / 产品等实体页 |
-
-类型集以 registry 值集为准（上表为建议项）；status 取值 draft / stable / deprecated（生命周期，对齐 OKF）。
-
-统一落 `wiki/notes/`，细分靠 type 字段，不靠目录。source 型不在此列——有 VAULT 对应物的走 ingest。
+type / status 值集以 registry 为准（一次读取锚点，不复抄表）；真歧义才问。落点按 type 分流：qa / concept / comparison / decision / entity 落 `wiki/notes/`；session 走下方长会话段，落 `wiki/sessions/`。source 型不在此列——有 VAULT 对应物的走 ingest。
 
 ## 工作流
 
@@ -40,18 +29,17 @@ description: "把当前对话、答案或洞见存为 wiki 原生笔记。先去
 2. 扫描对话，识别高价值内容（非显然的洞见、带理由的决策、费力得出的分析、会被再次引用的对比）；跳过机械问答 / 调试过程 / 已在库内容
 3. 定 type（真歧义才问）与标题（歧义或冲突才问）
 4. 以陈述句现在时重写：写知识，不写对话
-5. 建 `wiki/notes/<标题>.md`：frontmatter（type / title / created / updated / status / tags / related + generated 块式：`by: agent/<当前模型>` / `at: 今日`）+ 正文
+5. 建 `wiki/notes/<标题>.md`：frontmatter（type / title / created / updated / status / tags / related + generated 块式：`by: agent/<当前模型>` / `at: 今日`）+ 正文；session 型改落 `wiki/sessions/` 并按插件契约加 participants（见长会话段）
 6. 对话中提到的 wiki 页写入 related 并加 wikilink
 7. **写后管道**（确定性，机械自动）：`python .meta/scripts/pipeline.py index` → `tags` → `hot 保存 "<wikilink + 一句话核心>"` → `log 保存 "<一句话>"` → `verify`（写后自证，未过即回修）
-8. 回报：`Saved as [[标题]] in wiki/notes/`
+8. 回报：`Saved as [[标题]] in wiki/notes/`（session 型：`... in wiki/sessions/`）
 
-## 长会话（分块提取）
+## 长会话（session 骨干页）
 
-1. 按主题切 3-8 段（不按消息数）
-2. 每段提取：核心结论 / 决策与理由 / 非显然洞见 / 开放问题 / 相关页
-3. 合并、去机械细节；建一个 session 骨干页；把独立高价值主题提升为单独页面并从骨干页链接
-4. 提升前同样先去重
-5. 默认标题 `YYYY-MM-DD-<主题>`；冲突或过泛才问
+1. 按主题切 3-8 段（不按消息数），合并去机械细节
+2. 建 session 骨干页：落点 `wiki/sessions/`、默认命名、骨干页形状、participants（actor 列表）与提升规则均以 sessions 插件为准（`.meta/plugins/sessions/`），此处不复抄
+3. 独立高价值主题提升为 `wiki/notes/` 页并从骨干页 wikilink；提升前同样先去重
+4. 标题真歧义才问（默认命名见插件规范）
 
 ## 写作规范
 

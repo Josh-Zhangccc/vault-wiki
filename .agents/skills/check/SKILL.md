@@ -63,6 +63,11 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 - 笔记被命令覆盖痕迹 → error；近似重复（Jaccard > 0.7）→ warning
 <!-- /check:notes -->
 
+<!-- check:sessions -->
+- 机械项（audit 覆盖）：session 型页在 wiki/sessions/ 之外（或反向）→ warning；participants 缺失或项不符 actor 约定 → warning
+- 语义：骨干页过度膨胀（该提升未提升）→ warning
+<!-- /check:sessions -->
+
 <!-- check:link -->
 - 断链（目标既非页面全名，也非任何页 aliases）→ warning（尚未写下的知识，TODO 占位属正常）；乱码/畸形链接 → error
 - 孤儿页（无入链且无 related 引用；入链源只计概念页——index/hot/log/tags 与 archive/ 等派生页不算源）→ warning；入链密度 top 榜 → 信息项（hub 涌现依据）
