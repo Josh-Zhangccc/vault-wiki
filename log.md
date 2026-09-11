@@ -17,6 +17,8 @@
 
 ## 过往操作
 
+- 2026-09-11 提交纪律入动作纪律（actions.md 姊妹节）：数据区写入首次有提交规则——一次写操作=一提交、verify 过才提交、信息 `摄入:/保存:/检查:`、agent 只 add 自写路径（禁 add -A，人写变更提交权属人）；ingest/save/check 管道尾部随行指针；裁决不立 git 插件（过程层非结构，lockfile/审计/历史检索维持协议引用）
+
 - 2026-09-11 优化三件落地（用户裁定「均可执行」）：① trust 插件立设（field 层，认领 registry 预留四字段 generated/verified/stale_after/sources 回填插件段；层级推导不落盘；附检契约+stale 清单+信任水位，日历非法日期加固）；② 机械项收编附检——link（断链/乱码/孤儿/别名二义 error/related 单向信息）、tag（层级深度）、log（日期契约），附检覆盖 6/9；③ check 注入块机械化（plugin_cli 自 PLUGIN.md 检查节投影，幂等，在场即注册），手写块与源头的漂移通道关闭
 - 2026-09-11 命令-插件绑定显式化（三提交）：manifest 增可选 commands、命令 frontmatter 增 owner（save=notes+sessions 双主；check/query/plugin=framework 跨切面显式无主），plugin_cli 校验无主/孤儿/单边 + ls 增命令列（正反测试通过）；user-write 两份手稿经隐私核查首次入库；smoke-tmp 冒烟遗留清理并 gitignore
 

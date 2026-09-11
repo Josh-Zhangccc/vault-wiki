@@ -2,6 +2,7 @@
 
 > 置顶追加、只增不删；条目 = `- YYYY-MM-DD <类型>：一句话`。规则见 `.meta/plugins/log/`，写走 `pipeline.py log`。
 
+- 2026-09-11 其他：提交纪律入动作纪律：数据区一次写一提交、verify 过才提交、agent 只 add 自写路径
 - 2026-09-11 装卸：trust 插件立设（认领预留信任字段）；link/tag/log 机械项收编附检；check 注入块机械化（PLUGIN.md 检查节投影）
 - 2026-09-11 装卸：命令-插件绑定显式化：manifest 增 commands、命令增 owner（save=notes+sessions 双主），plugin_cli 校验无主/孤儿/单边
 - 2026-09-10 装卸：sessions 插件立设（origin 层，领地 wiki/sessions/，participants=actor 列表）；notes 缩界，save 会话段移交
