@@ -20,7 +20,7 @@ description: "把 vault/ 中的资产登记为 wiki 代理页：SHA-256、镜像
 3. 计算 SHA-256；按镜像规则定位代理路径：`wiki/vault/<原路径>.md`（原名 + .md，防碰撞）
 4. 组装代理页草稿（frontmatter：`type: source` + created / updated / status（值集内）+ raw_file / raw_sha256 / tags + generated（块式：`by: agent/<当前模型>` / `at: 今日`）；正文一行描述起步），**呈摄入预览**（路径 / 哈希 / 描述 / tags），等用户确认
 5. 确认后写代理页；摘要 / 结构抽取为可选增强
-6. **写后管道**（确定性，机械自动不询问）：`python .meta/scripts/pipeline.py index` → `tags` → `hot 摄入 "<wikilink + 一句话核心>"` → `log 摄入 "<一句话>"` → `verify`（写后自证，未过即回修）
+6. **写后管道**（确定性，机械自动不询问）：`python .meta/scripts/pipeline.py index` → `tags` → `hot 摄入 "<wikilink + 一句话核心>"` → `log 摄入 "<一句话>"` → `verify`（写后自证，未过即回修）；毕即按提交纪律入库（`摄入: <资产名>`，见 `.meta/protocol/actions.md`）
 7. 回报：路径 / 哈希 / 描述 / tags
 
 ## 禁止

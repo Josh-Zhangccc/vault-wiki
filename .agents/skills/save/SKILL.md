@@ -32,7 +32,7 @@ type / status 值集以 registry 为准（一次读取锚点，不复抄表）�
 4. 以陈述句现在时重写：写知识，不写对话
 5. 建 `wiki/notes/<标题>.md`：frontmatter（type / title / created / updated / status / tags / related + generated 块式：`by: agent/<当前模型>` / `at: 今日`）+ 正文；session 型改落 `wiki/sessions/` 并按插件契约加 participants（见长会话段）
 6. 对话中提到的 wiki 页写入 related 并加 wikilink
-7. **写后管道**（确定性，机械自动）：`python .meta/scripts/pipeline.py index` → `tags` → `hot 保存 "<wikilink + 一句话核心>"` → `log 保存 "<一句话>"` → `verify`（写后自证，未过即回修）
+7. **写后管道**（确定性，机械自动）：`python .meta/scripts/pipeline.py index` → `tags` → `hot 保存 "<wikilink + 一句话核心>"` → `log 保存 "<一句话>"` → `verify`（写后自证，未过即回修）；毕即按提交纪律入库（`保存: <页标题>`，见 `.meta/protocol/actions.md`）
 8. 回报：`Saved as [[标题]] in wiki/notes/`（session 型：`... in wiki/sessions/`）
 
 ## 长会话（session 骨干页）
