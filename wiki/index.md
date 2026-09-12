@@ -8,6 +8,6 @@ okf_version: 0.2
 
 ## 子目录
 
-- [[notes/index|notes/]]（0 页）
+- [[notes/index|notes/]]（1 页）
 - [[sessions/index|sessions/]]（0 页）
 - [[vault/index|vault/]]（3 页）
