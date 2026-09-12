@@ -40,7 +40,7 @@
 - `.meta/` — 原型核心：结构插件（`plugins/`，分 origin/field/derived 三层）与命令主本（`command/`）与协议工件（`protocol/`：字段注册表、动作纪律、披露范式 SASU-L）与机械脚本（`scripts/`：plugin_cli 装卸/合规/注入/副本 + pipeline 派生层管道 index/tags/hot/log/verify + wikilib 页面解析承重件）；AGENTS.md 注入区为其投影 **ATTENTION**
 - `user-write/` — 用户手稿（概述、设计初衷、插件规范草案），agent 只读
 - `wiki/`、`vault/` — 数据区（当前含首轮虚构库「雾港」实验数据）；`.agents/skills/` — 命令部署副本
-- `docs/00-principles.md` — 历史设计档案（已精简，规范蒸馏时归并）
+- `docs/` — `00-principles.md` 历史设计档案（规范蒸馏时归并）；`01-okf.md` OKF 格式契约权威定义（v0.2）
 - `README.md` — 项目章程
 - 设计谱系（讨论记录，只读）：个人库 `wiki/meta/2026-08-25-wiki运行时重构决策.md`、`wiki/sessions/2026-08-25-wiki架构调研与docs-first重构设计.md`
 - 参考工程：`D:\My Programs\erp - ksbgs`（AGENTS.md 模式来源：宪法+指针、log 容量管理、指令集）；`D:\My Programs\aijia`（wiki 指针化引用）
