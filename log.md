@@ -12,7 +12,7 @@
 
 ## 下一步
 
-- 部署进个人库（additive：拷 .meta + skills + AGENTS.md 注入 + wiki 骨架种子；存量页不动，新素材走命令，旧页渐进代理）
+- 部署进个人库（**用户自行执行**，agent 不主动触碰：additive——拷 .meta + skills + AGENTS.md 注入 + wiki 骨架种子；存量页不动，新素材走命令，旧页渐进代理）
 - skill 打磨随使用摩擦滚动，SASU-L 为镜
 - README 随新定位更新（低优先）；测试矩阵等裁撤项见 2026-09-12 裁定
 
