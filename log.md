@@ -4,7 +4,7 @@
 
 ## 现状（2026-09-12）
 
-工程处于原型验证期（阶段②），两轮真实操作已完成：虚构库冷启动四命令全过；真实库 25 件沙盒迁移 10 session 全过。架构：九结构插件分三层（origin：vault/notes/sessions；field：tag/link/trust；derived：index/hot/log）+ 五命令（owner×commands 双向绑定）+ 协议工件 + 双脚本（plugin_cli；pipeline 写后管道与自证）。OKF v0.2 已对齐；提交纪律入 actions.md；附检覆盖 6/9；check 注入块机械化。规范 doc 后置；user-write/ 手稿只读。实验佐证纪律入准则 9（ASRL 范式成文，`protocol/experiments.md`）。
+工程处于原型验证期（阶段②），两轮真实操作已完成：虚构库冷启动四命令全过；真实库 25 件沙盒迁移 10 session 全过。架构：九插件三层（origin：vault/notes/sessions；field：tag/link/trust；derived：index/hot/log）+ 五命令（owner×commands 绑定）+ 协议工件 + 双脚本（plugin_cli + pipeline 自证管道）。OKF v0.2 已对齐；提交纪律入 actions.md；附检覆盖 6/9；check 注入块机械化。规范 doc 后置；user-write/ 手稿只读。实验佐证入准则 9（ASRL 范式成文）。
 
 ## 阶段
 
