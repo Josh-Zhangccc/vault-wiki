@@ -2,7 +2,7 @@
 
 本仓库（目录 `agent-obsidian-template`，工程暂名 **vault-wiki**）是 vault-wiki 框架的构建工程，兼第一个**原型实例**：2026-09-08 起「插件 + 命令」架构直接落地，规范文档后置蒸馏。**定位个人自用**（2026-09-12 裁定：普世化与矩阵化测试搁置，边用边改）。
 
-- 布局：`.meta/`（插件与命令主本，原型核心）· `wiki/` + `vault/`（数据区）· `.agents/skills/`（部署副本）· `user-write/`（用户手稿，agent 只读）· `docs/`（设计档案）
+- 布局：`.meta/`（插件与命令主本，原型核心）· `wiki/` + `vault/`（数据区）· `.agents/skills/`（部署副本）· `docs/`（设计档案）
 - 术语：**VAULT** = 真实资产仓库（命令侧只增，删改自由属于人）；**wiki** = VAULT 的 md 代理层与原生笔记；**vault**（小写）= 拥有代理层的结构插件
 - 冲突裁决：以原型现状与讨论收敛结论为准；规范蒸馏时归并 `docs/` 历史版本
 - 个人库（`D:\Obsidian repo\agent-obsidian`）为只读实证样本：原 wiki 思想已转化为本原型（见 log 2026-09-08）
@@ -38,7 +38,6 @@
 
 - `log.md` — 项目日志：现状、阶段、下一步、过往操作 **ATTENTION**
 - `.meta/` — 原型核心：结构插件（`plugins/`，分 origin/field/derived 三层）与命令主本（`command/`）与协议工件（`protocol/`：字段注册表、动作纪律、披露范式 SASU-L）与机械脚本（`scripts/`：plugin_cli 装卸/合规/注入/副本 + pipeline 派生层管道 index/tags/hot/log/verify + wikilib 页面解析承重件）；AGENTS.md 注入区为其投影 **ATTENTION**
-- `user-write/` — 用户手稿（概述、设计初衷、插件规范草案），agent 只读
 - `wiki/`、`vault/` — 数据区（空种子：雾港实验数据已清，待真实内容）；`.agents/skills/` — 命令部署副本
 - `docs/` — `00-principles.md` 历史设计档案（规范蒸馏时归并）；`01-okf.md` OKF 格式契约权威定义（v0.2）
 - `README.md` — 项目章程

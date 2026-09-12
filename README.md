@@ -29,7 +29,6 @@
 | `.meta/` | 原型核心：九插件三层（origin/field/derived）、五命令主本、协议工件（registry / actions / experiments）、机械脚本（plugin_cli / pipeline / wikilib，纯标准库零依赖） |
 | `wiki/`、`vault/` | 数据区（空种子，待真实内容） |
 | `.agents/skills/` | 命令部署副本 |
-| `user-write/` | 用户手稿（agent 只读） |
 | `docs/` | `00-principles.md` 历史设计档案；`01-okf.md` OKF 契约权威定义 |
 
 ## 上手
@@ -44,7 +43,6 @@
 - `log.md` — 工程日志：现状、阶段、过往操作
 - `docs/01-okf.md` — OKF 格式契约（v0.2）
 - `.meta/protocol/` — 字段注册表、动作纪律、披露范式
-- `user-write/` — 设计初衷与插件规范草案（只读）
 
 ## 沿革
 
