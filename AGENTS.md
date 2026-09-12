@@ -1,6 +1,6 @@
 # 项目介绍
 
-本仓库（目录 `agent-obsidian-template`，工程暂名 **vault-wiki**）是 vault-wiki 框架的构建工程，兼第一个**原型实例**：2026-09-08 起「插件 + 命令」架构直接落地，规范文档后置蒸馏。
+本仓库（目录 `agent-obsidian-template`，工程暂名 **vault-wiki**）是 vault-wiki 框架的构建工程，兼第一个**原型实例**：2026-09-08 起「插件 + 命令」架构直接落地，规范文档后置蒸馏。**定位个人自用**（2026-09-12 裁定：普世化与矩阵化测试搁置，边用边改）。
 
 - 布局：`.meta/`（插件与命令主本，原型核心）· `wiki/` + `vault/`（数据区）· `.agents/skills/`（部署副本）· `user-write/`（用户手稿，agent 只读）· `docs/`（设计档案）；`skeleton/`、`skills/`、`scripts/` 为旧计划遗留空目录
 - 术语：**VAULT** = 真实资产仓库（命令侧只增，删改自由属于人）；**wiki** = VAULT 的 md 代理层与原生笔记；**vault**（小写）= 拥有代理层的结构插件
@@ -17,7 +17,7 @@
 6. 本文件为指导性文件，总长度 <150 行；详细信息用指针引用；每个 session 开始时主动读取重要指针。
 7. 产出文档以中文为主，结构文件用 ASCII 文件名。
 8. **小步主动提交**：设计定稿或骨架变更落地后，agent 主动 git commit，不等用户指令（防零提交陷阱）；提交信息格式 `模块: 概述`（如 `骨架: 定稿最小集与目录结构`），一次提交只做一件事；不主动 push；禁止改写历史的操作。
-9. **实验佐证**：框架改动以实验为准、不以推测为准——正式投入前须冷启动实验验证；实验遵循 SASU-L 披露范式与零提示污染，以测试集矩阵（S 人写金样 / M 虚构剪藏 / L 生成）交叉验证，细则见 `.meta/protocol/experiments.md`。
+9. **披露完备、以用代验**：skill 与规范按 SASU-L 披露范式写清（零先验，见准则 2 与 `.meta/protocol/experiments.md`）；框架改动以真实使用反馈为准、边用边改，不做矩阵化测试（2026-09-12 裁定）。
 
 # 指令（用户触发）
 
@@ -37,7 +37,7 @@
 > 指针需主动更新。跨 session 的重要指针标注 **ATTENTION**；易变状态（进度等）放 `log.md`，不写入本文件。
 
 - `log.md` — 项目日志：现状、阶段、下一步、过往操作 **ATTENTION**
-- `.meta/` — 原型核心：结构插件（`plugins/`，分 origin/field/derived 三层）与命令主本（`command/`）与协议工件（`protocol/`：字段注册表、动作纪律、实验范式 SASU-L 与测试集矩阵）与机械脚本（`scripts/`：plugin_cli 装卸/合规/注入/副本 + pipeline 派生层管道 index/tags/hot/log/verify + wikilib 页面解析承重件）；AGENTS.md 注入区为其投影 **ATTENTION**
+- `.meta/` — 原型核心：结构插件（`plugins/`，分 origin/field/derived 三层）与命令主本（`command/`）与协议工件（`protocol/`：字段注册表、动作纪律、披露范式 SASU-L）与机械脚本（`scripts/`：plugin_cli 装卸/合规/注入/副本 + pipeline 派生层管道 index/tags/hot/log/verify + wikilib 页面解析承重件）；AGENTS.md 注入区为其投影 **ATTENTION**
 - `user-write/` — 用户手稿（概述、设计初衷、插件规范草案），agent 只读
 - `wiki/`、`vault/` — 数据区（当前含首轮虚构库「雾港」实验数据）；`.agents/skills/` — 命令部署副本
 - `docs/00-principles.md` — 历史设计档案（已精简，规范蒸馏时归并）
