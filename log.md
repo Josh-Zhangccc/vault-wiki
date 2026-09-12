@@ -4,7 +4,7 @@
 
 ## 现状（2026-09-12）
 
-工程处于原型验证期（阶段②）；首轮真实操作已完成（虚构库冷启动实验全过）。架构：九结构插件分三层（origin：vault/notes/sessions；field：tag/link/trust；derived：index/hot/log，依赖方向由 plugin_cli 校验）+ 五命令（owner×commands 双向绑定：vault→ingest、notes/sessions→save，check/query/plugin=framework）+ 协议工件 + 双脚本（plugin_cli 生命周期；pipeline 写后管道 index/tags/hot/log/verify）。已对齐 OKF v0.2（信任字段归 trust、actor 约定、渐进披露索引）；写后自证与提交纪律入 actions.md。附检覆盖 6/9 插件，check 注入块由 plugin_cli 自 PLUGIN.md 检查节机械化投影。规范 doc 后置；user-write/ 为用户手稿（agent 只读）。
+工程处于原型验证期（阶段②），两轮真实操作已完成：虚构库冷启动四命令全过；真实库 8 月上旬 25 件沙盒迁移 10 session 全过。架构：九结构插件分三层（origin：vault/notes/sessions；field：tag/link/trust；derived：index/hot/log）+ 五命令（owner×commands 双向绑定）+ 协议工件 + 双脚本（plugin_cli；pipeline 写后管道与自证）。OKF v0.2 已对齐；提交纪律入 actions.md；附检覆盖 6/9；check 注入块机械化。规范 doc 后置；user-write/ 手稿（agent 只读）。
 
 ## 阶段
 
@@ -12,13 +12,14 @@
 
 ## 下一步
 
-- P0 文档修补：wikilink 全名形式入 link 插件、hot 条目样例、generated.by 取值、提交词表补「检索」、plugin 命令字段清单更新
-- 通用性漏点记账（阶段③④）：TYPE_ORDER 中文枚举下放实例；AGENTS.md 框架/实例双身分离
-- 观察项：词表复用、检索行、stub 老化、verify 误报；sessions 形状待真实 save 校准
+- P0 文档修补：wikilink 全名形式、hot 条目样例、generated.by 取值、plugin 命令字段清单
+- 实验余项：代理页孤儿 warning 信噪比策略、pipeline hot dry-run、.gitignore 入实例化清单、AGENTS.md 实例化手册化
+- 通用性漏点（阶段③④）：TYPE_ORDER 中文枚举下放；AGENTS.md 双身分离
+- 观察项：检索行、stub 老化、verify 误报；sessions 形状待真实 save
 
 ## 过往操作
 
-- 2026-09-12 冷启动实验（虚构库「雾港」）：无上下文 subagent 按部署 SKILL 四命令全过（提交/verify 合规）；实证文档欠定义四处、通用性漏点两处（见下一步）；产物留作首批真实数据
+- 2026-09-12 两轮实验：①虚构库「雾港」冷启动四命令全过；②真实库迁移实验——个人库 8 月上旬 25 件只读复制入仓库外沙盒（拷 .meta + 12 行 AGENTS.md 一次立起，普世化前测通过），10 个互不相通冷 session 时序摄入全过（提交/verify 全绿、积压 0），词表 30 词（复用≥2 者 13）、冷启动检索 3 组全命中；实证并修复 wikilib 列表空白致词表碎片化、query 缺提交指针（2/3 漏提交）；余项见下一步
 
 - 2026-09-11 架构收尾（用户裁定均可执行）：命令-插件绑定显式化（owner×commands 双向声明，save=notes+sessions 双主，plugin_cli 校验无主/孤儿/单边）；trust 插件立设（field 层，认领 registry 预留信任四字段，层级推导不落盘）；机械项收编附检（link 断链/孤儿/别名二义、tag 层级深度、log 日期契约，附检覆盖 6/9）+ check 注入块机械化（自 PLUGIN.md 检查节投影）；提交纪律入 actions.md（数据区一次写一提交、verify 过才提交、agent 只 add 自写路径）。随行：手稿入库（隐私核查过）、smoke-tmp 清理、不立 git 插件（过程层非结构）
 
