@@ -6,7 +6,8 @@
 # - 预留段（reserved）是回填通道：合法暂存字段，ghost 检查豁免，待未来插件认领
 # - ingest / save 第 0 步必读本表（一次读取锚点：字段与值集在写入前可见，不扫描全库）
 # - 字段叠层组合：一个页面 = 协议字段 + 各插件字段（如 source 页 = 协议 + vault + tag）
-# - actor 约定（一切署名字段的统一值格式，对齐 OKF）：human:名字 / process:流程名 / agent/模型标识
+# - actor 约定（一切署名字段的统一值格式，对齐 OKF）：human:名字（如 human:Joss）/ process:流程名（如 process:hash-recalc）/ agent/模型标识（如 agent/GLM-5.3）
+# - OKF：外部知识格式规范，不在本仓库定义（v0.2 对齐）；可观察要求——UTF-8、type 字段、index/log 保留名豁免 frontmatter；okf_version 记于 wiki/index.md
 # - status 与预留信任字段对齐 OKF v0.2；旧值迁移映射：seed→draft、developing→draft、done→stable
 
 protocol:

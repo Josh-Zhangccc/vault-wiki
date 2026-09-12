@@ -1,8 +1,8 @@
 id: trust
-version: 0.1
+version: 0.2
 layer: field
 depends: []
-updated: 2026-09-11
+updated: 2026-09-12
 attachment:
   - "scripts/check.py —— 附检（信任字段契约 + stale 清单 + 信任水位）"
 fields:

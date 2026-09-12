@@ -1,8 +1,8 @@
 id: sessions
-version: 0.2
+version: 0.3
 layer: origin
 depends: []
-updated: 2026-09-11
+updated: 2026-09-12
 attachment:
   - "wiki/sessions/ —— 原生会话区，session 型骨干页"
 fields:

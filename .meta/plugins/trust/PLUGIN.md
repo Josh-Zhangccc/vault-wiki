@@ -9,6 +9,26 @@
 - `stale_after`：YYYY-MM-DD 绝对时刻；语义是「此后无人复核就应视为过期」，刷新它 = 一次续期决策
 - `sources`：来源列表，项含 id / resource / 可信度信号（author、usage_count、last_modified）
 
+## 样例（四字段全形状）
+
+```yaml
+generated:
+  by: agent/GLM-5.3
+  at: 2026-09-12
+verified:
+  - "by: process:hash-recalc, at: 2026-09-12"
+  - "by: human:Joss, at: 2026-09-12"
+stale_after: 2026-12-31
+sources:
+  - id: 雾港设计备忘
+    resource: vault/雾港/设计备忘.md
+    author: human:Joss
+    usage_count: 3
+    last_modified: 2026-09-05
+```
+
+上例水位 = human-reviewed（含 human 事件）；2026-12-31 之后读取显示 stale。四字段全部可选，通常只写 `generated`。
+
 ## 层级推导（读取时计算，不落盘）
 
 - **unverified**：无 verified 记录
@@ -41,3 +61,4 @@ AGENTS.md 一行：信任字段与层级推导。
 ## 变更记录
 
 - 0.1（2026-09-11）立设：认领 registry 预留段四字段（generated / verified / stale_after / sources）回填插件段；层级推导不落盘；附检覆盖字段契约 + stale 清单 + 信任水位
+- 0.2（2026-09-12）披露修补：内联四字段全形状样例（冷启动审计猜点：规格无实例）
