@@ -12,8 +12,8 @@
 
 ## 下一步
 
-- P0 文档修补（实验实证）：wikilink 全名形式入 link 插件、hot 条目样例、generated.by 取值、提交词表补「检索」、plugin 命令字段清单过期更新
-- 通用性漏点记账（阶段③④处理）：pipeline TYPE_ORDER 中文枚举下放实例配置；AGENTS.md 框架/实例双身分离
+- P0 文档修补：wikilink 全名形式入 link 插件、hot 条目样例、generated.by 取值、提交词表补「检索」、plugin 命令字段清单更新
+- 通用性漏点记账（阶段③④）：TYPE_ORDER 中文枚举下放实例；AGENTS.md 框架/实例双身分离
 - 观察项：词表复用、检索行、stub 老化、verify 误报；sessions 形状待真实 save 校准
 
 ## 过往操作
