@@ -34,3 +34,4 @@ description: "在 wiki 中检索并综合回答：热缓存→索引→grep→�
 ## 收尾
 
 - 写 log 一行走管道：`python .meta/scripts/pipeline.py log 检索 "<一句话主题>"`（滚动窗口与归档由脚本机械执行）——读热度由此可测
+- log 行即数据区变更：按提交纪律随即提交（`检索: <主题>`，见 `.meta/protocol/actions.md`），不攒批
