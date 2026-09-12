@@ -30,7 +30,7 @@ def parse_frontmatter(text):
         if not raw.strip() or raw.lstrip().startswith("#"):
             continue
         if raw.startswith("  - "):
-            item = _strip_quotes(_strip_comment(raw.strip()[2:]))
+            item = _strip_quotes(_strip_comment(raw.strip()[2:]).strip())
             if not isinstance(data.get(target), list):
                 data[target] = []
             data[target].append(item)
