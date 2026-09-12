@@ -49,7 +49,8 @@ def parse_frontmatter(text):
                 data[key] = None
             elif val.startswith("[") and val.endswith("]"):
                 inner = val[1:-1].strip()
-                data[key] = ([_strip_quotes(v) for v in inner.split(",") if v.strip()]
+                # token 先去空白再去引号：[ai, llm] 第二项带前导空格，不剥离会让词表碎片化
+                data[key] = ([_strip_quotes(v.strip()) for v in inner.split(",") if v.strip()]
                              if inner else [])
             else:
                 data[key] = _strip_quotes(val)
