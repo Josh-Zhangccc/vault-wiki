@@ -1,13 +1,7 @@
 id: vault
-version: 0.8
+version: 0.1
 depends: []
 updated: 2026-09-12
-attachment:
-  - "wiki/vault/ —— 代理层目录，与根下 vault/ 一比一镜像"
-  - "scripts/check.py —— 附检（镜像 diff / 哈希核验 / 全文复制 / stub 老化）"
-fields:
-  raw_file: "根相对路径，代理页必有"
-  raw_sha256: "十六进制 SHA-256，可从 VAULT 机械重算"
-commands:
-  - ingest
-inject: "代理层 `wiki/vault/`：与根 `vault/` 1:1 镜像（代理名 = 原名 + .md），页面必有 raw_file / raw_sha256；路径即出身证明；命令对 VAULT 只增，删改自由属于人"
+attachment: []
+fields: {}
+inject: "真实资产仓库 `vault/`（VAULT）：容纳任意格式资产；命令侧只增，删改自由属于人"

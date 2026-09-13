@@ -37,7 +37,7 @@
 > 指针需主动更新。跨 session 的重要指针标注 **ATTENTION**；易变状态（进度等）放 `log.md`，不写入本文件。
 
 - `log.md` — 项目日志：现状、阶段、下一步、过往操作 **ATTENTION**
-- `.meta/` — 原型核心：结构插件（`plugins/`，无分层，注入序=依赖拓扑+字母序）与命令主本（`command/`）与协议工件（`protocol/`：字段注册表、动作纪律、披露范式 SASU-L）与机械脚本（`scripts/`：plugin_cli 装卸/合规/注入/副本 + pipeline 派生层管道 index/tags/hot/log/verify + wikilib 页面解析承重件）；AGENTS.md 注入区为其投影 **ATTENTION**
+- `.meta/` — 原型核心：结构插件（`plugins/`——概念双插件 wiki/vault + 桥接 mapping + notes/sessions/link/tag/trust/index/hot/log，无分层，注入序=依赖拓扑+字母序）与命令主本（`command/`）与协议工件（`protocol/`：字段注册表、动作纪律、披露范式 SASU-L）与机械脚本（`scripts/`：plugin_cli 装卸/合规/注入/副本 + pipeline 派生层管道 index/tags/hot/log/verify + wikilib 页面解析承重件）；AGENTS.md 注入区为其投影 **ATTENTION**
 - `wiki/`、`vault/` — 数据区（空种子：雾港实验数据已清，待真实内容）；`.agents/skills/` — 命令部署副本
 - `docs/` — `00-principles.md` 历史设计档案（规范蒸馏时归并）；`01-okf.md` OKF 格式契约权威定义（v0.2）
 - `README.md` — 项目章程
@@ -78,12 +78,20 @@
 - 信任字段（页面可选）：`generated`（谁生成）/ `verified`（事件列表，项单行 by+at）/ `stale_after`（过期时刻）/ `sources`（来源与信号）；层级推导不落盘——无记录=unverified、仅 agent/process=machine-confirmed、含 human=human-reviewed、过 stale_after=stale
 <!-- /plugin:trust -->
 
-<!-- plugin:vault v0.8 -->
-- 代理层 `wiki/vault/`：与根 `vault/` 1:1 镜像（代理名 = 原名 + .md），页面必有 raw_file / raw_sha256；路径即出身证明；命令对 VAULT 只增，删改自由属于人
+<!-- plugin:vault v0.1 -->
+- 真实资产仓库 `vault/`（VAULT）：容纳任意格式资产；命令侧只增，删改自由属于人
 <!-- /plugin:vault -->
+
+<!-- plugin:wiki v0.1 -->
+- wiki 容器 `wiki/`：出身二分——`wiki/vault/` 下为代理页（mapping 领地），其余为原生页（notes/sessions 领地）；库侧格式契约 OKF 的实例侧锚点
+<!-- /plugin:wiki -->
 
 <!-- plugin:index v0.5 -->
 - 索引 `wiki/index.md`（根，含 okf_version）与各目录 `index.md`（渐进披露，逐层下钻）/ `wiki/tags.md`（tag 反向索引）：只聚合、永不手编，重建走 `pipeline.py index`，检索第二入口
 <!-- /plugin:index -->
+
+<!-- plugin:mapping v0.1 -->
+- 代理层 `wiki/vault/`：与根 `vault/` 1:1 镜像（代理名 = 原名 + .md），页面必有 raw_file / raw_sha256；路径即出身证明
+<!-- /plugin:mapping -->
 
 <!-- wiki-inject:end -->

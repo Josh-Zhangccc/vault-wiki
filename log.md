@@ -18,6 +18,8 @@
 
 ## 过往操作
 
+- 2026-09-12 概念双插件立设：wiki/vault 各 v0.1（纯概念声明，无字段无命令；出身二分与只增条款分别移籍）；原 vault 插件更名 mapping v0.1（桥接件，depends vault+wiki，领命令 ingest）
+
 - 2026-09-12 废分层：manifest 去 layer、plugin_cli 撤方向校验（保留存在性+无环）、注入序改依赖拓扑+字母序，两注入区重排；depends 语义放宽为「行为或语义依赖」
 
 - 2026-09-12 标识符英文化：附检契约键 level/message、级别 info、TYPE_ORDER 六值（map/save/query/check/plugin/other）、hot 分节 Recent、PLUGIN/SKILL 节头、控制台输出；中文触发词与正文 prose 保留

@@ -32,6 +32,11 @@ plugins:
       note: YAML 列表，别名/短名，供链接解析
     related:
       note: YAML 列表，相关页全名 wikilink
+  mapping:
+    raw_file:
+      note: 根相对路径，代理页必有
+    raw_sha256:
+      note: 十六进制 SHA-256，可从 VAULT 机械重算
   sessions:
     participants:
       note: YAML 列表，actor 约定（human:名字 / process:流程名 / agent/模型标识），多 agent 协作扩展点
@@ -47,11 +52,6 @@ plugins:
       note: YYYY-MM-DD 绝对时刻；过期判定 = now ≥ stale_after 的纯比较
     verified:
       note: 事件列表，项单行 `by: <actor>, at: <日期>`，可多次追加；信任层级由此推导
-  vault:
-    raw_file:
-      note: 根相对路径，代理页必有
-    raw_sha256:
-      note: 十六进制 SHA-256，可从 VAULT 机械重算
 
 reserved:
   url:

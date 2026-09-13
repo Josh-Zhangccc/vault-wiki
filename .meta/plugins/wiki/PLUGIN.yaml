@@ -1,0 +1,7 @@
+id: wiki
+version: 0.1
+depends: []
+updated: 2026-09-12
+attachment: []
+fields: {}
+inject: "wiki 容器 `wiki/`：出身二分——`wiki/vault/` 下为代理页（mapping 领地），其余为原生页（notes/sessions 领地）；库侧格式契约 OKF 的实例侧锚点"

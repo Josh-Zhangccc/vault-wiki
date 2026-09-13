@@ -82,12 +82,20 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 <!-- /check:trust -->
 
 <!-- check:vault -->
-- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：镜像 diff（VAULT 有文件无代理 → 信息积压；代理无对应物 → error）、raw_file 悬挂 → error、raw_sha256 失配 → warning、疑似全文复制（md 资产正文 ≥80% 原文）→ warning、无描述 stub 且 updated 超 90 天 → warning
-- 语义项（check 命令）：失配处置分诊（描述仍适用 → 机械重算自动修复；疑似失效 → 人决重摄入或删）；日记类全文复制豁免判断
+无附检；VAULT 侧的对账（积压 / 失配 / 悬挂）由 mapping 插件的附检承担。
 <!-- /check:vault -->
+
+<!-- check:wiki -->
+无附检；OKF 合规检查散在各插件（type 值集由 check 底座查、保留名由 index / log 插件实现）。
+<!-- /check:wiki -->
 
 <!-- check:index -->
 - 索引与实际页面集偏差 → 跑 `pipeline.py index` 重建即修复（幂等，无 diff 即一致）；tags 同理（`pipeline.py tags`）
 - 手编痕迹 → warning
 <!-- /check:index -->
+
+<!-- check:mapping -->
+- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：镜像 diff（VAULT 有文件无代理 → info 积压；代理无对应物 → error）、raw_file 悬挂 → error、raw_sha256 失配 → warning、疑似全文复制（md 资产正文 ≥80% 原文）→ warning、无描述 stub 且 updated 超 90 天 → warning
+- 语义项（check 命令）：失配处置分诊（描述仍适用 → 机械重算自动修复；疑似失效 → 人决重摄入或删）；日记类全文复制豁免判断
+<!-- /check:mapping -->
 <!-- check-inject:end -->
