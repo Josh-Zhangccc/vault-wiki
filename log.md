@@ -4,7 +4,7 @@
 
 ## 现状（2026-09-13）
 
-工程定位：**个人自用，尽快投入使用**——普世化与矩阵测试裁撤，SASU-L 为镜，边用边改。重构后架构：概念双插件 wiki/vault（纯声明、自足）+ 桥接 mapping（领 map 命令）+ 八结构插件，共十一、无分层（注入序=依赖拓扑+字母序）；五命令 map/save/query/check/plugin + cli 参考 skill；三投影：插件行→AGENTS、checks→check、usage→命令（consumes 有序声明，序即执行序）；注入源全归 manifest，PLUGIN.md 回归纯文档；标识符英文化，格式契约内化插件（根索引自述 format_version），vault 大小写区分废除；docs/ 不起现行作用。新形态以用代验。
+工程定位：**个人自用，尽快投入使用**——普世化与矩阵测试裁撤，SASU-L 为镜，边用边改。架构终态：概念双插件 wiki/vault（纯声明）+ 桥接 mapping + 八结构插件，共十一、无分层（注入序=依赖拓扑+字母序）；六命令 map/save/query/check/plugin/wiki_plugin_kernel（末者为插件内核使用参考）。三投影一源：manifest（inject / checks / usage）→ AGENTS 注入区、check 检查块、命令用法块（consumes 有序声明，序即执行序）；PLUGIN.md 回归纯文档（Role / Structure / Invariants / Changelog），插件内核 wiki_plugin_kernel.py 为唯一投影机。格式契约内化插件（根索引自述 format_version），vault 大小写统一；docs/ 不起现行作用。新形态以用代验。
 
 ## 阶段
 
@@ -18,32 +18,12 @@
 
 ## 过往操作
 
-- 2026-09-13 内核定名：plugin_cli 更名 wiki_plugin_kernel（「插件内核」），cli 参考命令随行同名，调用点全库替换（历史条目保留旧名）
+- 2026-09-13 投影体系定形（六提交）：概念双插件纯化；格式契约内化（okf_version→format_version、VAULT 统一小写）；第三投影立设（consumes 有序声明 + 命令注入区，命令瘦身去手抄）；注入源全归 manifest（PLUGIN.md 回归纯文档）；内核定名 wiki_plugin_kernel 并立同名参考命令
 
-- 2026-09-13 注入源全归 yaml：三投影源（inject 行 / checks / usage）统一入 manifest，PLUGIN.md 回归纯文档（Role/Structure/Invariants/Changelog）；顺手修 vault 注入行小写替换残留
+- 2026-09-12 定位与重构：裁定个人自用、以用代验（矩阵测试裁撤）；架构重构四提交（标识符英文化、废分层、概念双插件立设、ingest→map 更名）；OKF v0.2 成文 + 冷启动披露审计；雾港虚构库与真实库两轮实验全绿，确立 SASU-L 与零污染纪律；投入使用准备（清实验数据、README 门面化）
 
-- 2026-09-13 第三投影立设：八插件立「Usage」节（写侧契约），命令 frontmatter 加 consumes 有序声明，plugin_cli 按序投影进命令注入区（map 6 块 / save 7 块 / query 1 块），命令正文瘦身去手抄
+- 2026-09-08~11 原型落地与收尾：六插件四命令起步；registry/actions 协议工件与装卸内核；分层对齐（log 归档改轨、index 每目录化、pipeline 写后管道与自证）；命令-插件双向绑定、trust 立设、附检收编
 
-- 2026-09-13 插件自足化三提交：①概念双插件纯化（删反向引用与锚点虚衔，区划按出身陈述）②格式契约内化（.meta 清零 OKF 引用，okf_version 更名 format_version）③VAULT 统一小写（术语节重写，随行文件同步）
-
-- 2026-09-12 投入使用准备：清雾港实验数据（数据区空种子）、README 重写为仓库门面、移除 user-write 手稿区（思路已吸取，全文存 git）
-
-- 2026-09-12 架构重构四提交：①标识符英文化（契约键 level/message、TYPE_ORDER map/save/query/check/plugin/other、节头、控制台）②废分层（manifest 去 layer，注入序=依赖拓扑+字母序，depends 放宽为行为或语义依赖）③概念双插件 wiki/vault 立设（纯声明），原 vault 插件更名 mapping（depends 两端）④ingest→map 更名瘦身（纯登记，打磨询问移除），actions/registry/README 随行（含 log-archive 笔误修正）
-
-- 2026-09-12 OKF 成文与披露审计：冷启动零污染 subagent 通读全库，九猜点修补（样例内联、actor 实例等）；OKF 蒸馏立稿 v0.2（三 MUST、渐进披露、信任字段）
-
-- 2026-09-12 定位裁定（用户）：个人自用、尽快投入使用；测试矩阵与交叉验证裁撤，准则 9 改「披露完备、以用代验」
-
-- 2026-09-12 两轮实验：虚构库「雾港」四命令全过；真实库 25 件沙盒迁移、10 冷 session 摄入全绿、检索全中——确立 SASU-L 范式与零污染纪律
-
-- 2026-09-11 架构收尾：命令-插件绑定双向声明；trust 插件立设（信任四字段，推导不落盘）；机械项收编附检 + check 注入机械化；提交纪律入 actions.md
-
-- 2026-09-10 两次落地：sessions 独立插件（notes 缩界）；分层与 OKF 对齐（registry v0.2、log 归档改轨、index 每目录化、pipeline 写后管道与写后自证）
-
-- 2026-09-09 地基与装卸：registry/actions 协议工件、link 插件、命令锚点；plugin_cli 五命令幂等；附检机制（audit 发现式）
-
-- 2026-09-08 原型落地：六插件 + 四命令（.meta 主本 + 副本 + AGENTS 注入区 + wiki 种子）；AGENTS 定「框架+原型」双定位
-
-- 2026-09-07 插件规范草案应用户要求写入 user-write（已删，见 git）
+- 2026-09-07 插件规范草案写入 user-write（已删，见 git）
 
 - 2026-08-26~28 创始期：个人库结构副本起建，旋即重定位为 vault-wiki 框架；一次骨架定稿经用户回退
