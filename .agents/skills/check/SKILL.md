@@ -24,7 +24,7 @@ description: "审计库的健康状态：底座与插件硬结构检查 + 插件
    - **幂等重建**：`python .meta/scripts/plugin_cli.py all`（注入区 / registry 插件段 / 命令副本——机械自动，漂移在此修复，脚本源码即规则清单）
    - `.meta/protocol/registry.yaml` 在位且 protocol / reserved 段完好（脚本不触碰这两段，缺段即报错）
    - **值集越界**：扫 wiki/ 全部页面 frontmatter，type / status 取值不在注册表值集 → error
-   - `.meta/command/` 每个 SKILL.md 有 frontmatter（name / description / owner）
+   - `.meta/command/` 每个 SKILL.md 有 frontmatter（name / description / owner；可选 consumes——消费写侧契约的插件有序列表，引用插件须在场且带 Usage 节，owner 驱动命令必填）
 2. **插件检查**：先跑附检 `python .meta/scripts/plugin_cli.py audit`（机械项：各插件 scripts/check.py 发现式执行，只读报告，error 计入 FAIL）；再执行下方注入区块中标注「语义」的项
 3. **语义检查**：读插件与命令文件，查悬挂引用（命令涉及不存在的结构）、幽灵字段（页面字段无拥有插件且非注册表预留）、注入区块与 PLUGIN.md Checks 节不一致
 4. 汇总输出：PASS / WARN / FAIL 计数 + 分级明细 + vault 积压计数（信息项）

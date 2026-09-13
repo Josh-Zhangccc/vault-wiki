@@ -21,6 +21,11 @@
 - 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：单页 >5 个 tag → warning；tags 复述 type → warning；层级超限（父/子 ≤2）或空段 → warning
 - 语义项（check 命令）：近重复 tag → warning 提示合并，合并由人执行
 
+## Usage
+
+- 写入前读 `wiki/tags.md`，优先复用既有词
+- 新词规范：中文为主、英文小写 kebab-case、层级 `父/子` ≤2、每页 ≤5、禁复述 type
+
 ## Inject
 
 AGENTS.md 一行：tags 字段规范要点。
@@ -31,6 +36,7 @@ AGENTS.md 一行：tags 字段规范要点。
 
 ## Changelog
 
+- 0.7（2026-09-13）立「Usage」节：写侧契约交由命令注入区投影（单一文本源）
 - 0.6（2026-09-12）manifest 去 layer（废分层：注入序改依赖拓扑+字母序，方向校验撤除）
 - 0.5（2026-09-12）标识符英文化：节头 / 附检契约键 / 类型枚举 / 管道调用参数
 - 0.1（2026-09-08）新立，吸收原 lint 近重复检查思想

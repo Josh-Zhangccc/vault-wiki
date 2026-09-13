@@ -1,9 +1,9 @@
 id: mapping
-version: 0.2
+version: 0.3
 depends:
   - vault
   - wiki
-updated: 2026-09-12
+updated: 2026-09-13
 attachment:
   - "wiki/vault/ —— 代理层目录，与根下 vault/ 一比一镜像"
   - "scripts/check.py —— 附检（镜像 diff / 哈希核验 / 全文复制 / stub 老化）"

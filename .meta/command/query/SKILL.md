@@ -1,6 +1,7 @@
 ---
 name: query
 owner: framework
+consumes: [log]
 description: "在 wiki 中检索并综合回答：热缓存→索引→grep→读页，产出带 wikilink 引用的答案。Triggers on: query, what do you know about, what is, explain, find in wiki, 检索."
 ---
 
@@ -33,5 +34,15 @@ description: "在 wiki 中检索并综合回答：热缓存→索引→grep→�
 
 ## Wrap-up
 
-- 写 log 一行走管道：`python .meta/scripts/pipeline.py log query "<一句话主题>"`（滚动窗口与归档由脚本机械执行）——读热度由此可测
+- 写 log 一行（读信号，读热度由此可测）：调用方式见注入区 log 块
 - log 行即数据区变更：按提交纪律随即提交（`检索: <主题>`，见 `.meta/protocol/actions.md`），不攒批
+
+## Injected Section (plugin usage blocks)
+
+> 本区为 plugin_cli 自各 PLUGIN.md「Usage」节按本命令 consumes 序投影（inject / all 重建）；手写内容不进此区，改写侧契约改 PLUGIN.md。
+
+<!-- cmd-inject:start -->
+<!-- usage:log -->
+- 写行（机械自动）：`python .meta/scripts/pipeline.py log <类型> "<一句话>"`；滚动窗口与归档由脚本执行
+<!-- /usage:log -->
+<!-- cmd-inject:end -->

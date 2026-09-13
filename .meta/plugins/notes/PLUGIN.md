@@ -18,6 +18,11 @@
 - 笔记被命令覆盖的痕迹 → error
 - 近似重复笔记（Jaccard > 0.7）→ warning
 
+## Usage
+
+- 落点 `wiki/notes/<标题>.md`，文件名自由（人起名）；type 取 qa / concept / comparison / decision / entity（值集见 registry）
+- 只增：更新既有笔记属人手改，命令不覆盖重写
+
 ## Inject
 
 AGENTS.md 一行：原生笔记语义。
@@ -28,6 +33,7 @@ AGENTS.md 一行：原生笔记语义。
 
 ## Changelog
 
+- 0.9（2026-09-13）立「Usage」节：写侧契约交由命令注入区投影（单一文本源）
 - 0.8（2026-09-12）manifest 去 layer（废分层：注入序改依赖拓扑+字母序，方向校验撤除）
 - 0.7（2026-09-12）标识符英文化：节头 / 附检契约键 / 类型枚举 / 管道调用参数
 - 0.1（2026-09-08）自原 wiki concepts/questions/comparisons/sessions 诸区合并简化（细分第二批）

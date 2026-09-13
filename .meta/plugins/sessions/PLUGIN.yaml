@@ -1,7 +1,7 @@
 id: sessions
-version: 0.5
+version: 0.6
 depends: []
-updated: 2026-09-12
+updated: 2026-09-13
 attachment:
   - "wiki/sessions/ —— 原生会话区，session 型骨干页"
 fields:

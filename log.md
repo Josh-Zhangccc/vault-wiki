@@ -4,7 +4,7 @@
 
 ## 现状（2026-09-13）
 
-工程定位：**个人自用，尽快投入使用**——普世化与矩阵测试裁撤，SASU-L 为镜，边用边改。重构后架构：概念双插件 wiki/vault（纯声明、自足，不反向引用依赖方）+ 桥接 mapping（领 map 命令）+ 八结构插件，共十一、无分层（注入序=依赖拓扑+字母序）；五命令 map/save/query/check/plugin；标识符英文化（触发词与 prose 留中文）。格式契约内化插件（根索引自述 format_version），VAULT/vault 大小写区分废除；docs/ 不起现行作用。新形态以用代验。
+工程定位：**个人自用，尽快投入使用**——普世化与矩阵测试裁撤，SASU-L 为镜，边用边改。重构后架构：概念双插件 wiki/vault（纯声明、自足）+ 桥接 mapping（领 map 命令）+ 八结构插件，共十一、无分层（注入序=依赖拓扑+字母序）；五命令 map/save/query/check/plugin；三投影：插件行→AGENTS、Checks 节→check、Usage 节→命令（consumes 有序声明，序即执行序）；标识符英文化，格式契约内化插件（根索引自述 format_version），vault 大小写区分废除；docs/ 不起现行作用。新形态以用代验。
 
 ## 阶段
 
@@ -17,6 +17,8 @@
 - skill 打磨随使用摩擦滚动；vault 治理（delegate）后议；测试矩阵等裁撤项不排期
 
 ## 过往操作
+
+- 2026-09-13 第三投影立设：八插件立「Usage」节（写侧契约），命令 frontmatter 加 consumes 有序声明，plugin_cli 按序投影进命令注入区（map 6 块 / save 7 块 / query 1 块），命令正文瘦身去手抄
 
 - 2026-09-13 插件自足化三提交：①概念双插件纯化（删反向引用与锚点虚衔，区划按出身陈述）②格式契约内化（.meta 清零 OKF 引用，okf_version 更名 format_version）③VAULT 统一小写（术语节重写，随行文件同步）
 

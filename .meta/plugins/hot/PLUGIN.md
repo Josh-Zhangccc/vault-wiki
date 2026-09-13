@@ -25,6 +25,10 @@ hot.max_entry_chars: 200   # 参数依原库实测校准（原库单条中位 38
 - 窗口越界（超 25 条 / 超 5 日 / 单条超 200 字）→ 走一次 `pipeline.py hot <类型> "<补录>"` 或等下次写入自然收敛后复查
 - 与 log 矛盾（log 有记录而 hot 全无踪迹）→ warning
 
+## Usage
+
+- 写条目（机械自动）：`python .meta/scripts/pipeline.py hot <类型> "<wikilink + 一句话核心>"`；窗口淘汰与截短由脚本执行
+
 ## Inject
 
 AGENTS.md 一行：agent 读取顺序的起点。
@@ -35,6 +39,7 @@ AGENTS.md 一行：agent 读取顺序的起点。
 
 ## Changelog
 
+- 0.7（2026-09-13）立「Usage」节：写侧契约交由命令注入区投影（单一文本源）
 - 0.6（2026-09-12）manifest 去 layer（废分层：注入序改依赖拓扑+字母序，方向校验撤除）
 - 0.5（2026-09-12）标识符英文化：节头 / 附检契约键 / 类型枚举 / 管道调用参数
 - 0.1（2026-09-08）自原 wiki hot 结构转化

@@ -1,7 +1,7 @@
 id: hot
-version: 0.6
+version: 0.7
 depends: []
-updated: 2026-09-12
+updated: 2026-09-13
 attachment:
   - "wiki/hot.md —— 单文件热缓存"
 fields: {}

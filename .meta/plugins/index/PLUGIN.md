@@ -19,6 +19,10 @@
 - 索引与实际页面集偏差 → 跑 `pipeline.py index` 重建即修复（幂等，无 diff 即一致）；tags 同理（`pipeline.py tags`）
 - 手编痕迹 → warning
 
+## Usage
+
+- 写后重建（机械自动）：`python .meta/scripts/pipeline.py index`（各目录索引）与同脚本 `tags`（tag 反向索引）；LLM 不手写索引
+
 ## Inject
 
 AGENTS.md 一行：检索入口指针。
@@ -29,6 +33,7 @@ AGENTS.md 一行：检索入口指针。
 
 ## Changelog
 
+- 0.7（2026-09-13）立「Usage」节：写侧契约交由命令注入区投影（单一文本源）
 - 0.6（2026-09-13）根索引版本自述字段更名 format_version（格式契约内化，插件清零外部契约引用）
 - 0.5（2026-09-12）manifest 去 layer（废分层：注入序改依赖拓扑+字母序，方向校验撤除）
 - 0.4（2026-09-12）标识符英文化：节头 / 附检契约键 / 类型枚举 / 管道调用参数

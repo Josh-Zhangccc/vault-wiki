@@ -50,6 +50,11 @@ sources:
 - 机械项（信息级）：stale 页清单（已过 stale_after）；信任水位（human-reviewed / machine-confirmed 计数）
 - 语义（check 命令）：stale 页处置分诊（刷新时刻 / 重验证 / 废弃）——人决
 
+## Usage
+
+- 写页随手写 `generated`（块式：`by: agent/<当前模型>` / `at: 今日`）
+- 复核动作发生时追加 `verified` 事件（单行 `by: <actor>, at: <日期>`），不为凑水位伪造
+
 ## Inject
 
 AGENTS.md 一行：信任字段与层级推导。
@@ -60,6 +65,7 @@ AGENTS.md 一行：信任字段与层级推导。
 
 ## Changelog
 
+- 0.5（2026-09-13）立「Usage」节：写侧契约交由命令注入区投影（单一文本源）
 - 0.4（2026-09-12）manifest 去 layer（废分层：注入序改依赖拓扑+字母序，方向校验撤除）
 - 0.3（2026-09-12）标识符英文化：节头 / 附检契约键 / 类型枚举 / 管道调用参数
 - 0.1（2026-09-11）立设：认领 registry 预留段四字段（generated / verified / stale_after / sources）回填插件段；层级推导不落盘；附检覆盖字段契约 + stale 清单 + 信任水位

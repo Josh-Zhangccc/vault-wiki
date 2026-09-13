@@ -23,6 +23,12 @@
 - 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：镜像 diff（vault 有文件无代理 → info 积压；代理无对应物 → error）、raw_file 悬挂 → error、raw_sha256 失配 → warning、疑似全文复制（md 资产正文 ≥80% 原文）→ warning、无描述 stub 且 updated 超 90 天 → warning
 - 语义项（check 命令）：失配处置分诊（描述仍适用 → 机械重算自动修复；疑似失效 → 人决重映射或删）；日记类全文复制豁免判断
 
+## Usage
+
+- 镜像定位：代理路径 = `wiki/vault/<原路径>.md`（原名 + .md，防同名碰撞）；md 资产同样有代理，无特例
+- 登记字段：`type: source` + `raw_file`（根相对路径）/ `raw_sha256`（十六进制 SHA-256，不跳过计算）
+- 正文一行描述起步，不复制原文全文；摘要 / 结构抽取为可选增强
+
 ## Inject
 
 AGENTS.md 一行：代理层语义与出身规则。
@@ -33,5 +39,6 @@ AGENTS.md 一行：代理层语义与出身规则。
 
 ## Changelog
 
+- 0.3（2026-09-13）立「Usage」节：写侧契约交由命令注入区投影（单一文本源）
 - 0.2（2026-09-12）命令 ingest 更名 map 并瘦身：打磨询问移除（纯登记；vault 治理另议）
 - 0.1（2026-09-12）自 vault 插件更名立设（版本重起，旧史见 git）：语义依赖 vault+wiki；「命令对 vault 只增，删改自由属于人」条款移交 vault 概念插件注入行；出身二分概念移交 wiki 插件

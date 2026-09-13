@@ -28,6 +28,12 @@ manifest 最小 YAML 子集：顶层 `key: value`、`key: []`、块式列表（`
 - error 情形：命令缺 owner、owner 指向未装插件、framework 与其他 owner 并列、
   插件声明不存在的命令、任一侧单边声明（owner 未被 commands 认领，或反之）
 
+命令注入（第三种投影：插件写侧契约 → 命令）：
+- 命令 frontmatter 增可选 consumes：消费其写侧契约的插件 id 有序列表（序即执行序）；
+  owner 驱动的命令必填且须含全部 owner
+- PLUGIN.md「Usage」节按 consumes 序投影进命令 SKILL.md 的 cmd-inject 标记块
+  （在场即注册）；改写侧契约改 PLUGIN.md，命令正文只留操作流程
+
 插件附检契约（scripts/check.py，可选）：
 - 必须定义 check(ctx)，返回 issue 列表：{"level": "error"|"warning"|"info", "message": str}
 - ctx.root = 仓库根；ctx.pages = [(wiki 相对路径, frontmatter dict, 正文)]，单次扫描共享
@@ -60,6 +66,9 @@ CHECK_SKILL = os.path.join(COMMANDS_DIR, "check", "SKILL.md")
 CHECK_INJECT_START = "<!-- check-inject:start -->"
 CHECK_INJECT_END = "<!-- check-inject:end -->"
 CHECK_SECTION_RE = re.compile(r"^## Checks\n(.*?)(?=^## |\Z)", re.S | re.M)
+USAGE_SECTION_RE = re.compile(r"^## Usage\n(.*?)(?=^## |\Z)", re.S | re.M)
+CMD_INJECT_START = "<!-- cmd-inject:start -->"
+CMD_INJECT_END = "<!-- cmd-inject:end -->"
 
 
 def ordered_plugins(plugins):
@@ -227,6 +236,22 @@ def validate_bindings(plugins, errors):
             errors.append(f"[error] command {name}/: frontmatter missing owner (plugin id or framework)")
             continue
         owners = _owner_list(fm["owner"])
+        # consumes（可选；owner 驱动的命令必填且须含全部 owner）：写侧契约消费声明，序即执行序
+        consumes = fm.get("consumes")
+        consumes = _owner_list(consumes) if consumes else []
+        if "framework" not in owners and not consumes:
+            errors.append(f"[error] command {name}/: owner-driven command requires consumes (owner usage projects too)")
+        for pid in consumes:
+            if pid not in plugins:
+                errors.append(f"[error] command {name}/: consumes {pid} is not an installed plugin")
+                continue
+            sec = USAGE_SECTION_RE.search(open(os.path.join(PLUGINS_DIR, pid, "PLUGIN.md"), encoding="utf-8").read())
+            if not sec or not sec.group(1).strip():
+                errors.append(f"[error] command {name}/: consumes {pid} but its PLUGIN.md lacks a Usage section")
+        if "framework" not in owners:
+            for pid in owners:
+                if pid not in consumes:
+                    errors.append(f"[error] command {name}/: owner {pid} not in consumes (owner usage projects too)")
         if "framework" in owners:
             if len(owners) > 1:
                 errors.append(f"[error] command {name}/: framework cannot combine with other owners ({', '.join(owners)})")
@@ -352,6 +377,46 @@ def do_check_inject(plugins):
     return True
 
 
+def do_cmd_inject(plugins):
+    """自各 PLUGIN.md「Usage」节按命令 consumes 序重建命令注入区（在场即注册，幂等）。
+
+    第三种投影：插件写侧契约 → 命令。命令 frontmatter 声明 consumes（有序，
+    序即执行序），各块为对应 PLUGIN.md Usage 节原文——命令正文只留操作流程，
+    字段契约与管道调用以本区为唯一文本源，装卸插件自动增删。
+    """
+    import wikilib
+
+    ok = True
+    for name in sorted(os.listdir(COMMANDS_DIR)):
+        path = os.path.join(COMMANDS_DIR, name, "SKILL.md")
+        if not os.path.exists(path):
+            continue
+        text = open(path, encoding="utf-8").read()
+        consumes = wikilib.parse_frontmatter(text).get("consumes")
+        if consumes is None:
+            continue
+        if not isinstance(consumes, list):
+            consumes = _owner_list(consumes)
+        m = re.search(re.escape(CMD_INJECT_START) + r"\n(.*?)" + re.escape(CMD_INJECT_END), text, re.S)
+        if not m:
+            print(f"[error] command {name}/: inject markers (cmd-inject:start/end) not found")
+            ok = False
+            continue
+        blocks = []
+        for pid in consumes:
+            sec = USAGE_SECTION_RE.search(open(os.path.join(PLUGINS_DIR, pid, "PLUGIN.md"), encoding="utf-8").read())
+            if sec and sec.group(1).strip():
+                blocks.append(f"<!-- usage:{pid} -->\n{sec.group(1).strip()}\n<!-- /usage:{pid} -->")
+        new_region = "\n\n".join(blocks) + "\n" if blocks else "\n"
+        if new_region == m.group(1):
+            continue
+        open(path, "w", encoding="utf-8", newline="\n").write(
+            text[: m.start(1)] + new_region + text[m.end(1):]
+        )
+        print(f"[cmd-inject] {name}: rebuilt ({len(blocks)} usage blocks)")
+    return ok
+
+
 def do_registry(plugins):
     """自 manifests 的 fields 重建 registry.yaml 插件段（protocol / reserved 段不动）。"""
     text = open(REGISTRY, encoding="utf-8").read()
@@ -442,6 +507,8 @@ def main():
         if not do_inject(plugins):
             return 1
         if not do_check_inject(plugins):
+            return 1
+        if not do_cmd_inject(plugins):
             return 1
     if cmd in ("registry", "all"):
         if not do_registry(plugins):

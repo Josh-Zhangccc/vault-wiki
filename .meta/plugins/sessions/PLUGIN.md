@@ -48,6 +48,12 @@ tags: [游戏/美术]
 - 机械项（audit 覆盖）：session 型页面在 `wiki/sessions/` 之外（或反向）→ warning；participants 缺失或项不符 actor 约定 → warning
 - 语义：骨干页过度膨胀（该提升未提升）→ warning
 
+## Usage
+
+- 落点 `wiki/sessions/YYYY-MM-DD-<主题>.md`（默认命名），type: session，participants 必填（actor 列表）
+- 骨干页五节形状：核心结论 / 决策与理由 / 非显然洞见 / 开放问题 / 相关页（全形状样例见本插件 Example）
+- 独立高价值主题提升为 `wiki/notes/` 页，骨干页留 wikilink；提升前先去重
+
 ## Inject
 
 AGENTS.md 一行：原生会话区语义。
@@ -58,6 +64,7 @@ AGENTS.md 一行：原生会话区语义。
 
 ## Changelog
 
+- 0.6（2026-09-13）立「Usage」节：写侧契约交由命令注入区投影（单一文本源）
 - 0.5（2026-09-12）manifest 去 layer（废分层：注入序改依赖拓扑+字母序，方向校验撤除）
 - 0.4（2026-09-12）标识符英文化：节头 / 附检契约键 / 类型枚举 / 管道调用参数
 - 0.1（2026-09-10）立设：自 save 命令长会话段与 notes 合并区抽出（2026-09-08「细分第二批」回归）；领地 `wiki/sessions/`，participants 用 actor 约定留多 agent 扩展点
