@@ -1,0 +1,22 @@
+id: user-profile
+version: 0.1
+depends:
+  - wiki
+  - trust
+  - mapping
+  - sessions
+updated: 2026-09-13
+attachment:
+  - "wiki/profile.md —— 用户画像页（对使用者的持续认知档案）"
+fields: {}
+inject: "用户画像 `wiki/profile.md`（type: profile）：对使用者的持续认知档案，静态身份层 + 动态偏好层，维度不枚举；收敛式更新——新值取代旧值、正文留痕；断言必带证据 wikilink（会话页或 vault 代理页），偏好层挂 stale_after；零自有字段复用 trust，不属 notes 领地；个性化决策（称呼、风格、偏好）前先读此页，库未初始化时可缺"
+usage:
+  - 更新自发触发，双通道：对话保存时观察自述信号（偏好表达、纠正、背景），资产映射时观察行为信号（题材、领域、素材习惯）
+  - 断言 = 一行主张 + 行内证据 wikilink；单条增量断言不直接升格为偏好，偏好为页内聚合出的模式
+  - 收敛式更新：新值取代旧值时正文留痕（单行：谁何时改了什么）；整页重写仅限画像建构/整合（独立命令后置，随初始化机制定案）
+  - 日记类资产只记元信号（有无、节奏），内容不进画像（豁免随 mapping）
+  - 隐私红线：画像内容是实例数据，不入框架仓库与 test-repo
+checks:
+  - 语义（check 命令）：画像断言缺证据 wikilink → warning
+  - 机械项：type: profile 页面落 `wiki/notes/` 或 `wiki/vault/`（走错领地）→ error
+  - 机械项（信息级）：画像页缺失（库未初始化属正常，初始化机制定案后再定升降级）

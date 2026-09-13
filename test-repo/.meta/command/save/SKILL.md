@@ -1,7 +1,7 @@
 ---
 name: save
 owner: [notes, sessions]
-consumes: [notes, sessions, trust, tag, index, hot, log]
+consumes: [notes, sessions, trust, user-profile, index, hot, log]
 description: "把当前对话、答案或洞见存为 wiki 原生笔记。先去重再落档，推断类型与标题，长会话分块提取，更新索引/日志/热缓存。Triggers on: save this, /save, file this, save to wiki, 保存."
 ---
 
@@ -72,10 +72,13 @@ type / status 值集以 registry 为准（一次读取锚点，不复抄表）�
 - 复核由用户发起（人指令触发），agent 不自发追加 verified 事件
 <!-- /usage:trust -->
 
-<!-- usage:tag -->
-- 写入前读 `wiki/tags.md`，优先复用既有词
-- 新词规范：中文为主、英文小写 kebab-case、层级 `父/子` ≤2、每页 ≤5、禁复述 type
-<!-- /usage:tag -->
+<!-- usage:user-profile -->
+- 更新自发触发，双通道：对话保存时观察自述信号（偏好表达、纠正、背景），资产映射时观察行为信号（题材、领域、素材习惯）
+- 断言 = 一行主张 + 行内证据 wikilink；单条增量断言不直接升格为偏好，偏好为页内聚合出的模式
+- 收敛式更新：新值取代旧值时正文留痕（单行：谁何时改了什么）；整页重写仅限画像建构/整合（独立命令后置，随初始化机制定案）
+- 日记类资产只记元信号（有无、节奏），内容不进画像（豁免随 mapping）
+- 隐私红线：画像内容是实例数据，不入框架仓库与 test-repo
+<!-- /usage:user-profile -->
 
 <!-- usage:index -->
 - 写后重建（机械自动）：`python .meta/scripts/pipeline.py index`（各目录索引）与同脚本 `tags`（tag 反向索引）；LLM 不手写索引

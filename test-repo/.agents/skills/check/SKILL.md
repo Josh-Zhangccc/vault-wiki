@@ -90,4 +90,10 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 - 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：镜像 diff（vault 有文件无代理 → info 积压；代理无对应物 → error）、缺登记字段（raw_file / raw_sha256）→ error、raw_file 悬挂 → error、raw_sha256 失配 → warning、疑似全文复制（md 资产正文 ≥80% 原文）→ warning、无描述 stub 且 updated 超 90 天 → warning
 - 语义项（check 命令）：失配处置分诊（描述仍适用 → 机械重算自动修复；疑似失效 → 人决重映射或删）；日记类全文复制豁免判断
 <!-- /check:mapping -->
+
+<!-- check:user-profile -->
+- 语义（check 命令）：画像断言缺证据 wikilink → warning
+- 机械项：type: profile 页面落 `wiki/notes/` 或 `wiki/vault/`（走错领地）→ error
+- 机械项（信息级）：画像页缺失（库未初始化属正常，初始化机制定案后再定升降级）
+<!-- /check:user-profile -->
 <!-- check-inject:end -->
