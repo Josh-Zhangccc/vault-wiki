@@ -82,12 +82,12 @@
 - 真实资产仓库 `vault/`：容纳任意格式资产；命令侧只增，删改自由属于人
 <!-- /plugin:vault -->
 
-<!-- plugin:wiki v0.3 -->
-- wiki 容器 `wiki/`：出身二分——`wiki/vault/` 下为代理页（有 vault 对应物），其余为原生页（出身在 wiki）；index / tags / hot / log 为派生页（机械投影）
+<!-- plugin:wiki v0.4 -->
+- wiki 容器 `wiki/`：出身二分——`wiki/vault/` 下为代理页（有 vault 对应物），其余为原生页（出身在 wiki）；index / tags / hot / log 为派生页（机械投影）；页面 frontmatter 取最小 YAML 子集（顶层标量 / 块列表 / 一级块映射），更复杂结构不受解析
 <!-- /plugin:wiki -->
 
-<!-- plugin:index v0.8 -->
-- 索引 `wiki/index.md`（根，含 format_version）与各目录 `index.md`（渐进披露，逐层下钻）/ `wiki/tags.md`（tag 反向索引）：只聚合、永不手编，重建走 `pipeline.py index`，检索第二入口
+<!-- plugin:index v0.9 -->
+- 索引 `wiki/index.md`（根，含 format_version——页面格式契约版本，不兼容变更时进位）与各目录 `index.md`（渐进披露，逐层下钻）/ `wiki/tags.md`（tag 反向索引）：只聚合、永不手编，重建走 `pipeline.py index`，检索第二入口
 <!-- /plugin:index -->
 
 <!-- plugin:mapping v0.6 -->

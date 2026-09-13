@@ -4,7 +4,7 @@
 
 ## Structure
 
-- 每目录一份 `index.md`（保留名）：根 `wiki/index.md` 带 `format_version` frontmatter，只列顶层概念与子目录入口；各子目录（notes/、vault/<子目录>/……）各自的 index 只管本层
+- 每目录一份 `index.md`（保留名）：根 `wiki/index.md` 带 `format_version` frontmatter（页面格式契约版本，不兼容变更时进位——根索引即版本自述处），只列顶层概念与子目录入口；各子目录（notes/、vault/<子目录>/……）各自的 index 只管本层
 - 条目 = wikilink + 描述（frontmatter `description` 字段优先，缺失取正文首个非空非结构行截 80 字）；概念页按 type 分组，子目录条目带子树页面计数
 - `wiki/tags.md`：tag → 页面反向索引（聚合 tag 插件的字段）
 
@@ -16,6 +16,7 @@
 
 ## Changelog
 
+- 0.9（2026-09-13）format_version 语义入库内披露（专家评审：实例内无溯源）；索引描述截断补省略号（pipeline `_cut`）
 - 0.8（2026-09-13）注入源移交 manifest：删 Checks / Usage / Inject / Attachments 节，md 回归纯文档
 - 0.7（2026-09-13）立「Usage」节：写侧契约交由命令注入区投影（单一文本源）
 - 0.6（2026-09-13）根索引版本自述字段更名 format_version（格式契约内化，插件清零外部契约引用）

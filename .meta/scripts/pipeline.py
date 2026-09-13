@@ -56,14 +56,18 @@ def _today():
 
 # ---------- 概念页与 index / tags ----------
 
+def _cut(text):
+    return text if len(text) <= DESC_MAX else text[: DESC_MAX - 1] + "…"
+
+
 def _desc(fm, body):
     d = fm.get("description")
     if d:
-        return str(d)[:DESC_MAX]
+        return _cut(str(d))
     for line in body.splitlines():
         t = line.strip()
         if t and not t.startswith(("#", ">", "|", "```")):
-            return t[:DESC_MAX]
+            return _cut(t)
     return "（无描述）"
 
 
