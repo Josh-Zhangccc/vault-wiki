@@ -4,7 +4,7 @@
 
 ## 现状（2026-09-13）
 
-工程定位：**个人自用，尽快投入使用**——普世化与矩阵测试裁撤，SASU-L 为镜，边用边改。架构终态：概念双插件 wiki/vault（纯声明）+ 桥接 mapping + 八结构插件，共十一、无分层（注入序=依赖拓扑+字母序）；六命令 map/save/query/check/plugin/wiki_plugin_kernel（末者为插件内核使用参考）。三投影一源：manifest（inject / checks / usage）→ AGENTS 注入区、check 检查块、命令用法块（consumes 有序声明，序即执行序）；PLUGIN.md 回归纯文档（Role / Structure / Invariants / Changelog），插件内核 wiki_plugin_kernel.py 为唯一投影机。格式契约内化插件（根索引自述 format_version），vault 大小写统一；docs/ 不起现行作用。新形态以用代验。`test-repo/` 为参考实例：自足虚拟库（内部不感知构建工程），框架变更由根侧同步重拷。
+工程定位：**个人自用，尽快投入使用**——普世化与矩阵测试裁撤，SASU-L 为镜，边用边改。架构终态：概念双插件 wiki/vault（纯声明）+ 桥接 mapping + 九结构插件（含 user-profile 画像），共十二、无分层（注入序=依赖拓扑+字母序）；六命令 map/save/query/check/plugin/wiki_plugin_kernel（末者为插件内核使用参考）。三投影一源：manifest（inject / checks / usage）→ AGENTS 注入区、check 检查块、命令用法块（consumes 有序声明，序即执行序）；PLUGIN.md 回归纯文档（Role / Structure / Invariants / Changelog），插件内核 wiki_plugin_kernel.py 为唯一投影机。格式契约内化插件（根索引自述 format_version），vault 大小写统一；docs/ 不起现行作用。新形态以用代验。`test-repo/` 为参考实例：自足虚拟库（内部不感知构建工程），框架变更由根侧同步重拷。
 
 ## 阶段
 
@@ -12,13 +12,15 @@
 
 ## 下一步
 
-- 用户画像插件（设计收敛 2026-09-13）：画像 = `wiki/profile.md` 收敛式认知档案（零新字段，全复用 trust）；信号双通道——save 对话直接信号 + map 资产行为信号（consumes 均插 trust 后派生前；日记类豁免随 mapping 只记元信号）；自发观察 + sources 闸门（断言缺证据 wikilink → warning）；前置「wiki 初始化机制」仍随设计文档解决
+- wiki 初始化机制（画像首建与建构/整合命令同批）：冷启动时机与首建内容——随设计文档一并解决
 - 设计文档重开卷：quickstart 已开卷（部署五步 + 首跑验证，净目录彩排）；导论（目录/USP/理念/思路）随后，章=文件（repo 读者、问题驱动；OKF 不收编）
 - 部署进个人库（**用户自行执行**，agent 不主动触碰；走查见 `docs/quickstart.md`，additive，存量页不动、旧页渐进代理）
 - skill 打磨随使用摩擦滚动；vault 治理（delegate）后议；测试矩阵等裁撤项不排期
 
 ## 过往操作
 
+- 2026-09-13 user-profile 插件立设（第十二插件）：`wiki/profile.md` 收敛式画像（type 值集扩 profile、零自有字段复用 trust），depends [wiki, trust, mapping, sessions]，双通道挂 save/map（trust 后派生前），检查三项（证据闸门/领地走错/缺失）；test-repo 随框架重拷同步
+- 2026-09-13 save 首跑（框架首个真实原生页）：画像调研蒸馏为 concept 笔记落 `wiki/notes/`，全链路实测——踩坑热缓存短名断链（link 全名约定应验即修），孤儿 warning 为首页常态
 - 2026-09-13 用户画像插件启动调研：画像方法/维度/agent 记忆/persona 模板四轮检索；定位=对真实使用者的持续认知档案（非虚构 persona），更新拟借 trust 留痕
 - 2026-09-13 框架收束日（多提交）：设计文档开卷 quickstart（净目录彩排，README 部署节收束为指针）；工程首上 GitHub 私仓；专家评审修补七项（附检硬检查、契约缝合、实例外壳消回声）；test-repo 参考实例立设（部署彩排 + 样例走查，同步重拷纪律首跑）；命令层审计收尾（map/save 正文消回声、usage 补出处）；投影体系定形（概念双插件纯化、格式契约内化、第三投影立设、注入源全归 manifest）
 - 2026-09-12 定位与重构：裁定个人自用、以用代验（矩阵测试裁撤）；架构重构四提交（标识符英文化、废分层、概念双插件立设、ingest→map 更名）；OKF v0.2 成文 + 冷启动披露审计；雾港与真实库两轮实验全绿，确立 SASU-L 与零污染纪律；清实验数据、README 门面化
