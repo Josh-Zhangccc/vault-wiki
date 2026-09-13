@@ -1,6 +1,6 @@
 # user-profile：用户画像
 
-对使用者的持续认知档案。wiki 借它把「用户是谁、偏好什么」从对话记忆变成可检查的页面：断言带证据、偏好会过期、更新留痕。定位为 agent 记忆线的 user profile（对真实使用者的认知），非产品设计线的虚构 persona——维度框架借前者研究的成果，更新机制借后者。设计依据见 `wiki/notes/用户画像方法论与 agent 记忆`。
+对使用者的持续认知档案。wiki 借它把「用户是谁、偏好什么」从对话记忆变成可检查的页面：断言带证据、偏好会过期、更新留痕。定位为 agent 记忆线的 user profile（对真实使用者的认知），非产品设计线的虚构 persona——维度框架借前者研究的成果，更新机制借后者。设计依据：构建工程 `docs/research-user-profile.md`（开发档案）。
 
 ## Structure
 
@@ -18,4 +18,5 @@
 
 ## Changelog
 
+- 0.2（2026-09-14）usage 补画像提炼方法论（信号判据 / 分层落点 / 断言具体可证）——蒸馏的可执行部分入写侧契约，SASU-L 披露闭环：agent 跑 map/save 即知如何提炼，不依赖模型先验；全文仍留 `docs/research-user-profile.md`
 - 0.1（2026-09-13）立设：`wiki/profile.md` 收敛式认知档案（type: profile 入 registry 值集）；depends [wiki, trust, mapping, sessions]；双信号通道挂 save / map（consumes 插 trust 后派生前）；检查三项——断言证据闸门（warning）、领地走错（error）、页面缺失（信息级）

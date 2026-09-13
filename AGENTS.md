@@ -94,7 +94,7 @@
 - 代理层 `wiki/vault/`：与根 `vault/` 1:1 镜像（代理名 = 原名 + .md），页面必有 raw_file / raw_sha256；路径即出身证明
 <!-- /plugin:mapping -->
 
-<!-- plugin:user-profile v0.1 -->
+<!-- plugin:user-profile v0.2 -->
 - 用户画像 `wiki/profile.md`（type: profile）：对使用者的持续认知档案，静态身份层 + 动态偏好层，维度不枚举；收敛式更新——新值取代旧值、正文留痕；断言必带证据 wikilink（会话页或 vault 代理页），偏好层挂 stale_after；零自有字段复用 trust，不属 notes 领地；个性化决策（称呼、风格、偏好）前先读此页，库未初始化时可缺
 <!-- /plugin:user-profile -->
 
