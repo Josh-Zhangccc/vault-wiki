@@ -14,7 +14,7 @@
   python .meta/scripts/pipeline.py log <类型> <一句话>   # 容量归档 + 置顶加 log 行
   python .meta/scripts/pipeline.py verify             # 写后自证：附检 + 派生区漂移检查
 
-类型枚举：摄入 / 保存 / 检索 / 检查 / 装卸 / 其他（log 插件）。
+类型枚举：map / save / query / check / plugin / other（log 插件）。
 概念页判定（谁入索引）：wiki/ 下所有 .md，排除——保留名（index.md、log.md）、
 wiki 根派生页（hot.md、tags.md）、archive/ 子树（不可变区，本脚本永不改写其中文件）。
 """
@@ -42,7 +42,7 @@ HOT_MAX_ENTRIES = 25
 HOT_MAX_DAYS = 5
 HOT_MAX_CHARS = 200
 LOG_MAX_ENTRIES = 100
-TYPE_ORDER = ["摄入", "保存", "检索", "检查", "装卸", "其他"]
+TYPE_ORDER = ["map", "save", "query", "check", "plugin", "other"]
 HOT_HEADER = ("# 热缓存\n\n> 最近变更摘要；≤25 条且 <5 日，窗外即删；可整体再生。"
               "规则见 `.meta/plugins/hot/`，写走 `pipeline.py hot`。\n")
 LOG_HEADER = ("# 运行日志\n\n> 置顶追加、只增不删；条目 = `- YYYY-MM-DD <类型>：一句话`。"
@@ -194,9 +194,9 @@ def do_index(check_only=False):
             drift.append(rel)
         elif write_changed(path, content):
             changed += 1
-            print(f"[索引] 已重建 wiki/{rel}")
+            print(f"[index] rebuilt wiki/{rel}")
     if not check_only:
-        print(f"[索引] 完成，{changed} 个文件有变化（幂等）")
+        print(f"[index] done, {changed} file(s) changed (idempotent)")
     return drift
 
 
@@ -206,12 +206,12 @@ def do_tags(check_only=False):
     cur = open(path, encoding="utf-8").read() if os.path.exists(path) else None
     if cur == content:
         if not check_only:
-            print("[tags] 一致，无变化")
+            print("[tags] unchanged")
         return []
     if check_only:
         return ["tags.md"]
     write_changed(path, content)
-    print("[tags] 已重建 wiki/tags.md")
+    print("[tags] rebuilt wiki/tags.md")
     return []
 
 
@@ -219,7 +219,7 @@ def do_tags(check_only=False):
 
 def do_hot(kind, text):
     if kind not in TYPE_ORDER:
-        print(f"[hot] 类型须为 {'/'.join(TYPE_ORDER)}（收到 {kind}）")
+        print(f"[hot] type must be one of {'/'.join(TYPE_ORDER)} (got {kind})")
         return False
     entry = f"- {_today()} {text}"[:HOT_MAX_CHARS]
     # 收集既有条目（带节归属），机械淘汰越界
@@ -228,7 +228,7 @@ def do_hot(kind, text):
     if os.path.exists(hot_path):
         cur = None
         for raw in open(hot_path, encoding="utf-8").read().splitlines():
-            m = re.match(r"^##\s*最近(\S+)", raw)
+            m = re.match(r"^##\s*Recent (\S+)", raw)
             if m and m.group(1) in TYPE_ORDER:
                 cur = m.group(1)
                 continue
@@ -248,17 +248,17 @@ def do_hot(kind, text):
         if not sections[t]:
             continue
         any_entry = True
-        body += ["", f"## 最近{t}", ""] + sections[t]
+        body += ["", f"## Recent {t}", ""] + sections[t]
     if not any_entry:
         body += ["", "（暂无）"]
     write_changed(hot_path, "\n".join(body) + "\n")
-    print(f"[hot] 已写入（{kind}），当前 {min(len(flat), HOT_MAX_ENTRIES)} 条")
+    print(f"[hot] written ({kind}), {min(len(flat), HOT_MAX_ENTRIES)} entries")
     return True
 
 
 def do_log(kind, text):
     if kind not in TYPE_ORDER:
-        print(f"[log] 类型须为 {'/'.join(TYPE_ORDER)}（收到 {kind}）")
+        print(f"[log] type must be one of {'/'.join(TYPE_ORDER)} (got {kind})")
         return False
     log_path = os.path.join(WIKI, "log.md")
     entries = []
@@ -275,9 +275,9 @@ def do_log(kind, text):
             apath = os.path.join(adir, "log.md")
             old = open(apath, encoding="utf-8").read() if os.path.exists(apath) else f"# 归档 {month}\n"
             write_changed(apath, old.rstrip() + "\n" + "\n".join(moved) + "\n")
-            print(f"[log] 归档 {len(moved)} 条至 wiki/archive/{month}/log.md")
+            print(f"[log] archived {len(moved)} entries to wiki/archive/{month}/log.md")
     write_changed(log_path, LOG_HEADER + "\n" + "\n".join(entries[:LOG_MAX_ENTRIES]) + "\n")
-    print(f"[log] 已写入（{kind}），主文件 {min(len(entries), LOG_MAX_ENTRIES)} 条")
+    print(f"[log] written ({kind}), main file {min(len(entries), LOG_MAX_ENTRIES)} entries")
     return True
 
 
@@ -289,14 +289,14 @@ def do_verify():
         [sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "plugin_cli.py"), "audit"])
     if r.returncode != 0:
         ok = False
-        print("[verify] 附检存在 error")
+        print("[verify] plugin audit has errors")
     drift = do_index(check_only=True) + do_tags(check_only=True)
     if drift:
         ok = False
-        print("[verify] 派生区漂移：" + "、".join("wiki/" + d for d in drift) + "（跑 pipeline.py index / tags 修复）")
+        print("[verify] derived drift: " + ", ".join("wiki/" + d for d in drift) + " (run pipeline.py index / tags to fix)")
     else:
-        print("[verify] 派生区一致")
-    print("[verify] " + ("通过" if ok else "未通过"))
+        print("[verify] derived area consistent")
+    print("[verify] " + ("passed" if ok else "failed"))
     return 0 if ok else 1
 
 

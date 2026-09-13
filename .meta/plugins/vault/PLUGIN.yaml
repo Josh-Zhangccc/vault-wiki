@@ -1,8 +1,8 @@
 id: vault
-version: 0.6
+version: 0.7
 layer: origin
 depends: []
-updated: 2026-09-11
+updated: 2026-09-12
 attachment:
   - "wiki/vault/ —— 代理层目录，与根下 vault/ 一比一镜像"
   - "scripts/check.py —— 附检（镜像 diff / 哈希核验 / 全文复制 / stub 老化）"

@@ -17,17 +17,17 @@ def check(ctx):
         ptype = fm.get("type")
         in_sessions = rel.startswith("sessions/")
         if ptype == "session" and not in_sessions:
-            issues.append({"级别": "warning", "消息": f"{rel}：session 型页面应在 wiki/sessions/（sessions 插件领地）"})
+            issues.append({"level": "warning", "message": f"{rel}：session 型页面应在 wiki/sessions/（sessions 插件领地）"})
         elif in_sessions and ptype != "session":
-            issues.append({"级别": "warning", "消息": f"{rel}：wiki/sessions/ 内页面应为 type: session（实为 {ptype or '未标'}）"})
+            issues.append({"level": "warning", "message": f"{rel}：wiki/sessions/ 内页面应为 type: session（实为 {ptype or '未标'}）"})
         if ptype == "session" or in_sessions:
             parts = fm.get("participants")
             if parts is None:
-                issues.append({"级别": "warning", "消息": f"{rel}：缺 participants（actor 列表）"})
+                issues.append({"level": "warning", "message": f"{rel}：缺 participants（actor 列表）"})
             else:
                 if not isinstance(parts, list):
                     parts = [parts]
                 for p in parts:
                     if not ACTOR_RE.match(str(p)):
-                        issues.append({"级别": "warning", "消息": f"{rel}：participants 项 {p!r} 不符 actor 约定（human:名 / process:名 / agent/模型）"})
+                        issues.append({"level": "warning", "message": f"{rel}：participants 项 {p!r} 不符 actor 约定（human:名 / process:名 / agent/模型）"})
     return issues

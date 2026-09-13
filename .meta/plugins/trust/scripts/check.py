@@ -36,14 +36,14 @@ def check(ctx):
         stale_after = fm.get("stale_after")
         if gen is not None:
             if not isinstance(gen, dict):
-                issues.append({"级别": "warning", "消息": f"{rel}：generated 应为块式映射 by/at"})
+                issues.append({"level": "warning", "message": f"{rel}：generated 应为块式映射 by/at"})
             elif gen.get("by") is None or gen.get("at") is None:
-                issues.append({"级别": "warning", "消息": f"{rel}：generated 缺 by 或 at"})
+                issues.append({"level": "warning", "message": f"{rel}：generated 缺 by 或 at"})
             else:
                 if _bad_actor(gen["by"]):
-                    issues.append({"级别": "warning", "消息": f"{rel}：generated.by {gen['by']!r} 不符 actor 约定"})
+                    issues.append({"level": "warning", "message": f"{rel}：generated.by {gen['by']!r} 不符 actor 约定"})
                 if _bad_date(gen["at"]):
-                    issues.append({"级别": "warning", "消息": f"{rel}：generated.at {gen['at']!r} 非 YYYY-MM-DD"})
+                    issues.append({"level": "warning", "message": f"{rel}：generated.at {gen['at']!r} 非 YYYY-MM-DD"})
         if verified is not None:
             events = verified if isinstance(verified, list) else [verified]
             has_human = False
@@ -52,13 +52,13 @@ def check(ctx):
                 m_by = re.search(r"by:\s*(.+?)(?:\s*,\s*at:|$)", text)
                 m_at = re.search(r"at:\s*(\S+)", text)
                 if not m_by or not m_at:
-                    issues.append({"级别": "warning", "消息": f"{rel}：verified 事件缺 by 或 at（{text.strip()!r}）"})
+                    issues.append({"level": "warning", "message": f"{rel}：verified 事件缺 by 或 at（{text.strip()!r}）"})
                     continue
                 by, at = m_by.group(1).strip(), m_at.group(1).rstrip(",");  # 容忍尾逗号
                 if _bad_actor(by):
-                    issues.append({"级别": "warning", "消息": f"{rel}：verified.by {by!r} 不符 actor 约定"})
+                    issues.append({"level": "warning", "message": f"{rel}：verified.by {by!r} 不符 actor 约定"})
                 if _bad_date(at):
-                    issues.append({"级别": "warning", "消息": f"{rel}：verified.at {at!r} 非 YYYY-MM-DD"})
+                    issues.append({"level": "warning", "message": f"{rel}：verified.at {at!r} 非 YYYY-MM-DD"})
                 if by.startswith("human:"):
                     has_human = True
             if has_human:
@@ -67,11 +67,11 @@ def check(ctx):
                 confirmed += 1
         if stale_after is not None:
             if _bad_date(stale_after):
-                issues.append({"级别": "warning", "消息": f"{rel}：stale_after {stale_after!r} 非 YYYY-MM-DD"})
+                issues.append({"level": "warning", "message": f"{rel}：stale_after {stale_after!r} 非 YYYY-MM-DD"})
             elif datetime.date.fromisoformat(str(stale_after)) <= today:
-                issues.append({"级别": "信息", "消息": f"{rel}：已过 stale_after（{stale_after}）——stale 页，处置归人"})
+                issues.append({"level": "info", "message": f"{rel}：已过 stale_after（{stale_after}）——stale 页，处置归人"})
         if fm.get("sources") is not None and not isinstance(fm.get("sources"), list):
-            issues.append({"级别": "warning", "消息": f"{rel}：sources 应为列表"})
+            issues.append({"level": "warning", "message": f"{rel}：sources 应为列表"})
     if reviewed or confirmed:
-        issues.append({"级别": "信息", "消息": f"信任水位：human-reviewed {reviewed} 页 / machine-confirmed {confirmed} 页（其余 unverified）"})
+        issues.append({"level": "info", "message": f"信任水位：human-reviewed {reviewed} 页 / machine-confirmed {confirmed} 页（其余 unverified）"})
     return issues

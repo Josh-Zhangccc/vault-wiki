@@ -37,9 +37,9 @@ def check(ctx):
     real = _file_set(root, "vault", strip_md=False)
     proxy = _file_set(root, os.path.join("wiki", "vault"), strip_md=True)
     for f in sorted(real - proxy):
-        issues.append({"级别": "信息", "消息": f"VAULT 待登记（积压）：{f}"})
+        issues.append({"level": "info", "message": f"VAULT 待登记（积压）：{f}"})
     for p in sorted(proxy - real):
-        issues.append({"级别": "error", "消息": f"孤儿代理（VAULT 无对应物）：wiki/vault/{p}"})
+        issues.append({"level": "error", "message": f"孤儿代理（VAULT 无对应物）：wiki/vault/{p}"})
     for rel, fm, body in ctx.pages:
         if not rel.startswith("vault/"):
             continue
@@ -48,22 +48,22 @@ def check(ctx):
             continue
         fp = os.path.join(root, rf)
         if not os.path.exists(fp):
-            issues.append({"级别": "error", "消息": f"{rel}：raw_file 指向不存在（{rf}）"})
+            issues.append({"level": "error", "message": f"{rel}：raw_file 指向不存在（{rf}）"})
             continue
         sh = fm.get("raw_sha256")
         if sh and hashlib.sha256(open(fp, "rb").read()).hexdigest() != sh:
-            issues.append({"级别": "warning", "消息": f"{rel}：raw_sha256 失配（原文已变；描述仍适用则机械重算）"})
+            issues.append({"level": "warning", "message": f"{rel}：raw_sha256 失配（原文已变；描述仍适用则机械重算）"})
         if rf.endswith(".md"):
             try:
                 raw_text = open(fp, encoding="utf-8").read()
             except UnicodeDecodeError:
                 raw_text = open(fp, encoding="utf-8", errors="replace").read()
             if raw_text and len(body) >= 0.8 * len(raw_text):
-                issues.append({"级别": "warning", "消息": f"{rel}：疑似全文复制（正文 ≥80% 原文；日记类豁免为语义判断）"})
+                issues.append({"level": "warning", "message": f"{rel}：疑似全文复制（正文 ≥80% 原文；日记类豁免为语义判断）"})
         if not body.strip():  # stub：正文无一行描述
             m = re.fullmatch(r"(\d{4})-(\d{2})-(\d{2})", str(fm.get("updated") or ""))
             if m:
                 age = (TODAY - datetime.date(*map(int, m.groups()))).days
                 if age > 90:
-                    issues.append({"级别": "warning", "消息": f"{rel}：stub 超 90 天无描述（新 stub 免告）"})
+                    issues.append({"level": "warning", "message": f"{rel}：stub 超 90 天无描述（新 stub 免告）"})
     return issues

@@ -6,18 +6,18 @@ description: "审计库的健康状态：底座与插件硬结构检查 + 插件
 
 # check：库健康审计
 
-审，不防。输出分级报告：error = 结构破损需处理；warning = 提示待办。检查规则来自两处：本文件底座部分（协议级）+ 下方注入区（plugin_cli 自各 PLUGIN.md「检查」节机械化投影，在场即注册）。
+审，不防。输出分级报告：error = 结构破损需处理；warning = 提示待办。检查规则来自两处：本文件底座部分（协议级）+ 下方注入区（plugin_cli 自各 PLUGIN.md「Checks」节机械化投影，在场即注册）。
 
-## 用途
+## Purpose
 
 对整个实例（底座 + 插件 + wiki 页面）做一次健康审计。
 
-## 涉及结构
+## Scope
 
 读：全部（.meta/、AGENTS.md 注入区、.agents/skills/、wiki/、vault/ 目录树）
-写：wiki/log.md 一行（类型「检查」）；可再生区按动作纪律直接重建（脚本：注入区 / registry / 命令副本；语义：索引 / tags / hot 淘汰 / log 归档 / 哈希重算）
+写：wiki/log.md 一行（type "check"）；可再生区按动作纪律直接重建（脚本：注入区 / registry / 命令副本；语义：索引 / tags / hot 淘汰 / log 归档 / 哈希重算）
 
-## 步骤
+## Steps
 
 1. **底座硬检查**（协议级）：
    - **静态自检脚本**：`python .meta/scripts/plugin_cli.py validate`（目录完整、manifest 八字段 + 可选 commands、id 一致、依赖方向、无环、命令绑定 owner×commands 双向一致）——错误即 FAIL
@@ -26,21 +26,21 @@ description: "审计库的健康状态：底座与插件硬结构检查 + 插件
    - **值集越界**：扫 wiki/ 全部页面 frontmatter，type / status 取值不在注册表值集 → error
    - `.meta/command/` 每个 SKILL.md 有 frontmatter（name / description / owner）
 2. **插件检查**：先跑附检 `python .meta/scripts/plugin_cli.py audit`（机械项：各插件 scripts/check.py 发现式执行，只读报告，error 计入 FAIL）；再执行下方注入区块中标注「语义」的项
-3. **语义检查**：读插件与命令文件，查悬挂引用（命令涉及不存在的结构）、幽灵字段（页面字段无拥有插件且非注册表预留）、注入区块与 PLUGIN.md 检查节不一致
+3. **语义检查**：读插件与命令文件，查悬挂引用（命令涉及不存在的结构）、幽灵字段（页面字段无拥有插件且非注册表预留）、注入区块与 PLUGIN.md Checks 节不一致
 4. 汇总输出：PASS / WARN / FAIL 计数 + 分级明细 + VAULT 积压计数（信息项）
 5. **修复按动作纪律分级执行**（`.meta/protocol/actions.md`）：机械自动项直接做——`pipeline.py index` / `tags`（索引重建）、`plugin_cli.py all`（注册表 / 注入区 / 副本）、哈希重算（改 frontmatter 的 raw_sha256），hot / log 越界由各自写管道命令收敛；机械确认项呈清单问一次，语义项只报告；历史条目永不自动改
-6. wiki/log.md 置顶追加一行（类型「检查」，走 `pipeline.py log 检查 "<一句话>"`）；有变更（修复 / log 行）即按提交纪律入库（`检查: <结论>`，见 `.meta/protocol/actions.md`）
+6. wiki/log.md 置顶追加一行（type "check"，走 `pipeline.py log check "<一句话>"`）；有变更（修复 / log 行）即按提交纪律入库（`检查: <结论>`，见 `.meta/protocol/actions.md`）
 
-## 工具
+## Tools
 
 grep / 读文件即够；一次读取够用的不做第二次扫描（调用节俭）。
 
-## 参数
+## Parameters
 
 - 无：全库审计
 - 插件 id：只查该插件
 
-## 注入区（各插件检查块）
+## Injected Section (plugin check blocks)
 
 > 本区为 plugin_cli 自各 PLUGIN.md「检查」节投影（`inject` / `all` 重建，在场即注册）；手写内容不进此区，改检查规则改 PLUGIN.md。
 

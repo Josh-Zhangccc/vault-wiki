@@ -1,8 +1,8 @@
 id: hot
-version: 0.4
+version: 0.5
 layer: derived
 depends: []
-updated: 2026-09-10
+updated: 2026-09-12
 attachment:
   - "wiki/hot.md —— 单文件热缓存"
 fields: {}

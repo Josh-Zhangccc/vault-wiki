@@ -1,9 +1,9 @@
 id: index
-version: 0.3
+version: 0.4
 layer: derived
 depends:
   - tag
-updated: 2026-09-10
+updated: 2026-09-12
 attachment:
   - "wiki/index.md —— 根索引（含 okf_version，只列顶层与子目录入口）"
   - "各目录 index.md —— 每目录一份（渐进披露）"

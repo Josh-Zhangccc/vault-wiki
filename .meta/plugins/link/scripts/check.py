@@ -48,7 +48,7 @@ def check(ctx):
             alias_map.setdefault(str(a).strip(), set()).add(_name_of(rel))
     for a, owners in sorted(alias_map.items()):
         if len(owners) > 1:
-            issues.append({"级别": "error", "消息": f"别名 {a!r} 二义：{'、'.join(sorted(owners))}——解析不确定，须裁决"})
+            issues.append({"level": "error", "message": f"别名 {a!r} 二义：{'、'.join(sorted(owners))}——解析不确定，须裁决"})
     referenced, related_map = set(), {}
     for rel, fm, body in pages:
         if not _concept(rel):
@@ -57,27 +57,27 @@ def check(ctx):
         for m in WIKILINK_RE.finditer(body):
             t = m.group(1).strip()
             if "\ufffd" in t:
-                issues.append({"级别": "error", "消息": f"{rel}：乱码链接 [[{m.group(1)}]]"})
+                issues.append({"level": "error", "message": f"{rel}：乱码链接 [[{m.group(1)}]]"})
             elif t not in names and t not in alias_map:
-                issues.append({"级别": "warning", "消息": f"{rel}：断链 [[{t}]]（既非页面全名，也非任何 aliases）"})
+                issues.append({"level": "warning", "message": f"{rel}：断链 [[{t}]]（既非页面全名，也非任何 aliases）"})
             referenced.add(t)
         rels = [_target(r) for r in _as_list(fm.get("related"))]
         related_map[src] = {t for t in rels if t}
         for t in rels:
             if "\ufffd" in t:
-                issues.append({"级别": "error", "消息": f"{rel}：related 乱码项 {t!r}"})
+                issues.append({"level": "error", "message": f"{rel}：related 乱码项 {t!r}"})
             elif t not in names and t not in alias_map:
-                issues.append({"级别": "warning", "消息": f"{rel}：related 断链 [[{t}]]"})
+                issues.append({"level": "warning", "message": f"{rel}：related 断链 [[{t}]]"})
             referenced.add(t)
     # 孤儿（无入链且无 related 引用；源只计概念页）
     for rel, _fm, _b in pages:
         if not _concept(rel):
             continue
         if _name_of(rel) not in referenced:
-            issues.append({"级别": "warning", "消息": f"{rel}：孤儿页（无入链且无 related 引用）"})
+            issues.append({"level": "warning", "message": f"{rel}：孤儿页（无入链且无 related 引用）"})
     # related 单向（信息：不对称提示，非错误）
     for src, rels in sorted(related_map.items()):
         for t in sorted(rels):
             if t in related_map and src not in related_map[t]:
-                issues.append({"级别": "信息", "消息": f"{src}：related 单向（列出 [[{t}]]，对方未回列）"})
+                issues.append({"level": "info", "message": f"{src}：related 单向（列出 [[{t}]]，对方未回列）"})
     return issues

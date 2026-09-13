@@ -18,6 +18,8 @@
 
 ## 过往操作
 
+- 2026-09-12 标识符英文化：附检契约键 level/message、级别 info、TYPE_ORDER 六值（map/save/query/check/plugin/other）、hot 分节 Recent、PLUGIN/SKILL 节头、控制台输出；中文触发词与正文 prose 保留
+
 - 2026-09-12 移除 user-write 手稿区：设计思路已吸取（agent 记忆理论、插件化草案），未执行设计不落库；引用点随行摘除（AGENTS/README/plugin 技能），全文存 git 历史
 
 - 2026-09-12 README 重写为仓库门面：定位/它做什么/核心概念/布局/上手/指针，补人侧上手文档缺口

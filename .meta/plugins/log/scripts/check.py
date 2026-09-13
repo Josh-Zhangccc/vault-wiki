@@ -17,5 +17,5 @@ def check(ctx):
         for i, raw in enumerate(body.splitlines(), 1):
             line = raw.rstrip()
             if line.startswith("- ") and not DATE_RE.match(line):
-                issues.append({"级别": "error", "消息": f"{rel}:{i}：条目缺日期（{line[:40]}…）"})
+                issues.append({"level": "error", "message": f"{rel}:{i}：条目缺日期（{line[:40]}…）"})
     return issues
