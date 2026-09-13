@@ -1,12 +1,12 @@
 ---
-name: cli
+name: wiki_plugin_kernel
 owner: framework
-description: "plugin_cli.py 机械核心使用参考：七个子命令（ls/validate/audit/inject/registry/deploy/all）、典型场景与边界。Triggers on: cli, CLI 用法, plugin_cli, 注入块更新, 投影重建, 更新注入."
+description: "插件内核 wiki_plugin_kernel.py 使用参考：七个子命令（ls/validate/audit/inject/registry/deploy/all）、典型场景与边界。Triggers on: 插件内核, wiki_plugin_kernel, kernel, 注入块更新, 投影重建, 更新注入."
 ---
 
-# cli：机械核心使用参考
+# wiki_plugin_kernel：插件内核
 
-`python .meta/scripts/plugin_cli.py <子命令>`——框架侧唯一投影机：PLUGIN.yaml 是本体，AGENTS 注入区、check 检查块、命令用法块、注册表插件段、命令副本全是它的投影。幂等，随时可跑，漂移即修复。
+`python .meta/scripts/wiki_plugin_kernel.py <子命令>`——框架侧唯一投影机：PLUGIN.yaml 是本体，AGENTS 注入区、check 检查块、命令用法块、注册表插件段、命令副本全是它的投影。幂等，随时可跑，漂移即修复。
 
 ## 子命令
 
@@ -22,7 +22,7 @@ description: "plugin_cli.py 机械核心使用参考：七个子命令（ls/vali
 
 ## 典型场景
 
-- **改了 PLUGIN.yaml**（inject / checks / usage / fields / 版本）：`python .meta/scripts/plugin_cli.py all`——日常标准动作，一条命令全部收敛；validate 不过则阻断，修完重跑
+- **改了 PLUGIN.yaml**（inject / checks / usage / fields / 版本）：`python .meta/scripts/wiki_plugin_kernel.py all`——日常标准动作，一条命令全部收敛；validate 不过则阻断，修完重跑
 - **只刷注入块**：`inject` 够用，但注意它改的是 `.meta/command/` 主本，副本须 `deploy` 才同步——所以日常一律用 `all`
 - **健康快检**：`validate`（结构）+ `audit`（附检）；完整审计（含语义项）走 check 命令
 - **装卸插件**：语义流程（决策、目录归档、log 行）走 plugin 命令；其中的机械步骤即本 CLI 的 `validate` / `all` / `audit`

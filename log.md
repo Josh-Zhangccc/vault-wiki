@@ -18,6 +18,8 @@
 
 ## 过往操作
 
+- 2026-09-13 内核定名：plugin_cli 更名 wiki_plugin_kernel（「插件内核」），cli 参考命令随行同名，调用点全库替换（历史条目保留旧名）
+
 - 2026-09-13 注入源全归 yaml：三投影源（inject 行 / checks / usage）统一入 manifest，PLUGIN.md 回归纯文档（Role/Structure/Invariants/Changelog）；顺手修 vault 注入行小写替换残留
 
 - 2026-09-13 第三投影立设：八插件立「Usage」节（写侧契约），命令 frontmatter 加 consumes 有序声明，plugin_cli 按序投影进命令注入区（map 6 块 / save 7 块 / query 1 块），命令正文瘦身去手抄

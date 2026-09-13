@@ -25,7 +25,7 @@
 
 | 目录 | 内容 |
 |------|------|
-| `.meta/` | 原型核心：十一插件（概念双插件 wiki/vault、桥接 mapping、notes/sessions/link/tag/trust/index/hot/log；无分层，注入序=依赖拓扑+字母序）、六命令主本、协议工件（registry / actions / experiments）、机械脚本（plugin_cli / pipeline / wikilib，纯标准库零依赖） |
+| `.meta/` | 原型核心：十一插件（概念双插件 wiki/vault、桥接 mapping、notes/sessions/link/tag/trust/index/hot/log；无分层，注入序=依赖拓扑+字母序）、六命令主本、协议工件（registry / actions / experiments）、机械脚本（wiki_plugin_kernel / pipeline / wikilib，纯标准库零依赖） |
 | `wiki/`、`vault/` | 数据区（空种子，待真实内容） |
 | `.agents/skills/` | 命令部署副本 |
 | `docs/` | 历史设计档案（`00-principles.md`、`01-okf.md` 格式契约成文），不起现行作用 |

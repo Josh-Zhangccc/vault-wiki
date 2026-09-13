@@ -286,7 +286,7 @@ def do_log(kind, text):
 def do_verify():
     ok = True
     r = subprocess.run(
-        [sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "plugin_cli.py"), "audit"])
+        [sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "wiki_plugin_kernel.py"), "audit"])
     if r.returncode != 0:
         ok = False
         print("[verify] plugin audit has errors")

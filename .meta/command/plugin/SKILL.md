@@ -1,7 +1,7 @@
 ---
 name: plugin
 owner: framework
-description: "插件生命周期管理：装/升/卸/清单。机械步骤（合规、依赖、注入区、注册表、副本同步）由 .meta/scripts/plugin_cli.py 执行，agent 只做语义部分。Triggers on: plugin, 插件, 装插件, 卸插件, install plugin, uninstall plugin."
+description: "插件生命周期管理：装/升/卸/清单。机械步骤（合规、依赖、注入区、注册表、副本同步）由 .meta/scripts/wiki_plugin_kernel.py 执行，agent 只做语义部分。Triggers on: plugin, 插件, 装插件, 卸插件, install plugin, uninstall plugin."
 ---
 
 # plugin：插件装卸
@@ -11,34 +11,34 @@ description: "插件生命周期管理：装/升/卸/清单。机械步骤（合
 ## Scope
 
 写：`.meta/plugins/<id>/`（装卸）、AGENTS.md 注入区、`.meta/protocol/registry.yaml` 插件段、`.agents/skills/` 命令副本、wiki/log.md（以上四处投影均经脚本）
-读：全部 manifest、`.meta/scripts/plugin_cli.py`
+读：全部 manifest、`.meta/scripts/wiki_plugin_kernel.py`
 
 ## Install <id>
 
 1. 准备 `.meta/plugins/<id>/`：
    - PLUGIN.yaml：必填七字段 id / version / depends / updated / attachment / fields / inject（`inject` 即注入区投影行，一行中文）+ 可选 commands（驱动的命令）/ usage / checks（块式列表：写侧契约与检查规则的投影源）
    - PLUGIN.md 结构：Role → Structure → Invariants → Changelog（纯文档；注入源全在 manifest）
-2. `python .meta/scripts/plugin_cli.py validate` —— 合规与依赖检查，错误阻断
-3. `python .meta/scripts/plugin_cli.py all` —— 注入区 / registry / 命令副本同步
-4. 流程冒烟：`python .meta/scripts/plugin_cli.py audit <id>`（如插件带附检脚本）+ 按新插件 PLUGIN.md 的关键流程对测试资产走一遍（草案三级检查之行为层）
+2. `python .meta/scripts/wiki_plugin_kernel.py validate` —— 合规与依赖检查，错误阻断
+3. `python .meta/scripts/wiki_plugin_kernel.py all` —— 注入区 / registry / 命令副本同步
+4. 流程冒烟：`python .meta/scripts/wiki_plugin_kernel.py audit <id>`（如插件带附检脚本）+ 按新插件 PLUGIN.md 的关键流程对测试资产走一遍（草案三级检查之行为层）
 5. wiki/log.md 置顶追加一行（type "plugin"）
 
 ## Upgrade <id>
 
 1. 修改插件；manifest `version` 进位、`updated` 刷新；PLUGIN.md 变更记录加一行
-2. `python .meta/scripts/plugin_cli.py all` —— validate + 注入块版本号同步
+2. `python .meta/scripts/wiki_plugin_kernel.py all` —— validate + 注入块版本号同步
 3. wiki/log.md「plugin」行
 
 ## Uninstall <id>
 
-1. `python .meta/scripts/plugin_cli.py validate` —— 有插件依赖它 → 阻断（除非用户显式级联）
+1. `python .meta/scripts/wiki_plugin_kernel.py validate` —— 有插件依赖它 → 阻断（除非用户显式级联）
 2. 目录移出 `.meta/plugins/`（归档留存；物理删除永远属人）
-3. `python .meta/scripts/plugin_cli.py all` —— 注入区 / registry 中随之消失
+3. `python .meta/scripts/wiki_plugin_kernel.py all` —— 注入区 / registry 中随之消失
 4. wiki/log.md「plugin」行
 
 ## ls
 
-- `python .meta/scripts/plugin_cli.py ls`（清单 + 依赖）
+- `python .meta/scripts/wiki_plugin_kernel.py ls`（清单 + 依赖）
 
 ## Boundaries
 

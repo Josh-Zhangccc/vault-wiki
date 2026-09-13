@@ -7,13 +7,13 @@
 registry.yaml 插件段、.agents/skills/ 命令副本；protocol / reserved 段与手写区永不动。
 
 用法:
-  python .meta/scripts/plugin_cli.py ls          # 清单 + 依赖
-  python .meta/scripts/plugin_cli.py validate    # 合规与依赖检查（只读，错误退出码 1）
-  python .meta/scripts/plugin_cli.py audit       # 插件附检（发现式执行各插件 scripts/check.py）
-  python .meta/scripts/plugin_cli.py inject      # 重建 AGENTS.md 注入区、check 检查块与命令用法块（幂等）
-  python .meta/scripts/plugin_cli.py registry    # 重建 registry.yaml 插件段（幂等）
-  python .meta/scripts/plugin_cli.py deploy      # 同步命令部署副本（幂等）
-  python .meta/scripts/plugin_cli.py all         # validate + inject + registry + deploy
+  python .meta/scripts/wiki_plugin_kernel.py ls          # 清单 + 依赖
+  python .meta/scripts/wiki_plugin_kernel.py validate    # 合规与依赖检查（只读，错误退出码 1）
+  python .meta/scripts/wiki_plugin_kernel.py audit       # 插件附检（发现式执行各插件 scripts/check.py）
+  python .meta/scripts/wiki_plugin_kernel.py inject      # 重建 AGENTS.md 注入区、check 检查块与命令用法块（幂等）
+  python .meta/scripts/wiki_plugin_kernel.py registry    # 重建 registry.yaml 插件段（幂等）
+  python .meta/scripts/wiki_plugin_kernel.py deploy      # 同步命令部署副本（幂等）
+  python .meta/scripts/wiki_plugin_kernel.py all         # validate + inject + registry + deploy
 
 manifest 最小 YAML 子集：顶层 `key: value`、`key: []`、块式列表（`  - 项`）、
 一层字段字典（`  name: 描述`）；双引号包裹的值去引号；行内注释（` #` 起）剥离。

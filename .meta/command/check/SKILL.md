@@ -6,7 +6,7 @@ description: "审计库的健康状态：底座与插件硬结构检查 + 插件
 
 # check：库健康审计
 
-审，不防。输出分级报告：error = 结构破损需处理；warning = 提示待办。检查规则来自两处：本文件底座部分（协议级）+ 下方注入区（plugin_cli 自各插件 manifest checks 列表机械化投影，在场即注册）。
+审，不防。输出分级报告：error = 结构破损需处理；warning = 提示待办。检查规则来自两处：本文件底座部分（协议级）+ 下方注入区（wiki_plugin_kernel 自各插件 manifest checks 列表机械化投影，在场即注册）。
 
 ## Purpose
 
@@ -20,15 +20,15 @@ description: "审计库的健康状态：底座与插件硬结构检查 + 插件
 ## Steps
 
 1. **底座硬检查**（协议级）：
-   - **静态自检脚本**：`python .meta/scripts/plugin_cli.py validate`（目录完整、manifest 七字段 + 可选 commands、id 一致、依赖存在、无环、命令绑定 owner×commands 双向一致）——错误即 FAIL
-   - **幂等重建**：`python .meta/scripts/plugin_cli.py all`（注入区 / registry 插件段 / 命令副本——机械自动，漂移在此修复，脚本源码即规则清单）
+   - **静态自检脚本**：`python .meta/scripts/wiki_plugin_kernel.py validate`（目录完整、manifest 七字段 + 可选 commands、id 一致、依赖存在、无环、命令绑定 owner×commands 双向一致）——错误即 FAIL
+   - **幂等重建**：`python .meta/scripts/wiki_plugin_kernel.py all`（注入区 / registry 插件段 / 命令副本——机械自动，漂移在此修复，脚本源码即规则清单）
    - `.meta/protocol/registry.yaml` 在位且 protocol / reserved 段完好（脚本不触碰这两段，缺段即报错）
    - **值集越界**：扫 wiki/ 全部页面 frontmatter，type / status 取值不在注册表值集 → error
    - `.meta/command/` 每个 SKILL.md 有 frontmatter（name / description / owner；可选 consumes——消费写侧契约的插件有序列表，引用插件须在场且带 usage 列表，owner 驱动命令必填）
-2. **插件检查**：先跑附检 `python .meta/scripts/plugin_cli.py audit`（机械项：各插件 scripts/check.py 发现式执行，只读报告，error 计入 FAIL）；再执行下方注入区块中标注「语义」的项
+2. **插件检查**：先跑附检 `python .meta/scripts/wiki_plugin_kernel.py audit`（机械项：各插件 scripts/check.py 发现式执行，只读报告，error 计入 FAIL）；再执行下方注入区块中标注「语义」的项
 3. **语义检查**：读插件与命令文件，查悬挂引用（命令涉及不存在的结构）、幽灵字段（页面字段无拥有插件且非注册表预留）、注入区块与 PLUGIN.md Checks 节不一致
 4. 汇总输出：PASS / WARN / FAIL 计数 + 分级明细 + vault 积压计数（信息项）
-5. **修复按动作纪律分级执行**（`.meta/protocol/actions.md`）：机械自动项直接做——`pipeline.py index` / `tags`（索引重建）、`plugin_cli.py all`（注册表 / 注入区 / 副本）、哈希重算（改 frontmatter 的 raw_sha256），hot / log 越界由各自写管道命令收敛；机械确认项呈清单问一次，语义项只报告；历史条目永不自动改
+5. **修复按动作纪律分级执行**（`.meta/protocol/actions.md`）：机械自动项直接做——`pipeline.py index` / `tags`（索引重建）、`wiki_plugin_kernel.py all`（注册表 / 注入区 / 副本）、哈希重算（改 frontmatter 的 raw_sha256），hot / log 越界由各自写管道命令收敛；机械确认项呈清单问一次，语义项只报告；历史条目永不自动改
 6. wiki/log.md 置顶追加一行（type "check"，走 `pipeline.py log check "<一句话>"`）；有变更（修复 / log 行）即按提交纪律入库（`检查: <结论>`，见 `.meta/protocol/actions.md`）
 
 ## Tools
@@ -42,7 +42,7 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 
 ## Injected Section (plugin check blocks)
 
-> 本区为 plugin_cli 自各插件 manifest checks 列表投影（`inject` / `all` 重建，在场即注册）；手写内容不进此区，改检查规则改 PLUGIN.yaml。
+> 本区为 wiki_plugin_kernel 自各插件 manifest checks 列表投影（`inject` / `all` 重建，在场即注册）；手写内容不进此区，改检查规则改 PLUGIN.yaml。
 
 <!-- check-inject:start -->
 <!-- check:hot -->

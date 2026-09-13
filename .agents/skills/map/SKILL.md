@@ -39,7 +39,7 @@ description: "把 vault/ 中的资产映射为 wiki 代理页：SHA-256、镜像
 
 ## Injected Section (plugin usage blocks)
 
-> 本区为 plugin_cli 自各插件 manifest usage 列表按本命令 consumes 序投影（inject / all 重建）；手写内容不进此区，改写侧契约改 PLUGIN.yaml。
+> 本区为 wiki_plugin_kernel 自各插件 manifest usage 列表按本命令 consumes 序投影（inject / all 重建）；手写内容不进此区，改写侧契约改 PLUGIN.yaml。
 
 <!-- cmd-inject:start -->
 <!-- usage:mapping -->

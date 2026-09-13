@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 """wiki 页面服务承重件：frontmatter 解析与页面遍历，供附检运行时装配进 ctx。
 
-插件附检脚本不自行 import 本模块——plugin_cli.audit 单次扫描 wiki/，
+插件附检脚本不自行 import 本模块——wiki_plugin_kernel.audit 单次扫描 wiki/，
 把 (相对路径, frontmatter, 正文) 列表放进 ctx.pages 全体共享（调用节俭）。
-与 plugin_cli.parse_manifest 同为最小 YAML 子集，但宽松策略不同：
+与 wiki_plugin_kernel.parse_manifest 同为最小 YAML 子集，但宽松策略不同：
 manifest 严格抛错（协议工件），页面 frontmatter 跳过坏行（用户内容不因
 格式瑕疵让附检崩溃）。
 """
