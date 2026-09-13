@@ -19,7 +19,6 @@
 |---|---|
 | VAULT | 真实资产仓库；命令侧只增，删改自由属于人 |
 | wiki | VAULT 的 md 代理层 + 原生笔记区 + 派生层（index / tags / hot / log） |
-| OKF | md 知识库格式契约（`docs/01-okf.md`，v0.2）：页面与文件结构的权威定义，使 agent 零先验读写 |
 | SASU-L | 披露范式：agent 只经 system prompt → AGENTS.md → Skills → 用户原话 → loop 获知信息 |
 
 ## 布局
@@ -29,7 +28,7 @@
 | `.meta/` | 原型核心：十一插件（概念双插件 wiki/vault、桥接 mapping、notes/sessions/link/tag/trust/index/hot/log；无分层，注入序=依赖拓扑+字母序）、五命令主本、协议工件（registry / actions / experiments）、机械脚本（plugin_cli / pipeline / wikilib，纯标准库零依赖） |
 | `wiki/`、`vault/` | 数据区（空种子，待真实内容） |
 | `.agents/skills/` | 命令部署副本 |
-| `docs/` | `00-principles.md` 历史设计档案；`01-okf.md` OKF 契约权威定义 |
+| `docs/` | 历史设计档案（`00-principles.md`、`01-okf.md` 格式契约成文），不起现行作用 |
 
 ## 上手
 
@@ -41,7 +40,6 @@
 
 - `AGENTS.md` — 宪法与准则（agent 先读）
 - `log.md` — 工程日志：现状、阶段、过往操作
-- `docs/01-okf.md` — OKF 格式契约（v0.2）
 - `.meta/protocol/` — 字段注册表、动作纪律、披露范式
 
 ## 沿革

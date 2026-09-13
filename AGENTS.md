@@ -39,7 +39,7 @@
 - `log.md` — 项目日志：现状、阶段、下一步、过往操作 **ATTENTION**
 - `.meta/` — 原型核心：结构插件（`plugins/`——概念双插件 wiki/vault + 桥接 mapping + notes/sessions/link/tag/trust/index/hot/log，无分层，注入序=依赖拓扑+字母序）与命令主本（`command/`）与协议工件（`protocol/`：字段注册表、动作纪律、披露范式 SASU-L）与机械脚本（`scripts/`：plugin_cli 装卸/合规/注入/副本 + pipeline 派生层管道 index/tags/hot/log/verify + wikilib 页面解析承重件）；AGENTS.md 注入区为其投影 **ATTENTION**
 - `wiki/`、`vault/` — 数据区（空种子：雾港实验数据已清，待真实内容）；`.agents/skills/` — 命令部署副本
-- `docs/` — `00-principles.md` 历史设计档案（规范蒸馏时归并）；`01-okf.md` OKF 格式契约权威定义（v0.2）
+- `docs/` — 历史设计档案（`00-principles.md`、`01-okf.md` 格式契约成文 v0.2），不起现行作用；现行规范以 `.meta/` 为源
 - `README.md` — 项目章程
 - 设计谱系（讨论记录，只读）：个人库 `wiki/meta/2026-08-25-wiki运行时重构决策.md`、`wiki/sessions/2026-08-25-wiki架构调研与docs-first重构设计.md`
 - 参考工程：`D:\My Programs\erp - ksbgs`（AGENTS.md 模式来源：宪法+指针、log 容量管理、指令集）；`D:\My Programs\aijia`（wiki 指针化引用）
@@ -86,8 +86,8 @@
 - wiki 容器 `wiki/`：出身二分——`wiki/vault/` 下为代理页（有 VAULT 对应物），其余为原生页（出身在 wiki）；index / tags / hot / log 为派生页（机械投影）
 <!-- /plugin:wiki -->
 
-<!-- plugin:index v0.5 -->
-- 索引 `wiki/index.md`（根，含 okf_version）与各目录 `index.md`（渐进披露，逐层下钻）/ `wiki/tags.md`（tag 反向索引）：只聚合、永不手编，重建走 `pipeline.py index`，检索第二入口
+<!-- plugin:index v0.6 -->
+- 索引 `wiki/index.md`（根，含 format_version）与各目录 `index.md`（渐进披露，逐层下钻）/ `wiki/tags.md`（tag 反向索引）：只聚合、永不手编，重建走 `pipeline.py index`，检索第二入口
 <!-- /plugin:index -->
 
 <!-- plugin:mapping v0.2 -->

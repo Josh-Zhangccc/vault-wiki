@@ -1,7 +1,7 @@
 id: log
 version: 0.8
 depends: []
-updated: 2026-09-12
+updated: 2026-09-13
 attachment:
   - "wiki/log.md —— 单文件操作流水（滚动窗口）"
   - "wiki/archive/YYYY-MM/log.md —— 归档分流（不可变区，按条目月份分组）"

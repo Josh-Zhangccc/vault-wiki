@@ -33,7 +33,7 @@ import wikilib
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 WIKI = os.path.join(ROOT, "wiki")
-OKF_VERSION = "0.2"
+FORMAT_VERSION = "0.2"
 DESC_MAX = 80
 ROOT_RESERVED = {"hot.md", "tags.md"}  # wiki 根派生页（log.md/index.md 为保留名，统一排除）
 
@@ -114,7 +114,7 @@ def render_index(d, pages, dirs):
     is_root = d == ""
     lines = []
     if is_root:
-        lines += ["---", f"okf_version: {OKF_VERSION}", "---", ""]
+        lines += ["---", f"format_version: {FORMAT_VERSION}", "---", ""]
     lines.append("# 索引" if is_root else f"# {d.rsplit('/', 1)[-1]} 索引")
     lines.append("")
     tip = ("每目录一份（渐进披露）：本页只列顶层概念与子目录入口，下钻读各目录 index。"

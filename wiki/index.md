@@ -1,5 +1,5 @@
 ---
-okf_version: 0.2
+format_version: 0.2
 ---
 
 # 索引

@@ -1,11 +1,11 @@
 id: index
-version: 0.5
+version: 0.6
 depends:
   - tag
-updated: 2026-09-12
+updated: 2026-09-13
 attachment:
-  - "wiki/index.md —— 根索引（含 okf_version，只列顶层与子目录入口）"
+  - "wiki/index.md —— 根索引（含 format_version，只列顶层与子目录入口）"
   - "各目录 index.md —— 每目录一份（渐进披露）"
   - "wiki/tags.md —— tag 反向索引"
 fields: {}
-inject: "索引 `wiki/index.md`（根，含 okf_version）与各目录 `index.md`（渐进披露，逐层下钻）/ `wiki/tags.md`（tag 反向索引）：只聚合、永不手编，重建走 `pipeline.py index`，检索第二入口"
+inject: "索引 `wiki/index.md`（根，含 format_version）与各目录 `index.md`（渐进披露，逐层下钻）/ `wiki/tags.md`（tag 反向索引）：只聚合、永不手编，重建走 `pipeline.py index`，检索第二入口"
