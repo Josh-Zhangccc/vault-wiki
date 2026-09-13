@@ -78,12 +78,12 @@
 - 信任字段（页面可选）：`generated`（谁生成）/ `verified`（事件列表，项单行 by+at）/ `stale_after`（过期时刻）/ `sources`（来源与信号）；层级推导不落盘——无记录=unverified、仅 agent/process=machine-confirmed、含 human=human-reviewed、过 stale_after=stale
 <!-- /plugin:trust -->
 
-<!-- plugin:vault v0.1 -->
+<!-- plugin:vault v0.2 -->
 - 真实资产仓库 `vault/`（VAULT）：容纳任意格式资产；命令侧只增，删改自由属于人
 <!-- /plugin:vault -->
 
-<!-- plugin:wiki v0.1 -->
-- wiki 容器 `wiki/`：出身二分——`wiki/vault/` 下为代理页（mapping 领地），其余为原生页（notes/sessions 领地）；库侧格式契约 OKF 的实例侧锚点
+<!-- plugin:wiki v0.2 -->
+- wiki 容器 `wiki/`：出身二分——`wiki/vault/` 下为代理页（有 VAULT 对应物），其余为原生页（出身在 wiki）；index / tags / hot / log 为派生页（机械投影）
 <!-- /plugin:wiki -->
 
 <!-- plugin:index v0.5 -->

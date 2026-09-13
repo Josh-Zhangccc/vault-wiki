@@ -82,11 +82,11 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 <!-- /check:trust -->
 
 <!-- check:vault -->
-无附检；VAULT 侧的对账（积压 / 失配 / 悬挂）由 mapping 插件的附检承担。
+无附检。
 <!-- /check:vault -->
 
 <!-- check:wiki -->
-无附检；OKF 合规检查散在各插件（type 值集由 check 底座查、保留名由 index / log 插件实现）。
+无附检。
 <!-- /check:wiki -->
 
 <!-- check:index -->
