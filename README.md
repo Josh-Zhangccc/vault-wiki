@@ -34,7 +34,7 @@
 
 前提：Python 3（纯标准库，无需安装依赖）、git、能读 AGENTS.md 与 skills 的 agent 环境（如 ZCode）；Obsidian 可选，仅作 viewer。
 
-在仓库根打开 agent 会话即可——AGENTS.md 是宪法（含插件注入区），六个命令以自然语言触发：**映射 / 保存 / 检索 / 检查 / 插件 / cli 参考**（map / save / query / check / plugin / cli，主本见 `.meta/command/`）。把文件放进 `vault/`，对 agent 说「映射」，就是第一次使用。
+在仓库根打开 agent 会话即可——AGENTS.md 是宪法（含插件注入区），六个命令以自然语言触发：**映射 / 保存 / 检索 / 检查 / 插件 / 内核参考**（map / save / query / check / plugin / wiki_plugin_kernel，主本见 `.meta/command/`）。把文件放进 `vault/`，对 agent 说「映射」，就是第一次使用。
 
 ## 文档指针
 
