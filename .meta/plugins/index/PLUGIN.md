@@ -12,31 +12,15 @@
 
 - 索引页全部可再生、永不手编：只聚合、不原创
 - 与实际页面集一致；保留名文件（index / log）、wiki 根派生页（hot / tags）、archive/ 子树不视为概念页、不入索引
-- 重建走确定性脚本：`python .meta/scripts/pipeline.py index`（幂等；LLM 不手写索引）
-
-## Checks
-
-- 索引与实际页面集偏差 → 跑 `pipeline.py index` 重建即修复（幂等，无 diff 即一致）；tags 同理（`pipeline.py tags`）
-- 手编痕迹 → warning
-
-## Usage
-
-- 写后重建（机械自动）：`python .meta/scripts/pipeline.py index`（各目录索引）与同脚本 `tags`（tag 反向索引）；LLM 不手写索引
-
-## Inject
-
-AGENTS.md 一行：检索入口指针。
-
-## Attachments
-
-无（重建逻辑在 `.meta/scripts/pipeline.py`，与 hot / log 共用管道）。
+- 重建走确定性脚本：`pipeline.py index`（幂等；LLM 不手写索引）
 
 ## Changelog
 
+- 0.8（2026-09-13）注入源移交 manifest：删 Checks / Usage / Inject / Attachments 节，md 回归纯文档
 - 0.7（2026-09-13）立「Usage」节：写侧契约交由命令注入区投影（单一文本源）
 - 0.6（2026-09-13）根索引版本自述字段更名 format_version（格式契约内化，插件清零外部契约引用）
 - 0.5（2026-09-12）manifest 去 layer（废分层：注入序改依赖拓扑+字母序，方向校验撤除）
 - 0.4（2026-09-12）标识符英文化：节头 / 附检契约键 / 类型枚举 / 管道调用参数
-- 0.1（2026-09-08）自原 wiki index（master catalog）规则转化；改为只整体重建、不增量写
-- 0.2（2026-09-10）manifest 增 layer: derived（分层立设：派生层，只向下依赖 tag）
 - 0.3（2026-09-10）每目录化（渐进披露）：根页带版本自述字段、子目录带计数；重建脚本化（pipeline.py index/tags，LLM 不手写）
+- 0.2（2026-09-10）manifest 增 layer: derived（分层立设：派生层，只向下依赖 tag）
+- 0.1（2026-09-08）自原 wiki index（master catalog）规则转化；改为只整体重建、不增量写

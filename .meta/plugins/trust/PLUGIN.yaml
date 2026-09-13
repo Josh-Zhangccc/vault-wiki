@@ -1,5 +1,5 @@
 id: trust
-version: 0.5
+version: 0.6
 depends: []
 updated: 2026-09-13
 attachment:
@@ -10,3 +10,10 @@ fields:
   stale_after: "YYYY-MM-DD 绝对时刻；过期判定 = now ≥ stale_after 的纯比较"
   sources: "来源列表，项含 id / resource / 可信度信号（author、usage_count、last_modified）"
 inject: "信任字段（页面可选）：`generated`（谁生成）/ `verified`（事件列表，项单行 by+at）/ `stale_after`（过期时刻）/ `sources`（来源与信号）；层级推导不落盘——无记录=unverified、仅 agent/process=machine-confirmed、含 human=human-reviewed、过 stale_after=stale"
+usage:
+  - 写页随手写 `generated`（块式：`by: agent/<当前模型>` / `at: 今日`）
+  - 复核动作发生时追加 `verified` 事件（单行 `by: <actor>, at: <日期>`），不为凑水位伪造
+checks:
+  - 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：generated 缺 by/at 或 actor 格式错、verified 事件缺 by/at 或格式错、stale_after 非 YYYY-MM-DD、sources 非列表 → warning
+  - 机械项（信息级）：stale 页清单（已过 stale_after）；信任水位（human-reviewed / machine-confirmed 计数）
+  - 语义（check 命令）：stale 页处置分诊（刷新时刻 / 重验证 / 废弃）——人决

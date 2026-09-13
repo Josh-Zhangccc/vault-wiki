@@ -44,29 +44,11 @@ sources:
 - 层级与 stale 判定均为纯比较，无隐藏状态
 - 字段全部可选：不写 = unverified，不阻断任何读写
 
-## Checks
-
-- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：generated 缺 by/at 或 actor 格式错、verified 事件缺 by/at 或格式错、stale_after 非 YYYY-MM-DD、sources 非列表 → warning
-- 机械项（信息级）：stale 页清单（已过 stale_after）；信任水位（human-reviewed / machine-confirmed 计数）
-- 语义（check 命令）：stale 页处置分诊（刷新时刻 / 重验证 / 废弃）——人决
-
-## Usage
-
-- 写页随手写 `generated`（块式：`by: agent/<当前模型>` / `at: 今日`）
-- 复核动作发生时追加 `verified` 事件（单行 `by: <actor>, at: <日期>`），不为凑水位伪造
-
-## Inject
-
-AGENTS.md 一行：信任字段与层级推导。
-
-## Attachments
-
-无 wiki 附件；附检脚本 `scripts/check.py`。
-
 ## Changelog
 
+- 0.6（2026-09-13）注入源移交 manifest：删 Checks / Usage / Inject / Attachments 节，md 回归纯文档
 - 0.5（2026-09-13）立「Usage」节：写侧契约交由命令注入区投影（单一文本源）
 - 0.4（2026-09-12）manifest 去 layer（废分层：注入序改依赖拓扑+字母序，方向校验撤除）
 - 0.3（2026-09-12）标识符英文化：节头 / 附检契约键 / 类型枚举 / 管道调用参数
-- 0.1（2026-09-11）立设：认领 registry 预留段四字段（generated / verified / stale_after / sources）回填插件段；层级推导不落盘；附检覆盖字段契约 + stale 清单 + 信任水位
 - 0.2（2026-09-12）披露修补：内联四字段全形状样例（冷启动审计猜点：规格无实例）
+- 0.1（2026-09-11）立设：认领 registry 预留段四字段（generated / verified / stale_after / sources）回填插件段；层级推导不落盘；附检覆盖字段契约 + stale 清单 + 信任水位

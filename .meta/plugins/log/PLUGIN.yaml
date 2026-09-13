@@ -1,5 +1,5 @@
 id: log
-version: 0.9
+version: 0.10
 depends: []
 updated: 2026-09-13
 attachment:
@@ -8,3 +8,8 @@ attachment:
   - "scripts/check.py —— 附检（条目日期契约）"
 fields: {}
 inject: "运行日志 `wiki/log.md`：置顶追加、条目不改写，条目 = 日期 + 类型（map/save/query/check/plugin/other）+ 一句话；窗口 ≤100 条，超限机械归档至 `wiki/archive/月/log.md`"
+usage:
+  - 写行（机械自动）：`python .meta/scripts/pipeline.py log <类型> "<一句话>"`；滚动窗口与归档由脚本执行
+checks:
+  - 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：无日期条目（`- ` 开头而不匹配日期格式，主文件与归档同检）→ error
+  - 语义项（check 命令）：历史条目被修改（git 可核）→ error；容量超限 → 机械归档后复查

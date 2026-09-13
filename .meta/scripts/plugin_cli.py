@@ -10,7 +10,7 @@ registry.yaml 插件段、.agents/skills/ 命令副本；protocol / reserved 段
   python .meta/scripts/plugin_cli.py ls          # 清单 + 依赖
   python .meta/scripts/plugin_cli.py validate    # 合规与依赖检查（只读，错误退出码 1）
   python .meta/scripts/plugin_cli.py audit       # 插件附检（发现式执行各插件 scripts/check.py）
-  python .meta/scripts/plugin_cli.py inject      # 重建 AGENTS.md 注入区与 check 检查块（幂等）
+  python .meta/scripts/plugin_cli.py inject      # 重建 AGENTS.md 注入区、check 检查块与命令用法块（幂等）
   python .meta/scripts/plugin_cli.py registry    # 重建 registry.yaml 插件段（幂等）
   python .meta/scripts/plugin_cli.py deploy      # 同步命令部署副本（幂等）
   python .meta/scripts/plugin_cli.py all         # validate + inject + registry + deploy
@@ -31,8 +31,10 @@ manifest 最小 YAML 子集：顶层 `key: value`、`key: []`、块式列表（`
 命令注入（第三种投影：插件写侧契约 → 命令）：
 - 命令 frontmatter 增可选 consumes：消费其写侧契约的插件 id 有序列表（序即执行序）；
   owner 驱动的命令必填且须含全部 owner
-- PLUGIN.md「Usage」节按 consumes 序投影进命令 SKILL.md 的 cmd-inject 标记块
-  （在场即注册）；改写侧契约改 PLUGIN.md，命令正文只留操作流程
+- manifest 的 usage / checks 列表是写侧契约与检查规则的唯一投影源：checks 按注入序
+  投影进 check 命令，usage 按命令 consumes 序投影进其 SKILL.md 的 cmd-inject 标记块
+  （在场即注册）；改契约改 PLUGIN.yaml，命令正文只留操作流程。
+  PLUGIN.md 回归纯文档（Role / Structure / Invariants / Changelog）
 
 插件附检契约（scripts/check.py，可选）：
 - 必须定义 check(ctx)，返回 issue 列表：{"level": "error"|"warning"|"info", "message": str}
@@ -65,8 +67,6 @@ INJECT_END = "<!-- wiki-inject:end -->"
 CHECK_SKILL = os.path.join(COMMANDS_DIR, "check", "SKILL.md")
 CHECK_INJECT_START = "<!-- check-inject:start -->"
 CHECK_INJECT_END = "<!-- check-inject:end -->"
-CHECK_SECTION_RE = re.compile(r"^## Checks\n(.*?)(?=^## |\Z)", re.S | re.M)
-USAGE_SECTION_RE = re.compile(r"^## Usage\n(.*?)(?=^## |\Z)", re.S | re.M)
 CMD_INJECT_START = "<!-- cmd-inject:start -->"
 CMD_INJECT_END = "<!-- cmd-inject:end -->"
 
@@ -245,9 +245,8 @@ def validate_bindings(plugins, errors):
             if pid not in plugins:
                 errors.append(f"[error] command {name}/: consumes {pid} is not an installed plugin")
                 continue
-            sec = USAGE_SECTION_RE.search(open(os.path.join(PLUGINS_DIR, pid, "PLUGIN.md"), encoding="utf-8").read())
-            if not sec or not sec.group(1).strip():
-                errors.append(f"[error] command {name}/: consumes {pid} but its PLUGIN.md lacks a Usage section")
+            if not (plugins[pid].get("usage") or []):
+                errors.append(f"[error] command {name}/: consumes {pid} but its manifest lacks a usage list")
         if "framework" not in owners:
             for pid in owners:
                 if pid not in consumes:
@@ -348,10 +347,10 @@ def do_inject(plugins):
 
 
 def do_check_inject(plugins):
-    """自各 PLUGIN.md「检查」节重建 check 命令注入区（在场即注册，幂等）。
+    """自各 manifest 的 checks 列表重建 check 命令注入区（在场即注册，幂等）。
 
-    与 AGENTS.md 注入区同构：PLUGIN.md 是本体，check 块是投影——改检查规则
-    改 PLUGIN.md「检查」节，本投影与手写块的漂移就此消失。
+    与 AGENTS.md 注入区同构：manifest 是本体，check 块是投影——改检查规则
+    改 manifest checks 列表，投影与手写块的漂移就此消失。
     """
     if not os.path.exists(CHECK_SKILL):
         print("[check-inject] check command absent, skipped")
@@ -363,10 +362,12 @@ def do_check_inject(plugins):
         return False
     blocks = []
     for pid in ordered_plugins(plugins):
-        sec = CHECK_SECTION_RE.search(open(os.path.join(PLUGINS_DIR, pid, "PLUGIN.md"), encoding="utf-8").read())
-        if sec and sec.group(1).strip():
-            blocks.append(f"<!-- check:{pid} -->\n{sec.group(1).strip()}\n<!-- /check:{pid} -->")
-    new_region = "\n\n".join(blocks) + "\n"
+        items = plugins[pid].get("checks") or []
+        if not items:
+            continue
+        body = "\n".join(f"- {it}" for it in items)
+        blocks.append(f"<!-- check:{pid} -->\n{body}\n<!-- /check:{pid} -->")
+    new_region = "\n\n".join(blocks) + "\n" if blocks else "\n"
     if new_region == m.group(1):
         print("[check-inject] unchanged")
         return True
@@ -378,10 +379,10 @@ def do_check_inject(plugins):
 
 
 def do_cmd_inject(plugins):
-    """自各 PLUGIN.md「Usage」节按命令 consumes 序重建命令注入区（在场即注册，幂等）。
+    """自各 manifest 的 usage 列表按命令 consumes 序重建命令注入区（在场即注册，幂等）。
 
     第三种投影：插件写侧契约 → 命令。命令 frontmatter 声明 consumes（有序，
-    序即执行序），各块为对应 PLUGIN.md Usage 节原文——命令正文只留操作流程，
+    序即执行序），各块为对应 manifest usage 列表原文——命令正文只留操作流程，
     字段契约与管道调用以本区为唯一文本源，装卸插件自动增删。
     """
     import wikilib
@@ -404,9 +405,10 @@ def do_cmd_inject(plugins):
             continue
         blocks = []
         for pid in consumes:
-            sec = USAGE_SECTION_RE.search(open(os.path.join(PLUGINS_DIR, pid, "PLUGIN.md"), encoding="utf-8").read())
-            if sec and sec.group(1).strip():
-                blocks.append(f"<!-- usage:{pid} -->\n{sec.group(1).strip()}\n<!-- /usage:{pid} -->")
+            items = plugins.get(pid, {}).get("usage") or []
+            if items:
+                body = "\n".join(f"- {it}" for it in items)
+                blocks.append(f"<!-- usage:{pid} -->\n{body}\n<!-- /usage:{pid} -->")
         new_region = "\n\n".join(blocks) + "\n" if blocks else "\n"
         if new_region == m.group(1):
             continue
