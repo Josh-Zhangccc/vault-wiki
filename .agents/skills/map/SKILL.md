@@ -6,12 +6,12 @@ description: "把 vault/ 中的资产映射为 wiki 代理页：SHA-256、镜像
 
 # map：映射
 
-把 `vault/`（VAULT）中的资产映射为 `wiki/vault/` 的代理页。登记起步、摘要可选——映射和理解解耦。纯登记动作：只面向已在 VAULT 的资产，不做任何 VAULT 侧处理（整理与打磨属 VAULT 治理，另议）。
+把 `vault/`（vault）中的资产映射为 `wiki/vault/` 的代理页。登记起步、摘要可选——映射和理解解耦。纯登记动作：只面向已在 vault 的资产，不做任何 vault 侧处理（整理与打磨属 vault 治理，另议）。
 
 ## Scope
 
 写：mapping（代理页）、log、hot、index
-读：registry（`.meta/protocol/registry.yaml`，字段与值集锚点）、trust（信任字段契约 `.meta/plugins/trust/`，generated 随手写）、tag（词表 `wiki/tags.md`）、vault（VAULT 原文）
+读：registry（`.meta/protocol/registry.yaml`，字段与值集锚点）、trust（信任字段契约 `.meta/plugins/trust/`，generated 随手写）、tag（词表 `wiki/tags.md`）、vault（vault 原文）
 
 ## Steps
 
@@ -25,7 +25,7 @@ description: "把 vault/ 中的资产映射为 wiki 代理页：SHA-256、镜像
 
 ## Prohibitions
 
-- 不修改 vault/ 任何文件（命令侧对 VAULT 只增）
+- 不修改 vault/ 任何文件（命令侧对 vault 只增）
 - 代理正文不复制原文全文；日记类资产代理以登记为主，不强制摘要
 - 不跳过哈希计算
 

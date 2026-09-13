@@ -17,8 +17,8 @@
 
 | 概念 | 定义 |
 |---|---|
-| VAULT | 真实资产仓库；命令侧只增，删改自由属于人 |
-| wiki | VAULT 的 md 代理层 + 原生笔记区 + 派生层（index / tags / hot / log） |
+| vault | 真实资产仓库；命令侧只增，删改自由属于人 |
+| wiki | vault 的 md 代理层 + 原生笔记区 + 派生层（index / tags / hot / log） |
 | SASU-L | 披露范式：agent 只经 system prompt → AGENTS.md → Skills → 用户原话 → loop 获知信息 |
 
 ## 布局

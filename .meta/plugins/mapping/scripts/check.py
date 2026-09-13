@@ -37,9 +37,9 @@ def check(ctx):
     real = _file_set(root, "vault", strip_md=False)
     proxy = _file_set(root, os.path.join("wiki", "vault"), strip_md=True)
     for f in sorted(real - proxy):
-        issues.append({"level": "info", "message": f"VAULT 待登记（积压）：{f}"})
+        issues.append({"level": "info", "message": f"vault 待登记（积压）：{f}"})
     for p in sorted(proxy - real):
-        issues.append({"level": "error", "message": f"孤儿代理（VAULT 无对应物）：wiki/vault/{p}"})
+        issues.append({"level": "error", "message": f"孤儿代理（vault 无对应物）：wiki/vault/{p}"})
     for rel, fm, body in ctx.pages:
         if not rel.startswith("vault/"):
             continue

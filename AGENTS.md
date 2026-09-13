@@ -3,7 +3,7 @@
 本仓库（目录 `agent-obsidian-template`，工程暂名 **vault-wiki**）是 vault-wiki 框架的构建工程，兼第一个**原型实例**：2026-09-08 起「插件 + 命令」架构直接落地，规范文档后置蒸馏。**定位个人自用**（2026-09-12 裁定：普世化与矩阵化测试搁置，边用边改）。
 
 - 布局：`.meta/`（插件与命令主本，原型核心）· `wiki/` + `vault/`（数据区）· `.agents/skills/`（部署副本）· `docs/`（设计档案）
-- 术语：**VAULT** = 真实资产仓库（命令侧只增，删改自由属于人）；**wiki** = VAULT 的 md 代理层与原生笔记；**vault**（小写）= 拥有代理层的结构插件
+- 术语：**wiki** = vault 的 md 代理层与原生笔记；**vault** = 真实资产仓库（命令侧只增，删改自由属于人）
 - 冲突裁决：以原型现状与讨论收敛结论为准；规范蒸馏时归并 `docs/` 历史版本
 - 个人库（`D:\Obsidian repo\agent-obsidian`）为只读实证样本：原 wiki 思想已转化为本原型（见 log 2026-09-08）
 
@@ -79,11 +79,11 @@
 <!-- /plugin:trust -->
 
 <!-- plugin:vault v0.2 -->
-- 真实资产仓库 `vault/`（VAULT）：容纳任意格式资产；命令侧只增，删改自由属于人
+- 真实资产仓库 `vault/`（vault）：容纳任意格式资产；命令侧只增，删改自由属于人
 <!-- /plugin:vault -->
 
 <!-- plugin:wiki v0.2 -->
-- wiki 容器 `wiki/`：出身二分——`wiki/vault/` 下为代理页（有 VAULT 对应物），其余为原生页（出身在 wiki）；index / tags / hot / log 为派生页（机械投影）
+- wiki 容器 `wiki/`：出身二分——`wiki/vault/` 下为代理页（有 vault 对应物），其余为原生页（出身在 wiki）；index / tags / hot / log 为派生页（机械投影）
 <!-- /plugin:wiki -->
 
 <!-- plugin:index v0.6 -->

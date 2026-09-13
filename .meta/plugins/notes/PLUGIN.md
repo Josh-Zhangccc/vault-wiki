@@ -1,6 +1,6 @@
 # notes：原生笔记
 
-出身就在 wiki 的知识：概念、问答、决策、实体。它们的「原文」就是 wiki 自身，VAULT 中无对应物。会话骨干页不在本区——归 sessions 插件。
+出身就在 wiki 的知识：概念、问答、决策、实体。它们的「原文」就是 wiki 自身，vault 中无对应物。会话骨干页不在本区——归 sessions 插件。
 
 ## Structure
 

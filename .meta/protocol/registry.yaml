@@ -35,7 +35,7 @@ plugins:
     raw_file:
       note: 根相对路径，代理页必有
     raw_sha256:
-      note: 十六进制 SHA-256，可从 VAULT 机械重算
+      note: 十六进制 SHA-256，可从 vault 机械重算
   sessions:
     participants:
       note: YAML 列表，actor 约定（human:名字 / process:流程名 / agent/模型标识），多 agent 协作扩展点
@@ -54,5 +54,5 @@ plugins:
 
 reserved:
   url:
-    note: 来源链接；URL 型资产本地化（下载入 VAULT）前暂存，预留 vault 扩展
+    note: 来源链接；URL 型资产本地化（下载入 vault）前暂存，预留 vault 扩展
 
