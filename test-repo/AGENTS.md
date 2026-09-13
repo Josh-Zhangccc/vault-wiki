@@ -1,20 +1,11 @@
 # test-repo
 
-个人知识库：vault 收纳真实资产，wiki 做 md 代理与原生笔记，agent 零先验读写。md + 纯文件是底座，Obsidian 等仅为可替换 viewer；结构契约见下方注入区，库操作走命令。
+个人知识库：vault 收纳真实资产，wiki 做 md 代理与原生笔记。md + 纯文件是底座，Obsidian 等仅为可替换 viewer。页面与结构契约见下方注入区；库操作走命令（map / save / query / check / plugin / wiki_plugin_kernel），流程见 `.agents/skills/`；git 提交随库操作即做、不攒批（信息格式单点见 `.meta/protocol/actions.md`）。
 
 ## 布局
 
-- `vault/` — 真实资产仓库（任意格式；命令侧只增，删改自由属于人）
-- `wiki/` — md 代理层与原生笔记；hot / index / tags / log 为派生层，机械维护
-- `.meta/` — 插件与命令主本、协议工件（registry / actions）、机械脚本（wiki_plugin_kernel / pipeline）
-- `.agents/skills/` — 命令部署副本
-
-## 运行纪律
-
-- 进库先读 `wiki/hot.md`；检索走 `wiki/index.md` 与 `wiki/tags.md`
-- 库操作走命令（map / save / query / check / plugin / wiki_plugin_kernel），流程见 `.agents/skills/`
-- 不可再生区只增不改：vault/ 与 wiki/notes/、wiki/sessions/ 的删改自由属于人
-- git 提交随库操作即做（`map: <资产名>` / `保存: <页标题>` 等，见 `.meta/protocol/actions.md`），不攒批
+- 数据区：`vault/`（真实资产）· `wiki/`（代理页 / 原生笔记 / 派生层 hot·index·tags·log）
+- 框架件：`.meta/`（插件与命令主本、协议工件 registry·actions、机械脚本）· `.agents/skills/`（命令副本）
 
 <!-- wiki-inject:start -->
 
