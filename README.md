@@ -39,18 +39,11 @@
 
 ## 部署：装进你自己的库
 
-框架本体三件：`.meta/`（插件与命令主本 + 内核脚本）、`.agents/skills/`（命令副本）、AGENTS.md 的 wiki 注入区。部署是 additive 拷贝，目标库存量内容不动、旧页渐进代理：
-
-1. 拷 `.meta/` 与 `.agents/skills/` 到目标库根
-2. 为目标库写 AGENTS.md：外壳自拟（一段身份 + 布局说明），注入区标记块从本仓库 AGENTS.md 原样拷入（范例见 `test-repo/AGENTS.md`）
-3. 建 `vault/` 与 `wiki/` 骨架：`wiki/notes/`、`wiki/sessions/`、`wiki/vault/` 空目录，`wiki/` 下 `index.md`、`tags.md`、`hot.md`、`log.md` 空派生页
-4. `python .meta/scripts/wiki_plugin_kernel.py all` 收敛投影
-5. 目标库根开 agent 会话，即完成部署（首跑同「上手」）
-
-升级 = 重拷三件 + 重跑内核。`docs/`、`log.md`、`test-repo/`、本 README 属构建工程，不随部署携带。
+框架本体三件：`.meta/`、`.agents/skills/`、AGENTS.md 注入区。部署是 additive 拷贝——拷两棵树 + 写 AGENTS 外壳 + 建空目录 + 内核收敛，目标库存量内容不动；派生页首跑自建，无需手造。逐步走查见 [docs/quickstart.md](docs/quickstart.md)（经干净目录彩排验证）。
 
 ## 文档指针
 
+- `docs/quickstart.md` — 快速开始：部署五步与首跑验证（走查）
 - `AGENTS.md` — 宪法与准则（agent 先读）
 - `log.md` — 工程日志：现状、阶段、过往操作
 - `.meta/protocol/` — 字段注册表、动作纪律、披露范式

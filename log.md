@@ -12,12 +12,13 @@
 
 ## 下一步
 
-- 设计文档重开卷：导论（目录/USP/理念/思路）先行，章=文件（repo 读者、问题驱动；OKF 不收编）
-- 部署进个人库（**用户自行执行**，agent 不主动触碰；additive：拷 .meta + skills + AGENTS 注入 + wiki 骨架种子，存量页不动、旧页渐进代理）
+- 设计文档重开卷：quickstart 已开卷（部署五步 + 首跑验证，净目录彩排）；导论（目录/USP/理念/思路）随后，章=文件（repo 读者、问题驱动；OKF 不收编）
+- 部署进个人库（**用户自行执行**，agent 不主动触碰；走查见 `docs/quickstart.md`，additive，存量页不动、旧页渐进代理）
 - skill 打磨随使用摩擦滚动；vault 治理（delegate）后议；测试矩阵等裁撤项不排期
 
 ## 过往操作
 
+- 2026-09-13 设计文档开卷：`docs/quickstart.md` 快速开始——净目录彩排实锤「四个空目录起步、派生页首跑自建」，README 部署节收束为指针防回声，AGENTS 的 docs 指针随更
 - 2026-09-13 工程首上 GitHub：私仓 `Josh-Zhangccc/vault-wiki`（用户授权 browser 操作建仓，agent 推 master、认证走本机凭据管理器）；README 增「部署」节（三件 additive 拷贝 + 骨架 + 内核收敛，部署链路成文）
 - 2026-09-13 专家评审修补（subagent 零先验分析 test-repo，真实缺陷七项全修）：附检硬检查——mapping 缺登记字段 error（附目录索引豁免修补）、link hot 手写断链扫描、代理孤儿降 info；契约缝合——notes 更新语义定为追加式并入留痕、提交词表中文化单点（actions.md）、tag 合并统一机械确认、verified 复核人发起；杂修——索引截断省略号、format_version 库内溯源、frontmatter 最小子集披露；git 泄漏项经裁定不修（不指望目录隔离限制 agent）；实例外壳消回声——身份+地图+指针（发现词表漂移实锤，回声必漂应验）
 - 2026-09-13 test-repo 参考实例立设：部署彩排（additive 拷贝 .meta/skills + 骨架种子 + 实例外壳首写）机械面全绿；样例走查（3 代理页 + 2 笔记）暴露链接全名约定未披露——link 注入行补定义（0.8），同步重拷纪律首跑；裁定外壳自足：虚拟库不感知构建工程，升级传播由根侧单方执行
