@@ -1,0 +1,13 @@
+id: hot
+version: 0.9
+depends: []
+updated: 2026-09-13
+attachment:
+  - "wiki/hot.md —— 单文件热缓存"
+fields: {}
+inject: "热缓存 `wiki/hot.md`：最近变更摘要（≤25 条、<5 日、单条 ≤200 字），agent 进库先读此页；写前先淘汰越界"
+usage:
+  - 写条目（机械自动）：`python .meta/scripts/pipeline.py hot <类型> "<wikilink + 一句话核心>"`（类型值集同 log，见 AGENTS 注入区 log 块）；窗口淘汰与截短由脚本执行
+checks:
+  - 窗口越界（超 25 条 / 超 5 日 / 单条超 200 字）→ 走一次 `pipeline.py hot <类型> "<补录>"` 或等下次写入自然收敛后复查
+  - 与 log 矛盾（log 有记录而 hot 全无踪迹）→ warning

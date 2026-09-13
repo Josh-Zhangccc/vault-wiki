@@ -1,0 +1,58 @@
+# vault-wiki 字段注册表（协议工件，聚合投影）
+#
+# 规则：
+# - 协议段（protocol）是权威源，修订须过 check
+# - 插件段（plugins）聚合自各 PLUGIN.yaml 的 fields 声明；check 校验一致，偏差以 PLUGIN.yaml 为准重写本表
+# - 预留段（reserved）是回填通道：合法暂存字段，ghost 检查豁免，待未来插件认领
+# - map / save 第 0 步必读本表（一次读取锚点：字段与值集在写入前可见，不扫描全库）
+# - 字段叠层组合：一个页面 = 协议字段 + 各插件字段（如 source 页 = 协议 + vault + tag）
+# - actor 约定（一切署名字段的统一值格式）：human:名字（如 human:Joss）/ process:流程名（如 process:hash-recalc）/ agent/模型标识（如 agent/GLM-5.3）
+# - 旧值迁移映射：seed→draft、developing→draft、done→stable
+
+protocol:
+  type:
+    values: [source, entity, qa, concept, comparison, decision, session]
+    note: 出身枚举，给机器读；实例生产者封闭（扩值须修订本表），导入/互操作消费侧容忍未知 type
+  status:
+    values: [draft, stable, deprecated]
+    note: 生命周期三值；deprecated = 为链接与历史保留、但已非当前
+  title:
+    note: 页面标题，字符串，建议必填
+  description:
+    note: 一句话描述（≤80 字）；索引条目与 viewer 提示的数据源，缺失时索引取正文首句
+  created:
+    note: YYYY-MM-DD
+  updated:
+    note: YYYY-MM-DD，任何写操作刷新
+
+plugins:
+  link:
+    aliases:
+      note: YAML 列表，别名/短名，供链接解析
+    related:
+      note: YAML 列表，相关页全名 wikilink
+  mapping:
+    raw_file:
+      note: 根相对路径，代理页必有
+    raw_sha256:
+      note: 十六进制 SHA-256，可从 vault 机械重算
+  sessions:
+    participants:
+      note: YAML 列表，actor 约定（human:名字 / process:流程名 / agent/模型标识），多 agent 协作扩展点
+  tag:
+    tags:
+      note: YAML 列表 ≤5；中文为主，英文 kebab-case；层级 父/子 ≤2；禁复述 type
+  trust:
+    generated:
+      note: 块式映射 by/at（actor 约定 + YYYY-MM-DD），页面由谁生成
+    sources:
+      note: 来源列表，项含 id / resource / 可信度信号（author、usage_count、last_modified）
+    stale_after:
+      note: YYYY-MM-DD 绝对时刻；过期判定 = now ≥ stale_after 的纯比较
+    verified:
+      note: 事件列表，项单行 `by: <actor>, at: <日期>`，可多次追加；信任层级由此推导
+
+reserved:
+  url:
+    note: 来源链接；URL 型资产本地化（下载入 vault）前暂存，预留 vault 扩展
+

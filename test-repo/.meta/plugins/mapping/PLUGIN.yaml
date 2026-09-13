@@ -1,0 +1,22 @@
+id: mapping
+version: 0.5
+depends:
+  - vault
+  - wiki
+updated: 2026-09-13
+attachment:
+  - "wiki/vault/ —— 代理层目录，与根下 vault/ 一比一镜像"
+  - "scripts/check.py —— 附检（镜像 diff / 哈希核验 / 全文复制 / stub 老化）"
+fields:
+  raw_file: "根相对路径，代理页必有"
+  raw_sha256: "十六进制 SHA-256，可从 vault 机械重算"
+commands:
+  - map
+inject: "代理层 `wiki/vault/`：与根 `vault/` 1:1 镜像（代理名 = 原名 + .md），页面必有 raw_file / raw_sha256；路径即出身证明"
+usage:
+  - 镜像定位：代理路径 = `wiki/vault/<原路径>.md`（原名 + .md，防同名碰撞）；md 资产同样有代理，无特例
+  - 登记字段：`type: source` + `raw_file`（根相对路径）/ `raw_sha256`（十六进制 SHA-256，不跳过计算）
+  - 正文一行描述起步，不复制原文全文；摘要 / 结构抽取为可选增强；日记类资产以登记为主，不强制摘要
+checks:
+  - 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：镜像 diff（vault 有文件无代理 → info 积压；代理无对应物 → error）、raw_file 悬挂 → error、raw_sha256 失配 → warning、疑似全文复制（md 资产正文 ≥80% 原文）→ warning、无描述 stub 且 updated 超 90 天 → warning
+  - 语义项（check 命令）：失配处置分诊（描述仍适用 → 机械重算自动修复；疑似失效 → 人决重映射或删）；日记类全文复制豁免判断

@@ -1,0 +1,7 @@
+id: vault
+version: 0.3
+depends: []
+updated: 2026-09-13
+attachment: []
+fields: {}
+inject: "真实资产仓库 `vault/`：容纳任意格式资产；命令侧只增，删改自由属于人"

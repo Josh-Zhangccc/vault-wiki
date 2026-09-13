@@ -1,0 +1,7 @@
+id: wiki
+version: 0.3
+depends: []
+updated: 2026-09-13
+attachment: []
+fields: {}
+inject: "wiki 容器 `wiki/`：出身二分——`wiki/vault/` 下为代理页（有 vault 对应物），其余为原生页（出身在 wiki）；index / tags / hot / log 为派生页（机械投影）"
