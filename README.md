@@ -25,7 +25,7 @@
 
 | 目录 | 内容 |
 |------|------|
-| `.meta/` | 原型核心：十一插件（概念双插件 wiki/vault、桥接 mapping、notes/sessions/link/tag/trust/index/hot/log；无分层，注入序=依赖拓扑+字母序）、五命令主本、协议工件（registry / actions / experiments）、机械脚本（plugin_cli / pipeline / wikilib，纯标准库零依赖） |
+| `.meta/` | 原型核心：十一插件（概念双插件 wiki/vault、桥接 mapping、notes/sessions/link/tag/trust/index/hot/log；无分层，注入序=依赖拓扑+字母序）、六命令主本、协议工件（registry / actions / experiments）、机械脚本（plugin_cli / pipeline / wikilib，纯标准库零依赖） |
 | `wiki/`、`vault/` | 数据区（空种子，待真实内容） |
 | `.agents/skills/` | 命令部署副本 |
 | `docs/` | 历史设计档案（`00-principles.md`、`01-okf.md` 格式契约成文），不起现行作用 |
@@ -34,7 +34,7 @@
 
 前提：Python 3（纯标准库，无需安装依赖）、git、能读 AGENTS.md 与 skills 的 agent 环境（如 ZCode）；Obsidian 可选，仅作 viewer。
 
-在仓库根打开 agent 会话即可——AGENTS.md 是宪法（含插件注入区），五个命令以自然语言触发：**映射 / 保存 / 检索 / 检查 / 插件**（map / save / query / check / plugin，主本见 `.meta/command/`）。把文件放进 `vault/`，对 agent 说「映射」，就是第一次使用。
+在仓库根打开 agent 会话即可——AGENTS.md 是宪法（含插件注入区），六个命令以自然语言触发：**映射 / 保存 / 检索 / 检查 / 插件 / cli 参考**（map / save / query / check / plugin / cli，主本见 `.meta/command/`）。把文件放进 `vault/`，对 agent 说「映射」，就是第一次使用。
 
 ## 文档指针
 

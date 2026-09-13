@@ -4,7 +4,7 @@
 
 ## 现状（2026-09-13）
 
-工程定位：**个人自用，尽快投入使用**——普世化与矩阵测试裁撤，SASU-L 为镜，边用边改。重构后架构：概念双插件 wiki/vault（纯声明、自足）+ 桥接 mapping（领 map 命令）+ 八结构插件，共十一、无分层（注入序=依赖拓扑+字母序）；五命令 map/save/query/check/plugin；三投影：插件行→AGENTS、Checks 节→check、Usage 节→命令（consumes 有序声明，序即执行序）；标识符英文化，格式契约内化插件（根索引自述 format_version），vault 大小写区分废除；docs/ 不起现行作用。新形态以用代验。
+工程定位：**个人自用，尽快投入使用**——普世化与矩阵测试裁撤，SASU-L 为镜，边用边改。重构后架构：概念双插件 wiki/vault（纯声明、自足）+ 桥接 mapping（领 map 命令）+ 八结构插件，共十一、无分层（注入序=依赖拓扑+字母序）；五命令 map/save/query/check/plugin + cli 参考 skill；三投影：插件行→AGENTS、checks→check、usage→命令（consumes 有序声明，序即执行序）；注入源全归 manifest，PLUGIN.md 回归纯文档；标识符英文化，格式契约内化插件（根索引自述 format_version），vault 大小写区分废除；docs/ 不起现行作用。新形态以用代验。
 
 ## 阶段
 
