@@ -7,7 +7,7 @@ description: "把 vault/ 中的资产映射为 wiki 代理页：SHA-256、镜像
 
 # map：映射
 
-把 `vault/` 中的资产映射为 `wiki/vault/` 的代理页。登记起步、摘要可选——映射和理解解耦。纯登记动作：只面向已在 vault 的资产，不做任何 vault 侧处理（整理与打磨属 vault 治理，另议）。
+把 `vault/` 中的资产映射为 `wiki/vault/` 的代理页——映射和理解解耦，纯登记动作（登记字段与正文尺度等写侧契约见注入区）。只面向已在 vault 的资产，不做任何 vault 侧处理（整理与打磨属 vault 治理，另议）。
 
 ## Scope
 
@@ -18,16 +18,14 @@ description: "把 vault/ 中的资产映射为 wiki 代理页：SHA-256、镜像
 
 1. **锚点（一次读取）**：读 `.meta/protocol/registry.yaml` 与 `wiki/tags.md`——值集与既有词表在写入前可见
 2. 读 vault/ 中目标资产
-3. 按注入区写侧契约组装代理页草稿（mapping 镜像与登记字段、trust generated、tag 打标），计算 SHA-256；**呈映射预览**（路径 / 哈希 / 描述 / tags），等用户确认
-4. 确认后写代理页；摘要 / 结构抽取为可选增强
-5. **写后管道**（确定性，机械自动不询问）：按注入区序执行各插件写入调用（index 重建 → hot → log），毕即 `python .meta/scripts/pipeline.py verify`（写后自证，未过即回修）；随即按提交纪律入库（`map: <资产名>`，见 `.meta/protocol/actions.md`）
+3. 按注入区写侧契约组装代理页草稿（mapping 镜像与登记字段、trust generated、tag 打标）；**呈映射预览**（路径 / 哈希 / 描述 / tags），等用户确认
+4. 确认后写代理页
+5. **写后管道**（确定性，机械自动不询问）：按注入区序执行各插件写入调用，毕即 `python .meta/scripts/pipeline.py verify`（写后自证，未过即回修）；随即按提交纪律入库（`map: <资产名>`，见 `.meta/protocol/actions.md`）
 6. 回报：路径 / 哈希 / 描述 / tags
 
 ## Prohibitions
 
-- 不修改 vault/ 任何文件（命令侧对 vault 只增）
-- 代理正文不复制原文全文；日记类资产代理以登记为主，不强制摘要
-- 不跳过哈希计算
+- 不修改 vault/ 任何文件（命令侧对 vault 只增）；其余硬规则（哈希必算、正文不复制全文等）以注入区 mapping 块为准
 
 ## Language
 

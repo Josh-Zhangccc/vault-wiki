@@ -23,7 +23,7 @@ description: "把当前对话、答案或洞见存为 wiki 原生笔记。先去
 
 ## Type and Destination
 
-type / status 值集以 registry 为准（一次读取锚点，不复抄表）；真歧义才问。落点按 type 分流：qa / concept / comparison / decision / entity 落 `wiki/notes/`；session 走下方长会话段，落 `wiki/sessions/`。source 型不在此列——有 vault 对应物的走 map。
+type / status 值集以 registry 为准（一次读取锚点，不复抄表）；真歧义才问。落点按 type 分流：session 走下方长会话段，其余原生型落 `wiki/notes/`（各型落点与契约见注入区）；source 型不在此列——有 vault 对应物的走 map。
 
 ## Workflow
 
@@ -33,15 +33,14 @@ type / status 值集以 registry 为准（一次读取锚点，不复抄表）�
 4. 以陈述句现在时重写：写知识，不写对话
 5. 按注入区写侧契约建页（notes / sessions 落点与形状、trust generated、tag 打标）；session 型走长会话段
 6. 对话中提到的 wiki 页写入 related 并加 wikilink
-7. **写后管道**（确定性，机械自动）：按注入区序执行各插件写入调用（index 重建 → hot → log），毕即 `python .meta/scripts/pipeline.py verify`（写后自证，未过即回修）；随即按提交纪律入库（`保存: <页标题>`，见 `.meta/protocol/actions.md`）
+7. **写后管道**（确定性，机械自动）：按注入区序执行各插件写入调用，毕即 `python .meta/scripts/pipeline.py verify`（写后自证，未过即回修）；随即按提交纪律入库（`保存: <页标题>`，见 `.meta/protocol/actions.md`）
 8. 回报：`Saved as [[标题]] in wiki/notes/`（session 型：`... in wiki/sessions/`）
 
 ## Long Sessions (session backbone)
 
 1. 按主题切 3-8 段（不按消息数），合并去机械细节
 2. 建 session 骨干页：落点、默认命名、participants、骨干页形状与提升规则见注入区 sessions 块
-3. 独立高价值主题提升为 `wiki/notes/` 页并从骨干页 wikilink；提升前同样先去重
-4. 标题真歧义才问
+3. 标题真歧义才问
 
 ## Writing Rules
 

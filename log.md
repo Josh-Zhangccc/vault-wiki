@@ -18,6 +18,7 @@
 
 ## 过往操作
 
+- 2026-09-13 命令层审计收尾：map/save 正文消回声（契约唯一源注入区）；usage 补出处（notes 值集归 registry、sessions 样例补路径、hot/log 类型值集指 AGENTS 注入区 log 块、mapping 吸收日记类豁免）
 - 2026-09-13 投影体系定形（六提交）：概念双插件纯化；格式契约内化（okf_version→format_version、VAULT 统一小写）；第三投影立设（consumes 有序声明 + 命令注入区，命令瘦身去手抄）；注入源全归 manifest（PLUGIN.md 回归纯文档）；内核定名 wiki_plugin_kernel 并立同名参考命令
 
 - 2026-09-12 定位与重构：裁定个人自用、以用代验（矩阵测试裁撤）；架构重构四提交（标识符英文化、废分层、概念双插件立设、ingest→map 更名）；OKF v0.2 成文 + 冷启动披露审计；雾港虚构库与真实库两轮实验全绿，确立 SASU-L 与零污染纪律；投入使用准备（清实验数据、README 门面化）
