@@ -72,7 +72,7 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 
 <!-- check:tag -->
 - 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：单页 >5 个 tag → warning；tags 复述 type → warning；层级超限（父/子 ≤2）或空段 → warning
-- 语义项（check 命令）：近重复 tag → warning 提示合并，合并由人执行
+- 语义项（check 命令）：近重复 tag → warning 提示合并；合并为机械确认项（呈清单，用户确认后执行）
 <!-- /check:tag -->
 
 <!-- check:trust -->

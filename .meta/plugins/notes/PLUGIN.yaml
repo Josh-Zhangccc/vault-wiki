@@ -1,5 +1,5 @@
 id: notes
-version: 0.11
+version: 0.12
 depends: []
 updated: 2026-09-13
 attachment:
@@ -10,7 +10,7 @@ commands:
 inject: "原生笔记 `wiki/notes/`：出身在 wiki 的知识（概念/问答/决策/实体），细分靠 type 字段；不可再生区，命令只增不改；会话骨干页归 sessions 插件"
 usage:
   - 落点 `wiki/notes/<标题>.md`，文件名自由（人起名）；type 值集见 registry
-  - 只增：更新既有笔记属人手改，命令不覆盖重写
+  - 只增：命令不整页重写既有笔记；更新 = 用户指令下的追加式并入（正文留痕）或人手改
 checks:
   - 笔记被命令覆盖的痕迹 → error
   - 近似重复笔记（Jaccard > 0.7）→ warning

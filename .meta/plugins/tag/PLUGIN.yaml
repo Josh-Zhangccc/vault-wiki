@@ -1,5 +1,5 @@
 id: tag
-version: 0.8
+version: 0.9
 depends: []
 updated: 2026-09-13
 attachment:
@@ -13,4 +13,4 @@ usage:
   - 新词规范：中文为主、英文小写 kebab-case、层级 `父/子` ≤2、每页 ≤5、禁复述 type
 checks:
   - 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：单页 >5 个 tag → warning；tags 复述 type → warning；层级超限（父/子 ≤2）或空段 → warning
-  - 语义项（check 命令）：近重复 tag → warning 提示合并，合并由人执行
+  - 语义项（check 命令）：近重复 tag → warning 提示合并；合并为机械确认项（呈清单，用户确认后执行）

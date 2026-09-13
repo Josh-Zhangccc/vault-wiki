@@ -18,7 +18,7 @@ description: "把当前对话、答案或洞见存为 wiki 原生笔记。先去
 
 1. 读 wiki/hot.md 与 wiki/index.md 了解近期上下文
 2. 按标题与关键概念搜既有页面
-3. 已有相关页：更新它而非新建；部分重叠：向用户展示差异，由用户选合并 / 更新 / 新建
+3. 已有相关页：不直接改写——展示差异由用户裁决（追加式并入须用户指令并留痕，或人手改，或另立新页）；部分重叠：同上展示差异由用户选
 4. 确认无覆盖页后才新建
 
 ## Type and Destination
@@ -57,7 +57,7 @@ type / status 值集以 registry 为准（一次读取锚点，不复抄表）�
 <!-- cmd-inject:start -->
 <!-- usage:notes -->
 - 落点 `wiki/notes/<标题>.md`，文件名自由（人起名）；type 值集见 registry
-- 只增：更新既有笔记属人手改，命令不覆盖重写
+- 只增：命令不整页重写既有笔记；更新 = 用户指令下的追加式并入（正文留痕）或人手改
 <!-- /usage:notes -->
 
 <!-- usage:sessions -->
@@ -69,6 +69,7 @@ type / status 值集以 registry 为准（一次读取锚点，不复抄表）�
 <!-- usage:trust -->
 - 写页随手写 `generated`（块式：`by: agent/<当前模型>` / `at: 今日`）
 - 复核动作发生时追加 `verified` 事件（单行 `by: <actor>, at: <日期>`），不为凑水位伪造
+- 复核由用户发起（人指令触发），agent 不自发追加 verified 事件
 <!-- /usage:trust -->
 
 <!-- usage:tag -->
