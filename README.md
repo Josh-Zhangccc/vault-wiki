@@ -8,7 +8,7 @@
 
 让 AI 编程助手（agent）替你经营一座「个人维基」：
 
-- 资产放进 `vault/`（任意格式：md / txt / csv / pdf / 图像……），**摄入**命令登记为 `wiki/vault/` 下的 md 代理页（SHA-256 + 元数据 + 链接）
+- 资产放进 `vault/`（任意格式：md / txt / csv / pdf / 图像……），**映射（map）**命令登记为 `wiki/vault/` 下的 md 代理页（SHA-256 + 元数据 + 链接）
 - 对话中的洞见与决策，**保存**命令沉淀为 `wiki/notes/` 原生笔记；会话骨干页入 `wiki/sessions/`
 - **检索**命令先读热缓存与索引再综合回答，产出带 wikilink 引用的答案
 - 索引 / 标签 / 热缓存 / 运行日志全为派生层自动维护；**检查**命令审计库健康，**插件**命令装卸结构插件
@@ -26,7 +26,7 @@
 
 | 目录 | 内容 |
 |------|------|
-| `.meta/` | 原型核心：九插件三层（origin/field/derived）、五命令主本、协议工件（registry / actions / experiments）、机械脚本（plugin_cli / pipeline / wikilib，纯标准库零依赖） |
+| `.meta/` | 原型核心：十一插件（概念双插件 wiki/vault、桥接 mapping、notes/sessions/link/tag/trust/index/hot/log；无分层，注入序=依赖拓扑+字母序）、五命令主本、协议工件（registry / actions / experiments）、机械脚本（plugin_cli / pipeline / wikilib，纯标准库零依赖） |
 | `wiki/`、`vault/` | 数据区（空种子，待真实内容） |
 | `.agents/skills/` | 命令部署副本 |
 | `docs/` | `00-principles.md` 历史设计档案；`01-okf.md` OKF 契约权威定义 |
@@ -35,7 +35,7 @@
 
 前提：Python 3（纯标准库，无需安装依赖）、git、能读 AGENTS.md 与 skills 的 agent 环境（如 ZCode）；Obsidian 可选，仅作 viewer。
 
-在仓库根打开 agent 会话即可——AGENTS.md 是宪法（含插件注入区），五个命令以自然语言触发：**摄入 / 保存 / 检索 / 检查 / 插件**（主本见 `.meta/command/`）。把文件放进 `vault/`，对 agent 说「摄入」，就是第一次使用。
+在仓库根打开 agent 会话即可——AGENTS.md 是宪法（含插件注入区），五个命令以自然语言触发：**映射 / 保存 / 检索 / 检查 / 插件**（map / save / query / check / plugin，主本见 `.meta/command/`）。把文件放进 `vault/`，对 agent 说「映射」，就是第一次使用。
 
 ## 文档指针
 
@@ -46,4 +46,4 @@
 
 ## 沿革
 
-2026-08-26 以个人库结构副本起建，08-28 重定位为本工程，09-08 起「插件 + 命令」原型直接落地、经真实操作验证后冻结为现状。设计谱系讨论存于个人库（见 AGENTS.md 指针）。
+2026-08-26 以个人库结构副本起建，08-28 重定位为本工程，09-08 起「插件 + 命令」原型直接落地、经真实操作验证后冻结；09-12 重构：概念双插件 wiki/vault 立设、原 vault 插件更名 mapping、废除分层、标识符英文化。设计谱系讨论存于个人库（见 AGENTS.md 指针）。

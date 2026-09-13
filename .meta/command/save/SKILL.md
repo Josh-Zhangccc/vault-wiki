@@ -22,7 +22,7 @@ description: "把当前对话、答案或洞见存为 wiki 原生笔记。先去
 
 ## Type and Destination
 
-type / status 值集以 registry 为准（一次读取锚点，不复抄表）；真歧义才问。落点按 type 分流：qa / concept / comparison / decision / entity 落 `wiki/notes/`；session 走下方长会话段，落 `wiki/sessions/`。source 型不在此列——有 VAULT 对应物的走 ingest。
+type / status 值集以 registry 为准（一次读取锚点，不复抄表）；真歧义才问。落点按 type 分流：qa / concept / comparison / decision / entity 落 `wiki/notes/`；session 走下方长会话段，落 `wiki/sessions/`。source 型不在此列——有 VAULT 对应物的走 map。
 
 ## Workflow
 

@@ -9,7 +9,7 @@
 |---|---|---|
 | 可再生 | `wiki/index.md`、`wiki/tags.md`、`wiki/hot.md`、`.meta/protocol/registry.yaml` 插件段 | 派生投影，可整体重建，管道随便重跑 |
 | 珍贵 | `wiki/notes/**`、`.meta/plugins/**`、`.meta/command/**`、AGENTS.md 手写区 | 只增或人改 |
-| 不可变 | `wiki/log.md` 与 `wiki/log-archive/**` 的既有条目、`vault/**`（命令视角） | 写入后内容不得改写 |
+| 不可变 | `wiki/log.md` 与 `wiki/archive/**` 的既有条目、`vault/**`（命令视角） | 写入后内容不得改写 |
 
 ## 动作分级
 
@@ -26,8 +26,8 @@
 
 > git 在本框架是过程层基础设施（版本控制 / 审计证据 / lockfile），不是插件；本节是数据区写入的提交规则，工程侧见宪法准则 8，两域互不侵占。
 
-- **一次写操作 = 一提交**：一次 ingest / save / check 修复，连同其全部派生产物（页面 + index / tags / hot / log + vault 新资产）原子入提交；verify 通过才提交——提交的即自证过的，无变更不提交
-- **信息格式 `模块: 概述`**（与工程侧同构；模块词半角冒号）：数据区模块词表按命令取——`摄入: <资产>`、`保存: <页标题>`、`检查: <结论>`、`检索: <主题>`
+- **一次写操作 = 一提交**：一次 map / save / check 修复，连同其全部派生产物（页面 + index / tags / hot / log + vault 新资产）原子入提交；verify 通过才提交——提交的即自证过的，无变更不提交
+- **信息格式 `模块: 概述`**（与工程侧同构；模块词半角冒号）：数据区模块词表按命令取——`map: <资产>`、`save: <页标题>`、`check: <结论>`、`query: <主题>`
 - **agent 只 add 自己写过的路径，禁 `git add -A`**：人的手写变更（vault 删改、wiki 手编）提交权属人，agent 只报告；代提交须用户明示
 - 不 push、禁改写历史（宪法准则 8，全局适用）
 
@@ -36,5 +36,5 @@
 - **log**：主文件窗口 ≤100 条（约 14k 字符）。写 log 走 `pipeline.py log <类型> "<一句话>"`——超限自动把最旧一段按条目月份分组搬入 `wiki/archive/YYYY-MM/log.md`，条目内容一字不改、只搬位置；归档目录落入不可变区
 - **hot**：≤25 条、<5 日、单条 ≤200 字符。写 hot 走 `pipeline.py hot <类型> "<一句话>"`——写前自动淘汰越界条目、截超长条目
 - **索引 / 注册表**：与实际偏差 → check 中直接重建（`pipeline.py index` / `tags`；`plugin_cli.py all`），不询问
-- **词表**：ingest / save 写 tags 前先读 `wiki/tags.md`（派生区即词表），优先复用既有词；近重复合并是机械确认项
+- **词表**：map / save 写 tags 前先读 `wiki/tags.md`（派生区即词表），优先复用既有词；近重复合并是机械确认项
 - **参数属主**：滚动窗口等机械参数以 `pipeline.py` 源码为准（脚本源码即规则清单），插件 PLUGIN.md 保留语义说明——命令与文档不复抄数字

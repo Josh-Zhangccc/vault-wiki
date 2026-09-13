@@ -21,7 +21,7 @@
 ## Checks
 
 - 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：镜像 diff（VAULT 有文件无代理 → info 积压；代理无对应物 → error）、raw_file 悬挂 → error、raw_sha256 失配 → warning、疑似全文复制（md 资产正文 ≥80% 原文）→ warning、无描述 stub 且 updated 超 90 天 → warning
-- 语义项（check 命令）：失配处置分诊（描述仍适用 → 机械重算自动修复；疑似失效 → 人决重摄入或删）；日记类全文复制豁免判断
+- 语义项（check 命令）：失配处置分诊（描述仍适用 → 机械重算自动修复；疑似失效 → 人决重映射或删）；日记类全文复制豁免判断
 
 ## Inject
 
@@ -33,4 +33,5 @@ AGENTS.md 一行：代理层语义与出身规则。
 
 ## Changelog
 
+- 0.2（2026-09-12）命令 ingest 更名 map 并瘦身：打磨询问移除（纯登记；VAULT 治理另议）
 - 0.1（2026-09-12）自 vault 插件更名立设（版本重起，旧史见 git）：语义依赖 vault+wiki；「命令对 VAULT 只增，删改自由属于人」条款移交 vault 概念插件注入行；出身二分概念移交 wiki 插件

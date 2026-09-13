@@ -1,5 +1,5 @@
 id: mapping
-version: 0.1
+version: 0.2
 depends:
   - vault
   - wiki
@@ -11,5 +11,5 @@ fields:
   raw_file: "根相对路径，代理页必有"
   raw_sha256: "十六进制 SHA-256，可从 VAULT 机械重算"
 commands:
-  - ingest
+  - map
 inject: "代理层 `wiki/vault/`：与根 `vault/` 1:1 镜像（代理名 = 原名 + .md），页面必有 raw_file / raw_sha256；路径即出身证明"
