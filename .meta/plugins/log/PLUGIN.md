@@ -31,6 +31,7 @@ log.max_chars: 14000     # 窗口字符上限（约）
 
 ## Changelog
 
+- 0.11（2026-09-13）usage 类型参数补值集出处（AGENTS 注入区 log 块，消跨块猜点）
 - 0.10（2026-09-13）注入源移交 manifest：删 Checks / Usage / Inject / Attachments 节，md 回归纯文档
 - 0.9（2026-09-13）立「Usage」节：写侧契约交由命令注入区投影（单一文本源）
 - 0.8（2026-09-12）manifest 去 layer（废分层：注入序改依赖拓扑+字母序，方向校验撤除）

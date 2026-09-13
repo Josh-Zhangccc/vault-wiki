@@ -45,7 +45,7 @@ description: "把 vault/ 中的资产映射为 wiki 代理页：SHA-256、镜像
 <!-- usage:mapping -->
 - 镜像定位：代理路径 = `wiki/vault/<原路径>.md`（原名 + .md，防同名碰撞）；md 资产同样有代理，无特例
 - 登记字段：`type: source` + `raw_file`（根相对路径）/ `raw_sha256`（十六进制 SHA-256，不跳过计算）
-- 正文一行描述起步，不复制原文全文；摘要 / 结构抽取为可选增强
+- 正文一行描述起步，不复制原文全文；摘要 / 结构抽取为可选增强；日记类资产以登记为主，不强制摘要
 <!-- /usage:mapping -->
 
 <!-- usage:trust -->
@@ -63,10 +63,10 @@ description: "把 vault/ 中的资产映射为 wiki 代理页：SHA-256、镜像
 <!-- /usage:index -->
 
 <!-- usage:hot -->
-- 写条目（机械自动）：`python .meta/scripts/pipeline.py hot <类型> "<wikilink + 一句话核心>"`；窗口淘汰与截短由脚本执行
+- 写条目（机械自动）：`python .meta/scripts/pipeline.py hot <类型> "<wikilink + 一句话核心>"`（类型值集同 log，见 AGENTS 注入区 log 块）；窗口淘汰与截短由脚本执行
 <!-- /usage:hot -->
 
 <!-- usage:log -->
-- 写行（机械自动）：`python .meta/scripts/pipeline.py log <类型> "<一句话>"`；滚动窗口与归档由脚本执行
+- 写行（机械自动）：`python .meta/scripts/pipeline.py log <类型> "<一句话>"`（类型值集见 AGENTS 注入区 log 块）；滚动窗口与归档由脚本执行
 <!-- /usage:log -->
 <!-- cmd-inject:end -->

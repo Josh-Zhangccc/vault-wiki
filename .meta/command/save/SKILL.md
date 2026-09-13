@@ -57,13 +57,13 @@ type / status 值集以 registry 为准（一次读取锚点，不复抄表）�
 
 <!-- cmd-inject:start -->
 <!-- usage:notes -->
-- 落点 `wiki/notes/<标题>.md`，文件名自由（人起名）；type 取 qa / concept / comparison / decision / entity（值集见 registry）
+- 落点 `wiki/notes/<标题>.md`，文件名自由（人起名）；type 值集见 registry
 - 只增：更新既有笔记属人手改，命令不覆盖重写
 <!-- /usage:notes -->
 
 <!-- usage:sessions -->
 - 落点 `wiki/sessions/YYYY-MM-DD-<主题>.md`（默认命名），type: session，participants 必填（actor 列表）
-- 骨干页五节形状：核心结论 / 决策与理由 / 非显然洞见 / 开放问题 / 相关页（全形状样例见本插件 Example）
+- 骨干页五节形状：核心结论 / 决策与理由 / 非显然洞见 / 开放问题 / 相关页（全形状样例见 `.meta/plugins/sessions/PLUGIN.md` Example 节）
 - 独立高价值主题提升为 `wiki/notes/` 页，骨干页留 wikilink；提升前先去重
 <!-- /usage:sessions -->
 
@@ -82,10 +82,10 @@ type / status 值集以 registry 为准（一次读取锚点，不复抄表）�
 <!-- /usage:index -->
 
 <!-- usage:hot -->
-- 写条目（机械自动）：`python .meta/scripts/pipeline.py hot <类型> "<wikilink + 一句话核心>"`；窗口淘汰与截短由脚本执行
+- 写条目（机械自动）：`python .meta/scripts/pipeline.py hot <类型> "<wikilink + 一句话核心>"`（类型值集同 log，见 AGENTS 注入区 log 块）；窗口淘汰与截短由脚本执行
 <!-- /usage:hot -->
 
 <!-- usage:log -->
-- 写行（机械自动）：`python .meta/scripts/pipeline.py log <类型> "<一句话>"`；滚动窗口与归档由脚本执行
+- 写行（机械自动）：`python .meta/scripts/pipeline.py log <类型> "<一句话>"`（类型值集见 AGENTS 注入区 log 块）；滚动窗口与归档由脚本执行
 <!-- /usage:log -->
 <!-- cmd-inject:end -->

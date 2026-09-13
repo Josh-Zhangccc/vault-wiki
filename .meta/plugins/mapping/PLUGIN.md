@@ -16,6 +16,7 @@
 
 ## Changelog
 
+- 0.5（2026-09-13）usage 吸收日记类豁免（自 map 命令禁则移入，消正文回声）
 - 0.4（2026-09-13）注入源移交 manifest：删 Fields / Checks / Usage / Inject / Attachments 节，md 回归纯文档
 - 0.3（2026-09-13）立「Usage」节：写侧契约交由命令注入区投影（单一文本源）
 - 0.2（2026-09-12）命令 ingest 更名 map 并瘦身：打磨询问移除（纯登记；vault 治理另议）

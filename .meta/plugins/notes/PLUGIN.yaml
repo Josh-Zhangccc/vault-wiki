@@ -1,5 +1,5 @@
 id: notes
-version: 0.10
+version: 0.11
 depends: []
 updated: 2026-09-13
 attachment:
@@ -9,7 +9,7 @@ commands:
   - save
 inject: "原生笔记 `wiki/notes/`：出身在 wiki 的知识（概念/问答/决策/实体），细分靠 type 字段；不可再生区，命令只增不改；会话骨干页归 sessions 插件"
 usage:
-  - 落点 `wiki/notes/<标题>.md`，文件名自由（人起名）；type 取 qa / concept / comparison / decision / entity（值集见 registry）
+  - 落点 `wiki/notes/<标题>.md`，文件名自由（人起名）；type 值集见 registry
   - 只增：更新既有笔记属人手改，命令不覆盖重写
 checks:
   - 笔记被命令覆盖的痕迹 → error

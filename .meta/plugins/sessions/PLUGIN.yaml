@@ -1,5 +1,5 @@
 id: sessions
-version: 0.7
+version: 0.8
 depends: []
 updated: 2026-09-13
 attachment:
@@ -11,7 +11,7 @@ commands:
 inject: "原生会话 `wiki/sessions/`：会话骨干页（type: session，participants 必填=actor 列表，默认命名 YYYY-MM-DD-<主题>）；高价值主题提升为 `wiki/notes/` 独立页并回链；不可再生区，命令只增不改"
 usage:
   - 落点 `wiki/sessions/YYYY-MM-DD-<主题>.md`（默认命名），type: session，participants 必填（actor 列表）
-  - 骨干页五节形状：核心结论 / 决策与理由 / 非显然洞见 / 开放问题 / 相关页（全形状样例见本插件 Example）
+  - 骨干页五节形状：核心结论 / 决策与理由 / 非显然洞见 / 开放问题 / 相关页（全形状样例见 `.meta/plugins/sessions/PLUGIN.md` Example 节）
   - 独立高价值主题提升为 `wiki/notes/` 页，骨干页留 wikilink；提升前先去重
 checks:
   - 机械项（audit 覆盖）：session 型页面在 `wiki/sessions/` 之外（或反向）→ warning；participants 缺失或项不符 actor 约定 → warning

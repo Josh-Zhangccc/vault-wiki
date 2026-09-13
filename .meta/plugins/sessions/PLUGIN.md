@@ -45,6 +45,7 @@ tags: [游戏/美术]
 
 ## Changelog
 
+- 0.8（2026-09-13）usage 样例指针显式化——补 `.meta/plugins/sessions/PLUGIN.md` 路径（零先验）
 - 0.7（2026-09-13）注入源移交 manifest：删 Checks / Usage / Inject / Attachments 节，md 回归纯文档
 - 0.6（2026-09-13）立「Usage」节：写侧契约交由命令注入区投影（单一文本源）
 - 0.5（2026-09-12）manifest 去 layer（废分层：注入序改依赖拓扑+字母序，方向校验撤除）

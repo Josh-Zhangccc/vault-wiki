@@ -43,6 +43,6 @@ description: "在 wiki 中检索并综合回答：热缓存→索引→grep→�
 
 <!-- cmd-inject:start -->
 <!-- usage:log -->
-- 写行（机械自动）：`python .meta/scripts/pipeline.py log <类型> "<一句话>"`；滚动窗口与归档由脚本执行
+- 写行（机械自动）：`python .meta/scripts/pipeline.py log <类型> "<一句话>"`（类型值集见 AGENTS 注入区 log 块）；滚动窗口与归档由脚本执行
 <!-- /usage:log -->
 <!-- cmd-inject:end -->

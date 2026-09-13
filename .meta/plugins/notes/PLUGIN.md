@@ -15,6 +15,7 @@
 
 ## Changelog
 
+- 0.11（2026-09-13）usage 去 type 枚举，值集唯一源 registry（消三重复述）
 - 0.10（2026-09-13）注入源移交 manifest：删 Checks / Usage / Inject / Attachments 节，md 回归纯文档
 - 0.9（2026-09-13）立「Usage」节：写侧契约交由命令注入区投影（单一文本源）
 - 0.8（2026-09-12）manifest 去 layer（废分层：注入序改依赖拓扑+字母序，方向校验撤除）

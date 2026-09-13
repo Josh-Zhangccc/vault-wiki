@@ -50,7 +50,7 @@
 
 > 本区为插件注入的投影，装卸插件时同步增删对应标记块；手写内容不进此区。
 
-<!-- plugin:hot v0.8 -->
+<!-- plugin:hot v0.9 -->
 - 热缓存 `wiki/hot.md`：最近变更摘要（≤25 条、<5 日、单条 ≤200 字），agent 进库先读此页；写前先淘汰越界
 <!-- /plugin:hot -->
 
@@ -58,15 +58,15 @@
 - 链接语法 `[[页面全名]]`（禁截断式引用，同名歧义带路径）；字段 `related` / `aliases`；断链 = warning（尚未写下），孤儿（无入链无引用，派生页不算源）= warning
 <!-- /plugin:link -->
 
-<!-- plugin:log v0.10 -->
+<!-- plugin:log v0.11 -->
 - 运行日志 `wiki/log.md`：置顶追加、条目不改写，条目 = 日期 + 类型（map/save/query/check/plugin/other）+ 一句话；窗口 ≤100 条，超限机械归档至 `wiki/archive/月/log.md`
 <!-- /plugin:log -->
 
-<!-- plugin:notes v0.10 -->
+<!-- plugin:notes v0.11 -->
 - 原生笔记 `wiki/notes/`：出身在 wiki 的知识（概念/问答/决策/实体），细分靠 type 字段；不可再生区，命令只增不改；会话骨干页归 sessions 插件
 <!-- /plugin:notes -->
 
-<!-- plugin:sessions v0.7 -->
+<!-- plugin:sessions v0.8 -->
 - 原生会话 `wiki/sessions/`：会话骨干页（type: session，participants 必填=actor 列表，默认命名 YYYY-MM-DD-<主题>）；高价值主题提升为 `wiki/notes/` 独立页并回链；不可再生区，命令只增不改
 <!-- /plugin:sessions -->
 
@@ -90,7 +90,7 @@
 - 索引 `wiki/index.md`（根，含 format_version）与各目录 `index.md`（渐进披露，逐层下钻）/ `wiki/tags.md`（tag 反向索引）：只聚合、永不手编，重建走 `pipeline.py index`，检索第二入口
 <!-- /plugin:index -->
 
-<!-- plugin:mapping v0.4 -->
+<!-- plugin:mapping v0.5 -->
 - 代理层 `wiki/vault/`：与根 `vault/` 1:1 镜像（代理名 = 原名 + .md），页面必有 raw_file / raw_sha256；路径即出身证明
 <!-- /plugin:mapping -->
 
