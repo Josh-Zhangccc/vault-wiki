@@ -37,6 +37,18 @@
 
 在仓库根打开 agent 会话即可——AGENTS.md 是宪法（含插件注入区），六个命令以自然语言触发：**映射 / 保存 / 检索 / 检查 / 插件 / 内核参考**（map / save / query / check / plugin / wiki_plugin_kernel，主本见 `.meta/command/`）。把文件放进 `vault/`，对 agent 说「映射」，就是第一次使用。
 
+## 部署：装进你自己的库
+
+框架本体三件：`.meta/`（插件与命令主本 + 内核脚本）、`.agents/skills/`（命令副本）、AGENTS.md 的 wiki 注入区。部署是 additive 拷贝，目标库存量内容不动、旧页渐进代理：
+
+1. 拷 `.meta/` 与 `.agents/skills/` 到目标库根
+2. 为目标库写 AGENTS.md：外壳自拟（一段身份 + 布局说明），注入区标记块从本仓库 AGENTS.md 原样拷入（范例见 `test-repo/AGENTS.md`）
+3. 建 `vault/` 与 `wiki/` 骨架：`wiki/notes/`、`wiki/sessions/`、`wiki/vault/` 空目录，`wiki/` 下 `index.md`、`tags.md`、`hot.md`、`log.md` 空派生页
+4. `python .meta/scripts/wiki_plugin_kernel.py all` 收敛投影
+5. 目标库根开 agent 会话，即完成部署（首跑同「上手」）
+
+升级 = 重拷三件 + 重跑内核。`docs/`、`log.md`、`test-repo/`、本 README 属构建工程，不随部署携带。
+
 ## 文档指针
 
 - `AGENTS.md` — 宪法与准则（agent 先读）
