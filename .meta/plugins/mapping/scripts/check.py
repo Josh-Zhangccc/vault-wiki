@@ -43,6 +43,8 @@ def check(ctx):
     for rel, fm, body in ctx.pages:
         if not rel.startswith("vault/"):
             continue
+        if os.path.basename(rel) == "index.md":
+            continue  # 目录索引：导航层保留名，非代理页
         rf = fm.get("raw_file")
         if not rf:
             issues.append({"level": "error", "message": f"{rel}：缺登记字段 raw_file（代理页必有）"})

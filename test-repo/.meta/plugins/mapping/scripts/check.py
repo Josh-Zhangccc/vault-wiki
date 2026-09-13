@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""vault 插件附检：镜像 diff、raw_file 悬挂、哈希核验、疑似全文复制、stub 老化。
+"""mapping 插件附检：镜像 diff、登记字段完备、raw_file 悬挂、哈希核验、疑似全文复制、stub 老化。
 
 只读报告——哈希重算等修复动作归命令（actions.md 机械自动项），附检不执行。
 参数依据：原库取证（哈希失配 40%、全文复制 33%）与渐进富化承诺（新 stub 免告）。
@@ -43,9 +43,14 @@ def check(ctx):
     for rel, fm, body in ctx.pages:
         if not rel.startswith("vault/"):
             continue
+        if os.path.basename(rel) == "index.md":
+            continue  # 目录索引：导航层保留名，非代理页
         rf = fm.get("raw_file")
         if not rf:
+            issues.append({"level": "error", "message": f"{rel}：缺登记字段 raw_file（代理页必有）"})
             continue
+        if not fm.get("raw_sha256"):
+            issues.append({"level": "error", "message": f"{rel}：缺登记字段 raw_sha256（代理页必有）"})
         fp = os.path.join(root, rf)
         if not os.path.exists(fp):
             issues.append({"level": "error", "message": f"{rel}：raw_file 指向不存在（{rf}）"})
