@@ -54,8 +54,8 @@
 - 热缓存 `wiki/hot.md`：最近变更摘要（≤25 条、<5 日、单条 ≤200 字），agent 进库先读此页；写前先淘汰越界
 <!-- /plugin:hot -->
 
-<!-- plugin:link v0.8 -->
-- 链接语法 `[[页面全名]]`——全名 = wiki/ 内相对路径去末尾 .md（如 `notes/X`、pdf 资产代理 `vault/a.pdf`）；禁截断式引用，同名歧义带路径；字段 `related` / `aliases`；断链 = warning（尚未写下），孤儿（无入链无引用，派生页不算源）= warning
+<!-- plugin:link v0.9 -->
+- 链接语法 `[[页面全名]]`——全名 = wiki/ 内相对路径去末尾 .md（如 `notes/X`、pdf 资产代理 `vault/a.pdf`、md 资产代理 `vault/原名.md`，仅去一个）；禁截断式引用，同名歧义带路径；字段 `related` / `aliases`；断链 = warning（尚未写下），孤儿（无入链无引用，派生页不算源）= 原生页 warning、代理页 info
 <!-- /plugin:link -->
 
 <!-- plugin:log v0.11 -->
@@ -90,7 +90,7 @@
 - 索引 `wiki/index.md`（根，含 format_version）与各目录 `index.md`（渐进披露，逐层下钻）/ `wiki/tags.md`（tag 反向索引）：只聚合、永不手编，重建走 `pipeline.py index`，检索第二入口
 <!-- /plugin:index -->
 
-<!-- plugin:mapping v0.5 -->
+<!-- plugin:mapping v0.6 -->
 - 代理层 `wiki/vault/`：与根 `vault/` 1:1 镜像（代理名 = 原名 + .md），页面必有 raw_file / raw_sha256；路径即出身证明
 <!-- /plugin:mapping -->
 
