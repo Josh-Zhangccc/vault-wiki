@@ -4,7 +4,7 @@
 
 ## 现状（2026-09-13）
 
-工程定位：**个人自用，尽快投入使用**——普世化与矩阵测试裁撤，SASU-L 为镜，边用边改。架构终态：概念双插件 wiki/vault（纯声明）+ 桥接 mapping + 八结构插件，共十一、无分层（注入序=依赖拓扑+字母序）；六命令 map/save/query/check/plugin/wiki_plugin_kernel（末者为插件内核使用参考）。三投影一源：manifest（inject / checks / usage）→ AGENTS 注入区、check 检查块、命令用法块（consumes 有序声明，序即执行序）；PLUGIN.md 回归纯文档（Role / Structure / Invariants / Changelog），插件内核 wiki_plugin_kernel.py 为唯一投影机。格式契约内化插件（根索引自述 format_version），vault 大小写统一；docs/ 不起现行作用。新形态以用代验。`test-repo/` 为参考实例：部署彩排产物（additive 拷贝 + 实例外壳 + 样例走查），框架变更后同步重拷。
+工程定位：**个人自用，尽快投入使用**——普世化与矩阵测试裁撤，SASU-L 为镜，边用边改。架构终态：概念双插件 wiki/vault（纯声明）+ 桥接 mapping + 八结构插件，共十一、无分层（注入序=依赖拓扑+字母序）；六命令 map/save/query/check/plugin/wiki_plugin_kernel（末者为插件内核使用参考）。三投影一源：manifest（inject / checks / usage）→ AGENTS 注入区、check 检查块、命令用法块（consumes 有序声明，序即执行序）；PLUGIN.md 回归纯文档（Role / Structure / Invariants / Changelog），插件内核 wiki_plugin_kernel.py 为唯一投影机。格式契约内化插件（根索引自述 format_version），vault 大小写统一；docs/ 不起现行作用。新形态以用代验。`test-repo/` 为参考实例：自足虚拟库（内部不感知构建工程），框架变更由根侧同步重拷。
 
 ## 阶段
 
@@ -18,7 +18,7 @@
 
 ## 过往操作
 
-- 2026-09-13 test-repo 参考实例立设：部署彩排（additive 拷贝 .meta/skills + 骨架种子 + 实例外壳首写）机械面全绿；样例走查（3 代理页 + 2 笔记）暴露链接全名约定未披露——link 注入行补定义（0.8），同步重拷纪律首跑
+- 2026-09-13 test-repo 参考实例立设：部署彩排（additive 拷贝 .meta/skills + 骨架种子 + 实例外壳首写）机械面全绿；样例走查（3 代理页 + 2 笔记）暴露链接全名约定未披露——link 注入行补定义（0.8），同步重拷纪律首跑；裁定外壳自足：虚拟库不感知构建工程，升级传播由根侧单方执行
 - 2026-09-13 命令层审计收尾：map/save 正文消回声（契约唯一源注入区）；usage 补出处（notes 值集归 registry、sessions 样例补路径、hot/log 类型值集指 AGENTS 注入区 log 块、mapping 吸收日记类豁免）
 - 2026-09-13 投影体系定形（六提交）：概念双插件纯化；格式契约内化（okf_version→format_version、VAULT 统一小写）；第三投影立设（consumes 有序声明 + 命令注入区，命令瘦身去手抄）；注入源全归 manifest（PLUGIN.md 回归纯文档）；内核定名 wiki_plugin_kernel 并立同名参考命令
 
