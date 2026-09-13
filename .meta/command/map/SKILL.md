@@ -1,7 +1,7 @@
 ---
 name: map
 owner: mapping
-consumes: [mapping, trust, tag, index, hot, log]
+consumes: [mapping, trust, user-profile, tag, index, hot, log]
 description: "把 vault/ 中的资产映射为 wiki 代理页：SHA-256、镜像路径、frontmatter、索引/热缓存/日志联动。Triggers on: map, 映射, process this source, add this to the wiki."
 ---
 
@@ -51,6 +51,14 @@ description: "把 vault/ 中的资产映射为 wiki 代理页：SHA-256、镜像
 - 复核动作发生时追加 `verified` 事件（单行 `by: <actor>, at: <日期>`），不为凑水位伪造
 - 复核由用户发起（人指令触发），agent 不自发追加 verified 事件
 <!-- /usage:trust -->
+
+<!-- usage:user-profile -->
+- 更新自发触发，双通道：对话保存时观察自述信号（偏好表达、纠正、背景），资产映射时观察行为信号（题材、领域、素材习惯）
+- 断言 = 一行主张 + 行内证据 wikilink；单条增量断言不直接升格为偏好，偏好为页内聚合出的模式
+- 收敛式更新：新值取代旧值时正文留痕（单行：谁何时改了什么）；整页重写仅限画像建构/整合（独立命令后置，随初始化机制定案）
+- 日记类资产只记元信号（有无、节奏），内容不进画像（豁免随 mapping）
+- 隐私红线：画像内容是实例数据，不入框架仓库与 test-repo
+<!-- /usage:user-profile -->
 
 <!-- usage:tag -->
 - 写入前读 `wiki/tags.md`，优先复用既有词

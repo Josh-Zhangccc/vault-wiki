@@ -11,7 +11,7 @@
 
 protocol:
   type:
-    values: [source, entity, qa, concept, comparison, decision, session]
+    values: [source, entity, qa, concept, comparison, decision, session, profile]
     note: 出身枚举，给机器读；实例生产者封闭（扩值须修订本表），导入/互操作消费侧容忍未知 type
   status:
     values: [draft, stable, deprecated]
