@@ -1,7 +1,7 @@
 id: wiki
-version: 0.3
+version: 0.4
 depends: []
 updated: 2026-09-13
 attachment: []
 fields: {}
-inject: "wiki 容器 `wiki/`：出身二分——`wiki/vault/` 下为代理页（有 vault 对应物），其余为原生页（出身在 wiki）；index / tags / hot / log 为派生页（机械投影）"
+inject: "wiki 容器 `wiki/`：出身二分——`wiki/vault/` 下为代理页（有 vault 对应物），其余为原生页（出身在 wiki）；index / tags / hot / log 为派生页（机械投影）；页面 frontmatter 取最小 YAML 子集（顶层标量 / 块列表 / 一级块映射），更复杂结构不受解析"

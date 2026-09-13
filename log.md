@@ -18,6 +18,7 @@
 
 ## 过往操作
 
+- 2026-09-13 专家评审修补（subagent 零先验分析 test-repo，真实缺陷七项全修）：附检硬检查——mapping 缺登记字段 error（附目录索引豁免修补）、link hot 手写断链扫描、代理孤儿降 info；契约缝合——notes 更新语义定为追加式并入留痕、提交词表中文化单点（actions.md）、tag 合并统一机械确认、verified 复核人发起；杂修——索引截断省略号、format_version 库内溯源、frontmatter 最小子集披露；git 泄漏项经裁定不修（不指望目录隔离限制 agent）
 - 2026-09-13 test-repo 参考实例立设：部署彩排（additive 拷贝 .meta/skills + 骨架种子 + 实例外壳首写）机械面全绿；样例走查（3 代理页 + 2 笔记）暴露链接全名约定未披露——link 注入行补定义（0.8），同步重拷纪律首跑；裁定外壳自足：虚拟库不感知构建工程，升级传播由根侧单方执行
 - 2026-09-13 命令层审计收尾：map/save 正文消回声（契约唯一源注入区）；usage 补出处（notes 值集归 registry、sessions 样例补路径、hot/log 类型值集指 AGENTS 注入区 log 块、mapping 吸收日记类豁免）
 - 2026-09-13 投影体系定形（六提交）：概念双插件纯化；格式契约内化（okf_version→format_version、VAULT 统一小写）；第三投影立设（consumes 有序声明 + 命令注入区，命令瘦身去手抄）；注入源全归 manifest（PLUGIN.md 回归纯文档）；内核定名 wiki_plugin_kernel 并立同名参考命令

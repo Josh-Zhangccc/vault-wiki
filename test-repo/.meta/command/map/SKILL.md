@@ -20,7 +20,7 @@ description: "把 vault/ 中的资产映射为 wiki 代理页：SHA-256、镜像
 2. 读 vault/ 中目标资产
 3. 按注入区写侧契约组装代理页草稿（mapping 镜像与登记字段、trust generated、tag 打标）；**呈映射预览**（路径 / 哈希 / 描述 / tags），等用户确认
 4. 确认后写代理页
-5. **写后管道**（确定性，机械自动不询问）：按注入区序执行各插件写入调用，毕即 `python .meta/scripts/pipeline.py verify`（写后自证，未过即回修）；随即按提交纪律入库（`map: <资产名>`，见 `.meta/protocol/actions.md`）
+5. **写后管道**（确定性，机械自动不询问）：按注入区序执行各插件写入调用，毕即 `python .meta/scripts/pipeline.py verify`（写后自证，未过即回修）；随即按提交纪律入库（`映射: <资产名>`，词表见 `.meta/protocol/actions.md`）
 6. 回报：路径 / 哈希 / 描述 / tags
 
 ## Prohibitions
@@ -49,6 +49,7 @@ description: "把 vault/ 中的资产映射为 wiki 代理页：SHA-256、镜像
 <!-- usage:trust -->
 - 写页随手写 `generated`（块式：`by: agent/<当前模型>` / `at: 今日`）
 - 复核动作发生时追加 `verified` 事件（单行 `by: <actor>, at: <日期>`），不为凑水位伪造
+- 复核由用户发起（人指令触发），agent 不自发追加 verified 事件
 <!-- /usage:trust -->
 
 <!-- usage:tag -->

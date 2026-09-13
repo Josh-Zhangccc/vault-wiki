@@ -1,5 +1,5 @@
 id: index
-version: 0.8
+version: 0.9
 depends:
   - tag
 updated: 2026-09-13
@@ -8,7 +8,7 @@ attachment:
   - "各目录 index.md —— 每目录一份（渐进披露）"
   - "wiki/tags.md —— tag 反向索引"
 fields: {}
-inject: "索引 `wiki/index.md`（根，含 format_version）与各目录 `index.md`（渐进披露，逐层下钻）/ `wiki/tags.md`（tag 反向索引）：只聚合、永不手编，重建走 `pipeline.py index`，检索第二入口"
+inject: "索引 `wiki/index.md`（根，含 format_version——页面格式契约版本，不兼容变更时进位）与各目录 `index.md`（渐进披露，逐层下钻）/ `wiki/tags.md`（tag 反向索引）：只聚合、永不手编，重建走 `pipeline.py index`，检索第二入口"
 usage:
   - 写后重建（机械自动）：`python .meta/scripts/pipeline.py index`（各目录索引）与同脚本 `tags`（tag 反向索引）；LLM 不手写索引
 checks:

@@ -51,7 +51,7 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 <!-- /check:hot -->
 
 <!-- check:link -->
-- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：断链（目标既非页面全名，也非任何页的 aliases）→ warning；乱码链接（目标含 U+FFFD 替换符，含 related 项）→ error；别名二义（两页声明同一 aliases，解析不确定）→ error；孤儿页（无入链且无 related 引用，入链源只计概念页）→ warning；related 单向（A 列 B 而 B 未回列）→ 信息
+- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：断链（目标既非页面全名，也非任何页的 aliases）→ warning；hot 手写断链 → warning（不作入链源）；乱码链接（目标含 U+FFFD 替换符，含 related 项）→ error；别名二义（两页声明同一 aliases，解析不确定）→ error；孤儿页（无入链且无 related 引用，入链源只计概念页）→ 原生页 warning、代理页 info（暂无入链为登记常态）；related 单向（A 列 B 而 B 未回列）→ 信息
 - 语义项（check 命令）：入链密度 top 榜 → 信息项（hub 涌现依据，不告警）
 <!-- /check:link -->
 
@@ -72,7 +72,7 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 
 <!-- check:tag -->
 - 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：单页 >5 个 tag → warning；tags 复述 type → warning；层级超限（父/子 ≤2）或空段 → warning
-- 语义项（check 命令）：近重复 tag → warning 提示合并，合并由人执行
+- 语义项（check 命令）：近重复 tag → warning 提示合并；合并为机械确认项（呈清单，用户确认后执行）
 <!-- /check:tag -->
 
 <!-- check:trust -->
@@ -87,7 +87,7 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 <!-- /check:index -->
 
 <!-- check:mapping -->
-- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：镜像 diff（vault 有文件无代理 → info 积压；代理无对应物 → error）、raw_file 悬挂 → error、raw_sha256 失配 → warning、疑似全文复制（md 资产正文 ≥80% 原文）→ warning、无描述 stub 且 updated 超 90 天 → warning
+- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：镜像 diff（vault 有文件无代理 → info 积压；代理无对应物 → error）、缺登记字段（raw_file / raw_sha256）→ error、raw_file 悬挂 → error、raw_sha256 失配 → warning、疑似全文复制（md 资产正文 ≥80% 原文）→ warning、无描述 stub 且 updated 超 90 天 → warning
 - 语义项（check 命令）：失配处置分诊（描述仍适用 → 机械重算自动修复；疑似失效 → 人决重映射或删）；日记类全文复制豁免判断
 <!-- /check:mapping -->
 <!-- check-inject:end -->

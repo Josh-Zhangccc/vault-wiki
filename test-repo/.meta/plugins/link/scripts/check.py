@@ -5,6 +5,8 @@
 入链密度 top 榜（hub 涌现依据）是分析项，归 check 命令语义项。
 概念页判定与 pipeline 同构：保留名（index/log）、wiki 根派生页（hot/tags）、
 archive/ 子树不算链接源，也不受图检查（派生页链接一切，否则孤儿永不触发）。
+hot 是唯一手写链接的派生页：断链受检，但不作入链源、不入孤儿图。
+代理页（vault/ 下）暂无入链是登记常态：孤儿降为信息级，原生页保持 warning。
 """
 import re
 
@@ -69,12 +71,25 @@ def check(ctx):
             elif t not in names and t not in alias_map:
                 issues.append({"level": "warning", "message": f"{rel}：related 断链 [[{t}]]"})
             referenced.add(t)
-    # 孤儿（无入链且无 related 引用；源只计概念页）
+    # hot：手写链接面（断链受检；不作入链源、不入孤儿图）
+    for rel, _fm, body in pages:
+        if _name_of(rel) != "hot":
+            continue
+        for m in WIKILINK_RE.finditer(body):
+            t = m.group(1).strip()
+            if "\ufffd" in t:
+                issues.append({"level": "error", "message": f"{rel}：乱码链接 [[{m.group(1)}]]"})
+            elif t not in names and t not in alias_map:
+                issues.append({"level": "warning", "message": f"{rel}：hot 断链 [[{t}]]（手写摘要链接失效）"})
+    # 孤儿（无入链且无 related 引用；源只计概念页；代理页降 info）
     for rel, _fm, _b in pages:
         if not _concept(rel):
             continue
         if _name_of(rel) not in referenced:
-            issues.append({"level": "warning", "message": f"{rel}：孤儿页（无入链且无 related 引用）"})
+            if rel.startswith("vault/"):
+                issues.append({"level": "info", "message": f"{rel}：代理页暂无入链（登记常态，不告警）"})
+            else:
+                issues.append({"level": "warning", "message": f"{rel}：孤儿页（无入链且无 related 引用）"})
     # related 单向（信息：不对称提示，非错误）
     for src, rels in sorted(related_map.items()):
         for t in sorted(rels):
