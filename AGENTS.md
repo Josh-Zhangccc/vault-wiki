@@ -37,7 +37,7 @@
 > 指针需主动更新。跨 session 的重要指针标注 **ATTENTION**；易变状态（进度等）放 `log.md`，不写入本文件。
 
 - `log.md` — 项目日志：现状、阶段、下一步、过往操作 **ATTENTION**
-- `.meta/` — 原型核心：结构插件（`plugins/`，分 origin/field/derived 三层）与命令主本（`command/`）与协议工件（`protocol/`：字段注册表、动作纪律、披露范式 SASU-L）与机械脚本（`scripts/`：plugin_cli 装卸/合规/注入/副本 + pipeline 派生层管道 index/tags/hot/log/verify + wikilib 页面解析承重件）；AGENTS.md 注入区为其投影 **ATTENTION**
+- `.meta/` — 原型核心：结构插件（`plugins/`，无分层，注入序=依赖拓扑+字母序）与命令主本（`command/`）与协议工件（`protocol/`：字段注册表、动作纪律、披露范式 SASU-L）与机械脚本（`scripts/`：plugin_cli 装卸/合规/注入/副本 + pipeline 派生层管道 index/tags/hot/log/verify + wikilib 页面解析承重件）；AGENTS.md 注入区为其投影 **ATTENTION**
 - `wiki/`、`vault/` — 数据区（空种子：雾港实验数据已清，待真实内容）；`.agents/skills/` — 命令部署副本
 - `docs/` — `00-principles.md` 历史设计档案（规范蒸馏时归并）；`01-okf.md` OKF 格式契约权威定义（v0.2）
 - `README.md` — 项目章程
@@ -50,40 +50,40 @@
 
 > 本区为插件注入的投影，装卸插件时同步增删对应标记块；手写内容不进此区。
 
-<!-- plugin:notes v0.7 -->
-- 原生笔记 `wiki/notes/`：出身在 wiki 的知识（概念/问答/决策/实体），细分靠 type 字段；不可再生区，命令只增不改；会话骨干页归 sessions 插件
-<!-- /plugin:notes -->
-
-<!-- plugin:sessions v0.4 -->
-- 原生会话 `wiki/sessions/`：会话骨干页（type: session，participants 必填=actor 列表，默认命名 YYYY-MM-DD-<主题>）；高价值主题提升为 `wiki/notes/` 独立页并回链；不可再生区，命令只增不改
-<!-- /plugin:sessions -->
-
-<!-- plugin:vault v0.7 -->
-- 代理层 `wiki/vault/`：与根 `vault/` 1:1 镜像（代理名 = 原名 + .md），页面必有 raw_file / raw_sha256；路径即出身证明；命令对 VAULT 只增，删改自由属于人
-<!-- /plugin:vault -->
-
-<!-- plugin:link v0.5 -->
-- 链接语法 `[[页面全名]]`（禁截断式引用，同名歧义带路径）；字段 `related` / `aliases`；断链 = warning（尚未写下），孤儿（无入链无引用，派生页不算源）= warning
-<!-- /plugin:link -->
-
-<!-- plugin:tag v0.5 -->
-- 页面 `tags` 字段：YAML 列表，中文为主、英文专名小写 kebab-case，层级 `父/子` ≤2，每页 ≤5；开放语义分类，禁止复述 type
-<!-- /plugin:tag -->
-
-<!-- plugin:trust v0.3 -->
-- 信任字段（页面可选）：`generated`（谁生成）/ `verified`（事件列表，项单行 by+at）/ `stale_after`（过期时刻）/ `sources`（来源与信号）；层级推导不落盘——无记录=unverified、仅 agent/process=machine-confirmed、含 human=human-reviewed、过 stale_after=stale
-<!-- /plugin:trust -->
-
-<!-- plugin:hot v0.5 -->
+<!-- plugin:hot v0.6 -->
 - 热缓存 `wiki/hot.md`：最近变更摘要（≤25 条、<5 日、单条 ≤200 字），agent 进库先读此页；写前先淘汰越界
 <!-- /plugin:hot -->
 
-<!-- plugin:index v0.4 -->
-- 索引 `wiki/index.md`（根，含 okf_version）与各目录 `index.md`（渐进披露，逐层下钻）/ `wiki/tags.md`（tag 反向索引）：只聚合、永不手编，重建走 `pipeline.py index`，检索第二入口
-<!-- /plugin:index -->
+<!-- plugin:link v0.6 -->
+- 链接语法 `[[页面全名]]`（禁截断式引用，同名歧义带路径）；字段 `related` / `aliases`；断链 = warning（尚未写下），孤儿（无入链无引用，派生页不算源）= warning
+<!-- /plugin:link -->
 
-<!-- plugin:log v0.7 -->
+<!-- plugin:log v0.8 -->
 - 运行日志 `wiki/log.md`：置顶追加、条目不改写，条目 = 日期 + 类型（map/save/query/check/plugin/other）+ 一句话；窗口 ≤100 条，超限机械归档至 `wiki/archive/月/log.md`
 <!-- /plugin:log -->
+
+<!-- plugin:notes v0.8 -->
+- 原生笔记 `wiki/notes/`：出身在 wiki 的知识（概念/问答/决策/实体），细分靠 type 字段；不可再生区，命令只增不改；会话骨干页归 sessions 插件
+<!-- /plugin:notes -->
+
+<!-- plugin:sessions v0.5 -->
+- 原生会话 `wiki/sessions/`：会话骨干页（type: session，participants 必填=actor 列表，默认命名 YYYY-MM-DD-<主题>）；高价值主题提升为 `wiki/notes/` 独立页并回链；不可再生区，命令只增不改
+<!-- /plugin:sessions -->
+
+<!-- plugin:tag v0.6 -->
+- 页面 `tags` 字段：YAML 列表，中文为主、英文专名小写 kebab-case，层级 `父/子` ≤2，每页 ≤5；开放语义分类，禁止复述 type
+<!-- /plugin:tag -->
+
+<!-- plugin:trust v0.4 -->
+- 信任字段（页面可选）：`generated`（谁生成）/ `verified`（事件列表，项单行 by+at）/ `stale_after`（过期时刻）/ `sources`（来源与信号）；层级推导不落盘——无记录=unverified、仅 agent/process=machine-confirmed、含 human=human-reviewed、过 stale_after=stale
+<!-- /plugin:trust -->
+
+<!-- plugin:vault v0.8 -->
+- 代理层 `wiki/vault/`：与根 `vault/` 1:1 镜像（代理名 = 原名 + .md），页面必有 raw_file / raw_sha256；路径即出身证明；命令对 VAULT 只增，删改自由属于人
+<!-- /plugin:vault -->
+
+<!-- plugin:index v0.5 -->
+- 索引 `wiki/index.md`（根，含 okf_version）与各目录 `index.md`（渐进披露，逐层下钻）/ `wiki/tags.md`（tag 反向索引）：只聚合、永不手编，重建走 `pipeline.py index`，检索第二入口
+<!-- /plugin:index -->
 
 <!-- wiki-inject:end -->

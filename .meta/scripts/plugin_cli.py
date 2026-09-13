@@ -7,7 +7,7 @@
 registry.yaml 插件段、.agents/skills/ 命令副本；protocol / reserved 段与手写区永不动。
 
 用法:
-  python .meta/scripts/plugin_cli.py ls          # 清单 + 依赖图（按层分组）
+  python .meta/scripts/plugin_cli.py ls          # 清单 + 依赖
   python .meta/scripts/plugin_cli.py validate    # 合规与依赖检查（只读，错误退出码 1）
   python .meta/scripts/plugin_cli.py audit       # 插件附检（发现式执行各插件 scripts/check.py）
   python .meta/scripts/plugin_cli.py inject      # 重建 AGENTS.md 注入区与 check 检查块（幂等）
@@ -18,9 +18,9 @@ registry.yaml 插件段、.agents/skills/ 命令副本；protocol / reserved 段
 manifest 最小 YAML 子集：顶层 `key: value`、`key: []`、块式列表（`  - 项`）、
 一层字段字典（`  name: 描述`）；双引号包裹的值去引号；行内注释（` #` 起）剥离。
 
-分层（layer，三值）与依赖方向：
-- origin（出身：拥有页面领地）与 field（字段：拥有跨页 frontmatter 字段）是底，零依赖
-- derived（派生：拥有派生物与写路径义务）居上，只可依赖 origin/field，同层禁依赖
+依赖与注入序：
+- depends 声明行为或语义依赖（桥接件依赖两端概念插件即语义依赖）；validate 校验存在性与无环
+- 注入序 = 依赖拓扑（被依赖者先注入）+ 同批字母序；无分层概念
 
 命令-插件绑定（双向声明，validate 校验一致）：
 - 命令 frontmatter 增 owner：插件 id（多个用 [a, b] 列表）或 framework（跨切面，显式无主）
@@ -52,9 +52,8 @@ SKILLS_DIR = os.path.join(ROOT, ".agents", "skills")
 AGENTS_MD = os.path.join(ROOT, "AGENTS.md")
 REGISTRY = os.path.join(ROOT, ".meta", "protocol", "registry.yaml")
 
-# manifest 八字段（id / version / layer / depends / updated / attachment / fields / inject）+ 可选 commands
-REQUIRED_KEYS = ["id", "version", "layer", "depends", "updated", "attachment", "fields", "inject"]
-LAYERS = ("origin", "field", "derived")
+# manifest 七字段（id / version / depends / updated / attachment / fields / inject）+ 可选 commands
+REQUIRED_KEYS = ["id", "version", "depends", "updated", "attachment", "fields", "inject"]
 INJECT_START = "<!-- wiki-inject:start -->"
 INJECT_END = "<!-- wiki-inject:end -->"
 CHECK_SKILL = os.path.join(COMMANDS_DIR, "check", "SKILL.md")
@@ -64,9 +63,22 @@ CHECK_SECTION_RE = re.compile(r"^## Checks\n(.*?)(?=^## |\Z)", re.S | re.M)
 
 
 def ordered_plugins(plugins):
-    """按层（origin → field → derived）再按 id 排序；投影区共用。"""
-    return sorted(plugins, key=lambda p: (
-        LAYERS.index(plugins[p]["layer"]) if plugins[p].get("layer") in LAYERS else len(LAYERS), p))
+    """注入序 = 依赖拓扑（被依赖者先注入）+ 同批字母序；投影区共用。
+
+    环或悬挂依赖时按字母序兜底输出（validate 另行报错，不在此重复）。
+    """
+    remaining = dict(plugins)
+    order = []
+    while remaining:
+        ready = sorted(p for p, m in remaining.items()
+                       if all(d not in remaining for d in (m.get("depends") or [])))
+        if not ready:
+            order.extend(sorted(remaining))
+            break
+        order.extend(ready)
+        for p in ready:
+            del remaining[p]
+    return order
 
 
 def strip_quotes(s):
@@ -153,12 +165,6 @@ def validate(plugins, errors):
         deps = m.get("depends")
         if deps is not None and not isinstance(deps, list):
             errors.append(f"[error] {name}/: depends must be a list")
-        # 分层依赖方向：origin/field 是底（零依赖）；derived 只可向下依赖（同层禁依赖）
-        layer = m.get("layer")
-        if layer not in LAYERS:
-            errors.append(f"[error] {name}/: layer ({layer}) must be origin/field/derived")
-        elif layer in ("origin", "field") and deps:
-            errors.append(f"[error] {name}/ ({layer} is a base layer): depends not allowed ({', '.join(deps)})")
         if not m.get("inject"):
             errors.append(f"[error] {name}/: inject (projection line) empty")
         # 附检契约（可选）：scripts/check.py 存在则必须定义 check(ctx)——AST 静态查，不执行
@@ -171,13 +177,11 @@ def validate(plugins, errors):
             else:
                 if not any(isinstance(n, ast.FunctionDef) and n.name == "check" for n in tree.body):
                     errors.append(f"[error] {name}/scripts/check.py: check(ctx) not defined (audit contract)")
-    # 依赖存在性与同层禁依赖
+    # 依赖存在性
     for name, m in sorted(plugins.items()):
         for dep in m.get("depends") or []:
             if dep not in plugins:
                 errors.append(f"[error] {name}/: dependency {dep} not found")
-            elif m.get("layer") == "derived" and plugins[dep].get("layer") == "derived":
-                errors.append(f"[error] {name}/: dependency {dep} is also derived (same-layer dep forbidden)")
     # 环检测（DFS 三色标记）
     WHITE, GRAY, BLACK = 0, 1, 2
     color = {k: WHITE for k in plugins}
@@ -293,7 +297,7 @@ def do_audit(plugins, only=None):
 
 
 def do_inject(plugins):
-    """自 manifests 重建 AGENTS.md 注入区（保留前置说明，块按层分组再按 id 排序，幂等）。"""
+    """自 manifests 重建 AGENTS.md 注入区（保留前置说明，块按依赖拓扑+字母序，幂等）。"""
     text = open(AGENTS_MD, encoding="utf-8").read()
     m = re.search(re.escape(INJECT_START) + r"\n(.*?)" + re.escape(INJECT_END), text, re.S)
     if not m:
@@ -404,22 +408,11 @@ def do_deploy():
 
 
 def do_ls(plugins):
-    lay_names = {"origin": "origin", "field": "field", "derived": "derived"}
-    for lay in LAYERS:
-        names = [p for p in sorted(plugins) if plugins[p].get("layer") == lay]
-        if not names:
-            continue
-        print(f"[{lay_names[lay]}]")
-        for pid in names:
-            deps = ", ".join(plugins[pid].get("depends") or []) or "—"
-            cmds = ", ".join(plugins[pid].get("commands") or []) or "—"
-            print(f"  {pid:<10} {plugins[pid].get('version', '?'):<6} 依赖 {deps}；命令 {cmds}")
-    others = [p for p in sorted(plugins) if plugins[p].get("layer") not in LAYERS]
-    if others:
-        print("[unlayered]")
-        for pid in others:
-            print(f"  {pid:<10} {plugins[pid].get('version', '?'):<6} ?")
-    print(f"{len(plugins)} plugins (.meta/plugins/; base layers zero-dep, derived depends downward only)")
+    for pid in sorted(plugins):
+        deps = ", ".join(plugins[pid].get("depends") or []) or "—"
+        cmds = ", ".join(plugins[pid].get("commands") or []) or "—"
+        print(f"  {pid:<10} {plugins[pid].get('version', '?'):<6} deps {deps}; commands {cmds}")
+    print(f"{len(plugins)} plugins (.meta/plugins/; injection order = dependency topo + alphabetical)")
 
 
 def main():
@@ -444,7 +437,7 @@ def main():
     if errors:
         print(f"[result] validation failed ({len(errors)} errors) — mechanical actions blocked")
         return 1
-    print(f"[validate] all {len(plugins)} plugins passed (fields / id match / layer valid / dep direction / acyclic / command bindings)")
+    print(f"[validate] all {len(plugins)} plugins passed (fields / id match / deps exist / acyclic / command bindings)")
     if cmd in ("inject", "all"):
         if not do_inject(plugins):
             return 1
