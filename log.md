@@ -19,7 +19,7 @@
 
 ## 过往操作
 
-- 2026-09-13 user-profile 插件立设（第十二插件）：`wiki/profile.md` 收敛式画像（type 值集扩 profile、零自有字段复用 trust），depends [wiki, trust, mapping, sessions]，双通道挂 save/map（trust 后派生前），检查三项（证据闸门/领地走错/缺失）；test-repo 随框架重拷同步；09-14 补 usage 提炼方法论（信号判据/分层落点/断言可证，SASU-L 披露闭环）
+- 2026-09-13 user-profile 插件立设（第十二插件）：`wiki/profile.md` 收敛式画像（type 值集扩 profile、零自有字段复用 trust），depends [wiki, trust, mapping, sessions]，双通道挂 save/map（trust 后派生前），检查三项（证据闸门/领地走错/缺失）；test-repo 随框架重拷同步；09-14 补 usage 提炼方法论（判据/分层/可证），SASU-L 闭环
 - 2026-09-13 save 链路实测与角色纠偏：蒸馏笔记首跑全链路（踩坑热缓存短名断链，link 全名约定应验即修）；用户裁定**工程是开发框架非跑库**——笔记回迁 `docs/research-user-profile.md`，wiki 数据区归零复位，PLUGIN.md 依据引用随改，AGENTS 指针消歧
 - 2026-09-13 画像插件启动调研：四轮检索（方法/维度/agent 记忆/persona 模板）；定位=使用者持续认知档案（非虚构 persona），蒸馏入 docs
 - 2026-09-13 框架收束日（多提交）：quickstart 开卷（净目录彩排，README 部署节收束为指针）；工程首上 GitHub 私仓；专家评审修补七项（附检硬检查、契约缝合、外壳消回声）；test-repo 立设（部署彩排 + 样例走查，同步重拷纪律首跑）；命令层审计收尾；投影体系定形（三投影一源）
