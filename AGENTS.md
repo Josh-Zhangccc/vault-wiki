@@ -54,8 +54,8 @@
 - 热缓存 `wiki/hot.md`：最近变更摘要（≤25 条、<5 日、单条 ≤200 字），agent 进库先读此页；写前先淘汰越界
 <!-- /plugin:hot -->
 
-<!-- plugin:link v0.7 -->
-- 链接语法 `[[页面全名]]`（禁截断式引用，同名歧义带路径）；字段 `related` / `aliases`；断链 = warning（尚未写下），孤儿（无入链无引用，派生页不算源）= warning
+<!-- plugin:link v0.8 -->
+- 链接语法 `[[页面全名]]`——全名 = wiki/ 内相对路径去末尾 .md（如 `notes/X`、pdf 资产代理 `vault/a.pdf`）；禁截断式引用，同名歧义带路径；字段 `related` / `aliases`；断链 = warning（尚未写下），孤儿（无入链无引用，派生页不算源）= warning
 <!-- /plugin:link -->
 
 <!-- plugin:log v0.11 -->
