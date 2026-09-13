@@ -1,18 +1,6 @@
----
-type: concept
-title: 用户画像方法论与 agent 记忆
-description: 画像两条资料线的收敛——产品设计线的维度框架与 agent 记忆线的更新机制，及 vault-wiki 画像插件的选型依据
-created: 2026-09-13
-updated: 2026-09-13
-generated:
-  by: agent/GLM-5.3
-  at: 2026-09-13
-tags:
-  - 画像/方法论
-  - agent-memory
----
+# 用户画像调研蒸馏（user-profile 设计依据）
 
-# 用户画像方法论与 agent 记忆
+> 开发侧设计档案（2026-09-13，四轮网络检索蒸馏）：user-profile 插件的选型依据。非实例运行件；框架行为以 `.meta/plugins/user-profile/` 为源。
 
 「用户画像」有两条实践线，语义不同：产品设计线画的是**虚构目标用户代表**（persona），为设计决策服务；agent 记忆线维护的是**对真实使用者的持续认知档案**（user profile），为个性化服务服务。vault-wiki 的画像插件属后者——维度框架借前者，更新机制借后者。
 
