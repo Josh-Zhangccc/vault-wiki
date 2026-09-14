@@ -92,7 +92,7 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 <!-- /check:mapping -->
 
 <!-- check:structure -->
-- 语义（check 命令）：结构漂移——vault 实际目录 vs 声明（未声明的新顶层目录 → warning，提示补声明或归位）；声明缺失 → info（平铺容忍）
+- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：声明 diff——vault 顶层目录未声明 → warning、声明键指向不存在目录 → warning；type: structure 落 `wiki/structure.md` 之外 → error；声明页缺席 → info（平铺容忍）
 <!-- /check:structure -->
 
 <!-- check:todo -->

@@ -1,14 +1,17 @@
 id: structure
-version: 0.1
+version: 0.2
 depends:
   - vault
+  - wiki
 updated: 2026-09-14
-attachment: []
+attachment:
+  - "wiki/structure.md —— 结构声明页（vault 布局声明本体：frontmatter structure 块映射 + 正文预设说明）"
+  - "scripts/check.py —— 附检（声明 diff / 领地走位 / 声明页存在性）"
 fields: {}
-inject: "vault 结构：布局由实例声明（实例 AGENTS.md 外壳；预设：日期/格式/类型/混合，可嵌套），agent 放置资产先读声明按位落放，无声明平铺容忍；check 时漂移检测（实际目录 vs 声明 → warning）"
+inject: "vault 结构声明 `wiki/structure.md`（type: structure）：frontmatter `structure` 块映射 = 目录→一句话语义，正文写预设（日期/格式/类型/混合，可嵌套）与说明；agent 放置资产先读此页按位落放；页面缺席 = 平铺容忍；人调整 vault 后同步声明，check 机械 diff（未声明的顶层目录 / 声明不存在的目录 → warning）"
 usage:
-  - 结构声明写实例 AGENTS.md 外壳：选预设（日期 xxxx-xx-xx / 格式如 pdf·md / 类型如 日记·切片 / 混合嵌套）+ 各顶层目录一句话语义
-  - agent 往 vault 放资产：先读声明按位落放；无合适位置落平铺位或建目录后补声明；无声明则平铺根目录
-  - 人自由调整结构（vault 属人）；调整后 check 漂移检测提示同步声明
+  - 声明写法：frontmatter `structure` 块映射（键 = 顶层目录名带尾斜杠，值 = 一句话语义）；正文记预设选择与嵌套规则说明
+  - agent 往 vault 放资产：先读声明页按位落放；无合适位置落平铺位或建目录后补声明；页面缺席则平铺根目录
+  - 人自由调整结构（vault 属人）；调整后同步声明，漂移由附检机械提示
 checks:
-  - 语义（check 命令）：结构漂移——vault 实际目录 vs 声明（未声明的新顶层目录 → warning，提示补声明或归位）；声明缺失 → info（平铺容忍）
+  - 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：声明 diff——vault 顶层目录未声明 → warning、声明键指向不存在目录 → warning；type: structure 落 `wiki/structure.md` 之外 → error；声明页缺席 → info（平铺容忍）
