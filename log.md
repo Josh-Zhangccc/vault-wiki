@@ -4,7 +4,7 @@
 
 ## 现状（2026-09-13）
 
-工程定位：**个人自用，尽快投入使用**——普世化与矩阵测试裁撤，SASU-L 为镜，边用边改。架构终态：概念双插件 wiki/vault（纯声明）+ 桥接 mapping + 九结构插件（含 user-profile 画像），共十二、无分层（注入序=依赖拓扑+字母序）；六命令 map/save/query/check/plugin/wiki_plugin_kernel（末者为插件内核使用参考）。三投影一源：manifest（inject / checks / usage）→ AGENTS 注入区、check 检查块、命令用法块（consumes 有序声明，序即执行序）；PLUGIN.md 回归纯文档（Role / Structure / Invariants / Changelog），插件内核 wiki_plugin_kernel.py 为唯一投影机。格式契约内化插件（根索引自述 format_version），vault 大小写统一；docs/ 不起现行作用。新形态以用代验。`test-repo/` 为参考实例：自足虚拟库（内部不感知构建工程），框架变更由根侧同步重拷。
+工程定位：**个人自用**——矩阵测试裁撤，SASU-L 为镜，边用边改。架构终态：概念双插件 wiki/vault（纯声明）+ 桥接 mapping + 九结构插件（含 user-profile 画像），共十二、无分层（注入序=依赖拓扑+字母序）；六命令 map/save/query/check/plugin/wiki_plugin_kernel（末者为插件内核使用参考）。三投影一源：manifest（inject / checks / usage）→ AGENTS 注入区、check 检查块、命令用法块（consumes 有序声明，序即执行序）；PLUGIN.md 回归纯文档（Role / Structure / Invariants / Changelog），插件内核 wiki_plugin_kernel.py 为唯一投影机。格式契约内化插件（根索引自述 format_version），vault 大小写统一；docs/ 不起现行作用。新形态以用代验。`test-repo/` 为参考实例：自足虚拟库（内部不感知构建工程），框架变更由根侧同步重拷。
 
 ## 阶段
 
@@ -13,14 +13,16 @@
 ## 下一步
 
 - wiki 初始化机制（画像首建与建构/整合命令同批）：冷启动时机与首建内容——随设计文档一并解决
-- 设计文档重开卷：quickstart 已开卷（部署五步 + 首跑验证，净目录彩排）；导论（目录/USP/理念/思路）随后，章=文件（repo 读者、问题驱动；OKF 不收编）
+- 设计文档：导论随后开卷（章=文件，问题驱动；OKF 不收编）
 - 部署进个人库（**用户自行执行**，agent 不主动触碰；走查见 `docs/quickstart.md`，additive，存量页不动、旧页渐进代理）
-- skill 打磨随使用摩擦滚动；vault 治理（delegate）后议；测试矩阵等裁撤项不排期
+- todo 插件（临时记忆）方案待裁（命名/已结窗口/不挂命令）
+- skill 打磨随摩擦滚动；vault 治理与裁撤项不排期
 
 ## 过往操作
 
+- 2026-09-14 notes 0.13 瘦身：type 分层（领地值封闭、形态值降实例词表开放）；补边界与 README 计数
 - 2026-09-13 user-profile 插件立设（第十二插件）：`wiki/profile.md` 收敛式画像（type 值集扩 profile、零自有字段复用 trust），depends [wiki, trust, mapping, sessions]，双通道挂 save/map（trust 后派生前），检查三项（证据闸门/领地走错/缺失）；test-repo 随框架重拷同步；09-14 补 usage 提炼方法论（判据/分层/可证），SASU-L 闭环
-- 2026-09-13 save 链路实测与角色纠偏：蒸馏笔记首跑全链路（踩坑热缓存短名断链，link 全名约定应验即修）；用户裁定**工程是开发框架非跑库**——笔记回迁 `docs/research-user-profile.md`，wiki 数据区归零复位，PLUGIN.md 依据引用随改，AGENTS 指针消歧
+- 2026-09-13 save 首跑与角色纠偏：踩坑热缓存短名断链（全名约定应验即修）；裁定**工程是开发框架非跑库**——蒸馏笔记回迁 docs，wiki 数据区归零
 - 2026-09-13 画像插件启动调研：四轮检索（方法/维度/agent 记忆/persona 模板）；定位=使用者持续认知档案（非虚构 persona），蒸馏入 docs
 - 2026-09-13 框架收束日（多提交）：quickstart 开卷（净目录彩排，README 部署节收束为指针）；工程首上 GitHub 私仓；专家评审修补七项（附检硬检查、契约缝合、外壳消回声）；test-repo 立设（部署彩排 + 样例走查，同步重拷纪律首跑）；命令层审计收尾；投影体系定形（三投影一源）
 - 2026-09-12 定位与重构：裁定个人自用、以用代验（矩阵测试裁撤）；架构重构四提交（标识符英文化、废分层、概念双插件立设、ingest→map 更名）；OKF v0.2 成文 + 冷启动披露审计；雾港与真实库两轮实验全绿，确立 SASU-L 与零污染纪律；清实验数据、README 门面化
