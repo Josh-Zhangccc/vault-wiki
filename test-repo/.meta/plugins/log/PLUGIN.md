@@ -6,7 +6,7 @@
 
 - 单文件 `wiki/log.md`，条目置顶追加（最新在最上）
 - 条目格式：`- YYYY-MM-DD <类型>：一句话概述`（含 wikilink）
-- 类型枚举：map / save / query / check / plugin / other（实例可扩）
+- 类型枚举：map / save / query / check / plugin / todo / other（实例可扩）
 
 ## Invariants
 
@@ -31,6 +31,7 @@ log.max_chars: 14000     # 窗口字符上限（约）
 
 ## Changelog
 
+- 0.12（2026-09-14）类型值集扩 todo——todo 插件销账事件的归属地（历史归 log，todo 页只留活工作集）
 - 0.11（2026-09-13）usage 类型参数补值集出处（AGENTS 注入区 log 块，消跨块猜点）
 - 0.10（2026-09-13）注入源移交 manifest：删 Checks / Usage / Inject / Attachments 节，md 回归纯文档
 - 0.9（2026-09-13）立「Usage」节：写侧契约交由命令注入区投影（单一文本源）

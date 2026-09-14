@@ -91,6 +91,12 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 - 语义项（check 命令）：失配处置分诊（描述仍适用 → 机械重算自动修复；疑似失效 → 人决重映射或删）；日记类全文复制豁免判断
 <!-- /check:mapping -->
 
+<!-- check:todo -->
+- 机械项（信息级）：日期触发已逾期且未销账条目清单（开 session 提醒的机械依据）；页面缺失（未受托常态）
+- 机械项：条目缺触发条件或 by/at → warning；type: todo 落 `wiki/todo.md` 之外 → error
+- 语义（check 命令）：open 条目 > 50 → warning（膨胀分诊：该做的做、该沉淀的走 save、该放弃的与用户确认）
+<!-- /check:todo -->
+
 <!-- check:user-profile -->
 - 语义（check 命令）：画像断言缺证据 wikilink → warning
 - 机械项：type: profile 页面落 `wiki/notes/` 或 `wiki/vault/`（走错领地）→ error

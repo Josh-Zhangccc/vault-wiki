@@ -21,8 +21,8 @@
 - 链接语法 `[[页面全名]]`——全名 = wiki/ 内相对路径去末尾 .md（如 `notes/X`、pdf 资产代理 `vault/a.pdf`、md 资产代理 `vault/原名.md`，仅去一个）；禁截断式引用，同名歧义带路径；字段 `related` / `aliases`；断链 = warning（尚未写下），孤儿（无入链无引用，派生页不算源）= 原生页 warning、代理页 info
 <!-- /plugin:link -->
 
-<!-- plugin:log v0.11 -->
-- 运行日志 `wiki/log.md`：置顶追加、条目不改写，条目 = 日期 + 类型（map/save/query/check/plugin/other）+ 一句话；窗口 ≤100 条，超限机械归档至 `wiki/archive/月/log.md`
+<!-- plugin:log v0.12 -->
+- 运行日志 `wiki/log.md`：置顶追加、条目不改写，条目 = 日期 + 类型（map/save/query/check/plugin/todo/other）+ 一句话；窗口 ≤100 条，超限机械归档至 `wiki/archive/月/log.md`
 <!-- /plugin:log -->
 
 <!-- plugin:notes v0.13 -->
@@ -56,6 +56,10 @@
 <!-- plugin:mapping v0.6 -->
 - 代理层 `wiki/vault/`：与根 `vault/` 1:1 镜像（代理名 = 原名 + .md），页面必有 raw_file / raw_sha256；路径即出身证明
 <!-- /plugin:mapping -->
+
+<!-- plugin:todo v0.1 -->
+- 临时记忆 `wiki/todo.md`（type: todo）：跨 session 委托与提醒，条目 = 触发条件（日期或情境）+ 一句话 + by/at；新 session 开始先读此页（先于 hot），日期已到或已过的条目主动提醒用户；受托即追加，完成即销账（`[x]` 并写 log 行——历史归 log），已结 ≤20 条超限静默清理，本页只留活工作集
+<!-- /plugin:todo -->
 
 <!-- plugin:user-profile v0.2 -->
 - 用户画像 `wiki/profile.md`（type: profile）：对使用者的持续认知档案，静态身份层 + 动态偏好层，维度不枚举；收敛式更新——新值取代旧值、正文留痕；断言必带证据 wikilink（会话页或 vault 代理页），偏好层挂 stale_after；零自有字段复用 trust，不属 notes 领地；个性化决策（称呼、风格、偏好）前先读此页，库未初始化时可缺
