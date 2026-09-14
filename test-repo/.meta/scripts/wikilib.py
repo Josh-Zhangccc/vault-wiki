@@ -6,7 +6,8 @@
 把 (相对路径, frontmatter, 正文) 列表放进 ctx.pages 全体共享（调用节俭）。
 与 wiki_plugin_kernel.parse_manifest 同为最小 YAML 子集，但宽松策略不同：
 manifest 严格抛错（协议工件），页面 frontmatter 跳过坏行（用户内容不因
-格式瑕疵让附检崩溃）。
+格式瑕疵让附检崩溃）。键宽松（非空白非冒号即可）：块映射子键可为目录名、
+中文等（structure 声明页实锤需求），顶层协议字段仍为 ASCII。
 """
 import os
 import re
@@ -35,7 +36,7 @@ def parse_frontmatter(text):
                 data[target] = []
             data[target].append(item)
             continue
-        mm = re.match(r"^(\s*)([A-Za-z_][\w-]*):\s*(.*)$", raw)
+        mm = re.match(r"^(\s*)([^:\s][^:]*):\s*(.*)$", raw)
         if not mm:
             continue
         key, val = mm.group(2), _strip_comment(mm.group(3))
