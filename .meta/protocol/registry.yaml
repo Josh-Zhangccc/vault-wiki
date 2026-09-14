@@ -11,8 +11,10 @@
 
 protocol:
   type:
-    values: [source, entity, qa, concept, comparison, decision, session, profile]
-    note: 出身枚举，给机器读；实例生产者封闭（扩值须修订本表），导入/互操作消费侧容忍未知 type
+    values: [source, session, profile]
+    note: 领地值封闭（扩值须修订本表）——决定页面归属与机械检查：source=代理页、session=sessions 领地、profile=画像页；导入/互操作消费侧容忍未知 type
+    defaults: [concept, qa, decision, entity, comparison]
+    defaults_note: 形态默认词表——notes 领地内的知识形态，无机械语义；实例开放自扩（不须修订本表），优先复用防词表碎片
   status:
     values: [draft, stable, deprecated]
     note: 生命周期三值；deprecated = 为链接与历史保留、但已非当前
