@@ -56,7 +56,7 @@ type / status 值集以 registry 为准（一次读取锚点，不复抄表）�
 
 <!-- cmd-inject:start -->
 <!-- usage:notes -->
-- 落点 `wiki/notes/<标题>.md`，文件名自由（人起名）；type 值集见 registry
+- 落点 `wiki/notes/<标题>.md`，文件名自由（人起名）；type 形态词表见 registry（开放自扩），领地值不落本区
 - 只增：命令不整页重写既有笔记；更新 = 用户指令下的追加式并入（正文留痕）或人手改
 <!-- /usage:notes -->
 

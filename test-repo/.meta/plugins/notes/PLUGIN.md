@@ -1,20 +1,21 @@
 # notes：原生笔记
 
-出身就在 wiki 的知识：概念、问答、决策、实体。它们的「原文」就是 wiki 自身，vault 中无对应物。会话骨干页不在本区——归 sessions 插件。
+出身就在 wiki 的知识——「原文」即 wiki 自身，vault 中无对应物。知识形态不作架构枚举（细分靠 type 字段，默认词表见 registry，实例开放自扩）。会话骨干页不在本区——归 sessions 插件；画像页归 user-profile。
 
 ## Structure
 
 - `wiki/notes/**`，文件名自由（人起名，与镜像区的机械命名相对）
-- 细分靠 `type` 字段（值集以 registry 为准，扩值须修订注册表），不靠目录
+- 细分靠 type 字段，不靠目录——形态值开放（默认词表见 registry，实例自扩）；领地值 session / profile 封闭，必落各自领地
 
 ## Invariants
 
 - 不可再生区：管道与命令不得覆盖重写既有笔记，只能新增或人手改
 - 与 vault 代理层的边界由路径证明：wiki/vault/ 必有对应物，wiki/notes/ 必无
-- 与 sessions 的边界由 type 证明：type: session 落 `wiki/sessions/`，不落本区
+- 与 sessions / user-profile 的边界由 type 证明：type: session 落 `wiki/sessions/`、type: profile 落 `wiki/profile.md`，均不落本区
 
 ## Changelog
 
+- 0.13（2026-09-14）瘦身（裁定：架构不承担形态分类职责）：正文与注入行去形态枚举——「概念/问答/决策/实体」为个人库实证迁移残留，且与 registry 漂移（漏 comparison）；type 分层：领地值封闭（source/session/profile，机械检查依据），形态值降实例默认词表（registry defaults，开放自扩）
 - 0.12（2026-09-13）usage 更新语义缝合：更新 = 用户指令追加式并入（留痕）或人手改（专家评审：与 save 去重节两说）
 - 0.11（2026-09-13）usage 去 type 枚举，值集唯一源 registry（消三重复述）
 - 0.10（2026-09-13）注入源移交 manifest：删 Checks / Usage / Inject / Attachments 节，md 回归纯文档

@@ -1,15 +1,15 @@
 id: notes
-version: 0.12
+version: 0.13
 depends: []
-updated: 2026-09-13
+updated: 2026-09-14
 attachment:
   - "wiki/notes/ —— 原生笔记区"
 fields: {}
 commands:
   - save
-inject: "原生笔记 `wiki/notes/`：出身在 wiki 的知识（概念/问答/决策/实体），细分靠 type 字段；不可再生区，命令只增不改；会话骨干页归 sessions 插件"
+inject: "原生笔记 `wiki/notes/`：出身在 wiki 的知识，细分靠 type 字段（形态词表开放，默认值见 registry）；不可再生区，命令只增不改；session 与 profile 型不落本区（归 sessions / user-profile 领地）"
 usage:
-  - 落点 `wiki/notes/<标题>.md`，文件名自由（人起名）；type 值集见 registry
+  - 落点 `wiki/notes/<标题>.md`，文件名自由（人起名）；type 形态词表见 registry（开放自扩），领地值不落本区
   - 只增：命令不整页重写既有笔记；更新 = 用户指令下的追加式并入（正文留痕）或人手改
 checks:
   - 笔记被命令覆盖的痕迹 → error

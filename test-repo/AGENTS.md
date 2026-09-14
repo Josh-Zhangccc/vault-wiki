@@ -25,8 +25,8 @@
 - 运行日志 `wiki/log.md`：置顶追加、条目不改写，条目 = 日期 + 类型（map/save/query/check/plugin/other）+ 一句话；窗口 ≤100 条，超限机械归档至 `wiki/archive/月/log.md`
 <!-- /plugin:log -->
 
-<!-- plugin:notes v0.12 -->
-- 原生笔记 `wiki/notes/`：出身在 wiki 的知识（概念/问答/决策/实体），细分靠 type 字段；不可再生区，命令只增不改；会话骨干页归 sessions 插件
+<!-- plugin:notes v0.13 -->
+- 原生笔记 `wiki/notes/`：出身在 wiki 的知识，细分靠 type 字段（形态词表开放，默认值见 registry）；不可再生区，命令只增不改；session 与 profile 型不落本区（归 sessions / user-profile 领地）
 <!-- /plugin:notes -->
 
 <!-- plugin:sessions v0.8 -->
