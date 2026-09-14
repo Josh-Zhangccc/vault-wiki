@@ -25,11 +25,11 @@
 
 | 目录 | 内容 |
 |------|------|
-| `.meta/` | 原型核心：十一插件（概念双插件 wiki/vault、桥接 mapping、notes/sessions/link/tag/trust/index/hot/log；无分层，注入序=依赖拓扑+字母序）、六命令主本、协议工件（registry / actions / experiments）、机械脚本（wiki_plugin_kernel / pipeline / wikilib，纯标准库零依赖） |
-| `wiki/`、`vault/` | 数据区（空种子，待真实内容） |
+| `.meta/` | 原型核心：十二插件（概念双插件 wiki/vault、桥接 mapping、notes/sessions/link/tag/trust/index/hot/log/user-profile；无分层，注入序=依赖拓扑+字母序）、六命令主本、协议工件（registry / actions / experiments）、机械脚本（wiki_plugin_kernel / pipeline / wikilib，纯标准库零依赖） |
+| `wiki/`、`vault/` | 数据区骨架（保持空种子：内容属部署实例，工程内不积累——跑库验证走 test-repo） |
 | `.agents/skills/` | 命令部署副本 |
 | `test-repo/` | 参考实例：自足虚拟库（实例侧 AGENTS.md 外壳 + 样例数据，内部不感知构建工程）；框架变更由根侧同步重拷 |
-| `docs/` | 历史设计档案（`00-principles.md`、`01-okf.md` 格式契约成文），不起现行作用 |
+| `docs/` | 设计档案：现行 `quickstart.md` 部署走查与 `research-user-profile.md` 设计依据；历史档案 `00-principles.md`、`01-okf.md` 不起现行作用 |
 
 ## 上手
 
