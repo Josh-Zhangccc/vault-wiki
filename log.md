@@ -19,15 +19,16 @@
 
 ## 过往操作
 
+- 2026-09-14 structure 0.2：声明页落 `wiki/structure.md`（structure 块映射机械可读，type 领地值扩 structure；漂移检测升级附检 diff，冒烟双向实锤）；wikilib 子键放宽（目录名/中文键曾解析为 None，承重件实锤修补）
 - 2026-09-14 vault 治理批次：structure 立设（第十四，布局声明+漂移检测）；vault 0.4 认领 url；mapping 0.7——孤儿报文带引用计数、重算写 log 行；user-write 四预设入档
 - 2026-09-14 指针概念成文 `docs/pointers.md`：定义 / 五件构成 / 系统实例盘点（含 todo 时间维）/ 设计准则；AGENTS 与 README 指针随更
 - 2026-09-14 todo 立设（第十三插件）：`wiki/todo.md` 委托队列（日期/情境触发，新 session 先读）；销账写 log、已结 ≤20 清理；不挂命令
 - 2026-09-14 notes 0.13 瘦身：type 分层（领地封闭/形态开放）；补边界与 README
-- 2026-09-13 user-profile 插件立设（第十二插件）：`wiki/profile.md` 收敛式画像（type 值集扩 profile、零自有字段复用 trust），depends [wiki, trust, mapping, sessions]，双通道挂 save/map（trust 后派生前），检查三项（证据闸门/领地走错/缺失）；test-repo 随框架重拷同步；09-14 补 usage 提炼方法论（判据/分层/可证），SASU-L 闭环
+- 2026-09-13 user-profile 立设（第十二）：`wiki/profile.md` 收敛式画像（零字段复用 trust），depends 四项，双通道挂 save/map，检查三项；09-14 补 usage 提炼方法论（SASU-L 闭环）
 - 2026-09-13 save 首跑与角色纠偏：踩坑热缓存短名断链（全名约定应验即修）；裁定**工程是开发框架非跑库**——蒸馏笔记回迁 docs，wiki 数据区归零
 - 2026-09-13 画像调研蒸馏入 docs（定位=使用者持续认知档案）
 - 2026-09-13 框架收束日：quickstart 开卷、上 GitHub、评审修补七项、test-repo 立设、命令审计、投影定形（三投影一源）
-- 2026-09-12 定位与重构：裁定个人自用、以用代验（矩阵测试裁撤）；架构重构四提交（标识符英文化、废分层、概念双插件立设、ingest→map 更名）；OKF v0.2 成文 + 冷启动披露审计；雾港与真实库两轮实验全绿，确立 SASU-L 与零污染纪律；清实验数据、README 门面化
-- 2026-09-08~11 原型落地与收尾：六插件四命令起步；registry/actions 协议工件与装卸内核；分层对齐（log 归档改轨、index 每目录化、pipeline 写后管道与自证）；命令-插件双向绑定、trust 立设、附检收编
+- 2026-09-12 定位与重构：裁定个人自用、以用代验；架构重构四提交；OKF v0.2 成文；雾港与真实库实验全绿，确立 SASU-L 与零污染纪律
+- 2026-09-08~11 原型落地：六插件四命令起步；registry/actions 与装卸内核；分层对齐；命令-插件绑定、trust 立设
 - 2026-09-07 插件规范草案写入 user-write（已删，见 git）
 - 2026-08-26~28 创始期：个人库结构副本起建，旋即重定位为 vault-wiki 框架；一次骨架定稿经用户回退
