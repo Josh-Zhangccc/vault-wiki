@@ -19,7 +19,7 @@
 
 ## 过往操作
 
-- 2026-09-14 todo 立设（第十三插件）：`wiki/todo.md` 委托队列（日期/情境触发，新 session 先读、到期主动提醒）；销账即写 log、已结 ≤20 静默清理；不挂命令，值集随扩
+- 2026-09-14 todo 立设（第十三插件）：`wiki/todo.md` 委托队列（日期/情境触发，新 session 先读、到期主动提醒）；销账即写 log、已结 ≤20 静默清理；不挂命令
 - 2026-09-14 notes 0.13 瘦身：type 分层（领地值封闭、形态值降实例词表开放）；补边界与 README 计数
 - 2026-09-13 user-profile 插件立设（第十二插件）：`wiki/profile.md` 收敛式画像（type 值集扩 profile、零自有字段复用 trust），depends [wiki, trust, mapping, sessions]，双通道挂 save/map（trust 后派生前），检查三项（证据闸门/领地走错/缺失）；test-repo 随框架重拷同步；09-14 补 usage 提炼方法论（判据/分层/可证），SASU-L 闭环
 - 2026-09-13 save 首跑与角色纠偏：踩坑热缓存短名断链（全名约定应验即修）；裁定**工程是开发框架非跑库**——蒸馏笔记回迁 docs，wiki 数据区归零
