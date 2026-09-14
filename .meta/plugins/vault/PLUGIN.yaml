@@ -1,7 +1,8 @@
 id: vault
-version: 0.3
+version: 0.4
 depends: []
-updated: 2026-09-13
+updated: 2026-09-14
 attachment: []
-fields: {}
-inject: "真实资产仓库 `vault/`：容纳任意格式资产；命令侧只增，删改自由属于人"
+fields:
+  url: "来源 URL；URL 型资产的出处登记（来源保全），人工放入可选、agent 通道（delegate 等）必填"
+inject: "真实资产仓库 `vault/`：容纳任意格式资产；命令侧只增，删改自由属于人；URL 型资产入库存来源（url 字段——来源保全）；布局规约归 structure 插件"

@@ -44,6 +44,7 @@ description: "把 vault/ 中的资产映射为 wiki 代理页：SHA-256、镜像
 - 镜像定位：代理路径 = `wiki/vault/<原路径>.md`（原名 + .md，防同名碰撞）；md 资产同样有代理，无特例
 - 登记字段：`type: source` + `raw_file`（根相对路径）/ `raw_sha256`（十六进制 SHA-256，不跳过计算）
 - 正文一行描述起步，不复制原文全文；摘要 / 结构抽取为可选增强；日记类资产以登记为主，不强制摘要
+- URL 型资产：代理页带 `url`（vault 字段——来源链接，来源保全；agent 通道放入必填、人工放入可选）
 <!-- /usage:mapping -->
 
 <!-- usage:trust -->

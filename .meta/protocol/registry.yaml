@@ -53,8 +53,9 @@ plugins:
       note: YYYY-MM-DD 绝对时刻；过期判定 = now ≥ stale_after 的纯比较
     verified:
       note: 事件列表，项单行 `by: <actor>, at: <日期>`，可多次追加；信任层级由此推导
+  vault:
+    url:
+      note: 来源 URL；URL 型资产的出处登记（来源保全），人工放入可选、agent 通道（delegate 等）必填
 
-reserved:
-  url:
-    note: 来源链接；URL 型资产本地化（下载入 vault）前暂存，预留 vault 扩展
+reserved: {}
 

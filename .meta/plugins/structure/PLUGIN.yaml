@@ -1,0 +1,14 @@
+id: structure
+version: 0.1
+depends:
+  - vault
+updated: 2026-09-14
+attachment: []
+fields: {}
+inject: "vault 结构：布局由实例声明（实例 AGENTS.md 外壳；预设：日期/格式/类型/混合，可嵌套），agent 放置资产先读声明按位落放，无声明平铺容忍；check 时漂移检测（实际目录 vs 声明 → warning）"
+usage:
+  - 结构声明写实例 AGENTS.md 外壳：选预设（日期 xxxx-xx-xx / 格式如 pdf·md / 类型如 日记·切片 / 混合嵌套）+ 各顶层目录一句话语义
+  - agent 往 vault 放资产：先读声明按位落放；无合适位置落平铺位或建目录后补声明；无声明则平铺根目录
+  - 人自由调整结构（vault 属人）；调整后 check 漂移检测提示同步声明
+checks:
+  - 语义（check 命令）：结构漂移——vault 实际目录 vs 声明（未声明的新顶层目录 → warning，提示补声明或归位）；声明缺失 → info（平铺容忍）

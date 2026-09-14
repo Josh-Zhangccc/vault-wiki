@@ -25,7 +25,7 @@
 
 | 目录 | 内容 |
 |------|------|
-| `.meta/` | 原型核心：十三插件（概念双插件 wiki/vault、桥接 mapping、notes/sessions/link/tag/trust/index/hot/log/user-profile/todo；无分层，注入序=依赖拓扑+字母序）、六命令主本、协议工件（registry / actions / experiments）、机械脚本（wiki_plugin_kernel / pipeline / wikilib，纯标准库零依赖） |
+| `.meta/` | 原型核心：十四插件（概念双插件 wiki/vault、桥接 mapping、notes/sessions/link/tag/trust/index/hot/log/user-profile/todo/structure；无分层，注入序=依赖拓扑+字母序）、六命令主本、协议工件（registry / actions / experiments）、机械脚本（wiki_plugin_kernel / pipeline / wikilib，纯标准库零依赖） |
 | `wiki/`、`vault/` | 数据区骨架（保持空种子：内容属部署实例，工程内不积累——跑库验证走 test-repo） |
 | `.agents/skills/` | 命令部署副本 |
 | `test-repo/` | 参考实例：自足虚拟库（实例侧 AGENTS.md 外壳 + 样例数据，内部不感知构建工程）；框架变更由根侧同步重拷 |
