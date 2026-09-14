@@ -4,7 +4,7 @@
 
 ## 现状（2026-09-13）
 
-工程定位：**个人自用**——矩阵测试裁撤，SASU-L 为镜，边用边改。架构终态：概念双插件 wiki/vault（纯声明）+ 桥接 mapping + 九结构插件（含 user-profile 画像），共十二、无分层（注入序=依赖拓扑+字母序）；六命令 map/save/query/check/plugin/wiki_plugin_kernel（末者为插件内核使用参考）。三投影一源：manifest（inject / checks / usage）→ AGENTS 注入区、check 检查块、命令用法块（consumes 有序声明，序即执行序）；PLUGIN.md 回归纯文档（Role / Structure / Invariants / Changelog），插件内核 wiki_plugin_kernel.py 为唯一投影机。格式契约内化插件（根索引自述 format_version），vault 大小写统一；docs/ 不起现行作用。新形态以用代验。`test-repo/` 为参考实例：自足虚拟库（内部不感知构建工程），框架变更由根侧同步重拷。
+工程定位：**个人自用**——矩阵测试裁撤，SASU-L 为镜，边用边改。架构终态：概念双插件 wiki/vault（纯声明）+ 桥接 mapping + 十结构插件（含画像与临时记忆），共十三、无分层（注入序=依赖拓扑+字母序）；六命令 map/save/query/check/plugin/wiki_plugin_kernel（末者为插件内核使用参考）。三投影一源：manifest（inject / checks / usage）→ AGENTS 注入区、check 检查块、命令用法块（consumes 有序声明，序即执行序）；PLUGIN.md 回归纯文档（Role / Structure / Invariants / Changelog），插件内核 wiki_plugin_kernel.py 为唯一投影机。格式契约内化插件（根索引自述 format_version），vault 大小写统一；docs/ 不起现行作用。新形态以用代验。`test-repo/` 为参考实例：自足虚拟库（内部不感知构建工程），框架变更由根侧同步重拷。
 
 ## 阶段
 
@@ -15,11 +15,11 @@
 - wiki 初始化机制（画像首建与建构/整合命令同批）：冷启动时机与首建内容——随设计文档一并解决
 - 设计文档：导论随后开卷（章=文件，问题驱动；OKF 不收编）
 - 部署进个人库（**用户自行执行**，agent 不主动触碰；走查见 `docs/quickstart.md`，additive，存量页不动、旧页渐进代理）
-- todo 插件（临时记忆）方案待裁（命名/已结窗口/不挂命令）
 - skill 打磨随摩擦滚动；vault 治理与裁撤项不排期
 
 ## 过往操作
 
+- 2026-09-14 todo 立设（第十三插件）：`wiki/todo.md` 委托队列（日期/情境触发，新 session 先读、到期主动提醒）；销账即写 log、已结 ≤20 静默清理；不挂命令，值集随扩
 - 2026-09-14 notes 0.13 瘦身：type 分层（领地值封闭、形态值降实例词表开放）；补边界与 README 计数
 - 2026-09-13 user-profile 插件立设（第十二插件）：`wiki/profile.md` 收敛式画像（type 值集扩 profile、零自有字段复用 trust），depends [wiki, trust, mapping, sessions]，双通道挂 save/map（trust 后派生前），检查三项（证据闸门/领地走错/缺失）；test-repo 随框架重拷同步；09-14 补 usage 提炼方法论（判据/分层/可证），SASU-L 闭环
 - 2026-09-13 save 首跑与角色纠偏：踩坑热缓存短名断链（全名约定应验即修）；裁定**工程是开发框架非跑库**——蒸馏笔记回迁 docs，wiki 数据区归零
