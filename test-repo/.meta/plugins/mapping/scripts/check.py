@@ -31,6 +31,20 @@ def _file_set(root, sub, strip_md):
     return out
 
 
+def _ref_count(ctx, full):
+    """统计全库指向 full（页面全名）的引用：正文 wikilink + related 字段。"""
+    n = 0
+    pat = re.compile(r"\[\[([^\]\|#]+)")
+    for _rel, fm, body in ctx.pages:
+        for m in pat.finditer(str(body)):
+            if m.group(1).strip() == full:
+                n += 1
+        for r in (fm.get("related") or []):
+            if str(r).strip() == full:
+                n += 1
+    return n
+
+
 def check(ctx):
     issues = []
     root = ctx.root
@@ -39,7 +53,9 @@ def check(ctx):
     for f in sorted(real - proxy):
         issues.append({"level": "info", "message": f"vault 待登记（积压）：{f}"})
     for p in sorted(proxy - real):
-        issues.append({"level": "error", "message": f"孤儿代理（vault 无对应物）：wiki/vault/{p}"})
+        refs = _ref_count(ctx, f"vault/{p}")
+        note = f"，被 {refs} 处引用" if refs else "，无引用"
+        issues.append({"level": "error", "message": f"孤儿代理（vault 无对应物{note}）：wiki/vault/{p}"})
     for rel, fm, body in ctx.pages:
         if not rel.startswith("vault/"):
             continue

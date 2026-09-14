@@ -7,6 +7,10 @@
 - 数据区：`vault/`（真实资产）· `wiki/`（代理页 / 原生笔记 / 派生层 hot·index·tags·log）
 - 框架件：`.meta/`（插件与命令主本、协议工件 registry·actions、机械脚本）· `.agents/skills/`（命令副本）
 
+## vault 结构
+
+无结构声明：平铺容忍（样例资产少，结构化时机由人定；预设菜单与落位规则见下方注入区 structure 块）
+
 <!-- wiki-inject:start -->
 
 ## wiki 注入区
@@ -41,8 +45,8 @@
 - 信任字段（页面可选）：`generated`（谁生成）/ `verified`（事件列表，项单行 by+at）/ `stale_after`（过期时刻）/ `sources`（来源与信号）；层级推导不落盘——无记录=unverified、仅 agent/process=machine-confirmed、含 human=human-reviewed、过 stale_after=stale
 <!-- /plugin:trust -->
 
-<!-- plugin:vault v0.3 -->
-- 真实资产仓库 `vault/`：容纳任意格式资产；命令侧只增，删改自由属于人
+<!-- plugin:vault v0.4 -->
+- 真实资产仓库 `vault/`：容纳任意格式资产；命令侧只增，删改自由属于人；URL 型资产入库存来源（url 字段——来源保全）；布局规约归 structure 插件
 <!-- /plugin:vault -->
 
 <!-- plugin:wiki v0.4 -->
@@ -53,9 +57,13 @@
 - 索引 `wiki/index.md`（根，含 format_version——页面格式契约版本，不兼容变更时进位）与各目录 `index.md`（渐进披露，逐层下钻）/ `wiki/tags.md`（tag 反向索引）：只聚合、永不手编，重建走 `pipeline.py index`，检索第二入口
 <!-- /plugin:index -->
 
-<!-- plugin:mapping v0.6 -->
+<!-- plugin:mapping v0.7 -->
 - 代理层 `wiki/vault/`：与根 `vault/` 1:1 镜像（代理名 = 原名 + .md），页面必有 raw_file / raw_sha256；路径即出身证明
 <!-- /plugin:mapping -->
+
+<!-- plugin:structure v0.1 -->
+- vault 结构：布局由实例声明（实例 AGENTS.md 外壳；预设：日期/格式/类型/混合，可嵌套），agent 放置资产先读声明按位落放，无声明平铺容忍；check 时漂移检测（实际目录 vs 声明 → warning）
+<!-- /plugin:structure -->
 
 <!-- plugin:todo v0.1 -->
 - 临时记忆 `wiki/todo.md`（type: todo）：跨 session 委托与提醒，条目 = 触发条件（日期或情境）+ 一句话 + by/at；新 session 开始先读此页（先于 hot），日期已到或已过的条目主动提醒用户；受托即追加，完成即销账（`[x]` 并写 log 行——历史归 log），已结 ≤20 条超限静默清理，本页只留活工作集
