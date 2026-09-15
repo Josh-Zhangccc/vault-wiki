@@ -94,8 +94,8 @@
 - 代理层 `wiki/vault/`：与根 `vault/` 1:1 镜像（代理名 = 原名 + .md），页面必有 raw_file / raw_sha256；路径即出身证明
 <!-- /plugin:mapping -->
 
-<!-- plugin:structure v0.1 -->
-- vault 结构：布局由实例声明（实例 AGENTS.md 外壳；预设：日期/格式/类型/混合，可嵌套），agent 放置资产先读声明按位落放，无声明平铺容忍；check 时漂移检测（实际目录 vs 声明 → warning）
+<!-- plugin:structure v0.2 -->
+- vault 结构声明 `wiki/structure.md`（type: structure）：frontmatter `structure` 块映射 = 目录→一句话语义，正文写预设（日期/格式/类型/混合，可嵌套）与说明；agent 放置资产先读此页按位落放；页面缺席 = 平铺容忍；人调整 vault 后同步声明，check 机械 diff（未声明的顶层目录 / 声明不存在的目录 → warning）
 <!-- /plugin:structure -->
 
 <!-- plugin:todo v0.1 -->
