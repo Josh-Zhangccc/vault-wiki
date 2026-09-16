@@ -2,9 +2,9 @@
 
 > 追加与修改须标注日期（精确到天）；总量 <2k 字；整合压缩须用户同意。
 
-## 现状（2026-09-13）
+## 现状（2026-09-16）
 
-工程定位：**个人自用**——矩阵测试裁撤，SASU-L 为镜，边用边改。架构终态：概念双插件 wiki/vault（纯声明）+ 桥接 mapping + 十一结构插件，共十四、无分层（注入序=依赖拓扑+字母序）；六命令 map/save/query/check/plugin/wiki_plugin_kernel（末者为插件内核使用参考）。三投影一源：manifest（inject/checks/usage）→ AGENTS 注入区、check 检查块、命令用法块（consumes 序即执行序）；PLUGIN.md 纯文档，内核 wiki_plugin_kernel.py 唯一投影机；registry 字段注册表（预留段可认领回填）。docs/ 现行三件（quickstart/pointers/research）。`test-repo/` 自足虚拟库，根侧同步重拷。
+工程定位：**个人自用**——矩阵测试裁撤，SASU-L 为镜，边用边改。架构终态：概念双插件 wiki/vault（纯声明）+ 桥接 mapping + 十一结构插件，共十四、无分层（注入序=依赖拓扑+字母序）；六命令 map/save/query/check/plugin/wiki_plugin_kernel（末者为插件内核使用参考）。三投影一源：manifest（inject/checks/usage）→ AGENTS 注入区、check 检查块、命令用法块（consumes 序即执行序）；PLUGIN.md 纯文档，内核 wiki_plugin_kernel.py 唯一投影机；registry 字段注册表（预留段可认领回填）。docs/ 现行四件（quickstart/pointers/research×2）。`test-repo/` 自足虚拟库，根侧同步重拷。
 
 ## 阶段
 
@@ -19,6 +19,7 @@
 
 ## 过往操作
 
+- 2026-09-16 市场调研入档 `docs/research-landscape.md`：同类入库/出库对标，Google OKF 谱系证实
 - 2026-09-14 structure 0.2：声明页落 `wiki/structure.md`（structure 块映射机械可读，type 领地值扩 structure；漂移检测升级附检 diff，冒烟双向实锤）；wikilib 子键放宽（目录名/中文键曾解析为 None，承重件实锤修补）
 - 2026-09-14 vault 治理批次：structure 立设（第十四，布局声明+漂移检测）；vault 0.4 认领 url；mapping 0.7——孤儿报文带引用计数、重算写 log 行；user-write 四预设入档
 - 2026-09-14 指针概念成文 `docs/pointers.md`：定义 / 五件构成 / 系统实例盘点（含 todo 时间维）/ 设计准则；AGENTS 与 README 指针随更
