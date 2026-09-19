@@ -110,6 +110,10 @@
 - vault 结构声明 `wiki/structure.md`（type: structure）：frontmatter `structure` 块映射 = 目录→一句话语义，正文写预设（日期/格式/类型/混合，可嵌套）与说明；agent 放置资产先读此页按位落放；页面缺席 = 平铺容忍；人调整 vault 后同步声明，check 机械 diff（未声明的顶层目录 / 声明不存在的目录 → warning）
 <!-- /plugin:structure -->
 
+<!-- plugin:tmp v0.1 -->
+- 临时区 `wiki/tmp/`（路径即领地，type: tmp 可标可不标、落领地外 → error）：草稿与解析中间产物住所，无留存承诺随时可清理；对派生层隐身——不入 index/tags、不作链接源、断链豁免（草稿断链 = 尚未写下，转正时闭合）；珍贵草稿及时转正（save → notes / 并入 project 决策区），转正即删稿；解析产物随手设 stale_after，超龄由 check 报清单、处置经确认（不自动删）；敏感中间产物建议实例 gitignore 本目录
+<!-- /plugin:tmp -->
+
 <!-- plugin:todo v0.1 -->
 - 临时记忆 `wiki/todo.md`（type: todo）：跨 session 委托与提醒，条目 = 触发条件（日期或情境）+ 一句话 + by/at；新 session 开始先读此页（先于 hot），日期已到或已过的条目主动提醒用户；受托即追加，完成即销账（`[x]` 并写 log 行——历史归 log），已结 ≤20 条超限静默清理，本页只留活工作集
 <!-- /plugin:todo -->

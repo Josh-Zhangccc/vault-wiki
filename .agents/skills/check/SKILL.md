@@ -107,6 +107,10 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 - 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：声明 diff——vault 顶层目录未声明 → warning、声明键指向不存在目录 → warning；type: structure 落 `wiki/structure.md` 之外 → error；声明页缺席 → info（平铺容忍）
 <!-- /check:structure -->
 
+<!-- check:tmp -->
+- 语义项（v0.1 人工，附检后置）：type: tmp 落 wiki/tmp/ 之外 → error；stale_after 已过 → warning（清理提示）；tmp 页数 > 20 → info（积压分诊）
+<!-- /check:tmp -->
+
 <!-- check:todo -->
 - 机械项（信息级）：日期触发已逾期且未销账条目清单（开 session 提醒的机械依据）；页面缺失（未受托常态）
 - 机械项：条目缺触发条件或 by/at → warning；type: todo 落 `wiki/todo.md` 之外 → error

@@ -2,6 +2,7 @@
 
 > 置顶追加、只增不删；条目 = `- YYYY-MM-DD <类型>：一句话`。规则见 `.meta/plugins/log/`，写走 `pipeline.py log`。
 
+- 2026-09-19 plugin：tmp 0.1 立设：临时区——路径领地、派生层隐身、stale_after 清理提示
 - 2026-09-19 plugin：project 0.1 立设：项目领地——一项目一页四区制，todo 边界与任务行轻量
 - 2026-09-19 plugin：link 0.12：孤儿 info 集动态读 registry 领地值
 - 2026-09-19 plugin：link 0.11：孤儿 info 集对齐 registry 领地值（除 session）
