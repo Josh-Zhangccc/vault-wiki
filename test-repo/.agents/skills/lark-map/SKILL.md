@@ -63,7 +63,7 @@ description: "把飞书侧资源映射为 wiki/lark/ 指针页：读 profile 与
 <!-- /usage:trust -->
 
 <!-- usage:index -->
-- 写后重建（机械自动）：`python .meta/scripts/pipeline.py index`（各目录索引）与同脚本 `tags`（tag 反向索引）；LLM 不手写索引
+- 写后重建（机械自动）：`python .meta/scripts/pipeline.py index`（索引——溢出减负制，含并回后多余旧索引删除）与同脚本 `tags`（tag 反向索引）；LLM 不手写索引
 <!-- /usage:index -->
 
 <!-- usage:hot -->

@@ -82,7 +82,7 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 <!-- /check:trust -->
 
 <!-- check:index -->
-- 索引与实际页面集偏差 → 跑 `pipeline.py index` 重建即修复（幂等，无 diff 即一致）；tags 同理（`pipeline.py tags`）
+- 索引与实际页面集偏差（含该删未删的并回索引）→ 跑 `pipeline.py index` 重建即修复（幂等，无 diff 即一致）；tags 同理（`pipeline.py tags`）
 - 手编痕迹 → warning
 <!-- /check:index -->
 

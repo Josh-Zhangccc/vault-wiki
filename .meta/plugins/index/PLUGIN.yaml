@@ -1,16 +1,16 @@
 id: index
-version: 0.9
+version: 0.10
 depends:
   - tag
-updated: 2026-09-13
+updated: 2026-09-19
 attachment:
-  - "wiki/index.md —— 根索引（含 format_version，只列顶层与子目录入口）"
-  - "各目录 index.md —— 每目录一份（渐进披露）"
+  - "wiki/index.md —— 根索引（恒在；含 format_version；直列可达页面）"
+  - "各目录 index.md —— 溢出减负制诞生（清单超窗时切出，并回上级后随重建消失）"
   - "wiki/tags.md —— tag 反向索引"
 fields: {}
-inject: "索引 `wiki/index.md`（根，含 format_version——页面格式契约版本，不兼容变更时进位）与各目录 `index.md`（渐进披露，逐层下钻）/ `wiki/tags.md`（tag 反向索引）：只聚合、永不手编，重建走 `pipeline.py index`，检索第二入口"
+inject: "索引溢出减负制：根 `wiki/index.md` 恒在（含 format_version——页面格式契约版本，不兼容变更时进位），直列全部可达页（本目录 + 未切子树，全路径 wikilink）；某索引清单超窗（≤25 条，参数以 pipeline 源码为准）时按子树页数降序切子目录自立 `index.md`（入口行带页数）——小库常为单索引，披露边界随内容质量浮现；`wiki/tags.md`（tag 反向索引）不变；只聚合、永不手编、纯函数重建、索引不发明结构（本级平铺超窗如实全列，解药是分子目录非改索引）；重建走 `pipeline.py index`，检索第二入口"
 usage:
-  - 写后重建（机械自动）：`python .meta/scripts/pipeline.py index`（各目录索引）与同脚本 `tags`（tag 反向索引）；LLM 不手写索引
+  - 写后重建（机械自动）：`python .meta/scripts/pipeline.py index`（索引——溢出减负制，含并回后多余旧索引删除）与同脚本 `tags`（tag 反向索引）；LLM 不手写索引
 checks:
-  - 索引与实际页面集偏差 → 跑 `pipeline.py index` 重建即修复（幂等，无 diff 即一致）；tags 同理（`pipeline.py tags`）
+  - 索引与实际页面集偏差（含该删未删的并回索引）→ 跑 `pipeline.py index` 重建即修复（幂等，无 diff 即一致）；tags 同理（`pipeline.py tags`）
   - 手编痕迹 → warning

@@ -8,7 +8,7 @@
 派生页。verify 是写后自证（attester 最小形）：LLM 执行、脚本认证。
 
 用法:
-  python .meta/scripts/pipeline.py index              # 重建全部目录 index.md（幂等）
+  python .meta/scripts/pipeline.py index              # 重建索引（溢出减负制，幂等；含并回后的多余索引删除）
   python .meta/scripts/pipeline.py tags               # 重建 wiki/tags.md（幂等）
   python .meta/scripts/pipeline.py hot <类型> <一句话>   # 淘汰越界 + 置顶加热缓存条目
   python .meta/scripts/pipeline.py log <类型> <一句话>   # 容量归档 + 置顶加 log 行
@@ -17,6 +17,8 @@
 类型枚举：map / save / query / check / plugin / other（log 插件）。
 概念页判定（谁入索引）：wiki/ 下所有 .md，排除——保留名（index.md、log.md）、
 wiki 根派生页（hot.md、tags.md）、archive/ 子树（不可变区，本脚本永不改写其中文件）。
+索引溢出减负制：单张索引清单 ≤INDEX_MAX_ENTRIES 条（页条目 + 目录条目）；根索引恒在，
+超窗时按子树页数降序（同数按名序）切出子目录自立索引，直至装下；纯函数重建（同结构同结果）。
 """
 import datetime
 import os
@@ -42,6 +44,7 @@ HOT_MAX_ENTRIES = 25
 HOT_MAX_DAYS = 5
 HOT_MAX_CHARS = 200
 LOG_MAX_ENTRIES = 100
+INDEX_MAX_ENTRIES = 25  # 单张索引清单窗口（页条目 + 目录条目；溢出减负切分依据）
 TYPE_ORDER = ["map", "save", "query", "check", "plugin", "other"]
 HOT_HEADER = ("# 热缓存\n\n> 最近变更摘要；≤25 条且 <5 日，窗外即删；可整体再生。"
               "规则见 `.meta/plugins/hot/`，写走 `pipeline.py hot`。\n")
@@ -113,29 +116,76 @@ def _count_subtree(full, pages):
     return sum(1 for name, d, _, _ in pages if d == full or d.startswith(full + "/"))
 
 
-def render_index(d, pages, dirs):
-    """目录 d 的 index.md 全文。pages 为全库概念页（供子目录计数）。"""
+def plan_index_dirs(pages, dirs):
+    """溢出减负规划：返回应生成 index.md 的目录集（根恒在）。
+
+    目录清单 = 本目录概念页 + 未切子树页（透明内联）+ 目录条目行；超窗时按
+    子树页数降序（同数按名序）切出子目录自立索引，直至装下。切出至少省
+    S-1 行，故 S<2 的子目录永不被切；空子树（S=0）内联成本按 1 行计（可见性行）。
+    纯函数：同结构必同结果，无历史状态。
+    """
+    own = {}
+    for _, d, _, _ in pages:
+        own[d] = own.get(d, 0) + 1
+
+    planned = set()
+
+    def plan(d):
+        planned.add(d)
+        kids = subdirs_of(d, dirs)
+        sizes = {c: _count_subtree((d + "/" + c) if d else c, pages) for c in kids}
+        total = own.get(d, 0) + sum(s if s > 0 else 1 for s in sizes.values())
+        if total <= INDEX_MAX_ENTRIES:
+            return
+        for c in sorted((k for k in kids if sizes[k] >= 2),
+                        key=lambda c: (-sizes[c], c)):
+            if total <= INDEX_MAX_ENTRIES:
+                break
+            plan((d + "/" + c) if d else c)
+            total -= sizes[c] - 1
+
+    plan("")
+    return planned
+
+
+def visible_pages(d, pages, planned):
+    """d 的索引直列页面：本目录页 + 途经无已切目录的全部下级页（透明内联）。"""
+    pre = d + "/" if d else ""
+    out = []
+    for name, dd, fm, desc in pages:
+        if dd == d:
+            out.append((name, fm, desc))
+        elif dd.startswith(pre):
+            parts = dd[len(pre):].split("/")
+            if all((pre + "/".join(parts[:i])) not in planned for i in range(1, len(parts) + 1)):
+                out.append((name, fm, desc))
+    return out
+
+
+def render_index(d, pages, dirs, planned):
+    """目录 d 的 index.md 全文（溢出减负制：直列可达页，已切子目录作入口行）。"""
     is_root = d == ""
     lines = []
     if is_root:
         lines += ["---", f"format_version: {FORMAT_VERSION}", "---", ""]
     lines.append("# 索引" if is_root else f"# {d.rsplit('/', 1)[-1]} 索引")
     lines.append("")
-    tip = ("每目录一份（渐进披露）：本页只列顶层概念与子目录入口，下钻读各目录 index。"
-           if is_root else "本目录清单；下钻读子目录 index。")
+    tip = ("溢出减负：本页直列可达页面；清单超窗时子目录自立索引（入口行带页数），下钻读之。"
+           if is_root else "本目录索引：直列未切子树页面，已切子目录见入口行。")
     lines.append(f"> {tip}只聚合、永不手编，由 index 插件经 `pipeline.py index` 重建。")
     lines.append("")
-    subs = subdirs_of(d, dirs)
-    own = [(name, fm, desc) for name, dd, fm, desc in pages if dd == d]
-    if subs:
-        lines.append("## 子目录")
-        lines.append("")
-        for s in subs:
-            full = (d + "/" + s) if d else s
-            lines.append(f"- [[{full}/index|{s}/]]（{_count_subtree(full, pages)} 页）")
-        lines.append("")
+    entries = []
+    for s in subdirs_of(d, dirs):
+        full = (d + "/" + s) if d else s
+        n = _count_subtree(full, pages)
+        if full in planned:
+            entries.append(f"- [[{full}/index|{s}/]]（{n} 页）")
+        elif n == 0:
+            entries.append(f"- {s}/（0 页）")  # 空子树可见性行：无索引可链，不入断链图
+    if entries:
+        lines += ["## 子目录", ""] + entries + [""]
     groups = {}
-    for name, fm, desc in own:
+    for name, fm, desc in visible_pages(d, pages, planned):
         groups.setdefault(str(fm.get("type") or "未分类"), []).append((name, desc))
     for t in sorted(groups):
         lines.append(f"## {t}")
@@ -143,7 +193,7 @@ def render_index(d, pages, dirs):
         for name, desc in sorted(groups[t]):
             lines.append(f"- [[{name}]] —— {desc}")
         lines.append("")
-    if not subs and not groups:
+    if not entries and not groups:
         lines.append("（暂无页面）")
         lines.append("")
     return "\n".join(lines).rstrip() + "\n"
@@ -176,7 +226,10 @@ def render_tags(pages):
 def index_targets():
     pages = concept_pages()
     dirs = all_dirs(pages)
-    return {(d + "/" if d else "") + "index.md": render_index(d, pages, dirs) for d in dirs}
+    planned = plan_index_dirs(pages, dirs)
+    targets = {(d + "/" if d else "") + "index.md": render_index(d, pages, dirs, planned)
+               for d in planned}
+    return planned, targets
 
 
 def write_changed(path, content):
@@ -188,8 +241,9 @@ def write_changed(path, content):
 
 
 def do_index(check_only=False):
+    _, targets = index_targets()
     drift, changed = [], 0
-    for rel, content in sorted(index_targets().items()):
+    for rel, content in sorted(targets.items()):
         path = os.path.join(WIKI, rel)
         cur = open(path, encoding="utf-8").read() if os.path.exists(path) else None
         if cur == content:
@@ -199,6 +253,20 @@ def do_index(check_only=False):
         elif write_changed(path, content):
             changed += 1
             print(f"[index] rebuilt wiki/{rel}")
+    # 非计划 index.md（减负并回后的旧索引）：删除 / 报漂移；archive/ 子树不碰
+    for dirpath, subdirs, files in os.walk(WIKI):
+        if "archive" in subdirs:
+            subdirs.remove("archive")  # 不下钻不可变区
+        if "index.md" not in files:
+            continue
+        rel = os.path.relpath(os.path.join(dirpath, "index.md"), WIKI).replace(os.sep, "/")
+        if rel not in targets:
+            if check_only:
+                drift.append(rel)
+            else:
+                os.remove(os.path.join(WIKI, rel))
+                changed += 1
+                print(f"[index] removed wiki/{rel}（并回上级）")
     if not check_only:
         print(f"[index] done, {changed} file(s) changed (idempotent)")
     return drift
