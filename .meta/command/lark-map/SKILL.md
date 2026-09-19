@@ -1,7 +1,7 @@
 ---
 name: lark-map
 owner: lark
-consumes: [lark, trust, index, hot, log]
+consumes: [lark, lark-docs, trust, index, hot, log]
 description: "把飞书侧资源映射为 wiki/lark/ 指针页：读 profile 与域声明 → 逐域枚举 lark-cli → diff token 集 → 建/改/标废弃 → 写后管道。Triggers on: lark-map, 拉取飞书, 同步飞书, lark map."
 ---
 
@@ -48,6 +48,13 @@ description: "把飞书侧资源映射为 wiki/lark/ 指针页：读 profile 与
 - 新建 profile：`wiki/lark/` 下建目录（名 = cli profile 名）+ `profile.md`（kind: profile，一句话 + 可选 TTL 覆写）；域插件自动覆盖该目录
 - 域插件契约：depends lark，遍历全部 profile 目录平行服务，只约束各自 kind 词表与域内页面格式，不碰 profile 抽象
 <!-- /usage:lark -->
+
+<!-- usage:lark-docs -->
+- 建/改关心区：改 `docs.md` `docs` 块映射（范围一句话：知识空间名 / 云盘目录 / 特定对象），lark-map 或 agent 按区枚举落指针页；关心区即指针页目录段
+- 结构速写：wiki 空间清单 + 云盘顶层树蒸馏成一屏（agent 产物），随拉取重置 stale_after；不追求与 lark 侧实时一致
+- 指针页正文一行摘要起步；快照节 `## 快照 YYYY-MM-DD` 选段追加、禁全文复制
+- kind 词表跟 lark obj_type：docx / wiki / sheet / base / file / …（开放，新词先查 registry）
+<!-- /usage:lark-docs -->
 
 <!-- usage:trust -->
 - 写页随手写 `generated`（块式：`by: agent/<当前模型>` / `at: 今日`）

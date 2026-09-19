@@ -37,7 +37,7 @@
 > 指针需主动更新。跨 session 的重要指针标注 **ATTENTION**；易变状态（进度等）放 `log.md`，不写入本文件。
 
 - `log.md` — 项目日志：现状、阶段、下一步、过往操作 **ATTENTION**
-- `.meta/` — 原型核心：结构插件（`plugins/`——概念双插件 wiki/vault + 桥接 mapping + notes/sessions/link/tag/trust/index/hot/log/user-profile/todo/structure，无分层，注入序=依赖拓扑+字母序）与命令主本（`command/`）与协议工件（`protocol/`：字段注册表、动作纪律、披露范式 SASU-L）与机械脚本（`scripts/`：wiki_plugin_kernel 装卸/合规/注入/副本 + pipeline 派生层管道 index/tags/hot/log/verify + wikilib 页面解析承重件）；AGENTS.md 注入区为其投影 **ATTENTION**
+- `.meta/` — 原型核心：结构插件（`plugins/`——概念双插件 wiki/vault + 桥接 mapping + notes/sessions/link/tag/trust/index/hot/log/user-profile/todo/structure + 外部指针族 lark（基座）与 lark-docs（云文档域），无分层，注入序=依赖拓扑+字母序）与命令主本（`command/`）与协议工件（`protocol/`：字段注册表、动作纪律、披露范式 SASU-L）与机械脚本（`scripts/`：wiki_plugin_kernel 装卸/合规/注入/副本 + pipeline 派生层管道 index/tags/hot/log/verify + wikilib 页面解析承重件）；AGENTS.md 注入区为其投影 **ATTENTION**
 - `wiki/`、`vault/` — 数据区骨架（保持空种子：内容属部署实例，工程内不积累——跑库验证走 `test-repo/`）；`.agents/skills/` — 命令部署副本
 - `docs/` — 设计文档（重开卷）：现行 `quickstart.md` 快速开始/部署走查、`pointers.md` 指针机制（信息披露挂载，架构核心概念）、`research-*.md` 调研档案（user-profile 画像选型、landscape 同类产品入库/出库对标）；历史档案 `00-principles.md`、`01-okf.md` v0.2 不起现行作用；现行规范以 `.meta/` 为源
 - `README.md` — 项目章程
@@ -105,6 +105,10 @@
 <!-- plugin:todo v0.1 -->
 - 临时记忆 `wiki/todo.md`（type: todo）：跨 session 委托与提醒，条目 = 触发条件（日期或情境）+ 一句话 + by/at；新 session 开始先读此页（先于 hot），日期已到或已过的条目主动提醒用户；受托即追加，完成即销账（`[x]` 并写 log 行——历史归 log），已结 ≤20 条超限静默清理，本页只留活工作集
 <!-- /plugin:todo -->
+
+<!-- plugin:lark-docs v0.1 -->
+- 云文档域（服务 profile 抽象）：每 profile 枢纽页 `<profile>/docs.md`（kind: docs）——frontmatter `docs` 块映射 = 关心区→范围一句话（实例配置），正文「云盘结构速写」（蒸馏非镜像，stale_after 管）；指针页落 `<profile>/docs/<关心区>/`，kind 跟 lark obj_type（docx/wiki/sheet/base/file…开放词表）；全量映射禁止——枚举只服务速写与关心区解析；快照节 `## 快照 YYYY-MM-DD` 选段追加、禁全文复制；TTL 默认 7 天（profile.md 覆写）
+<!-- /plugin:lark-docs -->
 
 <!-- plugin:user-profile v0.2 -->
 - 用户画像 `wiki/profile.md`（type: profile）：对使用者的持续认知档案，静态身份层 + 动态偏好层，维度不枚举；收敛式更新——新值取代旧值、正文留痕；断言必带证据 wikilink（会话页或 vault 代理页），偏好层挂 stale_after；零自有字段复用 trust，不属 notes 领地；个性化决策（称呼、风格、偏好）前先读此页，库未初始化时可缺

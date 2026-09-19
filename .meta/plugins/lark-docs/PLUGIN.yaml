@@ -1,0 +1,17 @@
+id: lark-docs
+version: 0.1
+depends:
+  - lark
+updated: 2026-09-19
+attachment:
+  - "wiki/lark/<profile>/docs.md —— 域枢纽（关心区块映射 + 结构速写；随首个 profile 建域时自建，不随插件分发种子）"
+fields:
+  docs: "块映射（docs.md 枢纽）——关心区名 → 范围一句话（知识空间名 / 云盘目录 / 特定对象，agent 经 lark-cli 解析）；关心区 = 指针页目录段"
+inject: "云文档域（服务 profile 抽象）：每 profile 枢纽页 `<profile>/docs.md`（kind: docs）——frontmatter `docs` 块映射 = 关心区→范围一句话（实例配置），正文「云盘结构速写」（蒸馏非镜像，stale_after 管）；指针页落 `<profile>/docs/<关心区>/`，kind 跟 lark obj_type（docx/wiki/sheet/base/file…开放词表）；全量映射禁止——枚举只服务速写与关心区解析；快照节 `## 快照 YYYY-MM-DD` 选段追加、禁全文复制；TTL 默认 7 天（profile.md 覆写）"
+usage:
+  - 建/改关心区：改 `docs.md` `docs` 块映射（范围一句话：知识空间名 / 云盘目录 / 特定对象），lark-map 或 agent 按区枚举落指针页；关心区即指针页目录段
+  - 结构速写：wiki 空间清单 + 云盘顶层树蒸馏成一屏（agent 产物），随拉取重置 stale_after；不追求与 lark 侧实时一致
+  - 指针页正文一行摘要起步；快照节 `## 快照 YYYY-MM-DD` 选段追加、禁全文复制
+  - kind 词表跟 lark obj_type：docx / wiki / sheet / base / file / …（开放，新词先查 registry）
+checks:
+  - 语义项（v0.1 人工，附检后置）：`docs.md` 缺 `docs` 块映射 → warning；指针页落 `docs/` 子树之外 → warning；kind 不在词表 → info

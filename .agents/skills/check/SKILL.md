@@ -105,6 +105,10 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 - 语义（check 命令）：open 条目 > 50 → warning（膨胀分诊：该做的做、该沉淀的走 save、该放弃的与用户确认）
 <!-- /check:todo -->
 
+<!-- check:lark-docs -->
+- 语义项（v0.1 人工，附检后置）：`docs.md` 缺 `docs` 块映射 → warning；指针页落 `docs/` 子树之外 → warning；kind 不在词表 → info
+<!-- /check:lark-docs -->
+
 <!-- check:user-profile -->
 - 语义（check 命令）：画像断言缺证据 wikilink → warning
 - 机械项：type: profile 页面落 `wiki/notes/` 或 `wiki/vault/`（走错领地）→ error

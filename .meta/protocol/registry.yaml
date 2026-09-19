@@ -31,6 +31,9 @@ plugins:
   lark:
     lark:
       note: 块映射——profile（所属企业身份，= 所在目录名）/ kind（页形态：profile 身份页、docs 域枢纽、docx|wiki|sheet|base|file… 对象类型，开放词表归域插件约束）/ token（对象 token，身份证明，页↔token 一比一）/ url（lark 侧地址）
+  lark-docs:
+    docs:
+      note: 块映射（docs.md 枢纽）——关心区名 → 范围一句话（知识空间名 / 云盘目录 / 特定对象，agent 经 lark-cli 解析）；关心区 = 指针页目录段
   link:
     aliases:
       note: YAML 列表，别名/短名，供链接解析

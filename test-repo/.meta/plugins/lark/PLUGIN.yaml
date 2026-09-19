@@ -1,0 +1,20 @@
+id: lark
+version: 0.1
+depends:
+  - wiki
+  - trust
+updated: 2026-09-19
+attachment:
+  - "wiki/lark/ —— 外部指针领地（一企业一 profile 目录，目录名 = lark-cli --profile 名；建目录即建 profile，无中央声明页）"
+fields:
+  lark: "块映射——profile（所属企业身份，= 所在目录名）/ kind（页形态：profile 身份页、docs 域枢纽、docx|wiki|sheet|base|file… 对象类型，开放词表归域插件约束）/ token（对象 token，身份证明，页↔token 一比一）/ url（lark 侧地址）"
+commands:
+  - lark-map
+inject: "外部指针领地 `wiki/lark/<profile>/`（一企业一目录，目录名 = lark-cli --profile 名，agent 调用必带）：基座立 profile 抽象与身份页 `profile.md`（一句话 + TTL 覆写），域插件（lark-docs…）在任一 profile 下平行展开；指针页 type: lark + `lark` 块映射（profile/kind/token/url），token↔页一比一即身份证明；trust 天花板 machine-confirmed，stale_after = 拉取日 + TTL（默认 7 天），用前查 stale、stale 即带 --profile 现拉刷新（agent 即同步器）；资源消失标 status: deprecated 不删；新 profile = 建目录 + 身份页，域插件自动覆盖；CLI 纪律：--profile 必带、auth 现查不落盘、入新域前 lark-cli skills read 先行"
+usage:
+  - 指针页登记字段：`type: lark` + `lark` 块映射（profile = 所在目录名、kind = 对象类型、token、url）+ generated / stale_after
+  - 遇 stale 指针页：带 `--profile` 用 lark-cli 现拉，覆写 frontmatter 机械字段（updated / stale_after），快照类正文追加不覆写
+  - 新建 profile：`wiki/lark/` 下建目录（名 = cli profile 名）+ `profile.md`（kind: profile，一句话 + 可选 TTL 覆写）；域插件自动覆盖该目录
+  - 域插件契约：depends lark，遍历全部 profile 目录平行服务，只约束各自 kind 词表与域内页面格式，不碰 profile 抽象
+checks:
+  - 语义项（v0.1 人工，附检后置）：指针页缺 token / token 重复 → error；lark.profile 与所在目录名不符 → warning；type: lark 落 wiki/lark/ 之外 → error；域枢纽页（docs.md 等）落 profile 目录之外 → warning

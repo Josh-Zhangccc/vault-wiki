@@ -1,15 +1,48 @@
-# test-repo
+# 项目介绍
 
-个人知识库：vault 收纳真实资产，wiki 做 md 代理与原生笔记。md + 纯文件是底座，Obsidian 等仅为可替换 viewer。页面与结构契约见下方注入区；库操作走命令（map / save / query / check / plugin / wiki_plugin_kernel），流程见 `.agents/skills/`；git 提交随库操作即做、不攒批（信息格式单点见 `.meta/protocol/actions.md`）。
+本仓库（目录 `agent-obsidian-template`，工程暂名 **vault-wiki**）是 vault-wiki 框架的构建工程，兼第一个**原型实例**：2026-09-08 起「插件 + 命令」架构直接落地，规范文档后置蒸馏。**定位个人自用**（2026-09-12 裁定：普世化与矩阵化测试搁置，边用边改）。
 
-## 布局
+- 布局：`.meta/`（插件与命令主本，原型核心）· `wiki/` + `vault/`（数据区）· `.agents/skills/`（部署副本）· `test-repo/`（参考实例：自足虚拟库，内部不感知本工程；框架变更由根侧同步重拷）· `docs/`（设计档案）
+- 术语：**wiki** = vault 的 md 代理层与原生笔记；**vault** = 真实资产仓库（命令侧只增，删改自由属于人）
+- 冲突裁决：以原型现状与讨论收敛结论为准；规范蒸馏时归并 `docs/` 历史版本
+- 个人库（`D:\Obsidian repo\agent-obsidian`）为只读实证样本：原 wiki 思想已转化为本原型（见 log 2026-09-08）
 
-- 数据区：`vault/`（真实资产）· `wiki/`（代理页 / 原生笔记 / 派生层 hot·index·tags·log）
-- 框架件：`.meta/`（插件与命令主本、协议工件 registry·actions、机械脚本）· `.agents/skills/`（命令副本）
+# 核心准则
 
-## vault 结构
+1. **原型先行、doc 后置**：设计经讨论收敛后直接落地为原型（`.meta/` 插件与命令），以真实操作验证；规范文档事后从跑通的现实蒸馏，不预先立稿。
+2. **骨架与实例分离**：个人化的东西（日记体系、素材偏好、称呼规则……）一律记为实例配置项，不进架构。试金石：搬不进一个全新实例的，就是个人层漏进了架构；同理，**假定 agent 已知的（未写明的惯例、格式先验）就是知识层漏进架构**——真实部署中 agent 仅按 SASU-L 顺序（system prompt → AGENTS.md → Skills → 用户原话 → loop）获知信息，零先验。
+3. **架构不枚举**：不枚举文件格式与笔记类型（类型是 frontmatter 字段）；结构由插件各自规范，wiki 目录分代理层（`wiki/vault/`）与原生区（`wiki/notes/` 笔记、`wiki/sessions/` 会话）。
+4. **无工具私有格式**：md + 纯文件是底座；Obsidian、WebUI 等都是可替换 viewer。
+5. 主动维护 `log.md`：含项目现状、阶段与进度、下一步计划、过往操作；总量不超过 2k 字；操作标注日期（精确到天）；描述过时或过长时主动整合压缩，**整合须先征得用户同意**。
+6. 本文件为指导性文件，总长度 <150 行；详细信息用指针引用；每个 session 开始时主动读取重要指针。
+7. 产出文档以中文为主，结构文件用 ASCII 文件名。
+8. **小步主动提交**：设计定稿或骨架变更落地后，agent 主动 git commit，不等用户指令（防零提交陷阱）；提交信息格式 `模块: 概述`（如 `骨架: 定稿最小集与目录结构`），一次提交只做一件事；不主动 push；禁止改写历史的操作。
+9. **披露完备、以用代验**：skill 与规范按 SASU-L 披露范式写清（零先验，见准则 2 与 `.meta/protocol/experiments.md`）；框架改动以真实使用反馈为准、边用边改，不做矩阵化测试（2026-09-12 裁定）。
 
-结构声明页 `wiki/structure.md` 未建 = 平铺容忍（当前样例平铺；结构化时按注入区 structure 块建声明页）
+# 指令（用户触发）
+
+- **init**：读取本文件指针与 `log.md`，跨 session 对齐；判断 log 是否需整合、指针是否需更新。
+- **update**：更新 `log.md` 与相关文档并 git 提交；随后附简报：本轮做了什么、关键决策与理由、影响。
+- **discuss**：以专业、简明的方式讨论对齐；只讨论，禁止执行破坏性操作。
+- **recover**：结束特殊状态（如 discuss），恢复正常工作。
+
+# 用户要求（硬性约束）
+
+- 个人库 `D:\Obsidian repo\agent-obsidian` 对本工程只读；任何回填动作须用户明确指令。
+- 个人隐私内容（用户档案、日记、个人记录）不得写入本仓库——框架是普世产出。
+- 参考工程（`D:\My Programs\erp - ksbgs`、`D:\My Programs\aijia`）仅作模式参考，不修改其中任何内容。
+
+# 指针
+
+> 指针需主动更新。跨 session 的重要指针标注 **ATTENTION**；易变状态（进度等）放 `log.md`，不写入本文件。
+
+- `log.md` — 项目日志：现状、阶段、下一步、过往操作 **ATTENTION**
+- `.meta/` — 原型核心：结构插件（`plugins/`——概念双插件 wiki/vault + 桥接 mapping + notes/sessions/link/tag/trust/index/hot/log/user-profile/todo/structure + 外部指针族 lark（基座）与 lark-docs（云文档域），无分层，注入序=依赖拓扑+字母序）与命令主本（`command/`）与协议工件（`protocol/`：字段注册表、动作纪律、披露范式 SASU-L）与机械脚本（`scripts/`：wiki_plugin_kernel 装卸/合规/注入/副本 + pipeline 派生层管道 index/tags/hot/log/verify + wikilib 页面解析承重件）；AGENTS.md 注入区为其投影 **ATTENTION**
+- `wiki/`、`vault/` — 数据区骨架（保持空种子：内容属部署实例，工程内不积累——跑库验证走 `test-repo/`）；`.agents/skills/` — 命令部署副本
+- `docs/` — 设计文档（重开卷）：现行 `quickstart.md` 快速开始/部署走查、`pointers.md` 指针机制（信息披露挂载，架构核心概念）、`research-*.md` 调研档案（user-profile 画像选型、landscape 同类产品入库/出库对标）；历史档案 `00-principles.md`、`01-okf.md` v0.2 不起现行作用；现行规范以 `.meta/` 为源
+- `README.md` — 项目章程
+- 设计谱系（讨论记录，只读）：个人库 `wiki/meta/2026-08-25-wiki运行时重构决策.md`、`wiki/sessions/2026-08-25-wiki架构调研与docs-first重构设计.md`
+- 参考工程：`D:\My Programs\erp - ksbgs`（AGENTS.md 模式来源：宪法+指针、log 容量管理、指令集）；`D:\My Programs\aijia`（wiki 指针化引用）
 
 <!-- wiki-inject:start -->
 
@@ -57,6 +90,10 @@
 - 索引 `wiki/index.md`（根，含 format_version——页面格式契约版本，不兼容变更时进位）与各目录 `index.md`（渐进披露，逐层下钻）/ `wiki/tags.md`（tag 反向索引）：只聚合、永不手编，重建走 `pipeline.py index`，检索第二入口
 <!-- /plugin:index -->
 
+<!-- plugin:lark v0.1 -->
+- 外部指针领地 `wiki/lark/<profile>/`（一企业一目录，目录名 = lark-cli --profile 名，agent 调用必带）：基座立 profile 抽象与身份页 `profile.md`（一句话 + TTL 覆写），域插件（lark-docs…）在任一 profile 下平行展开；指针页 type: lark + `lark` 块映射（profile/kind/token/url），token↔页一比一即身份证明；trust 天花板 machine-confirmed，stale_after = 拉取日 + TTL（默认 7 天），用前查 stale、stale 即带 --profile 现拉刷新（agent 即同步器）；资源消失标 status: deprecated 不删；新 profile = 建目录 + 身份页，域插件自动覆盖；CLI 纪律：--profile 必带、auth 现查不落盘、入新域前 lark-cli skills read 先行
+<!-- /plugin:lark -->
+
 <!-- plugin:mapping v0.7 -->
 - 代理层 `wiki/vault/`：与根 `vault/` 1:1 镜像（代理名 = 原名 + .md），页面必有 raw_file / raw_sha256；路径即出身证明
 <!-- /plugin:mapping -->
@@ -68,6 +105,10 @@
 <!-- plugin:todo v0.1 -->
 - 临时记忆 `wiki/todo.md`（type: todo）：跨 session 委托与提醒，条目 = 触发条件（日期或情境）+ 一句话 + by/at；新 session 开始先读此页（先于 hot），日期已到或已过的条目主动提醒用户；受托即追加，完成即销账（`[x]` 并写 log 行——历史归 log），已结 ≤20 条超限静默清理，本页只留活工作集
 <!-- /plugin:todo -->
+
+<!-- plugin:lark-docs v0.1 -->
+- 云文档域（服务 profile 抽象）：每 profile 枢纽页 `<profile>/docs.md`（kind: docs）——frontmatter `docs` 块映射 = 关心区→范围一句话（实例配置），正文「云盘结构速写」（蒸馏非镜像，stale_after 管）；指针页落 `<profile>/docs/<关心区>/`，kind 跟 lark obj_type（docx/wiki/sheet/base/file…开放词表）；全量映射禁止——枚举只服务速写与关心区解析；快照节 `## 快照 YYYY-MM-DD` 选段追加、禁全文复制；TTL 默认 7 天（profile.md 覆写）
+<!-- /plugin:lark-docs -->
 
 <!-- plugin:user-profile v0.2 -->
 - 用户画像 `wiki/profile.md`（type: profile）：对使用者的持续认知档案，静态身份层 + 动态偏好层，维度不枚举；收敛式更新——新值取代旧值、正文留痕；断言必带证据 wikilink（会话页或 vault 代理页），偏好层挂 stale_after；零自有字段复用 trust，不属 notes 领地；个性化决策（称呼、风格、偏好）前先读此页，库未初始化时可缺
