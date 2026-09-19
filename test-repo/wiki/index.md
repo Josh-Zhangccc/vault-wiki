@@ -10,6 +10,11 @@ format_version: 0.2
 
 - sessions/（0 页）
 
+## calendar
+
+- [[calendar]] —— 时间领地声明页——源清单（演示）
+- [[calendar/2026-09]] —— 2026 年 9 月日程（演示）
+
 ## concept
 
 - [[notes/代理页的登记与摘要边界]] —— 代理页是资产在 md 世界的代表：登记（`raw_file` / `raw_sha256`）是本职，摘要与结构抽取是可选增强。哈希是失配探测器，不是执法器——…

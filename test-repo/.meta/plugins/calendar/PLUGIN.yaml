@@ -1,0 +1,19 @@
+id: calendar
+version: 0.1
+depends:
+  - wiki
+  - trust
+updated: 2026-09-19
+attachment:
+  - "wiki/calendar.md —— 声明页（`calendar` 块映射 = 源键→源声明；随首个源接入时自建，manual-only 可缺）"
+  - "wiki/calendar/ —— 月页 YYYY-MM.md（一页一月，两节制）"
+fields:
+  calendar: "块映射（声明页）——源键 → 源声明（值语法归适配器：lark-calendar 用 `lark/<profile> <calendar_id|primary>`）；源键即日程行尾标"
+inject: "时间领地：声明页 `wiki/calendar.md`（`calendar` 块映射 = 源键→源声明，manual-only 可缺）+ 月页 `wiki/calendar/YYYY-MM.md`（两节制——`## 日程` 源投影整节重刷、`## 手记` 只增；事件行 `- MM-DD HH:MM~HH:MM 标题（源键）` 可带 wikilink，事件不建页）；未来滚动、过去冻结（月份走完不可改写）；月页 stale_after 默认 2 天；与 todo 边界——日历存何时有何事、todo 存何事待办，可单向派生"
+usage:
+  - 同步（机械）：读声明页源清单 → 逐源由其适配器拉当月与下月 → 整节重刷各月页 `## 日程`（行尾标源键）→ `pipeline.py verify` + log 行 + 提交（`映射: calendar`）
+  - 日更（无人值守会话）：部署侧 cron 定时触发同步会话，全机械无需确认，失败源 log 报告不阻断他源；语义增强（事件备注、链接补全）留交互会话
+  - 手记：当月 `## 手记` 追加一行（日期 + 一句话），只增不改
+  - 冻结：月份走完的月页不再改写；改期等变更记入新月页
+checks:
+  - 语义项（v0.1 人工，附检后置）：月页文件名非 YYYY-MM 或落 wiki/calendar/ 之外 → error；已过月份月页改写痕迹 → error（git 审计）；声明页缺 `calendar` 块 → info（manual-only 常态）

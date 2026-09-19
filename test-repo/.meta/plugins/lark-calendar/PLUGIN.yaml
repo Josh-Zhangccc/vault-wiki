@@ -1,0 +1,15 @@
+id: lark-calendar
+version: 0.1
+depends:
+  - calendar
+  - lark
+updated: 2026-09-19
+attachment:
+  - "无自有页面：源语法（声明页 `calendar` 块映射值）与拉取纪律为全部产出"
+fields: {}
+inject: "lark 日历源（calendar 首个适配器）：声明页 `calendar` 块映射值 = `lark/<profile> <calendar_id|primary>`（profile 须为 wiki/lark/ 现役目录）；拉取 `lark-cli --profile <名> calendar …`（instance_view 当月/下月窗口）；只写月页 `## 日程` 节、行尾标源键；不碰手记节与已冻结月页；日更节奏 = 部署侧 cron 定时无人值守会话（全机械，失败源 log 报告不阻断他源）"
+usage:
+  - 接入：声明页加源（键 = 短名，值 = `lark/<profile> <calendar_id|primary>`）→ 拉一次当月 / 下月 → 整节重刷日程 → verify + log
+  - 日更无人值守：cron 定时会话逐源拉刷；语义增强（备注、链接补全）留交互会话
+checks:
+  - 语义项（v0.1 人工）：声明页 lark 源的 profile 不在 wiki/lark/ 目录集 → warning；日程行源键无对应声明 → warning

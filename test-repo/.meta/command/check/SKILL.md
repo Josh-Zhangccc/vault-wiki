@@ -81,6 +81,10 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 - 语义（check 命令）：stale 页处置分诊（刷新时刻 / 重验证 / 废弃）——人决
 <!-- /check:trust -->
 
+<!-- check:calendar -->
+- 语义项（v0.1 人工，附检后置）：月页文件名非 YYYY-MM 或落 wiki/calendar/ 之外 → error；已过月份月页改写痕迹 → error（git 审计）；声明页缺 `calendar` 块 → info（manual-only 常态）
+<!-- /check:calendar -->
+
 <!-- check:index -->
 - 索引与实际页面集偏差（含该删未删的并回索引）→ 跑 `pipeline.py index` 重建即修复（幂等，无 diff 即一致）；tags 同理（`pipeline.py tags`）
 - 手编痕迹 → warning
@@ -104,6 +108,10 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 - 机械项：条目缺触发条件或 by/at → warning；type: todo 落 `wiki/todo.md` 之外 → error
 - 语义（check 命令）：open 条目 > 50 → warning（膨胀分诊：该做的做、该沉淀的走 save、该放弃的与用户确认）
 <!-- /check:todo -->
+
+<!-- check:lark-calendar -->
+- 语义项（v0.1 人工）：声明页 lark 源的 profile 不在 wiki/lark/ 目录集 → warning；日程行源键无对应声明 → warning
+<!-- /check:lark-calendar -->
 
 <!-- check:lark-docs -->
 - 语义项（v0.1 人工，附检后置）：`docs.md` 缺 `docs` 块映射 → warning；指针页落 `docs/` 子树之外 → warning；kind 不在词表 → info
