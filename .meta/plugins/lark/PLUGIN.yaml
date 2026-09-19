@@ -1,5 +1,5 @@
 id: lark
-version: 0.1
+version: 0.2
 depends:
   - wiki
   - trust
@@ -10,7 +10,7 @@ fields:
   lark: "块映射——profile（所属企业身份，= 所在目录名）/ kind（页形态：profile 身份页、docs 域枢纽、docx|wiki|sheet|base|file… 对象类型，开放词表归域插件约束）/ token（对象 token，身份证明，页↔token 一比一）/ url（lark 侧地址）"
 commands:
   - lark-map
-inject: "外部指针领地 `wiki/lark/<profile>/`（一企业一目录，目录名 = lark-cli --profile 名，agent 调用必带）：基座立 profile 抽象与身份页 `profile.md`（一句话 + TTL 覆写），域插件（lark-docs…）在任一 profile 下平行展开；指针页 type: lark + `lark` 块映射（profile/kind/token/url），token↔页一比一即身份证明；trust 天花板 machine-confirmed，stale_after = 拉取日 + TTL（默认 7 天），用前查 stale、stale 即带 --profile 现拉刷新（agent 即同步器）；资源消失标 status: deprecated 不删；新 profile = 建目录 + 身份页，域插件自动覆盖；CLI 纪律：--profile 必带、auth 现查不落盘、入新域前 lark-cli skills read 先行"
+inject: "外部指针领地 `wiki/lark/<profile>/`（一企业一目录，目录名 = lark-cli --profile 名，agent 调用必带）：基座立 profile 抽象与身份页 `profile.md`（一句话 + TTL 覆写），域插件（lark-docs…）在任一 profile 下平行展开；指针页 type: lark + `lark` 块映射（profile/kind/token/url），token↔页一比一即身份证明；trust 天花板 machine-confirmed，stale_after = 拉取日 + TTL（默认 7 天），用前查 stale、stale 即带 --profile 现拉刷新（agent 即同步器）；资源消失标 status: deprecated 不删；新 profile = 建目录 + 身份页，域插件自动覆盖；CLI 纪律：--profile 必带、auth 现查不落盘、入新域前 lark-cli skills read 先行；领地页面两形——指针页全可再生，档案页分区（frontmatter 机械区对账维护 + 正文沉淀区只增不改，形态归域插件）"
 usage:
   - 指针页登记字段：`type: lark` + `lark` 块映射（profile = 所在目录名、kind = 对象类型、token、url）+ generated / stale_after
   - 遇 stale 指针页：带 `--profile` 用 lark-cli 现拉，覆写 frontmatter 机械字段（updated / stale_after），快照类正文追加不覆写

@@ -13,10 +13,11 @@ wiki 的代理对象自本地 vault 外推到 CLI 可达的外部系统：以 la
 - 指针页 `type: lark` + `lark` 块映射（profile / kind / token / url）；token↔页一比一，token 是身份证明，重命名靠 title + token 匹配
 - trust 天花板 machine-confirmed：`stale_after` = 拉取日 + TTL（默认 7 天，身份页可覆写）；用前查 stale，stale 即带 `--profile` 现拉刷新——agent 即同步器
 - 资源消失 → `status: deprecated`，不删
-- 领地可再生：frontmatter 机械字段可覆写；珍贵内容蒸馏进 notes，不留在指针页
+- 领地页面两形（0.2 起）：**指针页**全可再生——frontmatter 机械字段可覆写，珍贵内容蒸馏进 notes，不留在指针页；**档案页**分区制——frontmatter 机械区由对账维护，正文沉淀区只增不改（同 notes 待遇）；页面形态归域插件规范
 - CLI 纪律：`--profile` 必带；auth 状态现查不落盘；入新域前 `lark-cli skills read <域>` 先行
 - 命名小写 ASCII（目录与页面）
 
 ## Changelog
 
+- 0.2（2026-09-19）立档案页两形分区制（frontmatter 机械区 / 正文沉淀区只增）——im 域档案页的架构前提；指针页语义不变
 - 0.1（2026-09-19）立设：四轮设计收敛——指针-only 弃 vault 存储、profile 优先分段、trust 懒刷新代 daemon、基座/域插件分族（基座拥抽象，域插件平行服务）
