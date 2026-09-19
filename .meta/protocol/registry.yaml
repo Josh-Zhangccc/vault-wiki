@@ -12,7 +12,7 @@
 protocol:
   type:
     values: [source, session, profile, todo, structure, lark, calendar, project, tmp]
-    note: 领地值封闭（扩值须修订本表）——决定页面归属与机械检查：source=代理页、session=sessions 领地、profile=画像页、todo=临时记忆页、structure=结构声明页、lark=外部指针页（wiki/lark/ 领地，token 即身份证明，归 lark 插件族）、calendar=时间领地页（月页，两节制）、project=项目页（一项目一页四区）、tmp=临时页（路径即领地，派生层隐身）；导入/互操作消费侧容忍未知 type
+    note: 领地值封闭（扩值须修订本表）——决定页面归属与机械检查：source=代理页、session=sessions 领地、profile=画像页、todo=临时记忆页、structure=结构声明页、lark=外部指针页（wiki/lark/ 领地，token 即身份证明，归 lark 插件族）、calendar=时间领地页（月页，两节制）、project=项目声明页（wiki/projects.md，`projects` 块映射；项目本体在根容器 projects/）、tmp=临时页（路径即领地，派生层隐身）；导入/互操作消费侧容忍未知 type
     defaults: [concept, qa, decision, entity, comparison]
     defaults_note: 形态默认词表——notes 领地内的知识形态，无机械语义；实例开放自扩（不须修订本表），优先复用防词表碎片
   status:
@@ -59,10 +59,8 @@ plugins:
     raw_sha256:
       note: 十六进制 SHA-256，可从 vault 机械重算
   project:
-    due:
-      note: 标量——目标日期 YYYY-MM-DD（可选）
-    stage:
-      note: 标量——项目生命周期（规划/进行/暂停/完成，开放词表）
+    projects:
+      note: 块映射（声明页）——项目名 → 一句话定位；键应与 projects/ 下目录一一对应（双向 diff）
   sessions:
     participants:
       note: YAML 列表，actor 约定（human:名字 / process:流程名 / agent/模型标识），多 agent 协作扩展点

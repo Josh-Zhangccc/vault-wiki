@@ -10,6 +10,7 @@
 | 可再生 | `wiki/index.md`、`wiki/tags.md`、`wiki/hot.md`、`.meta/protocol/registry.yaml` 插件段 | 派生投影，可整体重建，管道随便重跑 |
 | 珍贵 | `wiki/notes/**`、`.meta/plugins/**`、`.meta/command/**`、AGENTS.md 手写区 | 只增或人改 |
 | 不可变 | `wiki/log.md` 与 `wiki/archive/**` 的既有条目、`vault/**`（命令视角） | 写入后内容不得改写 |
+| 工作区 | `projects/**` | agent 全权读写（与 vault 只增相对）；自述 `project.md` 随项目 |
 | 临时 | `wiki/tmp/**` | 无留存承诺，可清理；不入派生层（index/tags/链接图），断链豁免 |
 
 ## 动作分级

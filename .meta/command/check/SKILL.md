@@ -100,7 +100,7 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 <!-- /check:mapping -->
 
 <!-- check:project -->
-- 语义项（v0.1 人工，附检后置）：type: project 落 wiki/projects/ 之外 → error；stage 词表外值 → info；进行中项目 updated 超 30 天 → warning（停滞分诊）；决策区改写痕迹 → error（git 审计）
+- 语义项（v0.1 人工，附检后置）：type: project 落 `wiki/projects.md` 之外 → error；声明键无对应目录 / 目录未声明 → warning（双向 diff）；进行中项目自述 updated 超 30 天 → warning（停滞分诊）
 <!-- /check:project -->
 
 <!-- check:structure -->

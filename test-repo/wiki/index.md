@@ -32,7 +32,7 @@ format_version: 0.2
 
 ## project
 
-- [[projects/配色迁移计划]] —— demo 演示项目——工作色板迁移到新体系
+- [[projects]] —— 项目容器披露——现有项目一览
 
 ## source
 

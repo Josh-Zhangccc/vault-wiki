@@ -2,6 +2,7 @@
 
 > 置顶追加、只增不删；条目 = `- YYYY-MM-DD <类型>：一句话`。规则见 `.meta/plugins/log/`，写走 `pipeline.py log`。
 
+- 2026-09-19 plugin：project 0.2：项目本体出 wiki——根容器 projects/ 工作区 + 声明页双向 diff
 - 2026-09-19 plugin：index 0.11 / link 0.13：tmp 派生层隐身配套（概念页与链接图排除）
 - 2026-09-19 plugin：tmp 0.1 立设：临时区——路径领地、派生层隐身、stale_after 清理提示
 - 2026-09-19 plugin：project 0.1 立设：项目领地——一项目一页四区制，todo 边界与任务行轻量
