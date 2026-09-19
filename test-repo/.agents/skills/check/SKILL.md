@@ -99,6 +99,10 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 - 语义项（check 命令）：失配处置分诊（描述仍适用 → 机械重算自动修复，毕即写 log 行（类型 map，一句话含资产名与「原文已变，描述仍适用」）；疑似失效 → 人决重映射或删）；日记类全文复制豁免判断；孤儿代理处置前先处置引用（同步改引用或留 aliases 重定向）
 <!-- /check:mapping -->
 
+<!-- check:project -->
+- 语义项（v0.1 人工，附检后置）：type: project 落 wiki/projects/ 之外 → error；stage 词表外值 → info；进行中项目 updated 超 30 天 → warning（停滞分诊）；决策区改写痕迹 → error（git 审计）
+<!-- /check:project -->
+
 <!-- check:structure -->
 - 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：声明 diff——vault 顶层目录未声明 → warning、声明键指向不存在目录 → warning；type: structure 落 `wiki/structure.md` 之外 → error；声明页缺席 → info（平铺容忍）
 <!-- /check:structure -->

@@ -16,6 +16,7 @@ wiki 的本体结构：页面间的引用关系。链接是知识的价值所在
 
 ## Changelog
 
+- 0.12（2026-09-19）孤儿 info 集改动态读 registry type.values（除 session）——新领地类型自动覆盖，硬编码集退役（project 立设前置）
 - 0.11（2026-09-19）孤儿 info 集扩至全部领地值（除 session）——calendar 冒烟实锤 calendar.md/月页误报 warning；判定与 registry 领地值对齐，不再逐类型挤牙膏
 - 0.10（2026-09-19）孤儿降级判定路径制改 type 制（source / lark 同待遇）——lark 族落地冒烟实锤：新指针页全量误报 warning
 - 0.9（2026-09-13）附检补 hot 手写断链扫描；孤儿分级——代理页降 info（专家评审：warning 通胀）；注入行补 md 资产全名例

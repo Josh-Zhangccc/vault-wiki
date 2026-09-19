@@ -1,0 +1,18 @@
+id: project
+version: 0.1
+depends:
+  - wiki
+updated: 2026-09-19
+attachment:
+  - "wiki/projects/ —— 项目领地（一项目一页四区；实例数据，不随插件分发种子）"
+fields:
+  stage: "标量——项目生命周期（规划/进行/暂停/完成，开放词表）"
+  due: "标量——目标日期 YYYY-MM-DD（可选）"
+inject: "项目领地 `wiki/projects/`（type: project，混合统一不预设类型）：一项目一页——frontmatter `stage`（规划/进行/暂停/完成，开放词表）+ `due` 可选 + `related`；正文四区：目标与上下文（为什么做、完成判据）/ 阶段（编号+checkbox+目标日期）/ 任务（`- [ ] 一句话（截止 YYYY-MM-DD）`，行不建页，可带 wikilink）/ 决策（`- 日期 决定 X 因为 Y`，只增）；与 todo 边界——todo 是 agent 委托活工作集，项目任务是持久分解事实源；完成 → stage: 完成 + 建议 status: deprecated（历史保留不删）；任务到期无自动扫描，会话回顾发现；lark-task 源适配器预留位（接入时任务区引两节制）"
+usage:
+  - 建项目：领地下建页（title = 项目名，description = 一句话定位），四区起步可空
+  - 任务流转：`[ ]`→`[x]` 即完成留痕（不删行），阶段 checkbox 同理，updated 随手刷新
+  - 决策追加：日期 + 决定 + 理由一行；高价值上下文经 save 蒸馏进 notes 后 wikilink 回来
+  - 会话回顾（涉及项目 / 日更报告）：扫进行中项目的到期与逾期任务，呈报不自动改
+checks:
+  - 语义项（v0.1 人工，附检后置）：type: project 落 wiki/projects/ 之外 → error；stage 词表外值 → info；进行中项目 updated 超 30 天 → warning（停滞分诊）；决策区改写痕迹 → error（git 审计）

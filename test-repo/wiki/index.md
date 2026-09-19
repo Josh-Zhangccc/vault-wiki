@@ -30,6 +30,10 @@ format_version: 0.2
 - [[lark/demo/im/people/王五]] —— demo 演示人档——外部顾问（点名涌现，暂无单聊）
 - [[lark/demo/profile]] —— 演示企业身份（假想 cli profile demo）
 
+## project
+
+- [[projects/配色迁移计划]] —— demo 演示项目——工作色板迁移到新体系
+
 ## source
 
 - [[vault/memo-采购清单.txt]] —— 周末采购备忘：咖啡豆（浅烘）、复印纸、键盘清洁刷。
