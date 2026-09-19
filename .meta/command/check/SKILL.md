@@ -51,7 +51,7 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 <!-- /check:hot -->
 
 <!-- check:link -->
-- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：断链（目标既非页面全名，也非任何页的 aliases）→ warning；hot 手写断链 → warning（不作入链源）；乱码链接（目标含 U+FFFD 替换符，含 related 项）→ error；别名二义（两页声明同一 aliases，解析不确定）→ error；孤儿页（无入链且无 related 引用，入链源只计概念页）→ 原生页 warning、代理页 info（暂无入链为登记常态）；related 单向（A 列 B 而 B 未回列）→ 信息
+- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：断链（目标既非页面全名，也非任何页的 aliases）→ warning；hot 手写断链 → warning（不作入链源）；乱码链接（目标含 U+FFFD 替换符，含 related 项）→ error；别名二义（两页声明同一 aliases，解析不确定）→ error；孤儿页（无入链且无 related 引用，入链源只计概念页）→ 原生页 warning、登记页 info（type: source 代理 / type: lark 指针，暂无入链为登记常态）；related 单向（A 列 B 而 B 未回列）→ 信息
 - 语义项（check 命令）：入链密度 top 榜 → 信息项（hub 涌现依据，不告警）
 <!-- /check:link -->
 

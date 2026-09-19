@@ -2,6 +2,7 @@
 
 > 置顶追加、只增不删；条目 = `- YYYY-MM-DD <类型>：一句话`。规则见 `.meta/plugins/log/`，写走 `pipeline.py log`。
 
+- 2026-09-19 plugin：link 0.10：孤儿降级路径制改 type 制（lark 指针页同代理待遇）
 - 2026-09-19 plugin：lark-docs 0.1 立设：云文档域——docs 枢纽三件套，全量映射禁止
 - 2026-09-19 plugin：lark 0.1 立设：外部指针基座（profile 抽象 + 指针页契约 + 命令 lark-map）
 - 2026-09-14 plugin：structure 0.2：声明页落 wiki/structure.md（structure 块映射机械可读），漂移检测升级附检 diff，depends 增 wiki
