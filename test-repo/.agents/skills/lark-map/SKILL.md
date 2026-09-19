@@ -1,31 +1,34 @@
 ---
 name: lark-map
 owner: lark
-consumes: [lark, lark-docs, trust, index, hot, log]
+consumes: [lark, lark-docs, lark-im, trust, index, hot, log]
 description: "把飞书侧资源映射为 wiki/lark/ 指针页：读 profile 与域声明 → 逐域枚举 lark-cli → diff token 集 → 建/改/标废弃 → 写后管道。Triggers on: lark-map, 拉取飞书, 同步飞书, lark map."
 ---
 
 # lark-map：外部指针映射
 
-把 lark-cli 可达的飞书资源映射为 `wiki/lark/` 指针页——映射与理解解耦，纯登记与对账动作（指针页契约与懒刷新纪律见注入区 lark 块）。内容打磨与蒸馏不归本命令（走 save 进 notes）。
+把 lark-cli 可达的飞书资源映射为 `wiki/lark/` 领地页——映射与理解解耦，纯登记与对账动作（指针页契约与档案页分区制见注入区 lark 块）。内容打磨与蒸馏不归本命令（走 save 进 notes / 档案沉淀区）。
 
 ## Scope
 
-写：lark（指针页与域枢纽）、log、hot、index
-读：registry（`.meta/protocol/registry.yaml`，字段与值集锚点）、lark 域插件枢纽页（docs.md 等）、lark-cli（枚举与元数据）
+写：lark（指针页、档案页机械区与域枢纽）、log、hot、index
+读：registry（`.meta/protocol/registry.yaml`，字段与值集锚点）、lark 域插件枢纽页（docs.md / im.md 等）、lark-cli（枚举与元数据）
 
 ## Steps
 
 1. **锚点（一次读取）**：读 registry 与 `wiki/lark/` 目录集（= profile 清单）及各 `profile.md`（TTL 覆写）
 2. 逐 profile × 现役域（域枢纽页在场即现役）执行域对账：
    - docs 域：读 `docs.md` 关心区（`docs` 块映射）→ `lark-cli --profile <名>` 枚举（wiki 空间节点树 / drive 文件树）→ 解析关心区对象集 → 与 `docs/` 指针页 token 集 diff → 新增建页、变更改页（frontmatter 机械字段覆写）、消失标 `status: deprecated`；结构速写过期则重蒸馏并重置 stale_after
+   - im 域：读 `im.md` 策略（`im` 块映射）→ `im +chat-list` 全量枚举群 → 与 `im/chats/` 群档 token 集 diff → 新建（群功能 description 蒸馏 + key_members 群主起步）/ 改机械区 / 退群标 `status: deprecated`；**人不枚举**（涌现制，见注入区 lark-im 块）；key_members 追加已建档成员的 wikilink
 3. **呈对账预览**（新增 / 变更 / 废弃清单），等用户确认
 4. **写后管道**（确定性，机械自动不询问）：`python .meta/scripts/pipeline.py verify`（写后自证，未过即回修）；随即按提交纪律入库（`映射: <profile>/<域>`，词表见 `.meta/protocol/actions.md`）
 5. 回报：profile / 域 / 新增 / 变更 / 废弃计数
 
 ## Prohibitions
 
-- 全量映射禁——枚举只服务结构速写与关心区解析，指针页仅落关心区（以注入区 lark-docs 块为准）
+- docs 域全量映射禁——枚举只服务结构速写与关心区解析（以注入区 lark-docs 块为准）
+- 档案页正文沉淀区（议题记录、关系）只增不改，本命令不写沉淀区（按需蒸馏属独立动作且须用户确认）
+- 发送 / 回复 / 加急等写面操作不属本命令（永远须用户明示）
 - CLI 调用必带 `--profile`；auth 状态现查不落盘
 - 不碰 notes / sessions 与 `wiki/vault/`（mapping 领地）；快照选段按需、禁全文复制
 
@@ -55,6 +58,13 @@ description: "把飞书侧资源映射为 wiki/lark/ 指针页：读 profile 与
 - 指针页正文一行摘要起步；快照节 `## 快照 YYYY-MM-DD` 选段追加、禁全文复制
 - kind 词表跟 lark obj_type：docx / wiki / sheet / base / file / …（开放，新词先查 registry）
 <!-- /usage:lark-docs -->
+
+<!-- usage:lark-im -->
+- 建群档（lark-map 对账）：`im +chat-list` 全量 → token↔页 diff → 新建（群功能 description 蒸馏 + key_members 群主起步）/ 改机械区 / 退群标 deprecated
+- 建人档（涌现，命中枢纽条件时手建）：contact 解析填 department / position；有 p2p 填 chat_id 锚；关系区留白起步
+- 议题记录（按需）：`chat-messages-list` 拉时间窗 → contact 翻译人名、threads 展开话题楼 → 蒸馏成 `## YYYY-MM-DD 议题：X → 结果：Y` 一节 → 呈用户确认后追加（沉淀区只增）
+- 关系更新：新观察追加一行（日期 + 一句话 + 证据 wikilink），旧断言不删改，收敛式靠人裁决
+<!-- /usage:lark-im -->
 
 <!-- usage:trust -->
 - 写页随手写 `generated`（块式：`by: agent/<当前模型>` / `at: 今日`）

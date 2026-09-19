@@ -34,6 +34,17 @@ plugins:
   lark-docs:
     docs:
       note: 块映射（docs.md 枢纽）——关心区名 → 范围一句话（知识空间名 / 云盘目录 / 特定对象，agent 经 lark-cli 解析）；关心区 = 指针页目录段
+  lark-im:
+    chat_id:
+      note: 标量（人档）——p2p 单聊 chat_id 锚（拉消息入口，无单聊缺省）
+    department:
+      note: 标量（人档）——部门，contact 解析填充
+    im:
+      note: 块映射（im.md 枢纽）——策略键 → 一句话：群同步 / 涌现 / 关注 / 排除等人档涌现与同步范围声明
+    key_members:
+      note: YAML 列表（群档）——关键人 wikilink（群主必在，余为已建档者）；不存全员名单
+    position:
+      note: 标量（人档）——职位，contact 解析填充
   link:
     aliases:
       note: YAML 列表，别名/短名，供链接解析

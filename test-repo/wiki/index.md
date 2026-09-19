@@ -19,6 +19,10 @@ format_version: 0.2
 
 - [[lark/demo/docs]] —— demo 企业云文档域枢纽——关心区登记与结构速写
 - [[lark/demo/docs/产品文档/需求评审纪要-0912]] —— 演示指针页——假想 docx，token 即身份证明
+- [[lark/demo/im]] —— demo 企业人际域枢纽——群同步与涌现策略
+- [[lark/demo/im/chats/产品讨论群]] —— demo 演示群档——产品日常讨论主阵地
+- [[lark/demo/im/people/李四]] —— demo 演示人档——产品线对接人（p2p 涌现）
+- [[lark/demo/im/people/王五]] —— demo 演示人档——外部顾问（点名涌现，暂无单聊）
 - [[lark/demo/profile]] —— 演示企业身份（假想 cli profile demo）
 
 ## source
