@@ -4,7 +4,7 @@
 
 ## 现状（2026-09-19）
 
-工程定位：**个人自用**——矩阵测试裁撤，SASU-L 为镜，边用边改。架构终态：概念双插件 wiki/vault（纯声明）+ 桥接 mapping + 结构插件 + 外部指针族 lark（基座，token 指针页 + trust 懒刷新）与 lark-docs（云文档域），共十六、无分层（注入序=依赖拓扑+字母序）；七命令 map/save/query/check/plugin/lark-map/wiki_plugin_kernel（末者为插件内核使用参考）。三投影一源：manifest（inject/checks/usage）→ AGENTS 注入区、check 检查块、命令用法块（consumes 序即执行序）；PLUGIN.md 纯文档，内核 wiki_plugin_kernel.py 唯一投影机；registry 字段注册表（预留段可认领回填）。docs/ 现行四件（quickstart/pointers/research×2）。`test-repo/` 自足虚拟库，根侧同步重拷。
+工程定位：**个人自用**——矩阵测试裁撤，SASU-L 为镜，边用边改。架构终态：概念双插件 wiki/vault（纯声明）+ 桥接 mapping + 结构插件 + 外部指针族 lark（基座，指针/档案两形 + trust 懒刷新）与 lark-docs（云文档域）、lark-im（人际域），共十七、无分层（注入序=依赖拓扑+字母序）；七命令 map/save/query/check/plugin/lark-map/wiki_plugin_kernel（末者为插件内核使用参考）。三投影一源：manifest（inject/checks/usage）→ AGENTS 注入区、check 检查块、命令用法块（consumes 序即执行序）；PLUGIN.md 纯文档，内核 wiki_plugin_kernel.py 唯一投影机；registry 字段注册表（预留段可认领回填）。docs/ 现行四件（quickstart/pointers/research×2）。`test-repo/` 自足虚拟库，根侧同步重拷。
 
 ## 阶段
 
@@ -20,8 +20,9 @@
 
 ## 过往操作
 
+- 2026-09-19 lark 0.2 档案页两形分区 + lark-im 0.1 人际域（群档/人档两分、涌现制入枢纽、关键人制、议题按需沉淀）
 - 2026-09-19 index 0.10 溢出减负制：索引清单 ≤25 条，超窗按子树页数降序切出子目录自立索引；根恒在、纯函数重建、索引不发明结构；小库坍缩单索引（两库实测，合成用例实锤切出泄漏即修）
-- 2026-09-19 lark 族立设（第十五/十六插件）：基座 lark 0.1——`wiki/lark/<profile>/` 一企业一目录（= cli profile 名），指针页 token 身份证明 + trust 懒刷新（agent 即同步器），命令 lark-map；云文档域 lark-docs 0.1——docs.md 枢纽三件套（结构速写/关心区/按区映射），全量映射禁；registry type 扩 lark；link 0.10 孤儿判定路径制改 type 制（冒烟实锤）；test-repo 重拷 + demo 冒烟（五级索引链全绿）
+- 2026-09-19 lark 族立设（第十五/十六）：基座 0.1——`wiki/lark/<profile>/` 一企业一目录，指针页 token 身份证明 + trust 懒刷新，命令 lark-map；lark-docs 0.1——docs.md 枢纽三件套，全量映射禁；registry 扩 type lark；link 0.10 孤儿判定改 type 制；test-repo demo 冒烟
 - 2026-09-16 市场调研入档 `docs/research-landscape.md`：同类入库/出库对标，Google OKF 谱系证实
 - 2026-09-14 治理批次：structure 立设并 0.2（声明页 `wiki/structure.md` 块映射 + 漂移附检 diff）；vault 0.4 认领 url、mapping 0.7 孤儿报文带引用计数；todo 立设（第十三）；notes 0.13 type 分层；`docs/pointers.md` 指针概念成文；wikilib 中文键解析修补
 - 2026-09-13 收束日：user-profile 立设（第十二）与画像调研入档；save 首跑纠偏——热缓存短名断链即修，裁定**工程是开发框架非跑库**（wiki 数据区归零）；quickstart 开卷、上 GitHub、评审修补、test-repo 立设、三投影一源定形
