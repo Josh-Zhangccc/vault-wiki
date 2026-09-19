@@ -2,6 +2,7 @@
 
 > 置顶追加、只增不删；条目 = `- YYYY-MM-DD <类型>：一句话`。规则见 `.meta/plugins/log/`，写走 `pipeline.py log`。
 
+- 2026-09-19 plugin：lark 0.1 立设：外部指针基座（profile 抽象 + 指针页契约 + 命令 lark-map）
 - 2026-09-14 plugin：structure 0.2：声明页落 wiki/structure.md（structure 块映射机械可读），漂移检测升级附检 diff，depends 增 wiki
 - 2026-09-14 plugin：vault 治理批次：structure 立设（布局声明）、vault 0.4 认领 url、mapping 0.7（引用计数+重算留痕）
 - 2026-09-14 plugin：todo 0.1 立设：跨 session 委托队列 wiki/todo.md，销账历史归 log（值集扩 todo）

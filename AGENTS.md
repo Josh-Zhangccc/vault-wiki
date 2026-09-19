@@ -90,6 +90,10 @@
 - 索引 `wiki/index.md`（根，含 format_version——页面格式契约版本，不兼容变更时进位）与各目录 `index.md`（渐进披露，逐层下钻）/ `wiki/tags.md`（tag 反向索引）：只聚合、永不手编，重建走 `pipeline.py index`，检索第二入口
 <!-- /plugin:index -->
 
+<!-- plugin:lark v0.1 -->
+- 外部指针领地 `wiki/lark/<profile>/`（一企业一目录，目录名 = lark-cli --profile 名，agent 调用必带）：基座立 profile 抽象与身份页 `profile.md`（一句话 + TTL 覆写），域插件（lark-docs…）在任一 profile 下平行展开；指针页 type: lark + `lark` 块映射（profile/kind/token/url），token↔页一比一即身份证明；trust 天花板 machine-confirmed，stale_after = 拉取日 + TTL（默认 7 天），用前查 stale、stale 即带 --profile 现拉刷新（agent 即同步器）；资源消失标 status: deprecated 不删；新 profile = 建目录 + 身份页，域插件自动覆盖；CLI 纪律：--profile 必带、auth 现查不落盘、入新域前 lark-cli skills read 先行
+<!-- /plugin:lark -->
+
 <!-- plugin:mapping v0.7 -->
 - 代理层 `wiki/vault/`：与根 `vault/` 1:1 镜像（代理名 = 原名 + .md），页面必有 raw_file / raw_sha256；路径即出身证明
 <!-- /plugin:mapping -->

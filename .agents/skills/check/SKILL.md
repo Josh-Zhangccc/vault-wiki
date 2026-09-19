@@ -86,6 +86,10 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 - 手编痕迹 → warning
 <!-- /check:index -->
 
+<!-- check:lark -->
+- 语义项（v0.1 人工，附检后置）：指针页缺 token / token 重复 → error；lark.profile 与所在目录名不符 → warning；type: lark 落 wiki/lark/ 之外 → error；域枢纽页（docs.md 等）落 profile 目录之外 → warning
+<!-- /check:lark -->
+
 <!-- check:mapping -->
 - 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：镜像 diff（vault 有文件无代理 → info 积压；代理无对应物 → error，报文含引用计数——删前见影响面）、缺登记字段（raw_file / raw_sha256）→ error、raw_file 悬挂 → error、raw_sha256 失配 → warning、疑似全文复制（md 资产正文 ≥80% 原文）→ warning、无描述 stub 且 updated 超 90 天 → warning
 - 语义项（check 命令）：失配处置分诊（描述仍适用 → 机械重算自动修复，毕即写 log 行（类型 map，一句话含资产名与「原文已变，描述仍适用」）；疑似失效 → 人决重映射或删）；日记类全文复制豁免判断；孤儿代理处置前先处置引用（同步改引用或留 aliases 重定向）
