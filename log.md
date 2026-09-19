@@ -2,9 +2,9 @@
 
 > 追加与修改须标注日期（精确到天）；总量 <2k 字；整合压缩须用户同意。
 
-## 现状（2026-09-16）
+## 现状（2026-09-19）
 
-工程定位：**个人自用**——矩阵测试裁撤，SASU-L 为镜，边用边改。架构终态：概念双插件 wiki/vault（纯声明）+ 桥接 mapping + 十一结构插件，共十四、无分层（注入序=依赖拓扑+字母序）；六命令 map/save/query/check/plugin/wiki_plugin_kernel（末者为插件内核使用参考）。三投影一源：manifest（inject/checks/usage）→ AGENTS 注入区、check 检查块、命令用法块（consumes 序即执行序）；PLUGIN.md 纯文档，内核 wiki_plugin_kernel.py 唯一投影机；registry 字段注册表（预留段可认领回填）。docs/ 现行四件（quickstart/pointers/research×2）。`test-repo/` 自足虚拟库，根侧同步重拷。
+工程定位：**个人自用**——矩阵测试裁撤，SASU-L 为镜，边用边改。架构终态：概念双插件 wiki/vault（纯声明）+ 桥接 mapping + 结构插件 + 外部指针族 lark（基座，token 指针页 + trust 懒刷新）与 lark-docs（云文档域），共十六、无分层（注入序=依赖拓扑+字母序）；七命令 map/save/query/check/plugin/lark-map/wiki_plugin_kernel（末者为插件内核使用参考）。三投影一源：manifest（inject/checks/usage）→ AGENTS 注入区、check 检查块、命令用法块（consumes 序即执行序）；PLUGIN.md 纯文档，内核 wiki_plugin_kernel.py 唯一投影机；registry 字段注册表（预留段可认领回填）。docs/ 现行四件（quickstart/pointers/research×2）。`test-repo/` 自足虚拟库，根侧同步重拷。
 
 ## 阶段
 
@@ -13,12 +13,14 @@
 ## 下一步
 
 - wiki 初始化机制（画像首建与建构/整合命令同批）：冷启动时机与首建内容——随设计文档一并解决
+- lark 域扩展（im / calendar）与机械刷新（轮询 daemon、事件流）随真实使用再议
 - 设计文档：导论随后开卷（章=文件，问题驱动；OKF 不收编）
 - 部署进个人库（**用户自行执行**，agent 不主动触碰；走查见 `docs/quickstart.md`，additive，存量页不动、旧页渐进代理）
 - skill 打磨随摩擦滚动；delegate（vault 放入通道）与裁撤项不排期
 
 ## 过往操作
 
+- 2026-09-19 lark 族立设（第十五/十六插件）：基座 lark 0.1——`wiki/lark/<profile>/` 一企业一目录（= cli profile 名），指针页 token 身份证明 + trust 懒刷新（agent 即同步器），命令 lark-map；云文档域 lark-docs 0.1——docs.md 枢纽三件套（结构速写/关心区/按区映射），全量映射禁；registry type 扩 lark；link 0.10 孤儿判定路径制改 type 制（冒烟实锤）；test-repo 重拷 + demo 冒烟（五级索引链全绿）
 - 2026-09-16 市场调研入档 `docs/research-landscape.md`：同类入库/出库对标，Google OKF 谱系证实
 - 2026-09-14 structure 0.2：声明页落 `wiki/structure.md`（structure 块映射机械可读，type 领地值扩 structure；漂移检测升级附检 diff，冒烟双向实锤）；wikilib 子键放宽（目录名/中文键曾解析为 None，承重件实锤修补）
 - 2026-09-14 vault 治理批次：structure 立设（第十四，布局声明+漂移检测）；vault 0.4 认领 url；mapping 0.7——孤儿报文带引用计数、重算写 log 行；user-write 四预设入档
