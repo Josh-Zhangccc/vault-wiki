@@ -20,6 +20,7 @@
 
 ## 过往操作
 
+- 2026-09-19 index 0.10 溢出减负制：索引清单 ≤25 条，超窗按子树页数降序切出子目录自立索引；根恒在、纯函数重建、索引不发明结构；小库坍缩单索引（两库实测，合成用例实锤切出泄漏即修）
 - 2026-09-19 lark 族立设（第十五/十六插件）：基座 lark 0.1——`wiki/lark/<profile>/` 一企业一目录（= cli profile 名），指针页 token 身份证明 + trust 懒刷新（agent 即同步器），命令 lark-map；云文档域 lark-docs 0.1——docs.md 枢纽三件套（结构速写/关心区/按区映射），全量映射禁；registry type 扩 lark；link 0.10 孤儿判定路径制改 type 制（冒烟实锤）；test-repo 重拷 + demo 冒烟（五级索引链全绿）
 - 2026-09-16 市场调研入档 `docs/research-landscape.md`：同类入库/出库对标，Google OKF 谱系证实
 - 2026-09-14 治理批次：structure 立设并 0.2（声明页 `wiki/structure.md` 块映射 + 漂移附检 diff）；vault 0.4 认领 url、mapping 0.7 孤儿报文带引用计数；todo 立设（第十三）；notes 0.13 type 分层；`docs/pointers.md` 指针概念成文；wikilib 中文键解析修补
