@@ -12,10 +12,11 @@ wiki 的本体结构：页面间的引用关系。链接是知识的价值所在
 
 - 链接目标必须可解析：全名命中页面，或命中某页的 aliases
 - 断链不静默但不当畸形处理：断链可能是尚未写下的知识，TODO 占位属正常形态；拿不准目标时宁可留 TODO 也不猜
-- 孤儿判定是图性质：无入链且无 related 引用的页面才算孤儿；**入链源只计概念页**——index / hot / log / tags 与 archive/ 等派生页不算链接源（否则索引链接一切，孤儿永不触发）；登记页（type: source 代理页、type: lark 外部指针页）暂无入链是登记常态，降为信息级；hot 是唯一手写链接的派生页，断链受检但不作入链源
+- 孤儿判定是图性质：无入链且无 related 引用的页面才算孤儿；**入链源只计概念页**——index / hot / log / tags 与 archive/ 等派生页不算链接源（否则索引链接一切，孤儿永不触发）；领地值页（registry 领地值除 session——source / lark / calendar / structure / todo / profile，机械登记类）暂无入链是登记常态，降为信息级，notes 知识页保持 warning；hot 是唯一手写链接的派生页，断链受检但不作入链源
 
 ## Changelog
 
+- 0.11（2026-09-19）孤儿 info 集扩至全部领地值（除 session）——calendar 冒烟实锤 calendar.md/月页误报 warning；判定与 registry 领地值对齐，不再逐类型挤牙膏
 - 0.10（2026-09-19）孤儿降级判定路径制改 type 制（source / lark 同待遇）——lark 族落地冒烟实锤：新指针页全量误报 warning
 - 0.9（2026-09-13）附检补 hot 手写断链扫描；孤儿分级——代理页降 info（专家评审：warning 通胀）；注入行补 md 资产全名例
 - 0.8（2026-09-13）全名定义入注入行与 Structure（test-repo 走查发现：约定原只活在附检源码，零先验必猜错）

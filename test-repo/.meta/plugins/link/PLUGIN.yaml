@@ -1,5 +1,5 @@
 id: link
-version: 0.10
+version: 0.11
 depends: []
 updated: 2026-09-19
 attachment:
@@ -8,7 +8,7 @@ attachment:
 fields:
   related: "YAML 列表，相关页全名 wikilink"
   aliases: "YAML 列表，别名/短名，供链接解析"
-inject: "链接语法 `[[页面全名]]`——全名 = wiki/ 内相对路径去末尾 .md（如 `notes/X`、pdf 资产代理 `vault/a.pdf`、md 资产代理 `vault/原名.md`，仅去一个）；禁截断式引用，同名歧义带路径；字段 `related` / `aliases`；断链 = warning（尚未写下），孤儿（无入链无引用，派生页不算源）= 原生页 warning、登记页 info（type: source 代理 / type: lark 外部指针）"
+inject: "链接语法 `[[页面全名]]`——全名 = wiki/ 内相对路径去末尾 .md（如 `notes/X`、pdf 资产代理 `vault/a.pdf`、md 资产代理 `vault/原名.md`，仅去一个）；禁截断式引用，同名歧义带路径；字段 `related` / `aliases`；断链 = warning（尚未写下），孤儿（无入链无引用，派生页不算源）= notes 知识页 warning、领地值登记页 info（registry 领地值除 session：source/lark/calendar/structure/todo/profile）"
 checks:
-  - 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：断链（目标既非页面全名，也非任何页的 aliases）→ warning；hot 手写断链 → warning（不作入链源）；乱码链接（目标含 U+FFFD 替换符，含 related 项）→ error；别名二义（两页声明同一 aliases，解析不确定）→ error；孤儿页（无入链且无 related 引用，入链源只计概念页）→ 原生页 warning、登记页 info（type: source 代理 / type: lark 指针，暂无入链为登记常态）；related 单向（A 列 B 而 B 未回列）→ 信息
+  - 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：断链（目标既非页面全名，也非任何页的 aliases）→ warning；hot 手写断链 → warning（不作入链源）；乱码链接（目标含 U+FFFD 替换符，含 related 项）→ error；别名二义（两页声明同一 aliases，解析不确定）→ error；孤儿页（无入链且无 related 引用，入链源只计概念页）→ notes 知识页 warning、领地值登记页 info（registry 领地值除 session，暂无入链为登记常态）；related 单向（A 列 B 而 B 未回列）→ 信息
   - 语义项（check 命令）：入链密度 top 榜 → 信息项（hub 涌现依据，不告警）

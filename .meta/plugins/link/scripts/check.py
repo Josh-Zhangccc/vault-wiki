@@ -6,7 +6,8 @@
 概念页判定与 pipeline 同构：保留名（index/log）、wiki 根派生页（hot/tags）、
 archive/ 子树不算链接源，也不受图检查（派生页链接一切，否则孤儿永不触发）。
 hot 是唯一手写链接的派生页：断链受检，但不作入链源、不入孤儿图。
-登记页（type: source 代理页 / type: lark 指针页）暂无入链是登记常态：孤儿降为信息级，原生页保持 warning。
+领地值页（registry 领地值除 session：source/lark/calendar/structure/todo/profile——机械登记类）
+暂无入链是登记常态：孤儿降为信息级，原生页（notes 知识页）保持 warning。
 """
 import re
 
@@ -81,15 +82,16 @@ def check(ctx):
                 issues.append({"level": "error", "message": f"{rel}：乱码链接 [[{m.group(1)}]]"})
             elif t not in names and t not in alias_map:
                 issues.append({"level": "warning", "message": f"{rel}：hot 断链 [[{t}]]（手写摘要链接失效）"})
-    # 孤儿（无入链且无 related 引用；源只计概念页；登记页降 info）
+    # 孤儿（无入链且无 related 引用；源只计概念页；领地值登记页降 info）
+    TERRITORY_INFO = {"source": "代理页", "lark": "指针页", "calendar": "时间页",
+                      "structure": "声明页", "todo": "委托页", "profile": "画像页"}
     for rel, fm, _b in pages:
         if not _concept(rel):
             continue
         if _name_of(rel) not in referenced:
             ptype = fm.get("type")
-            if ptype in ("source", "lark"):
-                kind = "代理页" if ptype == "source" else "指针页"
-                issues.append({"level": "info", "message": f"{rel}：{kind}暂无入链（登记常态，不告警）"})
+            if ptype in TERRITORY_INFO:
+                issues.append({"level": "info", "message": f"{rel}：{TERRITORY_INFO[ptype]}暂无入链（登记常态，不告警）"})
             else:
                 issues.append({"level": "warning", "message": f"{rel}：孤儿页（无入链且无 related 引用）"})
     # related 单向（信息：不对称提示，非错误）

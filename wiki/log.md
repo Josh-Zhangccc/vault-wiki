@@ -2,6 +2,7 @@
 
 > 置顶追加、只增不删；条目 = `- YYYY-MM-DD <类型>：一句话`。规则见 `.meta/plugins/log/`，写走 `pipeline.py log`。
 
+- 2026-09-19 plugin：link 0.11：孤儿 info 集对齐 registry 领地值（除 session）
 - 2026-09-19 plugin：lark-calendar 0.1 立设：lark 日历源适配器（depends calendar+lark，桥接拓扑同 mapping）
 - 2026-09-19 plugin：calendar 0.1 立设：时间领地——月页两节制、源开放、未来滚动过去冻结
 - 2026-09-19 plugin：lark-im 0.1 立设：人际域——群档人档两分、涌现制、议题按需沉淀
