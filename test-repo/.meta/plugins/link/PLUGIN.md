@@ -12,10 +12,11 @@ wiki 的本体结构：页面间的引用关系。链接是知识的价值所在
 
 - 链接目标必须可解析：全名命中页面，或命中某页的 aliases
 - 断链不静默但不当畸形处理：断链可能是尚未写下的知识，TODO 占位属正常形态；拿不准目标时宁可留 TODO 也不猜
-- 孤儿判定是图性质：无入链且无 related 引用的页面才算孤儿；**入链源只计概念页**——index / hot / log / tags 与 archive/ 等派生页不算链接源（否则索引链接一切，孤儿永不触发）；领地值页（registry 领地值除 session——source / lark / calendar / structure / todo / profile，机械登记类）暂无入链是登记常态，降为信息级，notes 知识页保持 warning；hot 是唯一手写链接的派生页，断链受检但不作入链源
+- 孤儿判定是图性质：无入链且无 related 引用的页面才算孤儿；**入链源只计概念页**——index / hot / log / tags 与 archive/ 等派生页、tmp/ 临时区（草稿断链豁免）不算链接源（否则索引链接一切，孤儿永不触发）；领地值页（registry 领地值除 session——source / lark / calendar / structure / todo / profile / project / tmp，机械登记类）暂无入链是登记常态，降为信息级，notes 知识页保持 warning；hot 是唯一手写链接的派生页，断链受检但不作入链源
 
 ## Changelog
 
+- 0.13（2026-09-19）_concept 排除 wiki/tmp/——临时区不作链接源、不受图检查（草稿断链 = 尚未写下，转正时闭合）
 - 0.12（2026-09-19）孤儿 info 集改动态读 registry type.values（除 session）——新领地类型自动覆盖，硬编码集退役（project 立设前置）
 - 0.11（2026-09-19）孤儿 info 集扩至全部领地值（除 session）——calendar 冒烟实锤 calendar.md/月页误报 warning；判定与 registry 领地值对齐，不再逐类型挤牙膏
 - 0.10（2026-09-19）孤儿降级判定路径制改 type 制（source / lark 同待遇）——lark 族落地冒烟实锤：新指针页全量误报 warning

@@ -11,8 +11,8 @@
 
 protocol:
   type:
-    values: [source, session, profile, todo, structure, lark, calendar, project]
-    note: 领地值封闭（扩值须修订本表）——决定页面归属与机械检查：source=代理页、session=sessions 领地、profile=画像页、todo=临时记忆页、structure=结构声明页、lark=外部指针页（wiki/lark/ 领地，token 即身份证明，归 lark 插件族）、calendar=时间领地页（月页，两节制）、project=项目页（一项目一页四区）；导入/互操作消费侧容忍未知 type
+    values: [source, session, profile, todo, structure, lark, calendar, project, tmp]
+    note: 领地值封闭（扩值须修订本表）——决定页面归属与机械检查：source=代理页、session=sessions 领地、profile=画像页、todo=临时记忆页、structure=结构声明页、lark=外部指针页（wiki/lark/ 领地，token 即身份证明，归 lark 插件族）、calendar=时间领地页（月页，两节制）、project=项目页（一项目一页四区）、tmp=临时页（路径即领地，派生层隐身）；导入/互操作消费侧容忍未知 type
     defaults: [concept, qa, decision, entity, comparison]
     defaults_note: 形态默认词表——notes 领地内的知识形态，无机械语义；实例开放自扩（不须修订本表），优先复用防词表碎片
   status:

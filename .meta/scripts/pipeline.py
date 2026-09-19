@@ -16,7 +16,8 @@
 
 类型枚举：map / save / query / check / plugin / other（log 插件）。
 概念页判定（谁入索引）：wiki/ 下所有 .md，排除——保留名（index.md、log.md）、
-wiki 根派生页（hot.md、tags.md）、archive/ 子树（不可变区，本脚本永不改写其中文件）。
+wiki 根派生页（hot.md、tags.md）、archive/ 子树（不可变区，本脚本永不改写其中文件）、
+tmp/ 子树（临时区：派生层隐身，无留存承诺，见 tmp 插件）。
 索引溢出减负制：单张索引清单 ≤INDEX_MAX_ENTRIES 条（页条目 + 目录条目）；根索引恒在，
 超窗时按子树页数降序（同数按名序）切出子目录自立索引，直至装下；纯函数重建（同结构同结果）。
 """
@@ -85,6 +86,8 @@ def concept_pages():
             continue
         if rel.startswith("archive/") or d.startswith("archive/") or d == "archive":
             continue
+        if rel.startswith("tmp/") or d.startswith("tmp/") or d == "tmp":
+            continue  # 临时区：派生层隐身
         out.append((rel[:-3], d, fm, _desc(fm, body)))
     return sorted(out)
 
@@ -99,6 +102,8 @@ def all_dirs(pages):
     for dirpath, subdirs, _files in os.walk(WIKI):
         if "archive" in subdirs:
             subdirs.remove("archive")  # 不下钻不可变区
+        if "tmp" in subdirs:
+            subdirs.remove("tmp")  # 临时区不建索引
         rel = os.path.relpath(dirpath, WIKI).replace(os.sep, "/")
         dirs.add("" if rel == "." else rel)
     return dirs
@@ -253,10 +258,12 @@ def do_index(check_only=False):
         elif write_changed(path, content):
             changed += 1
             print(f"[index] rebuilt wiki/{rel}")
-    # 非计划 index.md（减负并回后的旧索引）：删除 / 报漂移；archive/ 子树不碰
+    # 非计划 index.md（减负并回后的旧索引）：删除 / 报漂移；archive/ 与 tmp/ 子树不碰
     for dirpath, subdirs, files in os.walk(WIKI):
         if "archive" in subdirs:
             subdirs.remove("archive")  # 不下钻不可变区
+        if "tmp" in subdirs:
+            subdirs.remove("tmp")  # 临时区非本管道辖域
         if "index.md" not in files:
             continue
         rel = os.path.relpath(os.path.join(dirpath, "index.md"), WIKI).replace(os.sep, "/")

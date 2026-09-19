@@ -4,7 +4,8 @@
 
 入链密度 top 榜（hub 涌现依据）是分析项，归 check 命令语义项。
 概念页判定与 pipeline 同构：保留名（index/log）、wiki 根派生页（hot/tags）、
-archive/ 子树不算链接源，也不受图检查（派生页链接一切，否则孤儿永不触发）。
+archive/ 子树与 tmp/ 临时区不算链接源，也不受图检查（派生页链接一切，否则孤儿
+永不触发；草稿断链 = 尚未写下，转正时闭合）。
 hot 是唯一手写链接的派生页：断链受检，但不作入链源、不入孤儿图。
 领地值页（registry type.values 除 session——机械登记类）暂无入链是登记常态：
 孤儿降为信息级，原生页（notes 知识页）保持 warning。领地值集动态读 registry，
@@ -34,6 +35,8 @@ def _concept(rel):
         return False
     if d == "" and fn in ROOT_DERIVED:
         return False
+    if rel.startswith("tmp/") or d.startswith("tmp/") or d == "tmp":
+        return False  # 临时区：不作链接源、不受图检查（草稿断链豁免）
     return not (rel.startswith("archive/") or d.startswith("archive/") or d == "archive")
 
 
