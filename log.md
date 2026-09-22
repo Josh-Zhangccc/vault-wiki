@@ -2,9 +2,9 @@
 
 > 追加与修改须标注日期（精确到天）；总量 <2k 字；整合压缩须用户同意。
 
-## 现状（2026-09-19）
+## 现状（2026-09-22）
 
-工程定位：**个人自用**——矩阵测试裁撤，SASU-L 为镜，边用边改。架构终态：概念双插件 wiki/vault（纯声明）+ 桥接 mapping / lark-calendar（vault↔wiki、lark→calendar）+ 结构插件与 calendar 时间领地、project 项目容器、tmp 临时区 + 外部指针族 lark（基座，两形 + trust 懒刷新）、lark-docs、lark-im，共二十一、无分层（注入序=依赖拓扑+字母序）；七命令 map/save/query/check/plugin/lark-map/wiki_plugin_kernel（末者=内核参考）。三投影一源：manifest（inject/checks/usage）→ AGENTS 注入区、check 检查块、命令用法块（consumes 序即执行序）；PLUGIN.md 纯文档，内核 wiki_plugin_kernel.py 唯一投影机；registry 字段注册表（预留段可认领回填）。docs/ 现行四件（quickstart/pointers/research×2）。`test-repo/` 自足虚拟库，根侧同步重拷。
+工程定位：**个人自用**——矩阵测试裁撤，SASU-L 为镜，边用边改。架构终态：双根概念 domain（外·域契约）/ wiki（内·出身二分）+ 域实例族 vault（默认域兼通用仓储，mapping 映射法则、structure 管布局）/ lark（外部域基座，两形 + trust 懒刷新，域内 lark-docs/lark-im）/ project（自立容器域）+ calendar 时间领地（lark-calendar 源适配器）、tmp、notes/sessions/link/tag/trust/index/hot/log/user-profile/todo，共二十二、无分层（注入序=依赖拓扑+字母序）；七命令 map/save/query/check/plugin/lark-map/wiki_plugin_kernel（末者=内核参考）。三投影一源：manifest（inject/checks/usage）→ AGENTS 注入区、check 检查块、命令用法块（consumes 序即执行序）；PLUGIN.md 纯文档，内核 wiki_plugin_kernel.py 唯一投影机；registry 字段注册表（预留段可认领回填）。docs/ 现行四件（quickstart/pointers/research×2）。`test-repo/` 自足虚拟库，根侧同步重拷（域化后待重拷）。
 
 ## 阶段
 
@@ -13,12 +13,16 @@
 ## 下一步
 
 - 日更 cron 与真实 profile 接入（部署侧）
+- user-profile 证据域裁决悬置中（跨域证据 depends 归属，见 2026-09-22 讨论）
+- test-repo 域化重拷（与下批框架变更可合并）
 - wiki 初始化机制（画像首建与建构/整合同批）——随设计文档一并解决
 - 设计文档：导论随后开卷（章=文件，问题驱动；OKF 不收编）
 - 部署进个人库（用户自行执行；走查见 `docs/quickstart.md`，additive）
 - skill 打磨随摩擦滚动；delegate（vault 放入通道）与裁撤项不排期
 
 ## 过往操作
+
+- 2026-09-22 域化批次（四轮讨论收敛：9.19 域问题报告 → domain 中心思想）：domain 0.1 立设（第二十二插件，双根之「外」，适配器契约六问三定律两纪律）；vault 0.5 默认域（depends 增 domain/wiki）；wiki 0.5 出身二分属地泛化（去 vault 硬编码）；lark/project 0.3 增 domain 边、mapping 0.8 改称映射法则、structure 0.3 域内定位；宪法叙事对齐。零机制变更，全声明级
 
 - 2026-09-19 插件连发：lark 0.2 两形分区 + lark-im 0.1 人际域（群档人档、涌现、按需议题）；calendar 0.1 + lark-calendar 0.1（时间领地：月页两节制，lark 源适配器，日更=cron）；project 0.1→0.2 项目容器（工作区 projects/ + wiki 声明页双向 diff，本体出 wiki）；tmp 0.1 临时区（路径领地、隐身、断链豁免；index 0.11/link 0.13 配套）；link 0.10~0.13 孤儿判定动态化
 - 2026-09-19 index 0.10 溢出减负制：清单 ≤25 条，超窗按子树页数降序切子目录自立索引；根恒在、纯函数、不发明结构；小库坍缩单索引（合成用例实锤）
