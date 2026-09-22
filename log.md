@@ -13,8 +13,7 @@
 ## 下一步
 
 - 日更 cron 与真实 profile 接入（部署侧）
-- user-profile 证据域裁决悬置中（跨域证据 depends 归属，见 2026-09-22 讨论）
-- test-repo 域化重拷（与下批框架变更可合并）
+- user-profile 证据域裁决悬置（跨域 depends 归属）；test-repo 域化重拷（可并入下批）
 - wiki 初始化机制（画像首建与建构/整合同批）——随设计文档一并解决
 - 设计文档：导论随后开卷（章=文件，问题驱动；OKF 不收编）
 - 部署进个人库（用户自行执行；走查见 `docs/quickstart.md`，additive）
@@ -22,7 +21,7 @@
 
 ## 过往操作
 
-- 2026-09-22 域化批次（四轮讨论收敛：9.19 域问题报告 → domain 中心思想）：domain 0.1 立设（第二十二插件，双根之「外」，适配器契约六问三定律两纪律）；vault 0.5 默认域（depends 增 domain/wiki）；wiki 0.5 出身二分属地泛化（去 vault 硬编码）；lark/project 0.3 增 domain 边、mapping 0.8 改称映射法则、structure 0.3 域内定位；宪法叙事对齐。零机制变更，全声明级
+- 2026-09-22 域化批次（9.19 域报告四轮讨论收敛，domain 中心思想）：domain 0.1 立设（第二十二插件，适配器契约）；vault 0.5 默认域、wiki 0.5 属地泛化、lark/project 0.3 与 mapping 0.8 / structure 0.3 对齐、宪法叙事对齐——零机制变更，全声明级
 
 - 2026-09-19 插件连发：lark 0.2 两形分区 + lark-im 0.1 人际域（群档人档、涌现、按需议题）；calendar 0.1 + lark-calendar 0.1（时间领地：月页两节制，lark 源适配器，日更=cron）；project 0.1→0.2 项目容器（工作区 projects/ + wiki 声明页双向 diff，本体出 wiki）；tmp 0.1 临时区（路径领地、隐身、断链豁免；index 0.11/link 0.13 配套）；link 0.10~0.13 孤儿判定动态化
 - 2026-09-19 index 0.10 溢出减负制：清单 ≤25 条，超窗按子树页数降序切子目录自立索引；根恒在、纯函数、不发明结构；小库坍缩单索引（合成用例实锤）
