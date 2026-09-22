@@ -1,9 +1,9 @@
 id: structure
-version: 0.2
+version: 0.3
 depends:
   - vault
   - wiki
-updated: 2026-09-14
+updated: 2026-09-22
 attachment:
   - "wiki/structure.md —— 结构声明页（vault 布局声明本体：frontmatter structure 块映射 + 正文预设说明）"
   - "scripts/check.py —— 附检（声明 diff / 领地走位 / 声明页存在性）"

@@ -1,6 +1,6 @@
-# lark：外部指针基座
+# lark：外部域基座
 
-wiki 的代理对象自本地 vault 外推到 CLI 可达的外部系统：以 lark-cli 为事实接口，立「指针页」——token 即身份证明（对照 mapping 代理页的路径 + 哈希证明），新鲜度交给 trust 层（stale 驱动 agent 现拉刷新，机械同步后置）。基座只立 profile 抽象与领地纪律，不载域知识：基座说「一企业一 profile，住在 wiki/lark/<profile>/」，域插件（lark-docs 等）收到后在每个 profile 下平行展开各自文件。
+外部域基座（domain 实例，指针落地）：wiki 的代理对象自本地 vault 外推到 CLI 可达的外部系统——以 lark-cli 为事实接口，立「指针页」——token 即身份证明（对照 mapping 代理页的路径 + 哈希证明），新鲜度交给 trust 层（stale 驱动 agent 现拉刷新，机械同步后置）。基座只立 profile 抽象与领地纪律，不载域知识：基座说「一企业一 profile，住在 wiki/lark/<profile>/」，域插件（lark-docs 等）收到后在每个 profile 下平行展开各自文件。
 
 ## Structure
 
@@ -19,5 +19,6 @@ wiki 的代理对象自本地 vault 外推到 CLI 可达的外部系统：以 la
 
 ## Changelog
 
+- 0.3（2026-09-22）域化：depends 增 domain（外部域基座定位——指针落地不物化）；属地惯例不变；契约见 domain 插件
 - 0.2（2026-09-19）立档案页两形分区制（frontmatter 机械区 / 正文沉淀区只增）——im 域档案页的架构前提；指针页语义不变
 - 0.1（2026-09-19）立设：四轮设计收敛——指针-only 弃 vault 存储、profile 优先分段、trust 懒刷新代 daemon、基座/域插件分族（基座拥抽象，域插件平行服务）
