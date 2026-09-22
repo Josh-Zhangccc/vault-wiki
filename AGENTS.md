@@ -82,8 +82,8 @@
 - 信任字段（页面可选）：`generated`（谁生成）/ `verified`（事件列表，项单行 by+at）/ `stale_after`（过期时刻）/ `sources`（来源与信号）；层级推导不落盘——无记录=unverified、仅 agent/process=machine-confirmed、含 human=human-reviewed、过 stale_after=stale
 <!-- /plugin:trust -->
 
-<!-- plugin:wiki v0.4 -->
-- wiki 容器 `wiki/`：出身二分——`wiki/vault/` 下为代理页（有 vault 对应物），其余为原生页（出身在 wiki）；index / tags / hot / log 为派生页（机械投影）；页面 frontmatter 取最小 YAML 子集（顶层标量 / 块列表 / 一级块映射），更复杂结构不受解析
+<!-- plugin:wiki v0.5 -->
+- wiki 容器 `wiki/`（内外之分的内侧）：出身二分——各域声明属地之页为代理页（有域外对应物，属地路径由各域注入行自披露），其余为原生页（出身在 wiki）；index / tags / hot / log 为派生页（机械投影）；页面 frontmatter 取最小 YAML 子集（顶层标量 / 块列表 / 一级块映射），更复杂结构不受解析
 <!-- /plugin:wiki -->
 
 <!-- plugin:calendar v0.1 -->
