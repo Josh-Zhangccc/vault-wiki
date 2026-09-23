@@ -21,7 +21,7 @@
 
 ## 过往操作
 
-- 2026-09-23 域化漏收补边：内侧老八件（notes/sessions/link/tag/trust/index/hot/log）补 wiki 依赖边并版本进位——domain 0.1「内侧插件挂 wiki」声明与 depends 图对齐；注入序重排（老八件降至 wiki 后，lark 族与 user-profile 顺延一层），kernel 全套投影同步
+- 2026-09-23 域化漏收补边：内侧老八件补 wiki 依赖边并进位——domain 0.1 挂 wiki 声明与 depends 图对齐；注入序重排（老八件降层、lark 族与 user-profile 顺延），kernel 全套投影同步
 - 2026-09-22 域化批次（9.19 域报告四轮讨论收敛，domain 中心思想）：domain 0.1 立设（第二十二插件，适配器契约）；vault 0.5 默认域、wiki 0.5 属地泛化、lark/project 0.3 与 mapping 0.8 / structure 0.3 对齐、宪法叙事对齐——零机制变更，全声明级
 
 - 2026-09-19 插件连发：lark 0.2 两形分区 + lark-im 0.1 人际域（群档人档、涌现、按需议题）；calendar 0.1 + lark-calendar 0.1（时间领地：月页两节制，lark 源适配器，日更=cron）；project 0.1→0.2 项目容器（工作区 projects/ + wiki 声明页双向 diff，本体出 wiki）；tmp 0.1 临时区（路径领地、隐身、断链豁免；index 0.11/link 0.13 配套）；link 0.10~0.13 孤儿判定动态化
