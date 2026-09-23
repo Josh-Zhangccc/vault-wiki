@@ -16,6 +16,7 @@ wiki 的本体结构：页面间的引用关系。链接是知识的价值所在
 
 ## Changelog
 
+- 0.14（2026-09-23）补 wiki 依赖边——内侧插件挂 wiki 对齐 domain 0.1 声明（2026-09-22 域化批次漏收）
 - 0.13（2026-09-19）_concept 排除 wiki/tmp/——临时区不作链接源、不受图检查（草稿断链 = 尚未写下，转正时闭合）
 - 0.12（2026-09-19）孤儿 info 集改动态读 registry type.values（除 session）——新领地类型自动覆盖，硬编码集退役（project 立设前置）
 - 0.11（2026-09-19）孤儿 info 集扩至全部领地值（除 session）——calendar 冒烟实锤 calendar.md/月页误报 warning；判定与 registry 领地值对齐，不再逐类型挤牙膏

@@ -18,6 +18,7 @@
 
 ## Changelog
 
+- 0.10（2026-09-23）补 wiki 依赖边——内侧插件挂 wiki 对齐 domain 0.1 声明（2026-09-22 域化批次漏收）
 - 0.9（2026-09-13）checks 合并执行者统一为机械确认项（专家评审：与 actions.md 两说）
 - 0.8（2026-09-13）注入源移交 manifest：删 Checks / Usage / Inject / Attachments 节，md 回归纯文档
 - 0.7（2026-09-13）立「Usage」节：写侧契约交由命令注入区投影（单一文本源）
