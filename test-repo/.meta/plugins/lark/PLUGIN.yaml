@@ -1,9 +1,10 @@
 id: lark
-version: 0.2
+version: 0.3
 depends:
+  - domain
   - wiki
   - trust
-updated: 2026-09-19
+updated: 2026-09-22
 attachment:
   - "wiki/lark/ —— 外部指针领地（一企业一 profile 目录，目录名 = lark-cli --profile 名；建目录即建 profile，无中央声明页）"
 fields:

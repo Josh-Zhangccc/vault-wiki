@@ -6,17 +6,21 @@
 
 - `wiki/profile.md`——单页档案，type: profile；静态身份层（称呼、语言、背景）与动态偏好层（题材、风格、习惯）分节开放，维度不枚举（架构不预置字段清单）
 - 零自有字段：留痕与信任全复用 trust（generated / verified / stale_after / sources）
-- 断言证据 = 正文行内 wikilink，指向会话页（sessions 领地）或 vault 代理页（mapping 领地）——证据结构跨两领地，是本插件 depends 二者的原因；加上出身二分（wiki）与留痕语义（trust）共四依赖
+- 断言证据 = 正文行内 wikilink，指向 wiki 内任意页面（会话页、vault 代理页、lark 档案页、notes）——引用即链接，跨域不立机制依赖；depends 四条（wiki / trust / mapping / sessions）为 2026-09-29 裁定保留的引用级声明（挂边无害，存量自洽不裁）
 
 ## Invariants
 
 - 收敛式更新：新值取代旧值、正文留痕（单行：谁何时改了什么）——区别于 notes 的只增不改，画像页是全库第一个可更新语义页面
+- 更新统一走 profile 命令，双轨触发（用户明示 / agent 识别显著信号自发调用）——2026-09-29 起脱离 map/save 寄生，画像证据天然跨域
 - 断言必带证据 wikilink；单条增量断言不等于偏好，偏好是页内聚合出的模式
 - 日记类资产只记元信号（有无、节奏），内容不进画像——豁免随 mapping，隐私红线二次设防
 - 隐私红线：画像内容是实例数据，不入框架仓库与 test-repo
-- 画像页缺失 ≠ 错误：首建属 wiki 初始化，机制随设计文档定案（独立建构/整合命令同批后置）
+- 画像页不打 tags：单页领地、直接读取，不入词表检索（明示决定，非遗漏）
+- 画像页缺失 ≠ 错误：未触发常态，profile 首建随首次触发，不依赖初始化机制
 
 ## Changelog
+
+- 0.3（2026-09-29）profile 命令立设：写侧脱离 map/save 双入口寄生（两命令 consumes 摘除），证据域放开为 wiki 内页面（销跨域归属悬置），首建随触发自建（收编初始化挂账画像部分），tag 明示不打；depends 四条维持（裁定：引用级边保留不裁）
 
 - 0.2（2026-09-14）usage 补画像提炼方法论（信号判据 / 分层落点 / 断言具体可证）——蒸馏的可执行部分入写侧契约，SASU-L 披露闭环：agent 跑 map/save 即知如何提炼，不依赖模型先验；全文仍留 `docs/research-user-profile.md`
 - 0.1（2026-09-13）立设：`wiki/profile.md` 收敛式认知档案（type: profile 入 registry 值集）；depends [wiki, trust, mapping, sessions]；双信号通道挂 save / map（consumes 插 trust 后派生前）；检查三项——断言证据闸门（warning）、领地走错（error）、页面缺失（信息级）

@@ -78,7 +78,7 @@ plugins:
       note: 事件列表，项单行 `by: <actor>, at: <日期>`，可多次追加；信任层级由此推导
   vault:
     url:
-      note: 来源 URL；URL 型资产的出处登记（来源保全），人工放入可选、agent 通道（delegate 等）必填
+      note: 来源 URL；URL 型资产的出处登记（来源保全），人工放入可选、agent 通道（delegate 等）必填；兼作他域借道 vault 落地的接口
 
 reserved: {}
 

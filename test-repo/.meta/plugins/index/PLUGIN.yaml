@@ -1,8 +1,9 @@
 id: index
-version: 0.11
+version: 0.12
 depends:
   - tag
-updated: 2026-09-19
+  - wiki
+updated: 2026-09-23
 attachment:
   - "wiki/index.md —— 根索引（恒在；含 format_version；直列可达页面）"
   - "各目录 index.md —— 溢出减负制诞生（清单超窗时切出，并回上级后随重建消失）"
