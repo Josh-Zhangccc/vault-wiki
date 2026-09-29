@@ -4,7 +4,7 @@
 
 ## 现状（2026-09-29）
 
-工程定位：**个人自用**——矩阵测试裁撤，SASU-L 为镜，边用边改。架构终态：双根概念 domain（外·域契约）/ wiki（内·出身二分）+ 域实例族 vault（默认域兼通用仓储，mapping 映射法则、structure 管布局）/ lark（外部域基座，两形 + trust 懒刷新，域内 lark-docs/lark-im）/ project（自立容器域） / email（个人邮箱域）+ calendar 时间领地（lark-calendar 源适配器）、tmp、notes/sessions/link/tag/trust/index/hot/log/user-profile/todo，共二十三、无分层（注入序=依赖拓扑+字母序）；八命令 map/save/profile/query/check/plugin/lark-map/wiki_plugin_kernel（末者=内核参考）。三投影一源：manifest（inject/checks/usage）→ AGENTS 注入区、check 检查块、命令用法块（consumes 序即执行序）；PLUGIN.md 纯文档，内核 wiki_plugin_kernel.py 唯一投影机；registry 字段注册表（预留段可认领回填）。docs/ 现行四件（quickstart/pointers/research×2）。`test-repo/` 自足虚拟库，根侧同步重拷（域化后待重拷）。
+工程定位：**个人自用**——矩阵测试裁撤，SASU-L 为镜，边用边改。架构终态：双根概念 domain（外·域契约）/ wiki（内·出身二分）+ 域实例族 vault（默认域兼通用仓储，mapping 映射法则、structure 管布局）/ lark（外部域基座，两形 + trust 懒刷新，域内 lark-docs/lark-im）/ project（自立容器域） / email + calendar 时间领地（lark-calendar 源适配器）、tmp、notes/sessions/link/tag/trust/index/hot/log/user-profile/todo，共二十三、无分层（注入序=依赖拓扑+字母序）；八命令 map/save/profile/query/check/plugin/lark-map/wiki_plugin_kernel（末者=内核参考）。三投影一源：manifest（inject/checks/usage）→ AGENTS 注入区、check 检查块、命令用法块（consumes 序即执行序）；PLUGIN.md 纯文档，内核 wiki_plugin_kernel.py 唯一投影机；registry 字段注册表（预留段可认领回填）。docs/ 现行四件（quickstart/pointers/research×2）。`test-repo/` 自足虚拟库，根侧同步重拷（域化后待重拷）。
 
 ## 阶段
 
@@ -19,7 +19,7 @@
 
 ## 过往操作
 
-- 2026-09-29 email 域立设：v0.1，wiki/email/ 账户+三资产+统一速写，全量禁/只读/发送明示，无命令待连接器
+- 2026-09-29 email 域立设：v0.1，wiki/email/ 账户+三资产+统一速写，全量禁/只读/发送明示，无命令
 - 2026-09-29 画像独立通道与叙事补强：profile 命令立设（user-profile 0.3 脱离 map/save 寄生、证据域放开 wiki 内页面、首建随触发自建、tag 明示不打；log 0.14 类型值集补 todo 漂移并扩 profile）；domain 补可对账域判据、wiki 0.6 出身三层与纪要说、calendar 借住记名；两裁定——depends 引用边保留不裁（存量自洽）、structure 维持 vault 域内件（消费者 = delegate 暂缓）；test-repo 重拷补域化欠账
 - 2026-09-23 域化漏收补边：内侧老八件补 wiki 依赖边并进位——domain 0.1 挂 wiki 声明与 depends 图对齐；注入序重排（老八件降层、lark 族与 user-profile 顺延），kernel 全套投影同步
 - 2026-09-22 域化批次（9.19 域报告四轮讨论收敛，domain 中心思想）：domain 0.1 立设（第二十二插件，适配器契约）；vault 0.5 默认域、wiki 0.5 属地泛化、lark/project 0.3 与 mapping 0.8 / structure 0.3 对齐、宪法叙事对齐——零机制变更，全声明级
