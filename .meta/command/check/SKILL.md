@@ -93,6 +93,10 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 - 语义项（v0.1 人工，附检后置）：月页文件名非 YYYY-MM 或落 wiki/calendar/ 之外 → error；已过月份月页改写痕迹 → error（git 审计）；声明页缺 `calendar` 块 → info（manual-only 常态）
 <!-- /check:calendar -->
 
+<!-- check:email -->
+- 语义项（v0.1 人工，附检后置）：type: email 页落 `wiki/email/` 之外 → error；人档 token（地址）重复 → error；线程档机械区缺 members（Message-ID 列表）→ warning；速写手编痕迹 → warning；stale 清单（信息级：拉取日 + TTL）
+<!-- /check:email -->
+
 <!-- check:index -->
 - 索引与实际页面集偏差（含该删未删的并回索引）→ 跑 `pipeline.py index` 重建即修复（幂等，无 diff 即一致）；tags 同理（`pipeline.py tags`）
 - 手编痕迹 → warning
