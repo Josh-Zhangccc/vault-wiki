@@ -12,13 +12,14 @@
 
 ## 下一步
 
-- 日更 cron 与真实 profile 接入（部署侧）；email 连接器探路
+- 日更 cron 与真实 profile 接入（部署侧）；email 连接器探路；cuhksz_bb 域接 bb-cli 实验后立设
 - 设计文档：导论随后开卷（章=文件，问题驱动；OKF 不收编）
 - 部署进个人库（用户自行执行；走查见 `docs/quickstart.md`，additive）
 - skill 打磨随摩擦滚动；delegate（vault 放入通道，structure 布局声明的消费者）与裁撤项不排期
 
 ## 过往操作
 
+- 2026-09-29 bb-cli 连接器立设：`connectors/` 首件 v0.1——ADFS 域前缀（`cuhksz\学号`）单步登录 + Learn REST 只读十五命令（curl_cffi chrome124 指纹），实测全通；cuhksz_bb 域插件待实验
 - 2026-09-29 email 域立设：v0.1，wiki/email/ 账户+三资产+统一速写，全量禁/只读/发送明示，无命令
 - 2026-09-29 画像独立通道与叙事补强：profile 命令立设（user-profile 0.3 脱离 map/save 寄生、证据域放开 wiki 内页面、首建随触发自建、tag 明示不打；log 0.14 类型值集补 todo 漂移并扩 profile）；domain 补可对账域判据、wiki 0.6 出身三层与纪要说、calendar 借住记名；两裁定——depends 引用边保留不裁（存量自洽）、structure 维持 vault 域内件（消费者 = delegate 暂缓）；test-repo 重拷补域化欠账
 - 2026-09-23 域化漏收补边：内侧老八件补 wiki 依赖边并进位——domain 0.1 挂 wiki 声明与 depends 图对齐；注入序重排（老八件降层、lark 族与 user-profile 顺延），kernel 全套投影同步
