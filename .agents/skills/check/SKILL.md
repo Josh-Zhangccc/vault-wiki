@@ -132,6 +132,6 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 <!-- check:user-profile -->
 - 语义（check 命令）：画像断言缺证据 wikilink → warning
 - 机械项：type: profile 页面落 `wiki/notes/` 或 `wiki/vault/`（走错领地）→ error
-- 机械项（信息级）：画像页缺失（库未初始化属正常，初始化机制定案后再定升降级）
+- 机械项（信息级）：画像页缺失（未触发常态，profile 首建随触发）
 <!-- /check:user-profile -->
 <!-- check-inject:end -->

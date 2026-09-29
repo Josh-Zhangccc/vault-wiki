@@ -66,8 +66,8 @@
 - 链接语法 `[[页面全名]]`——全名 = wiki/ 内相对路径去末尾 .md（如 `notes/X`、pdf 资产代理 `vault/a.pdf`、md 资产代理 `vault/原名.md`，仅去一个）；禁截断式引用，同名歧义带路径；字段 `related` / `aliases`；断链 = warning（尚未写下），孤儿（无入链无引用，派生页不算源）= notes 知识页 warning、领地值登记页 info（动态读 registry type.values，除 session）
 <!-- /plugin:link -->
 
-<!-- plugin:log v0.13 -->
-- 运行日志 `wiki/log.md`：置顶追加、条目不改写，条目 = 日期 + 类型（map/save/query/check/plugin/todo/other）+ 一句话；窗口 ≤100 条，超限机械归档至 `wiki/archive/月/log.md`
+<!-- plugin:log v0.14 -->
+- 运行日志 `wiki/log.md`：置顶追加、条目不改写，条目 = 日期 + 类型（map/save/query/check/plugin/todo/profile/other）+ 一句话；窗口 ≤100 条，超限机械归档至 `wiki/archive/月/log.md`
 <!-- /plugin:log -->
 
 <!-- plugin:notes v0.14 -->
@@ -134,8 +134,8 @@
 - 人际域（档案页，基座分区制）：枢纽 `<profile>/im.md`（`im` 块映射 = 策略：群同步 / 涌现 / 关注 / 排除）；群档 `<profile>/im/chats/`（kind: chat——`description` 群功能 + `key_members` 关键人 wikilink，正文沉淀区 = 议题记录 `## 日期 议题→结果` 只增、按需拉窗蒸馏经确认追加）；人档 `<profile>/im/people/`（kind: person，token = open_id，department/position 由 contact 解析，chat_id 为 p2p 锚，正文沉淀区 = 与我的关系，只增收敛）；人档涌现制（p2p / 点名 / 高频，条件写枢纽）——不建全量通讯录（contact 只解析不遍历）；群参与人只存关键不存全员；文件名清洗 + 重名 token 尾缀；发送类写操作永远须用户明示；隐私红线：主观关系内容不入框架仓库与 test-repo；trust lazy-refresh 同基座
 <!-- /plugin:lark-im -->
 
-<!-- plugin:user-profile v0.2 -->
-- 用户画像 `wiki/profile.md`（type: profile）：对使用者的持续认知档案，静态身份层 + 动态偏好层，维度不枚举；收敛式更新——新值取代旧值、正文留痕；断言必带证据 wikilink（会话页或 vault 代理页），偏好层挂 stale_after；零自有字段复用 trust，不属 notes 领地；个性化决策（称呼、风格、偏好）前先读此页，库未初始化时可缺
+<!-- plugin:user-profile v0.3 -->
+- 用户画像 `wiki/profile.md`（type: profile）：对使用者的持续认知档案，静态身份层 + 动态偏好层，维度不枚举；收敛式更新——新值取代旧值、正文留痕；断言必带证据 wikilink（wiki 内页面皆可：会话页、vault 代理页、lark 档案页），偏好层挂 stale_after；零自有字段复用 trust，不属 notes 领地，不打 tags（单页直接读取，不入词表检索）；更新走 profile 命令——双轨触发（用户明示 / agent 识别显著信号自发调用），首次触发即自建页面；个性化决策（称呼、风格、偏好）前先读此页
 <!-- /plugin:user-profile -->
 
 <!-- wiki-inject:end -->
