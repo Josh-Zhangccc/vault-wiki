@@ -4,7 +4,7 @@
 
 ## 现状（2026-09-30）
 
-工程定位：**个人自用**——矩阵测试裁撤，SASU-L 为镜，边用边改。架构终态：双根概念 domain（外·域契约）/ wiki（内·出身二分）+ 域实例族 vault（默认域兼通用仓储，mapping 映射法则、structure 管布局）/ lark（外部域基座，域内 lark-docs/lark-im）/ project（自立容器域）/ email + calendar 时间领地（lark-calendar 源适配器）+ 横切件 notes/sessions/link/tag/trust/index/hot/log/user-profile/todo 与 tmp，共二十三插件、无分层（注入序=依赖拓扑+字母序）；八命令 map/save/profile/query/check/plugin/lark-map/wiki_plugin_kernel。三投影一源：manifest → AGENTS 注入区、check 检查块、命令用法块；内核 wiki_plugin_kernel.py 唯一投影机。docs/ 现行四件；test-repo/ 自足虚拟库（域化后待重拷）。连接器 connectors/ 首件 bb-cli（CUHK-SZ Blackboard 只读 CLI，v0.1.2）。
+工程定位：**个人自用**——矩阵测试裁撤，SASU-L 为镜，边用边改。架构终态：双根概念 domain（外·域契约）/ wiki（内·出身二分）+ 域实例族 vault（默认域兼通用仓储，mapping 映射法则、structure 管布局）/ lark（外部域基座，域内 lark-docs/lark-im）/ project（自立容器域）/ email + calendar 时间领地（lark-calendar 源适配器）+ 横切件 notes/sessions/link/tag/trust/index/hot/log/user-profile/todo 与 tmp，共二十三插件、无分层（注入序=依赖拓扑+字母序）；八命令 map/save/profile/query/check/plugin/lark-map/wiki_plugin_kernel。三投影一源：manifest → AGENTS 注入区、check 检查块、命令用法块；内核 wiki_plugin_kernel.py 唯一投影机。docs/ 现行四件；test-repo/ 自足虚拟库（域化后待重拷）。连接器 connectors/ 首件 bb-cli（CUHK-SZ Blackboard 只读 CLI，v0.1.3）。
 
 ## 阶段
 
@@ -16,11 +16,10 @@
 - 设计文档：导论随后开卷（章=文件，问题驱动；OKF 不收编）
 - 部署进个人库（用户自行执行；走查见 docs/quickstart.md，additive）
 - skill 打磨随摩擦滚动；delegate 与裁撤项不排期
-- bb-cli 拉提交文件链路已实证（columns/attempts → files → Classic download），可封 submission 命令
 
 ## 过往操作
 
-- 2026-09-30 bb-cli 三修（v0.1.1/0.1.2）：UTC→本机时区；dues 双源合并（日历漏项成绩册兜底，AIE2001 实锤 4/5 缺）；announcements 单课失败降级（真凶=停用课程）；空结果提示、补 column_id；另实证提交文件可拉（attempt 列表 + Classic download）
+- 2026-09-30 bb-cli 连修（v0.1.1~0.1.3）：UTC→本机时区；dues 双源合并（日历漏项成绩册兜底，AIE2001 实锤 4/5 缺）；announcements 单课失败降级（真凶=停用课程）；空结果提示、补 column_id；submission 命令封提交链路（列 attempt→文件→Classic download，REST download 404 绕行实证）
 - 2026-09-29 bb-cli 立设 v0.1：ADFS 域前缀单步登录 + Learn REST 只读十五命令（curl_cffi 指纹），实测全通
 - 2026-09-29 email 域与 profile 命令立设：email v0.1（账户+三资产+统一速写，全量禁/只读/发送明示）；user-profile 0.3 独立通道；domain/wiki/calendar 叙事补强；test-repo 重拷
 - 2026-09-22~23 域化批次：domain 0.1 适配器契约（第二十二插件）；vault/wiki/lark/project/mapping/structure 对齐；老八件补 wiki 依赖边、注入序重排
