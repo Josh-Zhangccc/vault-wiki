@@ -12,7 +12,7 @@
 
 ## 下一步
 
-- bb-cli 待修（用户已知，缓办）：announcements 全扫遇单课公告工具关闭 400 即整体失败，待降级为跳过+报清单；log.md 已超 2.5k 上限，整合方案待用户点头
+- log.md 已超 2.5k 上限，整合方案待用户点头
 - 日更 cron 与真实 profile 接入（部署侧）；email 连接器探路；cuhksz_bb 域接 bb-cli 实验后立设
 - 设计文档：导论随后开卷（章=文件，问题驱动；OKF 不收编）
 - 部署进个人库（用户自行执行；走查见 `docs/quickstart.md`，additive）
@@ -20,6 +20,7 @@
 
 ## 过往操作
 
+- 2026-09-30 bb-cli v0.1.2：dues 双源合并（日历漏项、成绩册列兜底，source 标注去重——AIE2001 实锤 4/5 缺）；announcements 单课失败降级跳过+skipped 清单（真凶=已停用课程）；text 空结果提示；assignments/grades 补 column_id
 - 2026-09-30 bb-cli v0.1.1：截止时刻 UTC→本机时区（text 展示 + --from/--to/--since 过滤；JSON 保持 API 原值）——页面 23:59 与旧读数 15:59 差 8h 实锤
 - 2026-09-29 bb-cli 连接器立设：`connectors/` 首件 v0.1——ADFS 域前缀（`cuhksz\学号`）单步登录 + Learn REST 只读十五命令（curl_cffi chrome124 指纹），实测全通；cuhksz_bb 域插件待实验
 - 2026-09-29 email 域立设：v0.1，wiki/email/ 账户+三资产+统一速写，全量禁/只读/发送明示，无命令
