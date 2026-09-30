@@ -19,6 +19,7 @@
 
 ## 过往操作
 
+- 2026-09-30 bb-cli v0.1.1：截止时刻 UTC→本机时区（text 展示 + --from/--to/--since 过滤；JSON 保持 API 原值）——页面 23:59 与旧读数 15:59 差 8h 实锤
 - 2026-09-29 bb-cli 连接器立设：`connectors/` 首件 v0.1——ADFS 域前缀（`cuhksz\学号`）单步登录 + Learn REST 只读十五命令（curl_cffi chrome124 指纹），实测全通；cuhksz_bb 域插件待实验
 - 2026-09-29 email 域立设：v0.1，wiki/email/ 账户+三资产+统一速写，全量禁/只读/发送明示，无命令
 - 2026-09-29 画像独立通道与叙事补强：profile 命令立设（user-profile 0.3 脱离 map/save 寄生、证据域放开 wiki 内页面、首建随触发自建、tag 明示不打；log 0.14 类型值集补 todo 漂移并扩 profile）；domain 补可对账域判据、wiki 0.6 出身三层与纪要说、calendar 借住记名；两裁定——depends 引用边保留不裁（存量自洽）、structure 维持 vault 域内件（消费者 = delegate 暂缓）；test-repo 重拷补域化欠账
