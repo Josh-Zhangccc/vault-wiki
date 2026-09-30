@@ -12,6 +12,7 @@
 
 ## 下一步
 
+- bb-cli 待修（用户已知，缓办）：announcements 全扫遇单课公告工具关闭 400 即整体失败，待降级为跳过+报清单；log.md 已超 2.5k 上限，整合方案待用户点头
 - 日更 cron 与真实 profile 接入（部署侧）；email 连接器探路；cuhksz_bb 域接 bb-cli 实验后立设
 - 设计文档：导论随后开卷（章=文件，问题驱动；OKF 不收编）
 - 部署进个人库（用户自行执行；走查见 `docs/quickstart.md`，additive）
