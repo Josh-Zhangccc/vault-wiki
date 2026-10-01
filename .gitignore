@@ -7,3 +7,5 @@ connectors/*/*.egg-info/
 # bb/ 拉取物仓储 = 实例数据，不入框架仓库（仅保留空种子 .gitkeep）
 /bb/*
 !/bb/.gitkeep
+# bb 实验：真实课程拉取物只在本地（隐私红线：课程数据不入史）
+test-repo/bb/
