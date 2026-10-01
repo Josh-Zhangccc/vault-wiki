@@ -19,10 +19,11 @@
 
 ## 过往操作
 
-- 2026-10-01 bb-map 立设 v0.1：属地规范形四桶（info 总览兼身份页 / lec&tut 课件 / work 聚合页四要素 / attachments 1:1），判据句 + 两形分区 + raw 对账字段；桶名沿团队现名，改名后置
 
-- 2026-10-01 bb-cli skill 定位与英文化：主本自 `.meta/command/` 移驻 `connectors/bb-cli/SKILL.md`（连接器自足，命令族纯 wiki 操作），全文英文（语言节随上层要求与上下文，用户改）；kernel deploy 增 connectors skill 源路径；test-repo 同步
-- 2026-10-01 bb 域立设 v0.1（基石声明）：bb/ 仓储 + wiki/bb/ 属地双侧 `<term>/<course>/` 同构（目录名=学期名/课程代码，machine id 落身份页），速写页 inbox.md 兼域配置，全量物化放行（用户裁定），投影细则归 bb_map 后议；type 值集扩 bb；test-repo 同步
+- 2026-10-01 bb 域立设 v0.1（基石）：bb/ 仓储 + wiki/bb/ 属地 `<term>/<course>/` 同构（目录名=学期名/课程代码），速写页 inbox.md 兼域配置，全量物化放行；type 扩 bb
+- 2026-10-01 bb-map v0.1→v0.3：四桶立设（work 四要素聚合 / attachments 1:1 / 判据 / 两形分区）并流组员分支（lec&tut 内容单元制 + raw_path、info 蒸馏扩全、考试边界句、笔记缺口后补、gitignore /bb/*），整合回 master
+- 2026-10-01 bb-cli skill：主本移驻 connectors/bb-cli/SKILL.md 并全文英文化（语言节随上层，用户改）；kernel deploy 增 connectors skill 源
+
 - 2026-10-01 summary 分支快进并入 master（用户新增根目录 `资料整理Demo/`：课件整理脚本五件+测试、AIE1903/AIE2040/GEC3407 样本 PPTX 与生成摘要，约 43MB 二进制入史）；框架核心区零改动
 - 2026-09-30 bb-cli 连修（v0.1.1~0.1.3）：UTC→本机时区；dues 双源合并（日历漏项成绩册兜底，AIE2001 实锤 4/5 缺）；announcements 单课失败降级（真凶=停用课程）；空结果提示、补 column_id；submission 命令封提交链路（列 attempt→文件→Classic download，REST download 404 绕行实证）
 - 2026-09-29 bb-cli 立设 v0.1：ADFS 域前缀单步登录 + Learn REST 只读十五命令（curl_cffi 指纹），实测全通

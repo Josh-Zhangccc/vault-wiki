@@ -4,3 +4,6 @@ __pycache__/
 .meta/smoke-tmp/
 connectors/*/.venv/
 connectors/*/*.egg-info/
+# bb/ 拉取物仓储 = 实例数据，不入框架仓库（仅保留空种子 .gitkeep）
+/bb/*
+!/bb/.gitkeep
