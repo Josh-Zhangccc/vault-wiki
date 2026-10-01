@@ -12,14 +12,14 @@
 
 ## 下一步
 
-- 日更 cron 与真实 profile 接入（部署侧）；email 连接器探路；bb-map 命令化与桶名终裁（现名暂沿）随后
+- 日更 cron 与真实 profile 接入（部署侧）；email 连接器探路；bb-map 实验与命令化（组员）随后
 - 设计文档：导论随后开卷（章=文件，问题驱动；OKF 不收编）
 - 部署进个人库（用户自行执行；走查见 docs/quickstart.md，additive）
 - skill 打磨随摩擦滚动；delegate 与裁撤项不排期
 
 ## 过往操作
 
-- 2026-10-01 bb-map v0.4：桶名终裁（lec&tut→courseware、work→assessments、字段 work→assessment）+ 知识点页补 `## 笔记` 沉淀节（缺口补毕，两形统一）；实验与命令化交组员
+- 2026-10-01 bb-map v0.4：桶名终裁（lec&tut→courseware、work→assessments、字段 work→assessment）+ 知识点页补 `## 笔记` 沉淀节（两形统一）
 
 
 - 2026-10-01 bb 域立设 v0.1（基石）：bb/ 仓储 + wiki/bb/ 属地 `<term>/<course>/` 同构（目录名=学期名/课程代码），速写页 inbox.md 兼域配置，全量物化放行；type 扩 bb
