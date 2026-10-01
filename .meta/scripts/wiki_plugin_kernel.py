@@ -12,7 +12,7 @@ registry.yaml 插件段、.agents/skills/ 命令副本；protocol / reserved 段
   python .meta/scripts/wiki_plugin_kernel.py audit       # 插件附检（发现式执行各插件 scripts/check.py）
   python .meta/scripts/wiki_plugin_kernel.py inject      # 重建 AGENTS.md 注入区、check 检查块与命令用法块（幂等）
   python .meta/scripts/wiki_plugin_kernel.py registry    # 重建 registry.yaml 插件段（幂等）
-  python .meta/scripts/wiki_plugin_kernel.py deploy      # 同步命令部署副本（幂等）
+  python .meta/scripts/wiki_plugin_kernel.py deploy      # 同步命令与连接器 skill 部署副本（幂等）
   python .meta/scripts/wiki_plugin_kernel.py all         # validate + inject + registry + deploy
 
 manifest 最小 YAML 子集：顶层 `key: value`、`key: []`、块式列表（`  - 项`）、
@@ -56,6 +56,7 @@ if hasattr(sys.stdout, "reconfigure"):
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PLUGINS_DIR = os.path.join(ROOT, ".meta", "plugins")
 COMMANDS_DIR = os.path.join(ROOT, ".meta", "command")
+CONNECTORS_DIR = os.path.join(ROOT, "connectors")
 SKILLS_DIR = os.path.join(ROOT, ".agents", "skills")
 AGENTS_MD = os.path.join(ROOT, "AGENTS.md")
 REGISTRY = os.path.join(ROOT, ".meta", "protocol", "registry.yaml")
@@ -447,17 +448,21 @@ def do_registry(plugins):
 
 
 def do_deploy():
-    """同步 .meta/command/*/SKILL.md → .agents/skills/*/SKILL.md；孤儿副本仅报告。"""
-    names = sorted(
-        d for d in os.listdir(COMMANDS_DIR)
-        if os.path.isdir(os.path.join(COMMANDS_DIR, d))
-    )
-    changed = 0
-    for name in names:
-        src = os.path.join(COMMANDS_DIR, name, "SKILL.md")
-        if not os.path.exists(src):
-            print(f"[warning] command {name}/: SKILL.md missing")
+    """同步 .meta/command/*/SKILL.md 与 connectors/*/SKILL.md → .agents/skills/*/SKILL.md；孤儿副本仅报告。"""
+    sources = {}
+    for base in (COMMANDS_DIR, CONNECTORS_DIR):
+        if not os.path.isdir(base):
             continue
+        for d in sorted(os.listdir(base)):
+            src = os.path.join(base, d, "SKILL.md")
+            if not os.path.isfile(src):
+                continue
+            if d in sources:
+                print(f"[warning] skill name collision: {d}/ in both commands and connectors; commands win")
+                continue
+            sources[d] = src
+    changed = 0
+    for name, src in sorted(sources.items()):
         dst_dir = os.path.join(SKILLS_DIR, name)
         dst = os.path.join(dst_dir, "SKILL.md")
         os.makedirs(dst_dir, exist_ok=True)
@@ -467,7 +472,7 @@ def do_deploy():
             print(f"[deploy] synced {name}/SKILL.md")
     if os.path.isdir(SKILLS_DIR):
         for d in sorted(os.listdir(SKILLS_DIR)):
-            if d not in names and os.path.isdir(os.path.join(SKILLS_DIR, d)):
+            if d not in sources and os.path.isdir(os.path.join(SKILLS_DIR, d)):
                 print(f"[warning] orphan copy .agents/skills/{d}/ (master gone; deletion belongs to human)")
     if not changed:
         print("[deploy] all in sync")
