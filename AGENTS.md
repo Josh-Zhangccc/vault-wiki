@@ -2,7 +2,7 @@
 
 本仓库（目录 `agent-obsidian-template`，工程暂名 **vault-wiki**）是 vault-wiki 框架的构建工程，兼第一个**原型实例**：2026-09-08 起「插件 + 命令」架构直接落地，规范文档后置蒸馏。**定位个人自用**（2026-09-12 裁定：普世化与矩阵化测试搁置，边用边改）。
 
-- 布局：`.meta/`（插件与命令主本，原型核心）· `wiki/`（内外之分的内侧）+ `vault/` / `projects/` / `bb/`（外域容器，数据区）· `.agents/skills/`（部署副本）· `connectors/`（连接器主本：部署侧 CLI 事实接口，bb-cli 首件）· `test-repo/`（参考实例：自足虚拟库，内部不感知本工程；框架变更由根侧同步重拷）· `docs/`（设计档案）
+- 布局：`.meta/`（插件与命令主本，原型核心）· `wiki/`（内外之分的内侧）+ `vault/` / `projects/` / `bb/`（外域容器，数据区）· `.agents/skills/`（部署副本）· `connectors/`（连接器主本：部署侧 CLI 事实接口 + skill 使用披露——`connectors/*/SKILL.md` 经 kernel deploy 落 `.agents/skills/`，bb-cli 首件）· `test-repo/`（参考实例：自足虚拟库，内部不感知本工程；框架变更由根侧同步重拷）· `docs/`（设计档案）
 - 术语：**wiki** = md 世界，内外之分的内侧（各域投影 + 原生笔记）；**domain** = 域，wiki 外信息源的适配器契约（vault 是默认域，lark / project / email / bb 亦域）；**vault** = 默认域——真实资产仓库（命令侧只增，删改自由属于人）
 - 冲突裁决：以原型现状与讨论收敛结论为准；规范蒸馏时归并 `docs/` 历史版本
 - 个人库（`D:\Obsidian repo\agent-obsidian`）为只读实证样本：原 wiki 思想已转化为本原型（见 log 2026-09-08）
