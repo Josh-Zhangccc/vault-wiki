@@ -89,6 +89,10 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 - 语义（check 命令）：stale 页处置分诊（刷新时刻 / 重验证 / 废弃）——人决
 <!-- /check:trust -->
 
+<!-- check:bb -->
+- 语义项（v0.1 人工，附检后置）：type: bb 页落 wiki/bb/ 之外 → error；身份页 bb 块映射缺 course_id 或与目录不对应 → error；速写页手编痕迹 → warning；stale 清单（信息级）
+<!-- /check:bb -->
+
 <!-- check:calendar -->
 - 语义项（v0.1 人工，附检后置）：月页文件名非 YYYY-MM 或落 wiki/calendar/ 之外 → error；已过月份月页改写痕迹 → error（git 审计）；声明页缺 `calendar` 块 → info（manual-only 常态）
 <!-- /check:calendar -->

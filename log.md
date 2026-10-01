@@ -2,9 +2,9 @@
 
 > 追加与修改须标注日期（精确到天）；总量 <2.5k 字；整合压缩须用户同意。
 
-## 现状（2026-09-30）
+## 现状（2026-10-01）
 
-工程定位：**个人自用**——矩阵测试裁撤，SASU-L 为镜，边用边改。架构终态：双根概念 domain（外·域契约）/ wiki（内·出身二分）+ 域实例族 vault（默认域兼通用仓储，mapping 映射法则、structure 管布局）/ lark（外部域基座，域内 lark-docs/lark-im）/ project（自立容器域）/ email + calendar 时间领地（lark-calendar 源适配器）+ 横切件 notes/sessions/link/tag/trust/index/hot/log/user-profile/todo 与 tmp，共二十三插件、无分层（注入序=依赖拓扑+字母序）；八命令 map/save/profile/query/check/plugin/lark-map/wiki_plugin_kernel。三投影一源：manifest → AGENTS 注入区、check 检查块、命令用法块；内核 wiki_plugin_kernel.py 唯一投影机。docs/ 现行四件；test-repo/ 自足虚拟库（域化后待重拷）。连接器 connectors/ 首件 bb-cli（CUHK-SZ Blackboard 只读 CLI，v0.1.3）。
+工程定位：**个人自用**——矩阵测试裁撤，SASU-L 为镜，边用边改。架构终态：双根概念 domain（外·域契约）/ wiki（内·出身二分）+ 域实例族 vault（默认域兼通用仓储，mapping 映射法则、structure 管布局）/ lark（外部域基座，域内 lark-docs/lark-im）/ project（自立容器域）/ email / bb（BB 课程域基石）+ calendar 时间领地（lark-calendar 源适配器）+ 横切件 notes/sessions/link/tag/trust/index/hot/log/user-profile/todo 与 tmp，共二十四插件、无分层（注入序=依赖拓扑+字母序）；八命令 map/save/profile/query/check/plugin/lark-map/wiki_plugin_kernel。三投影一源：manifest → AGENTS 注入区、check 检查块、命令用法块；内核 wiki_plugin_kernel.py 唯一投影机。docs/ 现行四件；test-repo/ 自足虚拟库（已同步二十四插件）。连接器 connectors/ 首件 bb-cli（CUHK-SZ Blackboard 只读 CLI，v0.1.3）。
 
 ## 阶段
 
@@ -12,13 +12,14 @@
 
 ## 下一步
 
-- 日更 cron 与真实 profile 接入（部署侧）；email 连接器探路；cuhksz_bb 域接 bb-cli 实验后立设
+- 日更 cron 与真实 profile 接入（部署侧）；email 连接器探路；bb 域待 bbcli skill（GitHub 团队）与 bb_map 投影细则（团队待议）落地后接续
 - 设计文档：导论随后开卷（章=文件，问题驱动；OKF 不收编）
 - 部署进个人库（用户自行执行；走查见 docs/quickstart.md，additive）
 - skill 打磨随摩擦滚动；delegate 与裁撤项不排期
 
 ## 过往操作
 
+- 2026-10-01 bb 域立设 v0.1（基石声明）：bb/ 仓储 + wiki/bb/ 属地双侧 `<term>/<course>/` 同构（目录名=学期名/课程代码，machine id 落身份页），速写页 inbox.md 兼域配置，全量物化放行（用户裁定），投影细则归 bb_map 后议；type 值集扩 bb；test-repo 同步
 - 2026-10-01 summary 分支快进并入 master（用户新增根目录 `资料整理Demo/`：课件整理脚本五件+测试、AIE1903/AIE2040/GEC3407 样本 PPTX 与生成摘要，约 43MB 二进制入史）；框架核心区零改动
 - 2026-09-30 bb-cli 连修（v0.1.1~0.1.3）：UTC→本机时区；dues 双源合并（日历漏项成绩册兜底，AIE2001 实锤 4/5 缺）；announcements 单课失败降级（真凶=停用课程）；空结果提示、补 column_id；submission 命令封提交链路（列 attempt→文件→Classic download，REST download 404 绕行实证）
 - 2026-09-29 bb-cli 立设 v0.1：ADFS 域前缀单步登录 + Learn REST 只读十五命令（curl_cffi 指纹），实测全通
