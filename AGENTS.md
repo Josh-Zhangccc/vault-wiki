@@ -99,7 +99,7 @@
 <!-- /plugin:vault -->
 
 <!-- plugin:bb v0.1 -->
-- BB 课程域 `wiki/bb/`（外领地 bb.cuhk.edu.cn，连接器 bb-cli 纯只读，用法与位置见 bbcli skill）：双侧同构 `<term>/<course>/`——外 `bb/` 拉取物仓储（课件全量物化 + 提交件 submissions/，只增、删改自由属于人、存储是唯一成本），内 `wiki/bb/` 属地，目录名 = 学期名/课程代码（如 2610UG/AIE3005），machine id 落身份页 bb 块映射（term_id/course_id）作一比一身份证明，同期同代码尾缀消歧、停用标 status: deprecated 不删；域根速写页 inbox.md（近窗公告蒸馏 + 临近截止 + 未交提醒，行标课程，整页可再生短 TTL；frontmatter 兼域配置——terms 块映射现役学期与冻结标记）；课件物化后即本地终态资产豁免 TTL；投影细则归 bb_map 后议；凭据会话只存本机不入库；课程/成绩/提交数据属实例数据不入框架仓库；trust 天花板 machine-confirmed，stale_after = 拉取日 + TTL（默认 1 天，速写页覆写），agent 即同步器
+- BB 课程域 `wiki/bb/`（外领地 bb.cuhk.edu.cn，连接器 bb-cli 纯只读，用法与位置见 bbcli skill）：双侧同构 `<term>/<course>/`——外 `bb/` 拉取物仓储（课件全量物化 + 提交件 submissions/，只增、删改自由属于人、存储是唯一成本），内 `wiki/bb/` 属地，目录名 = 学期名/课程代码（如 2610UG/AIE3005），machine id 落身份页 bb 块映射（term_id/course_id）作一比一身份证明，同期同代码尾缀消歧、停用标 status: deprecated 不删；域根速写页 inbox.md（近窗公告蒸馏 + 临近截止 + 未交提醒，行标课程，整页可再生短 TTL；frontmatter 兼域配置——terms 块映射现役学期与冻结标记）；课件物化后即本地终态资产豁免 TTL；投影细则见 bb-map 插件；凭据会话只存本机不入库；课程/成绩/提交数据属实例数据不入框架仓库；trust 天花板 machine-confirmed，stale_after = 拉取日 + TTL（默认 1 天，速写页覆写），agent 即同步器
 <!-- /plugin:bb -->
 
 <!-- plugin:calendar v0.1 -->
@@ -130,8 +130,8 @@
 - 临时记忆 `wiki/todo.md`（type: todo）：跨 session 委托与提醒，条目 = 触发条件（日期或情境）+ 一句话 + by/at；新 session 开始先读此页（先于 hot），日期已到或已过的条目主动提醒用户；受托即追加，完成即销账（`[x]` 并写 log 行——历史归 log），已结 ≤20 条超限静默清理，本页只留活工作集
 <!-- /plugin:todo -->
 
-<!-- plugin:bb-map v0.1 -->
-- BB 映射层 `wiki/bb/`：把 `bb/` 拉取物统一映射为 `wiki/bb/` 代理页（映射格式待用户裁定；占位骨架，fields / usage / checks 随格式一并落地）
+<!-- plugin:bb-map v0.2 -->
+- BB 映射层 `wiki/bb/<term>/<course>/`：把 `bb/` 拉取物统一映射为 `info.md`（课程信息：教学大纲/分组/考试时间）+ `lec&tut/`（每内容单元一份知识点页：简要介绍 + raw_path 指针）——不论源目录如何存储，统一为此格式
 <!-- /plugin:bb-map -->
 
 <!-- plugin:lark-calendar v0.1 -->

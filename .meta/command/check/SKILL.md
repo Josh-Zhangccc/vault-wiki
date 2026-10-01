@@ -125,6 +125,10 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 - 语义（check 命令）：open 条目 > 50 → warning（膨胀分诊：该做的做、该沉淀的走 save、该放弃的与用户确认）
 <!-- /check:todo -->
 
+<!-- check:bb-map -->
+- 语义项（附检后置）：知识点页缺 `raw_path` 或 raw_path 悬挂 → error；info.md 缺 `bb` 块映射（term_id/course_id）或与目录不对应 → error；知识点页缺简要介绍 → warning；映射完整性（bb/ 内容单元无对应 md）→ info 积压
+<!-- /check:bb-map -->
+
 <!-- check:lark-calendar -->
 - 语义项（v0.1 人工）：声明页 lark 源的 profile 不在 wiki/lark/ 目录集 → warning；日程行源键无对应声明 → warning
 <!-- /check:lark-calendar -->

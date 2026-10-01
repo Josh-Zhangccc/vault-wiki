@@ -33,6 +33,9 @@ plugins:
       note: 块映射（课程身份页）——term_id（学期 machine id，如 _426_1）/ course_id（课程 machine id，如 _18030_1）；与属地目录一比一，即身份证明
     terms:
       note: 块映射（域根速写页）——term 目录名 → 一句话（现役/冻结标记 + term_id）；现役学期即拉取与速写的默认作用域
+  bb-map:
+    raw_path:
+      note: 根相对路径——指向 bb/ 内容单元（文件或目录），知识点页必有；路径即出身证明
   calendar:
     calendar:
       note: 块映射（声明页）——源键 → 源声明（值语法归适配器：lark-calendar 用 `lark/<profile> <calendar_id|primary>`）；源键即日程行尾标
