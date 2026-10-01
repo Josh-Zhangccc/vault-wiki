@@ -19,13 +19,15 @@
 
 ## 过往操作
 
-- 2026-10-01 AGENTS 增准则 10 分析轮禁执行（简述轮越权执行教训，用户裁定）
+- 2026-10-01 AGENTS 准则 6 行数上限拓宽至 250（注入区随插件增长）
+
+- 2026-10-01 AGENTS 增准则 10 分析轮禁执行
 
 - 2026-10-01 bb-map v0.4/v0.5：桶名终裁（lec&tut→courseware、work→assessments）；courseware 笔记节立而复撤（回归纯代理，笔记落点单独设计）
 
 
 - 2026-10-01 bb 域立设 v0.1（基石）：bb/ 仓储 + wiki/bb/ 属地 `<term>/<course>/` 同构（目录名=学期名/课程代码），速写页 inbox.md 兼域配置，全量物化放行；type 扩 bb
-- 2026-10-01 bb-map v0.1→v0.3：四桶立设（work 四要素聚合 / attachments 1:1 / 判据 / 两形分区）并流组员分支（lec&tut 内容单元制 + raw_path、info 蒸馏扩全、考试边界句、笔记缺口后补、gitignore /bb/*），整合回 master
+- 2026-10-01 bb-map v0.1→v0.3：四桶立设并流组员分支（内容单元制 + raw_path、判据与考试边界、gitignore /bb/*），整合回 master
 - 2026-10-01 bb-cli skill 移驻 connectors 并英文化；kernel deploy 增连接器 skill 源
 
 - 2026-10-01 summary 分支快进并入 master（用户新增根目录 `资料整理Demo/`：课件整理脚本五件+测试、AIE1903/AIE2040/GEC3407 样本 PPTX 与生成摘要，约 43MB 二进制入史）；框架核心区零改动
