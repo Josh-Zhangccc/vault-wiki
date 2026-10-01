@@ -131,8 +131,8 @@
 - 临时记忆 `wiki/todo.md`（type: todo）：跨 session 委托与提醒，条目 = 触发条件（日期或情境）+ 一句话 + by/at；新 session 开始先读此页（先于 hot），日期已到或已过的条目主动提醒用户；受托即追加，完成即销账（`[x]` 并写 log 行——历史归 log），已结 ≤20 条超限静默清理，本页只留活工作集
 <!-- /plugin:todo -->
 
-<!-- plugin:bb-map v0.4 -->
-- bb 映射法则：属地 wiki/bb/<term>/<course>/ 规范形四桶（bb/ 保源形，桶名 v0.4 终裁：courseware/assessments/attachments）——info.md 课程信息页兼身份页（bb 块映射 + 机械蒸馏教学大纲/师资/TA/分组/评分构成/考试时间 + 备注沉淀；存「何时有何事」，被评分事务全要素归 assessments）；courseware/ 知识点页每内容单元一份（单元 = bb/ 目录「讲义+附属文件合一」或扁平单文件；机械区 = 简要介绍 + 单元文件清单 + raw_path 指针可指目录，`## 笔记` 沉淀只增）；assessments/ 聚合页每作业/考试一页（四要素：要求/参考/提交/结果；assessment 块映射 due/submitted_at/score/status/column_id + raw 块映射角色→bb/ 路径 + `## 复盘` 沉淀只增）；attachments/ 1:1 代理平铺（raw_file/raw_sha256，纯代理）；落位判据——有成绩册列或提交动作→assessments/、老师非讲义资产→attachments/、内容单元→courseware/、结构事实入 info.md；info/courseware/assessments 一律两形分区（机械区可再生覆写+沉淀区只增，重建不得触碰），attachments 纯代理（珍贵内容入 notes）；映射不改 bb/ 源侧、不复制原文全文、源消失标 deprecated 不删；API 快照节挂 stale_after=拉取日+TTL，本地对账代理无 TTL
+<!-- plugin:bb-map v0.5 -->
+- bb 映射法则：属地 wiki/bb/<term>/<course>/ 规范形四桶（bb/ 保源形，桶名 v0.4 终裁：courseware/assessments/attachments）——info.md 课程信息页兼身份页（bb 块映射 + 机械蒸馏教学大纲/师资/TA/分组/评分构成/考试时间 + 备注沉淀；存「何时有何事」，被评分事务全要素归 assessments）；courseware/ 知识点页每内容单元一份（单元 = bb/ 目录「讲义+附属文件合一」或扁平单文件；简要介绍 + 单元文件清单 + raw_path 指针可指目录；纯代理）；assessments/ 聚合页每作业/考试一页（四要素：要求/参考/提交/结果；assessment 块映射 due/submitted_at/score/status/column_id + raw 块映射角色→bb/ 路径 + `## 复盘` 沉淀只增）；attachments/ 1:1 代理平铺（raw_file/raw_sha256，纯代理）；落位判据——有成绩册列或提交动作→assessments/、老师非讲义资产→attachments/、内容单元→courseware/、结构事实入 info.md；info 与 assessments 两形分区（机械区可再生覆写+沉淀区只增，重建不得触碰），courseware/attachments 纯代理（珍贵内容入 notes）；映射不改 bb/ 源侧、不复制原文全文、源消失标 deprecated 不删；API 快照节挂 stale_after=拉取日+TTL，本地对账代理无 TTL
 <!-- /plugin:bb-map -->
 
 <!-- plugin:lark-calendar v0.1 -->
