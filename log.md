@@ -19,6 +19,8 @@
 
 ## 过往操作
 
+- 2026-10-01 bb-map v0.4：桶名终裁（lec&tut→courseware、work→assessments、字段 work→assessment）+ 知识点页补 `## 笔记` 沉淀节（缺口补毕，两形统一）；实验与命令化交组员
+
 
 - 2026-10-01 bb 域立设 v0.1（基石）：bb/ 仓储 + wiki/bb/ 属地 `<term>/<course>/` 同构（目录名=学期名/课程代码），速写页 inbox.md 兼域配置，全量物化放行；type 扩 bb
 - 2026-10-01 bb-map v0.1→v0.3：四桶立设（work 四要素聚合 / attachments 1:1 / 判据 / 两形分区）并流组员分支（lec&tut 内容单元制 + raw_path、info 蒸馏扩全、考试边界句、笔记缺口后补、gitignore /bb/*），整合回 master

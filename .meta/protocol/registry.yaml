@@ -34,16 +34,16 @@ plugins:
     terms:
       note: 块映射（域根速写页）——term 目录名 → 一句话（现役/冻结标记 + term_id）；现役学期即拉取与速写的默认作用域
   bb-map:
+    assessment:
+      note: 块映射（assessments 聚合页机械区）——due（截止）/ submitted_at（提交时刻）/ score 与 possible（得分/满分）/ status（Graded|NeedsGrading|None）/ column_id 与 attempt_id（成绩册列与提交记录 id，对账锚点）——API 快照字段
     raw:
-      note: 块映射（work 聚合页多源对账）——角色 → bb/ 相对路径（要求/参考/提交，开放词表），聚合页与 bb/ 文件群的对应关系
+      note: 块映射（assessments 聚合页多源对账）——角色 → bb/ 相对路径（要求/参考/提交，开放词表），聚合页与 bb/ 文件群的对应关系
     raw_file:
       note: 标量（attachments 1:1 代理页）——根相对路径，指向 bb/ 原件（词形语义同 mapping）
     raw_path:
-      note: 标量（lec&tut 知识点页）——根相对路径，指向 bb/ 内容单元（文件或目录）；路径即出身证明
+      note: 标量（courseware 知识点页）——根相对路径，指向 bb/ 内容单元（文件或目录）；路径即出身证明
     raw_sha256:
       note: 标量（attachments 1:1 代理页）——十六进制 SHA-256，可从 bb/ 机械重算
-    work:
-      note: 块映射（work 聚合页机械区）——due（截止）/ submitted_at（提交时刻）/ score 与 possible（得分/满分）/ status（Graded|NeedsGrading|None）/ column_id 与 attempt_id（成绩册列与提交记录 id，对账锚点）——API 快照字段
   calendar:
     calendar:
       note: 块映射（声明页）——源键 → 源声明（值语法归适配器：lark-calendar 用 `lark/<profile> <calendar_id|primary>`）；源键即日程行尾标
