@@ -125,6 +125,10 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 - 语义（check 命令）：open 条目 > 50 → warning（膨胀分诊：该做的做、该沉淀的走 save、该放弃的与用户确认）
 <!-- /check:todo -->
 
+<!-- check:bb-map -->
+- 语义项（v0.1 人工，附检后置）：属地页落四桶之外 → error；1:1 页 raw_file 指 bb/ 不存在文件 → error；work 页缺 raw 块映射或 column_id → warning；源文件消失未标 deprecated → warning；沉淀区被重建改写 → error
+<!-- /check:bb-map -->
+
 <!-- check:lark-calendar -->
 - 语义项（v0.1 人工）：声明页 lark 源的 profile 不在 wiki/lark/ 目录集 → warning；日程行源键无对应声明 → warning
 <!-- /check:lark-calendar -->

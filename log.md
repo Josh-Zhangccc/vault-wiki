@@ -4,7 +4,7 @@
 
 ## 现状（2026-10-01）
 
-工程定位：**个人自用**——矩阵测试裁撤，SASU-L 为镜，边用边改。架构终态：双根概念 domain（外·域契约）/ wiki（内·出身二分）+ 域实例族 vault（默认域兼通用仓储，mapping 映射法则、structure 管布局）/ lark（外部域基座，域内 lark-docs/lark-im）/ project（自立容器域）/ email / bb（BB 课程域基石）+ calendar 时间领地（lark-calendar 源适配器）+ 横切件 notes/sessions/link/tag/trust/index/hot/log/user-profile/todo 与 tmp，共二十四插件、无分层（注入序=依赖拓扑+字母序）；八命令 map/save/profile/query/check/plugin/lark-map/wiki_plugin_kernel。三投影一源：manifest → AGENTS 注入区、check 检查块、命令用法块；内核 wiki_plugin_kernel.py 唯一投影机。docs/ 现行四件；test-repo/ 自足虚拟库（已同步二十四插件）。连接器 connectors/ 首件 bb-cli（CUHK-SZ Blackboard 只读 CLI，v0.1.3）。
+工程定位：**个人自用**——矩阵测试裁撤，SASU-L 为镜，边用边改。架构终态：双根概念 domain（外·域契约）/ wiki（内·出身二分）+ 域实例族 vault（默认域兼通用仓储，mapping 映射法则、structure 管布局）/ lark（外部域基座，域内 lark-docs/lark-im）/ project（自立容器域）/ email / bb（BB 课程域，bb-map 映射法则）+ calendar 时间领地（lark-calendar 源适配器）+ 横切件 notes/sessions/link/tag/trust/index/hot/log/user-profile/todo 与 tmp，共二十五插件、无分层（注入序=依赖拓扑+字母序）；八命令 map/save/profile/query/check/plugin/lark-map/wiki_plugin_kernel。三投影一源：manifest → AGENTS 注入区、check 检查块、命令用法块；内核 wiki_plugin_kernel.py 唯一投影机。docs/ 现行四件；test-repo/ 自足虚拟库（已同步二十五插件）。连接器 connectors/ 首件 bb-cli（CUHK-SZ Blackboard 只读 CLI，v0.1.3）。
 
 ## 阶段
 
@@ -12,12 +12,14 @@
 
 ## 下一步
 
-- 日更 cron 与真实 profile 接入（部署侧）；email 连接器探路；bb 域待 bbcli skill（GitHub 团队）与 bb_map 投影细则（团队待议）落地后接续
+- 日更 cron 与真实 profile 接入（部署侧）；email 连接器探路；bb-map 命令化与桶名终裁（现名暂沿）随后
 - 设计文档：导论随后开卷（章=文件，问题驱动；OKF 不收编）
 - 部署进个人库（用户自行执行；走查见 docs/quickstart.md，additive）
 - skill 打磨随摩擦滚动；delegate 与裁撤项不排期
 
 ## 过往操作
+
+- 2026-10-01 bb-map 立设 v0.1：属地规范形四桶（info 总览兼身份页 / lec&tut 课件 / work 聚合页四要素 / attachments 1:1），判据句 + 两形分区 + raw 对账字段；桶名沿团队现名，改名后置
 
 - 2026-10-01 bb-cli skill 定位与英文化：主本自 `.meta/command/` 移驻 `connectors/bb-cli/SKILL.md`（连接器自足，命令族纯 wiki 操作），全文英文（语言节随上层要求与上下文，用户改）；kernel deploy 增 connectors skill 源路径；test-repo 同步
 - 2026-10-01 bb 域立设 v0.1（基石声明）：bb/ 仓储 + wiki/bb/ 属地双侧 `<term>/<course>/` 同构（目录名=学期名/课程代码，machine id 落身份页），速写页 inbox.md 兼域配置，全量物化放行（用户裁定），投影细则归 bb_map 后议；type 值集扩 bb；test-repo 同步
