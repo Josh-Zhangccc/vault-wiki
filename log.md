@@ -19,16 +19,18 @@
 
 ## 过往操作
 
+- 2026-10-01 bb v0.2 + bb-cli 0.1.4：公告拆信分拣 + inbox 缺席即建；物化分层（媒体指针化）；fetch 过滤与 --refresh 哈希尾缀；bb-map v0.7 清单两态
+
 - 2026-10-01 AGENTS 准则 6 行数上限拓宽至 250（注入区随插件增长）
 
 - 2026-10-01 AGENTS 增准则 10 分析轮禁执行
 
-- 2026-10-01 bb-map v0.4~v0.6：桶名终裁（lec&tut→courseware、work→assessments）；笔记节立而复撤（回归纯代理，落点单独设计）；命令 bb-map 立设（自契约蒸馏）
+- 2026-10-01 bb-map v0.4~0.6：桶名终裁（→courseware/assessments）；笔记节立而复撤（纯代理）；命令立设
 
 
-- 2026-10-01 bb 域立设 v0.1（基石）：bb/ 仓储 + wiki/bb/ 属地 `<term>/<course>/` 同构（目录名=学期名/课程代码），速写页 inbox.md 兼域配置，全量物化放行；type 扩 bb
+- 2026-10-01 bb 域立设 v0.1（基石）：双侧 `<term>/<course>/` 同构，inbox 兼域配置，全量物化放行；type 扩 bb
 - 2026-10-01 bb-map v0.1→v0.3：四桶立设并流组员分支（内容单元制 + raw_path、判据与考试边界、gitignore /bb/*），整合回 master
-- 2026-10-01 bb-cli skill 移驻 connectors 并英文化；kernel deploy 增连接器 skill 源
+- 2026-10-01 bb-cli skill 移驻 connectors 并英文化
 
 - 2026-10-01 summary 分支快进并入 master（用户新增根目录 `资料整理Demo/`：课件整理脚本五件+测试、AIE1903/AIE2040/GEC3407 样本 PPTX 与生成摘要，约 43MB 二进制入史）；框架核心区零改动
 - 2026-09-30 bb-cli 连修（v0.1.1~0.1.3）：UTC→本机时区；dues 双源合并（日历漏项成绩册兜底，AIE2001 实锤 4/5 缺）；announcements 单课失败降级（真凶=停用课程）；空结果提示、补 column_id；submission 命令封提交链路（列 attempt→文件→Classic download，REST download 404 绕行实证）
