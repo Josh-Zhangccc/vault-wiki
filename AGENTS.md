@@ -130,6 +130,10 @@
 - 临时记忆 `wiki/todo.md`（type: todo）：跨 session 委托与提醒，条目 = 触发条件（日期或情境）+ 一句话 + by/at；新 session 开始先读此页（先于 hot），日期已到或已过的条目主动提醒用户；受托即追加，完成即销账（`[x]` 并写 log 行——历史归 log），已结 ≤20 条超限静默清理，本页只留活工作集
 <!-- /plugin:todo -->
 
+<!-- plugin:bb-map v0.1 -->
+- BB 映射层 `wiki/bb/`：把 `bb/` 拉取物统一映射为 `wiki/bb/` 代理页（映射格式待用户裁定；占位骨架，fields / usage / checks 随格式一并落地）
+<!-- /plugin:bb-map -->
+
 <!-- plugin:lark-calendar v0.1 -->
 - lark 日历源（calendar 首个适配器）：声明页 `calendar` 块映射值 = `lark/<profile> <calendar_id|primary>`（profile 须为 wiki/lark/ 现役目录）；拉取 `lark-cli --profile <名> calendar …`（instance_view 当月/下月窗口）；只写月页 `## 日程` 节、行尾标源键；不碰手记节与已冻结月页；日更节奏 = 部署侧 cron 定时无人值守会话（全机械，失败源 log 报告不阻断他源）
 <!-- /plugin:lark-calendar -->
