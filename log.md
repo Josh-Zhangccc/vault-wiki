@@ -23,7 +23,7 @@
 
 - 2026-10-01 AGENTS 增准则 10 分析轮禁执行
 
-- 2026-10-01 bb-map v0.4/v0.5：桶名终裁（lec&tut→courseware、work→assessments）；courseware 笔记节立而复撤（回归纯代理，笔记落点单独设计）
+- 2026-10-01 bb-map v0.4~v0.6：桶名终裁（lec&tut→courseware、work→assessments）；笔记节立而复撤（回归纯代理，落点单独设计）；命令 bb-map 立设（自契约蒸馏）
 
 
 - 2026-10-01 bb 域立设 v0.1（基石）：bb/ 仓储 + wiki/bb/ 属地 `<term>/<course>/` 同构（目录名=学期名/课程代码），速写页 inbox.md 兼域配置，全量物化放行；type 扩 bb
