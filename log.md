@@ -22,7 +22,7 @@
 - 2026-10-02 剔除资料整理Demo 整目录：真实课程样本 40MB 出库（历史留痕，见 10-01 行）
 
 - 2026-10-02 bb 实验：四课 94 页、八问全中
-- 2026-10-02 协作规范（实例页事故立规）：AGENTS 红线、README 转团队、准则 5 扩 README 义务、test-repo 派生页与 tmp 出跟踪
+- 2026-10-02 协作规范（实例页事故）：AGENTS 红线、准则 5 扩 README、README 转团队、test-repo 痕迹禁令
 
 - 2026-10-01 bb v0.2 + bb-cli 0.1.4：公告分拣、inbox 即建、媒体分层、fetch 过滤与刷新；bb-map v0.7
 
@@ -37,7 +37,7 @@
 - 2026-10-01 bb-map v0.1→v0.3 立设并流，整合回 master
 - 2026-10-01 bb-cli skill 移驻 connectors 并英文化
 
-- 2026-10-01 summary 分支快进并入 master（用户新增根目录 `资料整理Demo/`：课件整理脚本五件+测试、AIE1903/AIE2040/GEC3407 样本 PPTX 与生成摘要，约 43MB 二进制入史）；框架核心区零改动
+- 2026-10-01 summary 分支并入：资料整理Demo 43MB 入史（10-02 已剔除）；框架零改动
 - 2026-09-30 bb-cli 连修（v0.1.1~0.1.3）：UTC→本机时区；dues 双源合并（日历漏项成绩册兜底，AIE2001 实锤 4/5 缺）；announcements 单课失败降级（真凶=停用课程）；空结果提示、补 column_id；submission 命令封提交链路（列 attempt→文件→Classic download，REST download 404 绕行实证）
 - 2026-09-29 bb-cli 立设 v0.1：ADFS 域前缀单步登录 + Learn REST 只读十五命令（curl_cffi 指纹），实测全通
 - 2026-09-29 email 域与 profile 命令立设：email v0.1（账户+三资产+统一速写，全量禁/只读/发送明示）；user-profile 0.3 独立通道；domain/wiki/calendar 叙事补强；test-repo 重拷
