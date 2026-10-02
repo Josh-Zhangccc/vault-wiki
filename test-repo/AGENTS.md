@@ -2,7 +2,7 @@
 
 本仓库（目录 `agent-obsidian-template`，工程暂名 **vault-wiki**）是 vault-wiki 框架的构建工程，兼第一个**原型实例**：2026-09-08 起「插件 + 命令」架构直接落地，规范文档后置蒸馏。**定位个人自用**（2026-09-12 裁定：普世化与矩阵化测试搁置，边用边改）。
 
-- 布局：`.meta/`（插件与命令主本，原型核心）· `wiki/`（内外之分的内侧）+ `vault/` / `projects/` / `bb/`（外域容器，数据区）· `.agents/skills/`（部署副本）· `connectors/`（连接器主本：部署侧 CLI 事实接口 + skill 使用披露——`connectors/*/SKILL.md` 经 kernel deploy 落 `.agents/skills/`，bb-cli 首件）· `test-repo/`（参考实例：自足虚拟库，内部不感知本工程；框架变更由根侧同步重拷）· `docs/`（设计档案）
+- 布局：`.meta/`（插件与命令主本，原型核心）· `wiki/`（内外之分的内侧）+ `vault/` / `projects/` / `bb/`（外域容器，数据区）· `.agents/skills/`（部署副本）· `connectors/`（连接器主本：部署侧 CLI 事实接口 + skill 使用披露——`connectors/*/SKILL.md` 经 kernel deploy 落 `.agents/skills/`，bb-cli 首件）· `test-repo/`（**独立测试沙箱**：框架镜像随根侧同步重拷，沙箱内实验内容只在本地、不入史；内部不感知本工程）· `docs/`（设计档案）
 - 术语：**wiki** = md 世界，内外之分的内侧（各域投影 + 原生笔记）；**domain** = 域，wiki 外信息源的适配器契约（vault 是默认域，lark / project / email / bb 亦域）；**vault** = 默认域——真实资产仓库（命令侧只增，删改自由属于人）
 - 冲突裁决：以原型现状与讨论收敛结论为准；规范蒸馏时归并 `docs/` 历史版本
 - 个人库（`D:\Obsidian repo\agent-obsidian`）为只读实证样本：原 wiki 思想已转化为本原型（见 log 2026-09-08）
@@ -32,6 +32,9 @@
 - 个人库 `D:\Obsidian repo\agent-obsidian` 对本工程只读；任何回填动作须用户明确指令。
 - 个人隐私内容（用户档案、日记、个人记录）不得写入本仓库——框架是普世产出。
 - 参考工程（`D:\My Programs\erp - ksbgs`、`D:\My Programs\aijia`）仅作模式参考，不修改其中任何内容。
+- **入库边界（全员）**：仅开发产物入 git——`.meta/`、`connectors/`、`docs/`、根级章程、test-repo 内框架镜像与虚构示例。**永不入库**：真实课程/成绩/提交数据、个人隐私、凭据会话、沙箱实验产物（`test-repo/bb/`、`test-repo/wiki/bb/` 等真实数据区）；`test-repo/` 是独立测试沙箱，沙箱内实验内容只在本地。
+- **git 纪律（全员）**：多人经分支开发，进 master 须负责人确认；一次提交只做一件事；合并前自查 diff 不含非开发内容；**为被忽略的实例数据开 gitignore 白名单或强制添加，须仓库所有者明示授权并留痕**（2026-10-02 组员实例页入库事故后立规）；禁止改写历史。
+- **协作对齐（全员）**：改动插件/连接器前先读 `log.md` 现状与下一步，版本号沿 changelog 递进、不预占跳号；实验与测试一律落 test-repo 沙箱或本地，结论走对话报告或 `docs/`。
 
 # 指针
 
