@@ -4,7 +4,6 @@ bridge: 按需
 depends:
   - wiki
   - trust
-  - mapping
   - sessions
 updated: 2026-10-02
 attachment:

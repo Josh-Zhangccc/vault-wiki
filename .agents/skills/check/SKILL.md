@@ -116,6 +116,12 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 - 语义（check 命令）：open 条目 > 50 → warning（膨胀分诊：该做的做、该沉淀的走 save、该放弃的与用户确认）
 <!-- /check:todo -->
 
+<!-- check:user-profile -->
+- 语义（check 命令）：画像断言缺证据 wikilink → warning
+- 机械项：type: profile 页面落 `wiki/notes/` 或 `wiki/vault/`（走错领地）→ error
+- 机械项（信息级）：画像页缺失（未触发常态，profile 首建随触发）
+<!-- /check:user-profile -->
+
 <!-- check:bb-map -->
 - 语义项（v0.1 人工，附检后置）：属地页落四桶之外 → error（课程根 user.md 除外——bb-track 域内原生页）；知识点页 raw_path 悬挂 → error（缺省合法——未下载单元以清单标注即构成记录）；info.md 缺 bb 块映射（term_id/course_id/term_status）或与目录不对应 → error；attachments 代理 raw_file 指 bb/ 不存在文件 → error；assessments 页缺 raw 块映射或 column_id → warning；汇总列（Weighted Total/Total）建页 → warning；知识点页缺 `## 知识点摘要` 或摘要点缺 sm-N 锚点 → warning；知识点页缺 `## 专有名词` → info；info 蒸馏节缺课程政策类要点 → info；assessments 有要求源但要求节未蒸馏 → info；源文件消失未标 deprecated → warning；沉淀区（备注/复盘）被重建改写 → error；映射完整性（bb/ 内容单元无对应页）→ info
 <!-- /check:bb-map -->
@@ -144,10 +150,4 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 <!-- check:bb-track -->
 - 语义项（v0.1 人工，附检后置）：user.md 落课程根之外或四桶内 → error；证据流条目被改写删除 → error；读数条目无可溯证据 → warning；读数仅凭 origin: ai 无复核 → warning；stale 超窗后消费未核对 → info；笔记属性值出开放词表 → info
 <!-- /check:bb-track -->
-
-<!-- check:user-profile -->
-- 语义（check 命令）：画像断言缺证据 wikilink → warning
-- 机械项：type: profile 页面落 `wiki/notes/` 或 `wiki/vault/`（走错领地）→ error
-- 机械项（信息级）：画像页缺失（未触发常态，profile 首建随触发）
-<!-- /check:user-profile -->
 <!-- check-inject:end -->

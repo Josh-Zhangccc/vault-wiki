@@ -52,6 +52,7 @@ description: "维护用户画像 wiki/profile.md：识别自述与行为信号�
 - 首建：首次触发即自建页面（frontmatter：type: profile + generated，动态层挂 stale_after），不依赖初始化机制
 - 日记类资产只记元信号（有无、节奏），内容不进画像（豁免随 mapping）
 - 隐私红线：画像内容是实例数据，不入框架仓库与 test-repo
+- 认知桥注册（域件侧动作，披露于本侧）：域认知插件建档时若画像在场，维护画像 `## 域认知` 节一行（域名 + 路径形 wikilink）；画像缺席跳过不代建（按需桥缺席容错）；多课多档登记路径形通配（bb：<term>/<course> 形）
 <!-- /usage:user-profile -->
 
 <!-- usage:trust -->

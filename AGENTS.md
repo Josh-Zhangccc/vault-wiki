@@ -124,6 +124,10 @@
 - 临时记忆 `wiki/todo.md`（type: todo）：跨 session 委托与提醒，条目 = 触发条件（日期或情境）+ 一句话 + by/at；新 session 开始先读此页（先于 hot，缺席即建空页），日期已到或已过的条目主动提醒用户；受托即追加，完成即销账（`[x]` 并写 log 行——历史归 log），已结 ≤20 条超限静默清理，本页只留活工作集；todo 按需桥——域件单向派生行动项入本页（宪法准则 11，格式归本桥）
 <!-- /plugin:todo -->
 
+<!-- plugin:user-profile v0.4 -->
+- 用户画像 `wiki/profile.md`（type: profile）：对使用者的持续认知档案，静态身份层 + 动态偏好层，维度不枚举；收敛式更新——新值取代旧值、正文留痕；断言必带证据 wikilink（wiki 内页面皆可：会话页、vault 代理页、lark 档案页），偏好层挂 stale_after；零自有字段复用 trust，不属 notes 领地，不打 tags（单页直接读取，不入词表检索）；更新走 profile 命令——双轨触发（用户明示 / agent 识别显著信号自发调用），首次触发即自建页面；个性化决策（称呼、风格、偏好）前先读此页；认知桥（按需，宪法准则 11）——域认知页经画像正文 `## 域认知` 节登记（行 = 域名 + 路径形 wikilink，如 bb-track user.md），画像只聚合指针不复制域状态，个性化输出前读画像及其登记认知页；桥只持「谁在、去哪读」，认知页形态归域插件
+<!-- /plugin:user-profile -->
+
 <!-- plugin:vault v0.6 -->
 - 默认域——真实资产仓库 `vault/`，wiki 侧属地 `wiki/vault/`：容纳任意格式资产，兼作他域落地仓储（url 字段即借道接口）；命令侧只增，删改自由属于人；布局规约归 structure 插件
 <!-- /plugin:vault -->
@@ -152,12 +156,8 @@
 - vault 结构声明 `wiki/structure.md`（type: structure）：frontmatter `structure` 块映射 = 目录→一句话语义，正文写预设（日期/格式/类型/混合，可嵌套）与说明；agent 放置资产先读此页按位落放；页面缺席 = 平铺容忍；人调整 vault 后同步声明，check 机械 diff（未声明的顶层目录 / 声明不存在的目录 → warning）
 <!-- /plugin:structure -->
 
-<!-- plugin:bb-track v0.1 -->
-- bb 认知档案：每课课程根 user.md（属地域内原生页首例，wiki v0.7 两形）——`## 认知读数` 收敛覆写（锚 courseware sm-N，粗粒度自陈合法，状态词开放；含目标层：课程目标 + 短期优先带时效）+ `## 证据流` 只增（日期+出处+断言+回链）；信号权重 human>machine>ai 笔记（弱证据，人复核升权）；应知不存（差距现算）、错题题级归 assessments 复盘、统计现算；更新双轨（agent 显著信号自发/用户明示），建档懒惰式；学期即边界随 term_status 冻结；trust 天花板 machine-confirmed（含 human 证据升 human-reviewed），stale_after 默认 14 天可覆写；笔记区 notes/ 只读，可选属性 origin/form/stage（stage 标记属人）
+<!-- plugin:bb-track v0.2 -->
+- bb 认知档案：每课课程根 user.md（属地域内原生页首例，wiki v0.7 两形）——`## 认知读数` 收敛覆写（锚 courseware sm-N，粗粒度自陈合法，状态词开放；含目标层：课程目标 + 短期优先带时效）+ `## 证据流` 只增（日期+出处+断言+回链）；信号权重 human>machine>ai 笔记（弱证据，人复核升权）；应知不存（差距现算）、错题题级归 assessments 复盘、统计现算；更新双轨（agent 显著信号自发/用户明示），建档懒惰式；学期即边界随 term_status 冻结；trust 天花板 machine-confirmed（含 human 证据升 human-reviewed），stale_after 默认 14 天可覆写；笔记区 notes/ 只读，可选属性 origin/form/stage（stage 标记属人）；认知经 user-profile 桥登记——建档时画像在场则维护其 `## 域认知` 节一行（bb + 路径形），缺席跳过不代建
 <!-- /plugin:bb-track -->
-
-<!-- plugin:user-profile v0.3 -->
-- 用户画像 `wiki/profile.md`（type: profile）：对使用者的持续认知档案，静态身份层 + 动态偏好层，维度不枚举；收敛式更新——新值取代旧值、正文留痕；断言必带证据 wikilink（wiki 内页面皆可：会话页、vault 代理页、lark 档案页），偏好层挂 stale_after；零自有字段复用 trust，不属 notes 领地，不打 tags（单页直接读取，不入词表检索）；更新走 profile 命令——双轨触发（用户明示 / agent 识别显著信号自发调用），首次触发即自建页面；个性化决策（称呼、风格、偏好）前先读此页
-<!-- /plugin:user-profile -->
 
 <!-- wiki-inject:end -->

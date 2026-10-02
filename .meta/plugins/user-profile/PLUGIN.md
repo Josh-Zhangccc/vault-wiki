@@ -6,7 +6,7 @@
 
 - `wiki/profile.md`——单页档案，type: profile；静态身份层（称呼、语言、背景）与动态偏好层（题材、风格、习惯）分节开放，维度不枚举（架构不预置字段清单）
 - 零自有字段：留痕与信任全复用 trust（generated / verified / stale_after / sources）
-- 断言证据 = 正文行内 wikilink，指向 wiki 内任意页面（会话页、vault 代理页、lark 档案页、notes）——引用即链接，跨域不立机制依赖；depends 四条（wiki / trust / mapping / sessions）为 2026-09-29 裁定保留的引用级声明（挂边无害，存量自洽不裁）
+- 断言证据 = 正文行内 wikilink，指向 wiki 内任意页面（会话页、vault 代理页、lark 档案页、notes）——引用即链接，跨域不立机制依赖；depends 三条（wiki / trust / sessions）；mapping 边 2026-10-02 裁撤——桥法则下其经 vault 链达 domain 致全局件误判，2026-09-29「挂边无害」前提失效
 
 ## Invariants
 
@@ -24,7 +24,7 @@
 
 ## Changelog
 
-- 0.4（2026-10-02）全局域批三：立认知桥（按需）——画像正文 `## 域认知` 登记节 + 聚合不复制 + 前置读取纪律；bb-track user.md 首例注册
+- 0.4（2026-10-02）全局域批三：立认知桥（按需）——画像正文 `## 域认知` 登记节 + 聚合不复制 + 前置读取纪律；bb-track user.md 首例注册；mapping 边裁撤——桥法则下经 vault 链达 domain 致全局件误判（kernel 实测抓出），「挂边无害」前提失效
 - 0.3（2026-09-29）profile 命令立设：写侧脱离 map/save 双入口寄生（两命令 consumes 摘除），证据域放开为 wiki 内页面（销跨域归属悬置），首建随触发自建（收编初始化挂账画像部分），tag 明示不打；depends 四条维持（裁定：引用级边保留不裁）
 
 - 0.2（2026-09-14）usage 补画像提炼方法论（信号判据 / 分层落点 / 断言具体可证）——蒸馏的可执行部分入写侧契约，SASU-L 披露闭环：agent 跑 map/save 即知如何提炼，不依赖模型先验；全文仍留 `docs/research-user-profile.md`
