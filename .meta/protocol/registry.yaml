@@ -44,6 +44,13 @@ plugins:
       note: 标量（courseware 知识点页）——根相对路径，指向 bb/ 内容单元（文件或目录）；路径即出身证明；完全未下载单元可缺省（清单标注未下载即构成记录）
     raw_sha256:
       note: 标量（attachments 1:1 代理页）——十六进制 SHA-256，可从 bb/ 机械重算
+  bb-track:
+    form:
+      note: 标量（bb 侧笔记文件可选）——text|image|mixed 形态
+    origin:
+      note: 标量（bb 侧笔记文件可选）——human|ai 创作出身；ai 为弱证据，人复核升权
+    stage:
+      note: 标量（bb 侧笔记文件可选）——snapshot|mature|summary 阶段（临时快照/成熟沉淀/总结集合）；标记属人，变更是认知信号
   calendar:
     calendar:
       note: 块映射（声明页）——源键 → 源声明（值语法归适配器：lark-calendar 用 `lark/<profile> <calendar_id|primary>`）；源键即日程行尾标

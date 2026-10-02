@@ -59,8 +59,8 @@
 - 域抽象（外）：wiki 只认内外；外域 = 一份适配器契约（外领地 / 落地策略 / 身份证明 / wiki 侧属地 / 写模型 / 信任模型），各域插件自行声明、域内插件经传递属域；落地本质是写模型选择（终态资产→只增仓储、过程容器→全权读写、真相在别处→指针），投影密度随翻译成本（镜像 / 指针 / 仅披露）；借 vault 或指针为默认姿态，自立容器是例外（判据：写模型或结构刚性分叉）；域须在 wiki 内可发现（声明页或注入行）
 <!-- /plugin:domain -->
 
-<!-- plugin:wiki v0.6 -->
-- wiki 容器 `wiki/`（内外之分的内侧）：出身二分——各域声明属地之页为代理页（可对账外源的投影，属地路径由各域注入行自披露），其余为原生页（真身在此的写作物；会话页是纪要非镜像——对话消逝后页面即真身，写作即出生）；index / tags / hot / log 为派生页（机械投影）；页面 frontmatter 取最小 YAML 子集（顶层标量 / 块列表 / 一级块映射），更复杂结构不受解析
+<!-- plugin:wiki v0.7 -->
+- wiki 容器 `wiki/`（内外之分的内侧）：出身二分——属地页两形：代理页（默认，可对账外源的投影，属地路径由各域注入行自披露）与域内原生页（域声明的域侧档案——真身在此、无外源对账，形态归域插件；首例 bb-track 认知档案 user.md）；属地之外其余为原生页（真身在此的写作物；会话页是纪要非镜像——对话消逝后页面即真身，写作即出生）；index / tags / hot / log 为派生页（机械投影）；页面 frontmatter 取最小 YAML 子集（顶层标量 / 块列表 / 一级块映射），更复杂结构不受解析
 <!-- /plugin:wiki -->
 
 <!-- plugin:hot v0.10 -->
@@ -135,8 +135,8 @@
 - 临时记忆 `wiki/todo.md`（type: todo）：跨 session 委托与提醒，条目 = 触发条件（日期或情境）+ 一句话 + by/at；新 session 开始先读此页（先于 hot，缺席即建空页），日期已到或已过的条目主动提醒用户；受托即追加，完成即销账（`[x]` 并写 log 行——历史归 log），已结 ≤20 条超限静默清理，本页只留活工作集
 <!-- /plugin:todo -->
 
-<!-- plugin:bb-map v0.11 -->
-- bb 映射法则：属地 wiki/bb/<term>/<course>/ 规范形四桶（bb/ 保源形，桶名 v0.4 终裁：courseware/assessments/attachments）——info.md 课程信息页兼身份页（bb 块映射 term_id/course_id/term_status + 大纲课程政策类要点蒸馏（开放词表：评分/考核/师资/TA/分组/教学语言/AI 政策，info-N 锚点，缺项标未提供）+ 备注沉淀；存「何时有何事」，被评分事务全要素归 assessments）；courseware/ 知识点页每内容单元一份（单元 = bb/ 目录「讲义+附属文件合一」或扁平单文件，平行同类目录合为一页；知识点摘要（sm-N 锚点 + 一行概括 + 章节提示）+ 专有名词对照表 + 单元文件清单（清单即对应关系）+ raw_path 指针（未下载单元可缺省）；纯代理）；assessments/ 聚合页每作业/考试一页（汇总列 Weighted Total/Total 排除；四要素：要求/参考蒸馏（req-N/ref-N 锚点）/提交/结果机械快照，due 缺省不告警、无提交独立话术；assessment 块映射 due/submitted_at/score/status/column_id + raw 块映射角色→bb/ 路径 + `## 复盘` 沉淀只增）；attachments/ 1:1 代理平铺（raw_file/raw_sha256，纯代理）；落位判据——有成绩册列或提交动作→assessments/（汇总列与分节登记列除外——分节登记列 = 非知识考核的分节/出勤登记，如 Tutorial Section）、老师非讲义资产→attachments/、内容单元→courseware/、结构事实入 info.md；讲义/附件边界：随周次内容→courseware、支撑性资源→attachments；info 与 assessments 两形分区（机械区可再生覆写+沉淀区只增，重建不得触碰），courseware/attachments 纯代理（珍贵内容入 notes）；映射不改 bb/ 源侧、不复制原文全文、源消失标 deprecated 不删；API 快照节挂 stale_after=拉取日+TTL，本地对账代理无 TTL
+<!-- plugin:bb-map v0.12 -->
+- bb 映射法则：属地 wiki/bb/<term>/<course>/ 规范形四桶（bb/ 保源形，桶名 v0.4 终裁：courseware/assessments/attachments；课程根另容 user.md 认知档案——bb-track 域内原生页，不受四桶约束）——info.md 课程信息页兼身份页（bb 块映射 term_id/course_id/term_status + 大纲课程政策类要点蒸馏（开放词表：评分/考核/师资/TA/分组/教学语言/AI 政策，info-N 锚点，缺项标未提供）+ 备注沉淀；存「何时有何事」，被评分事务全要素归 assessments）；courseware/ 知识点页每内容单元一份（单元 = bb/ 目录「讲义+附属文件合一」或扁平单文件，平行同类目录合为一页；知识点摘要（sm-N 锚点 + 一行概括 + 章节提示）+ 专有名词对照表 + 单元文件清单（清单即对应关系）+ raw_path 指针（未下载单元可缺省）；纯代理）；assessments/ 聚合页每作业/考试一页（汇总列 Weighted Total/Total 排除；四要素：要求/参考蒸馏（req-N/ref-N 锚点）/提交/结果机械快照，due 缺省不告警、无提交独立话术；assessment 块映射 due/submitted_at/score/status/column_id + raw 块映射角色→bb/ 路径 + `## 复盘` 沉淀只增）；attachments/ 1:1 代理平铺（raw_file/raw_sha256，纯代理）；落位判据——有成绩册列或提交动作→assessments/（汇总列与分节登记列除外——分节登记列 = 非知识考核的分节/出勤登记，如 Tutorial Section）、老师非讲义资产→attachments/、内容单元→courseware/、结构事实入 info.md；讲义/附件边界：随周次内容→courseware、支撑性资源→attachments；info 与 assessments 两形分区（机械区可再生覆写+沉淀区只增，重建不得触碰），courseware/attachments 纯代理（珍贵内容入 notes）；映射不改 bb/ 源侧、不复制原文全文、源消失标 deprecated 不删；API 快照节挂 stale_after=拉取日+TTL，本地对账代理无 TTL
 <!-- /plugin:bb-map -->
 
 <!-- plugin:lark-calendar v0.1 -->
@@ -154,5 +154,9 @@
 <!-- plugin:user-profile v0.3 -->
 - 用户画像 `wiki/profile.md`（type: profile）：对使用者的持续认知档案，静态身份层 + 动态偏好层，维度不枚举；收敛式更新——新值取代旧值、正文留痕；断言必带证据 wikilink（wiki 内页面皆可：会话页、vault 代理页、lark 档案页），偏好层挂 stale_after；零自有字段复用 trust，不属 notes 领地，不打 tags（单页直接读取，不入词表检索）；更新走 profile 命令——双轨触发（用户明示 / agent 识别显著信号自发调用），首次触发即自建页面；个性化决策（称呼、风格、偏好）前先读此页
 <!-- /plugin:user-profile -->
+
+<!-- plugin:bb-track v0.1 -->
+- bb 认知档案：每课课程根 user.md（属地域内原生页首例，wiki v0.7 两形）——`## 认知读数` 收敛覆写（锚 courseware sm-N，粗粒度自陈合法，状态词开放；含目标层：课程目标 + 短期优先带时效）+ `## 证据流` 只增（日期+出处+断言+回链）；信号权重 human>machine>ai 笔记（弱证据，人复核升权）；应知不存（差距现算）、错题题级归 assessments 复盘、统计现算；更新双轨（agent 显著信号自发/用户明示），建档懒惰式；学期即边界随 term_status 冻结；trust 天花板 machine-confirmed（含 human 证据升 human-reviewed），stale_after 默认 14 天可覆写；笔记区 notes/ 只读，可选属性 origin/form/stage（stage 标记属人）
+<!-- /plugin:bb-track -->
 
 <!-- wiki-inject:end -->
