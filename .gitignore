@@ -10,3 +10,9 @@ connectors/*/*.egg-info/
 # bb 实验：真实课程数据只在本地，原始件与映射页均不入史
 test-repo/bb/
 test-repo/wiki/bb/
+# test-repo 使用痕迹：派生四页与临时区出跟踪——真实实验后沙箱内变更一律不提交
+test-repo/wiki/index.md
+test-repo/wiki/tags.md
+test-repo/wiki/hot.md
+test-repo/wiki/log.md
+test-repo/wiki/tmp/
