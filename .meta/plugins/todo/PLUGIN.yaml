@@ -1,5 +1,5 @@
 id: todo
-version: 0.1
+version: 0.2
 depends:
   - wiki
   - log
@@ -7,10 +7,10 @@ updated: 2026-09-14
 attachment:
   - "wiki/todo.md —— 临时记忆页（跨 session 委托队列）"
 fields: {}
-inject: "临时记忆 `wiki/todo.md`（type: todo）：跨 session 委托与提醒，条目 = 触发条件（日期或情境）+ 一句话 + by/at；新 session 开始先读此页（先于 hot），日期已到或已过的条目主动提醒用户；受托即追加，完成即销账（`[x]` 并写 log 行——历史归 log），已结 ≤20 条超限静默清理，本页只留活工作集"
+inject: "临时记忆 `wiki/todo.md`（type: todo）：跨 session 委托与提醒，条目 = 触发条件（日期或情境）+ 一句话 + by/at；新 session 开始先读此页（先于 hot，缺席即建空页），日期已到或已过的条目主动提醒用户；受托即追加，完成即销账（`[x]` 并写 log 行——历史归 log），已结 ≤20 条超限静默清理，本页只留活工作集"
 usage:
   - 受托即追加：`- [ ] <日期 YYYY-MM-DD 或情境短语>：一句话（by: <actor>, at: <日期>）`；日期条目机械可扫描，情境条目语义激活
-  - 新 session 开始先读此页（先于 hot）：now ≥ 触发日的条目主动提醒用户；逾期未销照提醒，标注逾期
+  - 新 session 开始先读此页（先于 hot，缺席即建空页）：now ≥ 触发日的条目主动提醒用户；逾期未销照提醒，标注逾期
   - 销账 = `[ ]`→`[x]` + 写 log 行（类型 todo，一句话含内容与受托日）——事件即记，历史归 log
   - 清理：已结 ≤20 条，超限静默删最老（log 已有销账记录，删除无事件）；有价值的内容完成时走 save 沉淀，本页不管历史
   - 首次受托时自建页面（frontmatter：type: todo + generated），不依赖初始化机制
