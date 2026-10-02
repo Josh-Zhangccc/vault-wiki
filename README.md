@@ -28,7 +28,7 @@
 
 | 目录 | 内容 |
 |------|------|
-| `.meta/` | 原型核心：二十五插件（双根概念 domain / wiki + 域实例族 vault / lark / project / email / bb 及域内件 mapping / structure / lark-docs / lark-im / lark-calendar / bb-map，横切件 calendar / notes / sessions / link / tag / trust / index / hot / log / user-profile / todo / tmp；无分层，注入序=依赖拓扑+字母序）、九命令主本、协议工件（registry / actions / experiments）、机械脚本（wiki_plugin_kernel / pipeline / wikilib，纯标准库零依赖） |
+| `.meta/` | 原型核心：二十五插件（双根概念 domain / wiki + 域实例族 vault / lark / project / email / bb 及域内件 mapping / structure / lark-docs / lark-im / lark-calendar / bb-map，横切件 calendar / notes / sessions / link / tag / trust / index / hot / log / user-profile / todo / tmp；无分层，注入序=依赖拓扑+字母序）、十命令主本、协议工件（registry / actions / experiments）、机械脚本（wiki_plugin_kernel / pipeline / wikilib，纯标准库零依赖） |
 | `connectors/` | 连接器主本：部署侧 CLI 事实接口 + skill 使用披露（`connectors/*/SKILL.md` 经 kernel deploy 落 `.agents/skills/`；bb-cli 首件） |
 | `wiki/`、`vault/`、`projects/`、`bb/` | 数据区骨架（保持空种子：内容属部署实例，工程内不积累——跑库验证走 test-repo） |
 | `.agents/skills/` | 命令与连接器 skill 部署副本 |
@@ -48,7 +48,7 @@
 
 前提：Python 3（纯标准库，无需安装依赖；连接器另需各自依赖）、git、能读 AGENTS.md 与 skills 的 agent 环境（如 ZCode）；Obsidian 可选，仅作 viewer。
 
-在仓库根打开 agent 会话即可——AGENTS.md 是宪法（含插件注入区），九个命令以自然语言触发：**映射 / 保存 / 画像 / 检索 / 检查 / 插件 / 飞书映射 / 课程映射 / 内核参考**（map / save / profile / query / check / plugin / lark-map / bb-map / wiki_plugin_kernel，主本见 `.meta/command/`）。把文件放进 `vault/`，对 agent 说「映射」，就是第一次使用。
+在仓库根打开 agent 会话即可——AGENTS.md 是宪法（含插件注入区），十个命令以自然语言触发：**映射 / 保存 / 画像 / 检索 / 检查 / 插件 / 飞书映射 / 课程映射 / 资产读取 / 内核参考**（map / save / profile / query / check / plugin / lark-map / bb-map / asset-read / wiki_plugin_kernel，主本见 `.meta/command/`）。把文件放进 `vault/`，对 agent 说「映射」，就是第一次使用。
 
 ## 部署：装进你自己的库
 
