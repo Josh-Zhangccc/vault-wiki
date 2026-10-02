@@ -18,6 +18,7 @@
 
 ## Changelog
 
+- 0.4（2026-10-02）全局域批一：挂 trust/log 必依桥边（宪法准则 11，kernel 校验完备性）
 - 0.3（2026-09-22）域化：depends 增 domain（自立容器域）；wiki 侧仅声明披露 = md 原生领地的零翻译投影密度；契约见 domain 插件
 - 0.2（2026-09-19）本体出 wiki：项目落根容器 `projects/<名>/`（工作区，agent 全权读写），四区自述随项目（`project.md`），wiki 端收敛为声明页 + 双向 diff（structure 先例第二消费者）；0.1 的 `wiki/projects/` 领地退役
 - 0.1（2026-09-19）立设：一项目一页四区制、stage 开放词表、todo 边界、任务行轻量（先轻后重裁定）

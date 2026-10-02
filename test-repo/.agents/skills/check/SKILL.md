@@ -65,10 +65,6 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 - 近似重复笔记（Jaccard > 0.7）→ warning
 <!-- /check:notes -->
 
-<!-- check:project -->
-- 语义项（v0.1 人工，附检后置）：type: project 落 `wiki/projects.md` 之外 → error；声明键无对应目录 / 目录未声明 → warning（双向 diff）；进行中项目自述 updated 超 30 天 → warning（停滞分诊）
-<!-- /check:project -->
-
 <!-- check:sessions -->
 - 机械项（audit 覆盖）：session 型页面在 `wiki/sessions/` 之外（或反向）→ warning；participants 缺失或项不符 actor 约定 → warning
 - 语义：骨干页过度膨胀（该提升未提升）→ warning
@@ -110,14 +106,9 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 - 语义项（v0.1 人工，附检后置）：指针页缺 token / token 重复 → error；lark.profile 与所在目录名不符 → warning；type: lark 落 wiki/lark/ 之外 → error；域枢纽页（docs.md 等）落 profile 目录之外 → warning
 <!-- /check:lark -->
 
-<!-- check:mapping -->
-- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：镜像 diff（vault 有文件无代理 → info 积压；代理无对应物 → error，报文含引用计数——删前见影响面）、缺登记字段（raw_file / raw_sha256）→ error、raw_file 悬挂 → error、raw_sha256 失配 → warning、疑似全文复制（md 资产正文 ≥80% 原文）→ warning、无描述 stub 且 updated 超 90 天 → warning
-- 语义项（check 命令）：失配处置分诊（描述仍适用 → 机械重算自动修复，毕即写 log 行（类型 map，一句话含资产名与「原文已变，描述仍适用」）；疑似失效 → 人决重映射或删）；日记类全文复制豁免判断；孤儿代理处置前先处置引用（同步改引用或留 aliases 重定向）
-<!-- /check:mapping -->
-
-<!-- check:structure -->
-- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：声明 diff——vault 顶层目录未声明 → warning、声明键指向不存在目录 → warning；type: structure 落 `wiki/structure.md` 之外 → error；声明页缺席 → info（平铺容忍）
-<!-- /check:structure -->
+<!-- check:project -->
+- 语义项（v0.1 人工，附检后置）：type: project 落 `wiki/projects.md` 之外 → error；声明键无对应目录 / 目录未声明 → warning（双向 diff）；进行中项目自述 updated 超 30 天 → warning（停滞分诊）
+<!-- /check:project -->
 
 <!-- check:todo -->
 - 机械项（信息级）：日期触发已逾期且未销账条目清单（开 session 提醒的机械依据）；页面缺失（未受托常态）
@@ -126,7 +117,7 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 <!-- /check:todo -->
 
 <!-- check:bb-map -->
-- 语义项（v0.1 人工，附检后置）：属地页落四桶之外 → error；知识点页 raw_path 悬挂 → error（缺省合法——未下载单元以清单标注即构成记录）；info.md 缺 bb 块映射（term_id/course_id/term_status）或与目录不对应 → error；attachments 代理 raw_file 指 bb/ 不存在文件 → error；assessments 页缺 raw 块映射或 column_id → warning；汇总列（Weighted Total/Total）建页 → warning；知识点页缺 `## 知识点摘要` 或摘要点缺 sm-N 锚点 → warning；知识点页缺 `## 专有名词` → info；info 蒸馏节缺课程政策类要点 → info；assessments 有要求源但要求节未蒸馏 → info；源文件消失未标 deprecated → warning；沉淀区（备注/复盘）被重建改写 → error；映射完整性（bb/ 内容单元无对应页）→ info
+- 语义项（v0.1 人工，附检后置）：属地页落四桶之外 → error（课程根 user.md 除外——bb-track 域内原生页）；知识点页 raw_path 悬挂 → error（缺省合法——未下载单元以清单标注即构成记录）；info.md 缺 bb 块映射（term_id/course_id/term_status）或与目录不对应 → error；attachments 代理 raw_file 指 bb/ 不存在文件 → error；assessments 页缺 raw 块映射或 column_id → warning；汇总列（Weighted Total/Total）建页 → warning；知识点页缺 `## 知识点摘要` 或摘要点缺 sm-N 锚点 → warning；知识点页缺 `## 专有名词` → info；info 蒸馏节缺课程政策类要点 → info；assessments 有要求源但要求节未蒸馏 → info；源文件消失未标 deprecated → warning；沉淀区（备注/复盘）被重建改写 → error；映射完整性（bb/ 内容单元无对应页）→ info
 <!-- /check:bb-map -->
 
 <!-- check:lark-calendar -->
@@ -140,6 +131,19 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 <!-- check:lark-im -->
 - 语义项（v0.1 人工，附检后置）：群档 / 人档缺 token → error；kind 落 chat|person 之外 → error；type: lark 页落 im/ 之外而自称本域 → warning；人档沉淀区空白 → info（骨架常态）；正文沉淀区改写痕迹 → error（git 审计）
 <!-- /check:lark-im -->
+
+<!-- check:mapping -->
+- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：镜像 diff（vault 有文件无代理 → info 积压；代理无对应物 → error，报文含引用计数——删前见影响面）、缺登记字段（raw_file / raw_sha256）→ error、raw_file 悬挂 → error、raw_sha256 失配 → warning、疑似全文复制（md 资产正文 ≥80% 原文）→ warning、无描述 stub 且 updated 超 90 天 → warning
+- 语义项（check 命令）：失配处置分诊（描述仍适用 → 机械重算自动修复，毕即写 log 行（类型 map，一句话含资产名与「原文已变，描述仍适用」）；疑似失效 → 人决重映射或删）；日记类全文复制豁免判断；孤儿代理处置前先处置引用（同步改引用或留 aliases 重定向）
+<!-- /check:mapping -->
+
+<!-- check:structure -->
+- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：声明 diff——vault 顶层目录未声明 → warning、声明键指向不存在目录 → warning；type: structure 落 `wiki/structure.md` 之外 → error；声明页缺席 → info（平铺容忍）
+<!-- /check:structure -->
+
+<!-- check:bb-track -->
+- 语义项（v0.1 人工，附检后置）：user.md 落课程根之外或四桶内 → error；证据流条目被改写删除 → error；读数条目无可溯证据 → warning；读数仅凭 origin: ai 无复核 → warning；stale 超窗后消费未核对 → info；笔记属性值出开放词表 → info
+<!-- /check:bb-track -->
 
 <!-- check:user-profile -->
 - 语义（check 命令）：画像断言缺证据 wikilink → warning

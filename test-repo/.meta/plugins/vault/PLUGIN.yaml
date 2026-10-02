@@ -1,9 +1,11 @@
 id: vault
-version: 0.5
+version: 0.6
 depends:
   - domain
   - wiki
-updated: 2026-09-22
+  - trust
+  - log
+updated: 2026-10-02
 attachment: []
 fields:
   url: "来源 URL；URL 型资产的出处登记（来源保全），人工放入可选、agent 通道（delegate 等）必填；兼作他域借道 vault 落地的接口"

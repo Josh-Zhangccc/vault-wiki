@@ -19,6 +19,7 @@
 8. **小步主动提交**：设计定稿或骨架变更落地后，agent 主动 git commit，不等用户指令（防零提交陷阱）；提交信息格式 `模块: 概述`（如 `骨架: 定稿最小集与目录结构`），一次提交只做一件事；不主动 push（受托管理者职责内的常规推送除外，见「用户要求」节委托条款）；禁止改写历史的操作。
 9. **披露完备、以用代验**：skill 与规范按 SASU-L 披露范式写清（零先验，见准则 2 与 `.meta/protocol/experiments.md`）；框架改动以真实使用反馈为准、边用边改，不做矩阵化测试（2026-09-12 裁定）。
 10. **分析轮禁执行**：用户请求是简述 / 讨论 / 评估 / 提议（「先简述现状」「有何异议」「看一看」）时，本轮只交付分析、不改任何文件；执行须等用户明示动词（执行 / 落地 / 做 / 合并 / 推送……）。偏好性表述（「命名要合理」「要补上」）是需求输入，不是执行授权；话语同时含两者时以请求动词为准，歧义先问（2026-10-01 裁定，起因：简述轮越权执行改名）。
+11. **全局件与域件**：插件分两类——全局件（横切服务与归宿，如 trust / log / todo / calendar / notes / user-profile）与域件（域实例族；直接 depends domain 者为域基座，余经传递属域）。全局件可声明**桥**——manifest `bridge` 键标挂靠基数（必依|按需），披露正文落 PLUGIN.md 桥节（集成格式与细则）；域件经 depends 挂桥，**必依桥由 kernel validate 校验完备**（域基座缺边 → error）。桥只持「谁在、怎么集成」，不持域内形态知识（各件各管各的披露，SASU-L）（2026-10-02 组会衍生裁定）。
 
 # 指令（用户触发）
 
@@ -71,17 +72,13 @@
 - 链接语法 `[[页面全名]]`——全名 = wiki/ 内相对路径去末尾 .md（如 `notes/X`、pdf 资产代理 `vault/a.pdf`、md 资产代理 `vault/原名.md`，仅去一个）；禁截断式引用，同名歧义带路径；字段 `related` / `aliases`；断链 = warning（尚未写下），孤儿（无入链无引用，派生页不算源）= notes 知识页 warning、领地值登记页 info（动态读 registry type.values，除 session）
 <!-- /plugin:link -->
 
-<!-- plugin:log v0.14 -->
-- 运行日志 `wiki/log.md`：置顶追加、条目不改写，条目 = 日期 + 类型（map/save/query/check/plugin/todo/profile/other）+ 一句话；窗口 ≤100 条，超限机械归档至 `wiki/archive/月/log.md`
+<!-- plugin:log v0.15 -->
+- 运行日志 `wiki/log.md`：置顶追加、条目不改写，条目 = 日期 + 类型（map/save/query/check/plugin/todo/profile/other）+ [域]（可缺省——无域事务；log 必依桥：域基座必依赖本件，宪法准则 11）+ 一句话；窗口 ≤100 条，超限机械归档至 `wiki/archive/月/log.md`
 <!-- /plugin:log -->
 
 <!-- plugin:notes v0.14 -->
 - 原生笔记 `wiki/notes/`：出身在 wiki 的知识，细分靠 type 字段（形态词表开放，默认值见 registry）；不可再生区，命令只增不改；session 与 profile 型不落本区（归 sessions / user-profile 领地）
 <!-- /plugin:notes -->
-
-<!-- plugin:project v0.3 -->
-- 项目容器 `projects/<项目名>/`（工作区，agent 全权读写——与 vault 只增相对）：项目本体与跟踪全住文件夹，惯例自述 `project.md`（四区：目标与上下文 / 阶段（checkbox+日期）/ 任务（行不建页）/ 决策（只增）；stage 规划/进行/暂停/完成开放词表）；wiki 端仅声明页 `wiki/projects.md`（type: project，`projects` 块映射 = 项目名→一句话，与目录双向 diff，漂移同 structure）；涉及项目内容的检索直查 projects/ 子树；与 todo 边界——todo 是 agent 委托活工作集，project.md 任务是持久分解事实源
-<!-- /plugin:project -->
 
 <!-- plugin:sessions v0.9 -->
 - 原生会话 `wiki/sessions/`：会话骨干页（type: session，participants 必填=actor 列表，默认命名 YYYY-MM-DD-<主题>）；高价值主题提升为 `wiki/notes/` 独立页并回链；不可再生区，命令只增不改
@@ -95,15 +92,11 @@
 - 临时区 `wiki/tmp/`（路径即领地，type: tmp 可标可不标、落领地外 → error）：草稿与解析中间产物住所，无留存承诺随时可清理；对派生层隐身——不入 index/tags、不作链接源、断链豁免（草稿断链 = 尚未写下，转正时闭合）；珍贵草稿及时转正（save → notes / 并入 project 决策区），转正即删稿；解析产物随手设 stale_after，超龄由 check 报清单、处置经确认（不自动删）；敏感中间产物建议实例 gitignore 本目录
 <!-- /plugin:tmp -->
 
-<!-- plugin:trust v0.8 -->
+<!-- plugin:trust v0.9 -->
 - 信任字段（页面可选）：`generated`（谁生成）/ `verified`（事件列表，项单行 by+at）/ `stale_after`（过期时刻）/ `sources`（来源与信号）；层级推导不落盘——无记录=unverified、仅 agent/process=machine-confirmed、含 human=human-reviewed、过 stale_after=stale
 <!-- /plugin:trust -->
 
-<!-- plugin:vault v0.5 -->
-- 默认域——真实资产仓库 `vault/`，wiki 侧属地 `wiki/vault/`：容纳任意格式资产，兼作他域落地仓储（url 字段即借道接口）；命令侧只增，删改自由属于人；布局规约归 structure 插件
-<!-- /plugin:vault -->
-
-<!-- plugin:bb v0.4 -->
+<!-- plugin:bb v0.5 -->
 - BB 课程域 `wiki/bb/`（外领地 bb.cuhk.edu.cn，连接器 bb-cli 纯只读，用法与位置见 bbcli skill）：双侧同构 `<term>/<course>/`——外 `bb/` 课程工作区（机器拉取物：文档类全量物化、媒体类默认指针化、提交件 submissions/，只增；笔记保留子区 notes/——人的学习笔记住所，删改自由属于人，fetch/对账/映射永不触碰、读取合法），内 `wiki/bb/` 属地，目录名 = 学期名/课程代码（如 2610UG/AIE3005），machine id 与学期状态落身份页 bb 块映射（term_id/course_id/term_status）作一比一身份证明，同期同代码尾缀消歧、停用标 status: deprecated 不删；域根速写页 inbox.md（近窗公告蒸馏 + 临近截止 + 未交提醒双源——作业无提交 ∪ 成绩册有 due 无 attempt，行标课程，整页可再生短 TTL，**缺席即建**；frontmatter 兼域配置——terms 块映射现役学期与冻结标记）；公告拆信不存档（作业变更→assessments、考试/政策/分组→info、行动项→todo、资源发布→fetch 即弃，原文现拉即得）；课件物化后即本地终态资产豁免 TTL；投影细则见 bb-map 插件；凭据会话只存本机不入库；课程/成绩/提交数据属实例数据不入框架仓库；trust 天花板 machine-confirmed，stale_after = 拉取日 + TTL（默认 1 天，速写页覆写；日期粒度，过期判定以当日为限），agent 即同步器
 <!-- /plugin:bb -->
 
@@ -111,7 +104,7 @@
 - 时间领地：声明页 `wiki/calendar.md`（`calendar` 块映射 = 源键→源声明，manual-only 可缺）+ 月页 `wiki/calendar/YYYY-MM.md`（两节制——`## 日程` 源投影整节重刷、`## 手记` 只增；事件行 `- MM-DD HH:MM~HH:MM 标题（源键）` 可带 wikilink，事件不建页）；未来滚动、过去冻结（月份走完不可改写）；月页 stale_after 默认 2 天；与 todo 边界——日历存何时有何事、todo 存何事待办，可单向派生
 <!-- /plugin:calendar -->
 
-<!-- plugin:email v0.1 -->
+<!-- plugin:email v0.2 -->
 - 个人邮箱域 `wiki/email/`（一账户一目录，agent 调用必带账户）：域根统一速写 `inbox.md`（近窗蒸馏、行标账户、整页可再生、短 TTL）+ 全局人档 `people/`（token = 邮箱地址，跨账户一人一页——token 作用域决定家；aliases 收多地址同人，正文与我的关系只增收敛）；账户目录——身份页 `account.md`（地址/协议/拉取窗口/TTL 覆写/涌现条件/关心区声明）、线程档 `threads/`（机械区 Message-ID 成员列表 + 沉淀区议题结论只增，快照节冷源可全文）、源档 `sources/`（订阅治理：类型/节奏/阅读信号/处置策略）；全量映射禁止——检索现拉即弃，反复命中才立档（涌现制）；单向派生只出不回——行动项→todo、邀请→calendar、附件→vault 物化、高价值→notes（回链线程档）；agent 对邮箱只读（PEEK 不标已读、不移动不删除），发送类操作永远须用户明示；资源消失标 status: deprecated 不删；trust 天花板 machine-confirmed，stale_after = 拉取日 + TTL（默认 1 天，身份页覆写），agent 即同步器
 <!-- /plugin:email -->
 
@@ -119,21 +112,21 @@
 - 索引溢出减负制：根 `wiki/index.md` 恒在（含 format_version——页面格式契约版本，不兼容变更时进位），直列全部可达页（本目录 + 未切子树，全路径 wikilink）；某索引清单超窗（≤25 条，参数以 pipeline 源码为准）时按子树页数降序切子目录自立 `index.md`（入口行带页数）——小库常为单索引，披露边界随内容质量浮现；`wiki/tags.md`（tag 反向索引）不变；只聚合、永不手编、纯函数重建、索引不发明结构（本级平铺超窗如实全列，解药是分子目录非改索引）；重建走 `pipeline.py index`，检索第二入口
 <!-- /plugin:index -->
 
-<!-- plugin:lark v0.3 -->
+<!-- plugin:lark v0.4 -->
 - 外部指针领地 `wiki/lark/<profile>/`（一企业一目录，目录名 = lark-cli --profile 名，agent 调用必带）：基座立 profile 抽象与身份页 `profile.md`（一句话 + TTL 覆写），域插件（lark-docs…）在任一 profile 下平行展开；指针页 type: lark + `lark` 块映射（profile/kind/token/url），token↔页一比一即身份证明；trust 天花板 machine-confirmed，stale_after = 拉取日 + TTL（默认 7 天），用前查 stale、stale 即带 --profile 现拉刷新（agent 即同步器）；资源消失标 status: deprecated 不删；新 profile = 建目录 + 身份页，域插件自动覆盖；CLI 纪律：--profile 必带、auth 现查不落盘、入新域前 lark-cli skills read 先行；领地页面两形——指针页全可再生，档案页分区（frontmatter 机械区对账维护 + 正文沉淀区只增不改，形态归域插件）
 <!-- /plugin:lark -->
 
-<!-- plugin:mapping v0.8 -->
-- 代理层 `wiki/vault/`：与根 `vault/` 1:1 镜像（代理名 = 原名 + .md），页面必有 raw_file / raw_sha256；路径即出身证明
-<!-- /plugin:mapping -->
-
-<!-- plugin:structure v0.3 -->
-- vault 结构声明 `wiki/structure.md`（type: structure）：frontmatter `structure` 块映射 = 目录→一句话语义，正文写预设（日期/格式/类型/混合，可嵌套）与说明；agent 放置资产先读此页按位落放；页面缺席 = 平铺容忍；人调整 vault 后同步声明，check 机械 diff（未声明的顶层目录 / 声明不存在的目录 → warning）
-<!-- /plugin:structure -->
+<!-- plugin:project v0.4 -->
+- 项目容器 `projects/<项目名>/`（工作区，agent 全权读写——与 vault 只增相对）：项目本体与跟踪全住文件夹，惯例自述 `project.md`（四区：目标与上下文 / 阶段（checkbox+日期）/ 任务（行不建页）/ 决策（只增）；stage 规划/进行/暂停/完成开放词表）；wiki 端仅声明页 `wiki/projects.md`（type: project，`projects` 块映射 = 项目名→一句话，与目录双向 diff，漂移同 structure）；涉及项目内容的检索直查 projects/ 子树；与 todo 边界——todo 是 agent 委托活工作集，project.md 任务是持久分解事实源
+<!-- /plugin:project -->
 
 <!-- plugin:todo v0.2 -->
 - 临时记忆 `wiki/todo.md`（type: todo）：跨 session 委托与提醒，条目 = 触发条件（日期或情境）+ 一句话 + by/at；新 session 开始先读此页（先于 hot，缺席即建空页），日期已到或已过的条目主动提醒用户；受托即追加，完成即销账（`[x]` 并写 log 行——历史归 log），已结 ≤20 条超限静默清理，本页只留活工作集
 <!-- /plugin:todo -->
+
+<!-- plugin:vault v0.6 -->
+- 默认域——真实资产仓库 `vault/`，wiki 侧属地 `wiki/vault/`：容纳任意格式资产，兼作他域落地仓储（url 字段即借道接口）；命令侧只增，删改自由属于人；布局规约归 structure 插件
+<!-- /plugin:vault -->
 
 <!-- plugin:bb-map v0.12 -->
 - bb 映射法则：属地 wiki/bb/<term>/<course>/ 规范形四桶（bb/ 保源形，桶名 v0.4 终裁：courseware/assessments/attachments；课程根另容 user.md 认知档案——bb-track 域内原生页，不受四桶约束）——info.md 课程信息页兼身份页（bb 块映射 term_id/course_id/term_status + 大纲课程政策类要点蒸馏（开放词表：评分/考核/师资/TA/分组/教学语言/AI 政策，info-N 锚点，缺项标未提供）+ 备注沉淀；存「何时有何事」，被评分事务全要素归 assessments）；courseware/ 知识点页每内容单元一份（单元 = bb/ 目录「讲义+附属文件合一」或扁平单文件，平行同类目录合为一页；知识点摘要（sm-N 锚点 + 一行概括 + 章节提示）+ 专有名词对照表 + 单元文件清单（清单即对应关系）+ raw_path 指针（未下载单元可缺省）；纯代理）；assessments/ 聚合页每作业/考试一页（汇总列 Weighted Total/Total 排除；四要素：要求/参考蒸馏（req-N/ref-N 锚点）/提交/结果机械快照，due 缺省不告警、无提交独立话术；assessment 块映射 due/submitted_at/score/status/column_id + raw 块映射角色→bb/ 路径 + `## 复盘` 沉淀只增）；attachments/ 1:1 代理平铺（raw_file/raw_sha256，纯代理）；落位判据——有成绩册列或提交动作→assessments/（汇总列与分节登记列除外——分节登记列 = 非知识考核的分节/出勤登记，如 Tutorial Section）、老师非讲义资产→attachments/、内容单元→courseware/、结构事实入 info.md；讲义/附件边界：随周次内容→courseware、支撑性资源→attachments；info 与 assessments 两形分区（机械区可再生覆写+沉淀区只增，重建不得触碰），courseware/attachments 纯代理（珍贵内容入 notes）；映射不改 bb/ 源侧、不复制原文全文、源消失标 deprecated 不删；API 快照节挂 stale_after=拉取日+TTL，本地对账代理无 TTL
@@ -151,12 +144,20 @@
 - 人际域（档案页，基座分区制）：枢纽 `<profile>/im.md`（`im` 块映射 = 策略：群同步 / 涌现 / 关注 / 排除）；群档 `<profile>/im/chats/`（kind: chat——`description` 群功能 + `key_members` 关键人 wikilink，正文沉淀区 = 议题记录 `## 日期 议题→结果` 只增、按需拉窗蒸馏经确认追加）；人档 `<profile>/im/people/`（kind: person，token = open_id，department/position 由 contact 解析，chat_id 为 p2p 锚，正文沉淀区 = 与我的关系，只增收敛）；人档涌现制（p2p / 点名 / 高频，条件写枢纽）——不建全量通讯录（contact 只解析不遍历）；群参与人只存关键不存全员；文件名清洗 + 重名 token 尾缀；发送类写操作永远须用户明示；隐私红线：主观关系内容不入框架仓库与 test-repo；trust lazy-refresh 同基座
 <!-- /plugin:lark-im -->
 
-<!-- plugin:user-profile v0.3 -->
-- 用户画像 `wiki/profile.md`（type: profile）：对使用者的持续认知档案，静态身份层 + 动态偏好层，维度不枚举；收敛式更新——新值取代旧值、正文留痕；断言必带证据 wikilink（wiki 内页面皆可：会话页、vault 代理页、lark 档案页），偏好层挂 stale_after；零自有字段复用 trust，不属 notes 领地，不打 tags（单页直接读取，不入词表检索）；更新走 profile 命令——双轨触发（用户明示 / agent 识别显著信号自发调用），首次触发即自建页面；个性化决策（称呼、风格、偏好）前先读此页
-<!-- /plugin:user-profile -->
+<!-- plugin:mapping v0.8 -->
+- 代理层 `wiki/vault/`：与根 `vault/` 1:1 镜像（代理名 = 原名 + .md），页面必有 raw_file / raw_sha256；路径即出身证明
+<!-- /plugin:mapping -->
+
+<!-- plugin:structure v0.3 -->
+- vault 结构声明 `wiki/structure.md`（type: structure）：frontmatter `structure` 块映射 = 目录→一句话语义，正文写预设（日期/格式/类型/混合，可嵌套）与说明；agent 放置资产先读此页按位落放；页面缺席 = 平铺容忍；人调整 vault 后同步声明，check 机械 diff（未声明的顶层目录 / 声明不存在的目录 → warning）
+<!-- /plugin:structure -->
 
 <!-- plugin:bb-track v0.1 -->
 - bb 认知档案：每课课程根 user.md（属地域内原生页首例，wiki v0.7 两形）——`## 认知读数` 收敛覆写（锚 courseware sm-N，粗粒度自陈合法，状态词开放；含目标层：课程目标 + 短期优先带时效）+ `## 证据流` 只增（日期+出处+断言+回链）；信号权重 human>machine>ai 笔记（弱证据，人复核升权）；应知不存（差距现算）、错题题级归 assessments 复盘、统计现算；更新双轨（agent 显著信号自发/用户明示），建档懒惰式；学期即边界随 term_status 冻结；trust 天花板 machine-confirmed（含 human 证据升 human-reviewed），stale_after 默认 14 天可覆写；笔记区 notes/ 只读，可选属性 origin/form/stage（stage 标记属人）
 <!-- /plugin:bb-track -->
+
+<!-- plugin:user-profile v0.3 -->
+- 用户画像 `wiki/profile.md`（type: profile）：对使用者的持续认知档案，静态身份层 + 动态偏好层，维度不枚举；收敛式更新——新值取代旧值、正文留痕；断言必带证据 wikilink（wiki 内页面皆可：会话页、vault 代理页、lark 档案页），偏好层挂 stale_after；零自有字段复用 trust，不属 notes 领地，不打 tags（单页直接读取，不入词表检索）；更新走 profile 命令——双轨触发（用户明示 / agent 识别显著信号自发调用），首次触发即自建页面；个性化决策（称呼、风格、偏好）前先读此页
+<!-- /plugin:user-profile -->
 
 <!-- wiki-inject:end -->

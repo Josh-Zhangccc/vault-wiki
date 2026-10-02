@@ -1,9 +1,11 @@
 id: project
-version: 0.3
+version: 0.4
 depends:
   - domain
   - wiki
-updated: 2026-09-22
+  - trust
+  - log
+updated: 2026-10-02
 attachment:
   - "projects/ —— 项目容器（根下第三容器，工作区：agent 全权读写；一项目一目录）"
   - "wiki/projects.md —— 声明页（`projects` 块映射 = 项目名→一句话；双向 diff 漂移检测，structure 先例）"

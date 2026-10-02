@@ -5,8 +5,12 @@
 ## Structure
 
 - 单文件 `wiki/log.md`，条目置顶追加（最新在最上）
-- 条目格式：`- YYYY-MM-DD <类型>：一句话概述`（含 wikilink）
+- 条目格式：`- YYYY-MM-DD <类型> [<域>]：一句话概述`（含 wikilink；域标可缺省——无域事务）
 - 类型枚举：map / save / query / check / plugin / todo / other（实例可扩）
+
+## 桥（必依，宪法准则 11）
+
+记录桥：全域域件共用的操作流水归宿。挂靠基数**必依**——全部域基座（直接 depends domain 者）须依赖本件，kernel validate 校验完备；集成格式 = 条目域标 `[域]`（域内事务必带，如 `[bb]`；框架治理与原生事务缺省），写经 `pipeline.py log --domain`。
 
 ## Invariants
 
@@ -31,6 +35,7 @@ log.max_chars: 14000     # 窗口字符上限（约）
 
 ## Changelog
 
+- 0.15（2026-10-02）全局域批一：立必依桥（记录桥——域基座必依赖，kernel 校验完备性）；条目增域标 `[域]`（可缺省），pipeline log 增 `--domain` 参
 - 0.13（2026-09-23）补 wiki 依赖边——内侧插件挂 wiki 对齐 domain 0.1 声明（2026-09-22 域化批次漏收）
 - 0.12（2026-09-14）类型值集扩 todo——todo 插件销账事件的归属地（历史归 log，todo 页只留活工作集）
 - 0.11（2026-09-13）usage 类型参数补值集出处（AGENTS 注入区 log 块，消跨块猜点）

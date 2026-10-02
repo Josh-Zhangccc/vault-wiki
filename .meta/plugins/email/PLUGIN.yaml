@@ -1,10 +1,11 @@
 id: email
-version: 0.1
+version: 0.2
 depends:
   - domain
   - wiki
   - trust
-updated: 2026-09-29
+  - log
+updated: 2026-10-02
 attachment:
   - "wiki/email/ —— 个人邮箱域属地（域根：统一速写与全局人档；一账户一目录，目录名 = 连接器 profile 名）"
   - "wiki/email/inbox.md —— 统一收件箱速写（跨账户蒸馏、行标账户、整页可再生、短 TTL）"

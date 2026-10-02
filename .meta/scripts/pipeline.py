@@ -11,7 +11,7 @@
   python .meta/scripts/pipeline.py index              # 重建索引（溢出减负制，幂等；含并回后的多余索引删除）
   python .meta/scripts/pipeline.py tags               # 重建 wiki/tags.md（幂等）
   python .meta/scripts/pipeline.py hot <类型> <一句话>   # 淘汰越界 + 置顶加热缓存条目
-  python .meta/scripts/pipeline.py log <类型> <一句话>   # 容量归档 + 置顶加 log 行
+  python .meta/scripts/pipeline.py log <类型> <一句话> [--domain 域]   # 容量归档 + 置顶加 log 行（域标可缺省——无域事务）
   python .meta/scripts/pipeline.py verify             # 写后自证：附检 + 派生区漂移检查
 
 类型枚举：map / save / query / check / plugin / todo / profile / other（log 插件）。
@@ -49,7 +49,7 @@ INDEX_MAX_ENTRIES = 25  # 单张索引清单窗口（页条目 + 目录条目；
 TYPE_ORDER = ["map", "save", "query", "check", "plugin", "todo", "profile", "other"]
 HOT_HEADER = ("# 热缓存\n\n> 最近变更摘要；≤25 条且 <5 日，窗外即删；可整体再生。"
               "规则见 `.meta/plugins/hot/`，写走 `pipeline.py hot`。\n")
-LOG_HEADER = ("# 运行日志\n\n> 置顶追加、只增不删；条目 = `- YYYY-MM-DD <类型>：一句话`。"
+LOG_HEADER = ("# 运行日志\n\n> 置顶追加、只增不删；条目 = `- YYYY-MM-DD <类型> [<域>]：一句话`（域标可缺省——无域事务，log 桥）。"
               "规则见 `.meta/plugins/log/`，写走 `pipeline.py log`。\n")
 DATE_RE = re.compile(r"^- (\d{4}-\d{2}-\d{2}) ")
 
@@ -335,7 +335,24 @@ def do_hot(kind, text):
     return True
 
 
-def do_log(kind, text):
+def _split_domain(args):
+    """自参数表摘出 --domain 域 / --domain=域（log 桥域标），余参原序返回。"""
+    dom, rest, i = None, [], 0
+    while i < len(args):
+        if args[i] == "--domain" and i + 1 < len(args):
+            dom = args[i + 1]
+            i += 2
+            continue
+        if args[i].startswith("--domain="):
+            dom = args[i].split("=", 1)[1]
+            i += 1
+            continue
+        rest.append(args[i])
+        i += 1
+    return dom, rest
+
+
+def do_log(kind, text, domain=None):
     if kind not in TYPE_ORDER:
         print(f"[log] type must be one of {'/'.join(TYPE_ORDER)} (got {kind})")
         return False
@@ -345,7 +362,8 @@ def do_log(kind, text):
         for raw in open(log_path, encoding="utf-8").read().splitlines():
             if DATE_RE.match(raw):
                 entries.append(raw)
-    entries.insert(0, f"- {_today()} {kind}：{text}")  # 置顶追加，既有条目不改写
+    tag = f" [{domain}]" if domain else ""
+    entries.insert(0, f"- {_today()} {kind}{tag}：{text}")  # 置顶追加，既有条目不改写
     overflow = entries[LOG_MAX_ENTRIES:]
     if overflow:  # 窗口超限：最旧一段按条目月份分组搬入 archive/<月>/log.md（只搬位置）
         for month in sorted({e[2:9] for e in overflow}):
@@ -390,7 +408,8 @@ def main():
     if cmd == "hot":
         return 0 if do_hot(sys.argv[2], " ".join(sys.argv[3:])) else 1
     if cmd == "log":
-        return 0 if do_log(sys.argv[2], " ".join(sys.argv[3:])) else 1
+        dom, rest = _split_domain(sys.argv[3:])
+        return 0 if do_log(sys.argv[2], " ".join(rest), domain=dom) else 1
     if cmd == "verify":
         return do_verify()
     print(__doc__)

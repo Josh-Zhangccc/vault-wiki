@@ -14,6 +14,7 @@ domain 的第一个实例：vault 是容纳真实资产的仓库——任意格�
 
 ## Changelog
 
+- 0.6（2026-10-02）全局域批一：挂 trust/log 必依桥边（vault 此前连 trust 边都缺——审计实锤）（宪法准则 11，kernel 校验完备性）
 - 0.5（2026-09-22）域化：depends 增 domain（默认域定位）与 wiki（属地声明 `wiki/vault/`）；双重角色说破——兼作他域落地仓储，url 字段即借道接口
 - 0.4（2026-09-14）治理三块认领完毕：来源保全——认领 registry 预留段 `url`（URL 型资产出处登记，写入契约在 mapping usage）；结构规约——移交 structure 插件（0.1 立设）；生命周期/变更传导——归 mapping（引用计数、重算留痕）与 check（分诊）协作
 - 0.3（2026-09-13）注入源移交 manifest：删 Checks / Inject / Attachments 节，md 回归纯文档

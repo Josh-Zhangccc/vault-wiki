@@ -36,6 +36,11 @@ manifest 最小 YAML 子集：顶层 `key: value`、`key: []`、块式列表（`
   （在场即注册）；改契约改 PLUGIN.yaml，命令正文只留操作流程。
   PLUGIN.md 回归纯文档（Role / Structure / Invariants / Changelog）
 
+全局件与域件（宪法准则 11）：
+- manifest 可选 bridge 键（必依|按需）：全局件声明的扩展点与挂靠基数，披露正文落 PLUGIN.md 桥节
+- 域件 = depends 链可达 domain；直接 depends domain 者为域基座
+- validate 校验：bridge 只许全局件持有；必依桥要求全部域基座有对应 depends 边（缺边即 error）
+
 插件附检契约（scripts/check.py，可选）：
 - 必须定义 check(ctx)，返回 issue 列表：{"level": "error"|"warning"|"info", "message": str}
 - ctx.root = 仓库根；ctx.pages = [(wiki 相对路径, frontmatter dict, 正文)]，单次扫描共享
@@ -280,6 +285,33 @@ def validate_bindings(plugins, errors):
                 errors.append(f"[error] command {c}/: owner {pid} not claimed in manifest commands (one-sided)")
 
 
+def validate_bridges(plugins, errors):
+    """全局件/域件桥法则（宪法准则 11）：桥为全局件扩展点；必依桥校验域基座依赖完备。"""
+    def reaches_domain(pid, seen=None):
+        seen = set() if seen is None else seen
+        if pid in seen or pid not in plugins:
+            return False
+        seen.add(pid)
+        deps = plugins[pid].get("depends") or []
+        return "domain" in deps or any(reaches_domain(d, seen) for d in deps)
+
+    bases = [p for p, m in sorted(plugins.items()) if "domain" in (m.get("depends") or [])]
+    for pid, m in sorted(plugins.items()):
+        bridge = m.get("bridge")
+        if bridge is None:
+            continue
+        if bridge not in ("必依", "按需"):
+            errors.append(f"[error] {pid}/: bridge ({bridge}) must be 必依 or 按需")
+            continue
+        if reaches_domain(pid):
+            errors.append(f"[error] {pid}/: bridge is global-only (depends chain reaches domain)")
+            continue
+        if bridge == "必依":
+            for base in bases:
+                if pid not in (plugins[base].get("depends") or []):
+                    errors.append(f"[error] {base}/: missing depends {pid} (必依桥：全部域基座须挂边)")
+
+
 def do_audit(plugins, only=None):
     """插件附检：发现式执行各插件 scripts/check.py（契约见模块 docstring）。
 
@@ -504,12 +536,13 @@ def main():
         return 2
     validate(plugins, errors)
     validate_bindings(plugins, errors)
+    validate_bridges(plugins, errors)
     for e in errors:
         print(e)
     if errors:
         print(f"[result] validation failed ({len(errors)} errors) — mechanical actions blocked")
         return 1
-    print(f"[validate] all {len(plugins)} plugins passed (fields / id match / deps exist / acyclic / command bindings)")
+    print(f"[validate] all {len(plugins)} plugins passed (fields / id match / deps exist / acyclic / command bindings / bridges)")
     if cmd in ("inject", "all"):
         if not do_inject(plugins):
             return 1
