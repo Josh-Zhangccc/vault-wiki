@@ -42,7 +42,7 @@
 > 指针需主动更新。跨 session 的重要指针标注 **ATTENTION**；易变状态（进度等）放 `log.md`，不写入本文件。
 
 - `log.md` — 项目日志：现状、阶段、下一步、过往操作 **ATTENTION**
-- `.meta/` — 原型核心：结构插件（`plugins/`——双根概念 domain（外·域契约）与 wiki（内·出身二分）+ 域实例族：vault（默认域，mapping 为其映射法则、structure 管其布局）、lark（外部域基座，指针/档案两形，域内 lark-docs 云文档域 / lark-im 人际域）、project（自立容器域：projects/ 工作区 + wiki 声明页）、email（个人邮箱域：wiki/email/ 账户+三资产+统一速写，v0.1 待连接器实验）、bb（BB 课程域：bb/ 仓储 + wiki/bb/ 属地，term/course 双侧同构，bb-map 为其映射法则）+ notes/sessions/link/tag/trust/index/hot/log/user-profile/todo + calendar 时间领地（lark-calendar 为源适配器）+ tmp 临时区，无分层，注入序=依赖拓扑+字母序）与命令主本（`command/`）与协议工件（`protocol/`：字段注册表、动作纪律、披露范式 SASU-L）与机械脚本（`scripts/`：wiki_plugin_kernel 装卸/合规/注入/副本 + pipeline 派生层管道 index/tags/hot/log/verify + wikilib 页面解析承重件）；AGENTS.md 注入区为其投影 **ATTENTION**
+- `.meta/` — 原型核心：结构插件（`plugins/`——双根概念 domain（外·域契约）与 wiki（内·出身二分）+ 域实例族：vault（默认域，mapping 为其映射法则、structure 管其布局）、lark（外部域基座，指针/档案两形，域内 lark-docs 云文档域 / lark-im 人际域）、project（自立容器域：projects/ 工作区 + wiki 声明页）、email（个人邮箱域：wiki/email/ 账户+三资产+统一速写，v0.1 待连接器实验）、bb（BB 课程域：bb/ 课程工作区 + wiki/bb/ 属地，term/course 双侧同构，bb-map 为其映射法则）+ notes/sessions/link/tag/trust/index/hot/log/user-profile/todo + calendar 时间领地（lark-calendar 为源适配器）+ tmp 临时区，无分层，注入序=依赖拓扑+字母序）与命令主本（`command/`）与协议工件（`protocol/`：字段注册表、动作纪律、披露范式 SASU-L）与机械脚本（`scripts/`：wiki_plugin_kernel 装卸/合规/注入/副本 + pipeline 派生层管道 index/tags/hot/log/verify + wikilib 页面解析承重件）；AGENTS.md 注入区为其投影 **ATTENTION**
 - `wiki/`、`vault/`、`projects/`、`bb/` — 数据区骨架（保持空种子：内容属部署实例，工程内不积累——跑库验证走 `test-repo/`）；`.agents/skills/` — 命令与连接器 skill 部署副本
 - `docs/` — 设计文档（重开卷）：现行 `quickstart.md` 快速开始/部署走查、`pointers.md` 指针机制（信息披露挂载，架构核心概念）、`research-*.md` 调研档案（user-profile 画像选型、landscape 同类产品入库/出库对标）；历史档案 `00-principles.md`、`01-okf.md` v0.2 不起现行作用；现行规范以 `.meta/` 为源
 - `README.md` — 项目章程
@@ -103,8 +103,8 @@
 - 默认域——真实资产仓库 `vault/`，wiki 侧属地 `wiki/vault/`：容纳任意格式资产，兼作他域落地仓储（url 字段即借道接口）；命令侧只增，删改自由属于人；布局规约归 structure 插件
 <!-- /plugin:vault -->
 
-<!-- plugin:bb v0.3 -->
-- BB 课程域 `wiki/bb/`（外领地 bb.cuhk.edu.cn，连接器 bb-cli 纯只读，用法与位置见 bbcli skill）：双侧同构 `<term>/<course>/`——外 `bb/` 拉取物仓储（文档类全量物化、媒体类默认指针化；提交件 submissions/，只增、删改自由属于人），内 `wiki/bb/` 属地，目录名 = 学期名/课程代码（如 2610UG/AIE3005），machine id 与学期状态落身份页 bb 块映射（term_id/course_id/term_status）作一比一身份证明，同期同代码尾缀消歧、停用标 status: deprecated 不删；域根速写页 inbox.md（近窗公告蒸馏 + 临近截止 + 未交提醒双源——作业无提交 ∪ 成绩册有 due 无 attempt，行标课程，整页可再生短 TTL，**缺席即建**；frontmatter 兼域配置——terms 块映射现役学期与冻结标记）；公告拆信不存档（作业变更→assessments、考试/政策/分组→info、行动项→todo、资源发布→fetch 即弃，原文现拉即得）；课件物化后即本地终态资产豁免 TTL；投影细则见 bb-map 插件；凭据会话只存本机不入库；课程/成绩/提交数据属实例数据不入框架仓库；trust 天花板 machine-confirmed，stale_after = 拉取日 + TTL（默认 1 天，速写页覆写；日期粒度，过期判定以当日为限），agent 即同步器
+<!-- plugin:bb v0.4 -->
+- BB 课程域 `wiki/bb/`（外领地 bb.cuhk.edu.cn，连接器 bb-cli 纯只读，用法与位置见 bbcli skill）：双侧同构 `<term>/<course>/`——外 `bb/` 课程工作区（机器拉取物：文档类全量物化、媒体类默认指针化、提交件 submissions/，只增；笔记保留子区 notes/——人的学习笔记住所，删改自由属于人，fetch/对账/映射永不触碰、读取合法），内 `wiki/bb/` 属地，目录名 = 学期名/课程代码（如 2610UG/AIE3005），machine id 与学期状态落身份页 bb 块映射（term_id/course_id/term_status）作一比一身份证明，同期同代码尾缀消歧、停用标 status: deprecated 不删；域根速写页 inbox.md（近窗公告蒸馏 + 临近截止 + 未交提醒双源——作业无提交 ∪ 成绩册有 due 无 attempt，行标课程，整页可再生短 TTL，**缺席即建**；frontmatter 兼域配置——terms 块映射现役学期与冻结标记）；公告拆信不存档（作业变更→assessments、考试/政策/分组→info、行动项→todo、资源发布→fetch 即弃，原文现拉即得）；课件物化后即本地终态资产豁免 TTL；投影细则见 bb-map 插件；凭据会话只存本机不入库；课程/成绩/提交数据属实例数据不入框架仓库；trust 天花板 machine-confirmed，stale_after = 拉取日 + TTL（默认 1 天，速写页覆写；日期粒度，过期判定以当日为限），agent 即同步器
 <!-- /plugin:bb -->
 
 <!-- plugin:calendar v0.1 -->
