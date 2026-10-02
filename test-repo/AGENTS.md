@@ -1,6 +1,6 @@
 # 项目介绍
 
-本仓库（目录 `agent-obsidian-template`，工程暂名 **vault-wiki**）是 vault-wiki 框架的构建工程，兼第一个**原型实例**：2026-09-08 起「插件 + 命令」架构直接落地，规范文档后置蒸馏。**定位个人自用**（2026-09-12 裁定：普世化与矩阵化测试搁置，边用边改）。
+本仓库（目录 `agent-obsidian-template`，工程暂名 **vault-wiki**）是 vault-wiki 框架的构建工程，兼第一个**原型实例**：2026-09-08 起「插件 + 命令」架构直接落地，规范文档后置蒸馏。**定位团队项目**（2026-10-02 由个人自用转轨；普世化与矩阵化测试搁置，边用边改）。
 
 - 布局：`.meta/`（插件与命令主本，原型核心）· `wiki/`（内外之分的内侧）+ `vault/` / `projects/` / `bb/`（外域容器，数据区）· `.agents/skills/`（部署副本）· `connectors/`（连接器主本：部署侧 CLI 事实接口 + skill 使用披露——`connectors/*/SKILL.md` 经 kernel deploy 落 `.agents/skills/`，bb-cli 首件）· `test-repo/`（**独立测试沙箱**：框架镜像随根侧同步重拷，沙箱内实验内容只在本地、不入史；内部不感知本工程）· `docs/`（设计档案）
 - 术语：**wiki** = md 世界，内外之分的内侧（各域投影 + 原生笔记）；**domain** = 域，wiki 外信息源的适配器契约（vault 是默认域，lark / project / email / bb 亦域）；**vault** = 默认域——真实资产仓库（命令侧只增，删改自由属于人）
