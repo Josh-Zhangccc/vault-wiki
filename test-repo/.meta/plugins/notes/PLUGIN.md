@@ -13,8 +13,13 @@
 - 与 vault 代理层的边界由路径证明：wiki/vault/ 必有对应物，wiki/notes/ 必无
 - 与 sessions / user-profile 的边界由 type 证明：type: session 落 `wiki/sessions/`、type: profile 落 `wiki/profile.md`，均不落本区
 
+## 桥（按需，宪法准则 11）
+
+派生归宿桥（高价值结论）：域件单向派生高价值结论涌现为原生笔记，须回链来源页。挂靠基数**按需**；集成格式 = type 形态词表内自选 + 正文回链 wikilink，域件保留一句自述披露（SASU-L），格式细则以本桥为准。
+
 ## Changelog
 
+- 0.15（2026-10-02）全局域批二：立按需桥（派生归宿——格式细则收编归桥，域件自述保留加指针）
 - 0.14（2026-09-23）补 wiki 依赖边——内侧插件挂 wiki 对齐 domain 0.1 声明（2026-09-22 域化批次漏收）
 - 0.13（2026-09-14）瘦身（裁定：架构不承担形态分类职责）：正文与注入行去形态枚举——「概念/问答/决策/实体」为个人库实证迁移残留，且与 registry 漂移（漏 comparison）；type 分层：领地值封闭（source/session/profile，机械检查依据），形态值降实例默认词表（registry defaults，开放自扩）
 - 0.12（2026-09-13）usage 更新语义缝合：更新 = 用户指令追加式并入（留痕）或人手改（专家评审：与 save 去重节两说）
