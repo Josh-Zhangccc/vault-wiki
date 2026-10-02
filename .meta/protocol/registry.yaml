@@ -30,7 +30,7 @@ protocol:
 plugins:
   bb:
     bb:
-      note: 块映射（课程身份页）——term_id（学期 machine id，如 _426_1）/ course_id（课程 machine id，如 _18030_1）；与属地目录一比一，即身份证明
+      note: 块映射（课程身份页）——term_id（学期 machine id，如 _426_1）/ course_id（课程 machine id，如 _18030_1）/ term_status（现役|冻结——自 inbox terms 推导落页，消除单点依赖）；与属地目录一比一，即身份证明
     terms:
       note: 块映射（域根速写页）——term 目录名 → 一句话（现役/冻结标记 + term_id）；现役学期即拉取与速写的默认作用域
   bb-map:
