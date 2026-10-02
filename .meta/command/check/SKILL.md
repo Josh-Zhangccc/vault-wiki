@@ -126,7 +126,7 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 <!-- /check:todo -->
 
 <!-- check:bb-map -->
-- 语义项（v0.1 人工，附检后置）：属地页落四桶之外 → error；知识点页缺 raw_path 或 raw_path 悬挂 → error；info.md 缺 bb 块映射（term_id/course_id）或与目录不对应 → error；attachments 代理 raw_file 指 bb/ 不存在文件 → error；assessments 页缺 raw 块映射或 column_id → warning；知识点页缺简要介绍 → warning；源文件消失未标 deprecated → warning；沉淀区（备注/复盘）被重建改写 → error；映射完整性（bb/ 内容单元无对应页）→ info
+- 语义项（v0.1 人工，附检后置）：属地页落四桶之外 → error；知识点页缺 raw_path 或 raw_path 悬挂 → error；info.md 缺 bb 块映射（term_id/course_id）或与目录不对应 → error；attachments 代理 raw_file 指 bb/ 不存在文件 → error；assessments 页缺 raw 块映射或 column_id → warning；知识点页缺 `## 知识点摘要` 或摘要点缺 sm-N 锚点 → warning；知识点页缺 `## 专有名词` → info；info 蒸馏节缺六项任一 → info；assessments 有要求源但要求节未蒸馏 → info；源文件消失未标 deprecated → warning；沉淀区（备注/复盘）被重建改写 → error；映射完整性（bb/ 内容单元无对应页）→ info
 <!-- /check:bb-map -->
 
 <!-- check:lark-calendar -->
