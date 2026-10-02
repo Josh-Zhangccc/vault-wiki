@@ -37,7 +37,7 @@
 - 2026-10-01 bb-map v0.1→v0.3 立设并流，整合回 master
 - 2026-10-01 bb-cli skill 移驻 connectors 并英文化
 
-- 2026-10-01 summary 分支并入：资料整理Demo 43MB 入史（10-02 已剔除）；框架零改动
+- 2026-10-01 summary 分支并入（资料整理Demo 后经历史清理）；框架零改动
 - 2026-09-30 bb-cli 连修（v0.1.1~0.1.3）：UTC→本机时区；dues 双源合并（日历漏项成绩册兜底，AIE2001 实锤 4/5 缺）；announcements 单课失败降级（真凶=停用课程）；空结果提示、补 column_id；submission 命令封提交链路（列 attempt→文件→Classic download，REST download 404 绕行实证）
 - 2026-09-29 bb-cli 立设 v0.1：ADFS 域前缀单步登录 + Learn REST 只读十五命令（curl_cffi 指纹），实测全通
 - 2026-09-29 email 域与 profile 命令立设：email v0.1（账户+三资产+统一速写，全量禁/只读/发送明示）；user-profile 0.3 独立通道；domain/wiki/calendar 叙事补强；test-repo 重拷
