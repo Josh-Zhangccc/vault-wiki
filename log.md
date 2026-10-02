@@ -19,18 +19,18 @@
 
 ## 过往操作
 
-- 2026-10-02 指引清尾批：C3 实为披露缺漏（dues --course 代码本有）补速查表；todo v0.2 缺席即建；asset-read 命令立设（F1+F2——回源通道与 tmp 缓存惯例）
+- 2026-10-02 指引清尾：C3 实为披露缺漏已补、todo v0.2 缺席即建、asset-read 立设（F1+F2）
 
-- 2026-10-02 gh CLI 装配入管理者职责（GH_TOKEN 注入），PR 操作就位
+- 2026-10-02 gh CLI 入管理者职责（GH_TOKEN 注入）
 
-- 2026-10-02 bb v0.3 域规则批 D1~D3 落地：未交提醒双源、身份页 term_status 消单点、stale 粒度语义
+- 2026-10-02 bb v0.3：提醒双源、term_status、stale 粒度（D1~D3）
 
-- 2026-10-02 迁移收口：临时令移除、备份删除、残枝清理——回归纯永久态
+- 2026-10-02 迁移收口：临时令移除、备份与残枝清理
 
 - 2026-10-02 管理者委托代行（审合推送治理，保留事项入册）；提交流程五步入宪法；dev 审合入库（bb-map v0.9 + bb-cli 0.1.5，C3 转指引）；PR 转推荐制
 
 - 2026-10-02 bb 实验收官：四课落位 94 页、检索八问全中；实验报告与修订指引出（对话交付）
-- 2026-10-02 治理日：实例页入库事故→协作三红线 + README 转团队 + test-repo 痕迹禁令（派生页与 tmp 出跟踪）；资料整理Demo 40MB 出库并历史清理（特批，全员重克隆）；临时令 cleanup-sync / log-sync；log 团队治理（组员仅增、整合归负责人）
+- 2026-10-02 治理日：实例页事故→三红线 + README 转团队 + 痕迹禁令；Demo 40MB 出库并历史清理（特批）；临时令×2；log 治理（组员仅增）
 - 2026-10-01 bb 域全套落地：bb 基石 v0.1→v0.2（公告分拣、inbox 缺席即建、媒体分层）；bb-map v0.1→v0.7（四桶终名 courseware/assessments，笔记节立而复撤，命令立设）；bb-cli v0.1.4（fetch 过滤与 --refresh）+ skill 移驻 connectors 并英文化；AGENTS 增准则 10（分析轮禁执行）、准则 6 拓至 250 行；summary 分支并入（demo 后经历史清理）
 - 2026-09-29~30 连接器与域补设：bb-cli v0.1→0.1.3（ADFS 单步登录 + Learn REST 只读十五命令；UTC 本地化、dues 双源合并、submission 提交链路）；email 域 v0.1 与 profile 命令独立通道
 - 2026-09-22~23 域化批次：domain 0.1 适配器契约；vault/wiki/lark/project/mapping/structure 对齐；老八件补 wiki 依赖边、注入序重排
