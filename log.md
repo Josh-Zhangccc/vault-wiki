@@ -19,6 +19,7 @@
 
 ## 过往操作
 
+- 2026-10-04 bb-teach 立设：bb-track 教学消费侧（插件 + 命令同名）——提问即讲解，二维伸缩（熟练度×难度）+ 术语门槛动态化 + 三层反馈闭环（单轮反馈不落盘、仅显著信号经确认收敛 user.md）；插件 27、命令 11
 - 2026-10-02 全局域立宪三批（组会衍生）：准则 11 全局件/域件与桥；批一 kernel 必依校验 + log v0.15 域标 + 五基座补边（vault/project 原缺 trust）；批二 todo/calendar/notes 派生归宿桥；批三 user-profile v0.4 认知桥 + bb-track 注册，mapping 边裁撤（校验实测抓出误判）
 - 2026-10-02 bb 认知线：bb v0.4 笔记区（外容器→课程工作区，notes/ 归人）+ bb-track 立设（user.md 两区制、锚 sm-N、应知不存、笔记三属性）携 wiki v0.7 属地两形、bb-map 0.12 豁免；挂缺：课表源（SIS/ics）与课后触发
 - 2026-10-02 组会（第 3 周）：笔记裁定→bb-track 方向；产品线头脑风暴（teaching/testing/addition_check/bridge）；teach-test 归吴
