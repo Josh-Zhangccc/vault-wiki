@@ -150,4 +150,8 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 <!-- check:bb-track -->
 - 语义项（v0.1 人工，附检后置）：user.md 落课程根之外或四桶内 → error；证据流条目被改写删除 → error；读数条目无可溯证据 → warning；读数仅凭 origin: ai 无复核 → warning；stale 超窗后消费未核对 → info；笔记属性值出开放词表 → info
 <!-- /check:bb-track -->
+
+<!-- check:bb-teach -->
+- 语义项（v0.1 人工，附检后置）：未读 user.md 即讲解 → warning；术语超已锚点集且未当场解释 → warning；对「掌握」档仍长篇灌输 → info；未经确认即写 user.md → error；单轮「懂了」即写「掌握」入 user.md → error；讲解缺 courseware 锚点回链 → info
+<!-- /check:bb-teach -->
 <!-- check-inject:end -->
