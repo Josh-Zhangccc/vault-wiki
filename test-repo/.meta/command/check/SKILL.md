@@ -45,6 +45,10 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 > 本区为 wiki_plugin_kernel 自各插件 manifest checks 列表投影（`inject` / `all` 重建，在场即注册）；手写内容不进此区，改检查规则改 PLUGIN.yaml。
 
 <!-- check-inject:start -->
+<!-- check:device -->
+- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：device 块映射的 warranty_until 距今 ≤30 天 → warning 临期；已过期 → warning 过期；日期非法 → warning
+<!-- /check:device -->
+
 <!-- check:hot -->
 - 窗口越界（超 25 条 / 超 5 日 / 单条超 200 字）→ 走一次 `pipeline.py hot <类型> "<补录>"` 或等下次写入自然收敛后复查
 - 与 log 矛盾（log 有记录而 hot 全无踪迹）→ warning
