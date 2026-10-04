@@ -18,6 +18,7 @@
 
 ## 过往操作
 
+- 2026-10-04 部署收整：april-linux 实例库自 ~ 迁 ~/repo（库与上游原本分离——~/vault-wiki 为升级源，connectors 随迁）；家级 .agents 回归纯 lark skill，孤儿警告根治；dsh 升 0.2.0-rc.2 并修四插件适配
 - 2026-10-04 部署：首座实例库落地 april-linux（家目录即库根）——机器清理三清单、clone 工程仓为升级源、三十插件收敛 verify 全绿、首批设备页两件（april-linux / windows-dev，互设 related）；device v0.2 增工具环境摘要节（在场级、多设备互查注册表、外壳以指针引页）先此入库
 - 2026-10-04 插件：device v0.1 立设——设备档案复用 notes 领地（type: entity 建议、零 type 扩值），device 块映射最小键集（serial/purchased/warranty_until），附检临期扫描 30 天窗口、到期经确认受托入 todo；零命令零新领地
 - 2026-10-04 插件：语言中性化清理批——tag v0.11（「中文为主」拆除，主语言跟 language 页 default 键）+ 八命令主本输出语言节统一改写（map/lark-map/profile/bb-map/bb-track/asset-read/query/save）；纪律级语言硬编码清零（余 AGENTS 准则 7 为开发期实例事实）；calendar 月页节名待裁
