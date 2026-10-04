@@ -30,7 +30,7 @@ description: "内核与机制参考：投影机七子命令（ls/validate/audit/
 
 ## 插件形态
 
-- **一插件一目录**（`.meta/plugins/<id>/`）：`PLUGIN.yaml`（manifest，机器可读本体）+ `PLUGIN.md`（纯文档：Role / Structure / Invariants / Changelog——**设计理由与各件细节归此**，机制共性归本参考）+ 可选 `scripts/check.py`（附检）
+- **一插件一目录**（`.meta/plugins/<id>/`）：`PLUGIN.yaml`（manifest，机器可读本体）+ `PLUGIN.md`（纯文档：设计概要（为什么 / 族内位置 / 关键裁定与弃案）/ Structure / Invariants / Changelog——**设计理由与各件细节归此**，机制共性归本参考）+ 可选 `scripts/check.py`（附检）
 - **manifest 键**：必填七键 `id / version / depends / updated / attachment / fields / inject`；可选 `commands`（本插件驱动的命令名）、`usage`（写侧契约列表——第三投影源）、`checks`（检查规则列表——check 投影源）、`bridge`（桥声明，见桥法则）
 - **attachment** = 声明领地与借读关系（谁拥有哪片路径、谁只读消费谁的页）；**fields** = 自有页面字段（进 registry，全局词表）；**inject** = 注入区一行（宪法级披露，agent 进库即知）
 - **附检契约**：`scripts/check.py` 定义 `check(ctx)` 返回 `[{level, message}]`；只读零副作用，修复归命令/人；AST 静态校验契约形状
