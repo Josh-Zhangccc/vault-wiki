@@ -1,0 +1,21 @@
+id: lark-im
+version: 0.1
+depends:
+  - lark
+updated: 2026-09-19
+attachment:
+  - "wiki/lark/<profile>/im.md —— 域枢纽（`im` 策略块映射 + 涌现条件声明；随首个 profile 建域时自建，不随插件分发种子）"
+fields:
+  im: "块映射（im.md 枢纽）——策略键 → 一句话：群同步 / 涌现 / 关注 / 排除等人档涌现与同步范围声明"
+  key_members: "YAML 列表（群档）——关键人 wikilink（群主必在，余为已建档者）；不存全员名单"
+  department: "标量（人档）——部门，contact 解析填充"
+  position: "标量（人档）——职位，contact 解析填充"
+  chat_id: "标量（人档）——p2p 单聊 chat_id 锚（拉消息入口，无单聊缺省）"
+inject: "人际域（档案页，基座分区制）：枢纽 `<profile>/im.md`（`im` 块映射 = 策略：群同步 / 涌现 / 关注 / 排除）；群档 `<profile>/im/chats/`（kind: chat——`description` 群功能 + `key_members` 关键人 wikilink，正文沉淀区 = 议题记录 `## 日期 议题→结果` 只增、按需拉窗蒸馏经确认追加）；人档 `<profile>/im/people/`（kind: person，token = open_id，department/position 由 contact 解析，chat_id 为 p2p 锚，正文沉淀区 = 与我的关系，只增收敛）；人档涌现制（p2p / 点名 / 高频，条件写枢纽）——不建全量通讯录（contact 只解析不遍历）；群参与人只存关键不存全员；文件名清洗 + 重名 token 尾缀；发送类写操作永远须用户明示；隐私红线：主观关系内容不入框架仓库与 test-repo；trust lazy-refresh 同基座"
+usage:
+  - 建群档（lark-map 对账）：`im +chat-list` 全量 → token↔页 diff → 新建（群功能 description 蒸馏 + key_members 群主起步）/ 改机械区 / 退群标 deprecated
+  - 建人档（涌现，命中枢纽条件时手建）：contact 解析填 department / position；有 p2p 填 chat_id 锚；关系区留白起步
+  - 议题记录（按需）：`chat-messages-list` 拉时间窗 → contact 翻译人名、threads 展开话题楼 → 蒸馏成 `## YYYY-MM-DD 议题：X → 结果：Y` 一节 → 呈用户确认后追加（沉淀区只增）
+  - 关系更新：新观察追加一行（日期 + 一句话 + 证据 wikilink），旧断言不删改，收敛式靠人裁决
+checks:
+  - 语义项（v0.1 人工，附检后置）：群档 / 人档缺 token → error；kind 落 chat|person 之外 → error；type: lark 页落 im/ 之外而自称本域 → warning；人档沉淀区空白 → info（骨架常态）；正文沉淀区改写痕迹 → error（git 审计）

@@ -1,0 +1,15 @@
+id: tmp
+version: 0.1
+depends:
+  - wiki
+updated: 2026-09-19
+attachment:
+  - "wiki/tmp/ —— 临时区（路径即领地；实例数据，不入框架仓库与 test-repo 真实内容）"
+fields: {}
+inject: "临时区 `wiki/tmp/`（路径即领地，type: tmp 可标可不标、落领地外 → error）：草稿与解析中间产物住所，无留存承诺随时可清理；对派生层隐身——不入 index/tags、不作链接源、断链豁免（草稿断链 = 尚未写下，转正时闭合）；珍贵草稿及时转正（save → notes / 并入 project 决策区），转正即删稿；解析产物随手设 stale_after，超龄由 check 报清单、处置经确认（不自动删）；敏感中间产物建议实例 gitignore 本目录"
+usage:
+  - 写草稿 / 解析暂存：直接落 `wiki/tmp/<名>.md`，frontmatter 从简（title + 可选 stale_after）；断链随写随留
+  - 转正：内容经 save 蒸馏进 notes 或并入目标领地（project 决策区等），链接闭合后删稿（agent 自建稿自删，人稿经确认）
+  - 清理：check 报 stale 超龄清单 → 确认后删；长期不转正的草稿与用户裁决去留
+checks:
+  - 语义项（v0.1 人工，附检后置）：type: tmp 落 wiki/tmp/ 之外 → error；stale_after 已过 → warning（清理提示）；tmp 页数 > 20 → info（积压分诊）

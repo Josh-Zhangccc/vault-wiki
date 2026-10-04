@@ -1,0 +1,12 @@
+id: vault
+version: 0.6
+depends:
+  - domain
+  - wiki
+  - trust
+  - log
+updated: 2026-10-02
+attachment: []
+fields:
+  url: "来源 URL；URL 型资产的出处登记（来源保全），人工放入可选、agent 通道（delegate 等）必填；兼作他域借道 vault 落地的接口"
+inject: "默认域——真实资产仓库 `vault/`，wiki 侧属地 `wiki/vault/`：容纳任意格式资产，兼作他域落地仓储（url 字段即借道接口）；命令侧只增，删改自由属于人；布局规约归 structure 插件"

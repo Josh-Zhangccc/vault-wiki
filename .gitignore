@@ -10,5 +10,7 @@ connectors/*/*.egg-info/
 # exams/ 自测卷容器 = 实例数据，不入框架仓库（仅保留空种子 .gitkeep）
 /exams/*
 !/exams/.gitkeep
-# test-repo：独立沙箱整体出跟踪——实验内容（含真实数据）只在本地、不入史；框架镜像随部署重拷
-test-repo/
+# test-repo：沙箱白名单式追踪（2026-10-04 所有者裁定，回滚整体出跟踪）——仅 .meta/ 与 .agents/ 框架镜像入 git，实验内容（含虚构示例与真实数据）只在本地
+test-repo/*
+!test-repo/.meta/
+!test-repo/.agents/
