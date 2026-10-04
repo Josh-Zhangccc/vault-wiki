@@ -4,7 +4,7 @@
 
 ## 现状（2026-10-04）
 
-工程定位：**团队项目**（2026-10-02 转轨；红线与审合制见 AGENTS）——边用边改。架构终态：双根 domain（域契约）/ wiki（出身二分）+ 域实例族 vault（默认域）/ lark / project / email / bb（map·track·teach·quiz 四件族：track 管档案、teach/quiz 采集，素材落 notes/、提炼归 wiki）+ calendar + 横切件与 tmp，共二十八插件、无分层（拓扑+字母序注入；桥法则准则 11）；十三命令（清单见 README）。三投影一源（机制总纲见内核参考 skill）。docs/ 四件；test-repo/ 白名单镜像；connectors/ 首件 bb-cli v0.1.5。
+工程定位：**团队项目**（2026-10-02 转轨；红线与审合制见 AGENTS）——边用边改。架构终态：双根 domain（域契约）/ wiki（出身二分）+ 域实例族 vault / lark / project / email / bb（map·track·teach·quiz 四件族：track 管档案、teach/quiz 采集，素材落 notes/、提炼归 wiki）+ calendar + 横切件与 tmp，共二十八插件、无分层（拓扑+字母序注入；桥法则准则 11）；十三命令（见 README）。三投影一源（机制总纲见内核参考 skill）。docs/ 四件；test-repo/ 白名单镜像；connectors/ 首件 bb-cli v0.1.5。
 
 ## 阶段
 
@@ -21,7 +21,7 @@
 
 - 2026-10-04 机制文档开卷：内核参考 skill v2——机制总述（形态/依赖/投影/绑定/桥法则/分层 + bb 示例），部署侧权威住所；PLUGIN.md 批次随后
 - 2026-10-04 teach/quiz 改造（所有者裁定）：exams/ 废——素材归 bb notes/（ai 笔记平铺、考卷 testing/）、提炼归 wiki（判分回流 user.md）；bb-exam 更名 bb-quiz；bb-track v0.3 + 命令立设（用法挂载）；bb v0.7 notes/ 共居；teach v0.2 stale/冷启动
-- 2026-10-04 治理：组员账号 CaoSuan-CODE 未经 PR 直推 master（bb-teach/bb-exam 立设 + test-repo 整体出跟踪，署名冒用所有者）——插件内容补审通过保留；所有者裁定 test-repo 白名单追踪回正；master 开分支保护（require PR、禁 force push）；组内通报由所有者发
+- 2026-10-04 治理：组员账号 CaoSuan-CODE 未经 PR 直推 master（bb-teach/bb-exam 立设 + test-repo 整体出跟踪，署名冒用所有者）——插件内容补审通过保留；所有者裁定 test-repo 白名单追踪回正；master 开分支保护（require PR、禁 force push）；通报归所有者
 - 2026-10-04 bb-exam 立设：bb-track 的 testing 消费侧（插件 + 命令 + exams/ 容器）——指定范围+样例出英文题 + 中文解析，题型/难度对齐样例、不越界、解析回链 sm-N；插件 28、命令 12
 - 2026-10-04 bb-teach 立设：bb-track 教学消费侧（插件 + 命令同名）——提问即讲解，二维伸缩（熟练度×难度）+ 术语门槛动态化 + 三层反馈闭环（单轮反馈不落盘、仅显著信号经确认收敛 user.md）；插件 27、命令 11
 - 2026-10-02 全局域立宪三批（组会衍生）：准则 11 全局件/域件与桥；批一 kernel 必依校验 + log v0.15 域标 + 五基座补边；批二 todo/calendar/notes 派生归宿桥；批三 user-profile v0.4 认知桥 + bb-track 注册，mapping 边裁撤
