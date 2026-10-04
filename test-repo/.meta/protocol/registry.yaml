@@ -33,9 +33,6 @@ plugins:
       note: 块映射（课程身份页）——term_id（学期 machine id，如 _426_1）/ course_id（课程 machine id，如 _18030_1）/ term_status（现役|冻结——自 inbox terms 推导落页，消除单点依赖）；与属地目录一比一，即身份证明
     terms:
       note: 块映射（域根速写页）——term 目录名 → 一句话（现役/冻结标记 + term_id）；现役学期即拉取与速写的默认作用域
-  bb-exam:
-    exam:
-      note: 块映射（exams/ 试题与答案页）——course（课程代码）/ scope（出题范围）/ difficulty_median（难度中值 1-5，认知层级）/ types（题型列表，开放词表）/ source（样例 sample|作业 assignment|习惯 habit）/ answer_of（答案页回链试题文件名）
   bb-map:
     assessment:
       note: 块映射（assessments 聚合页机械区）——due（截止）/ submitted_at（提交时刻）/ score 与 possible（得分/满分）/ status（Graded|NeedsGrading|None）/ column_id 与 attempt_id（成绩册列与提交记录 id，对账锚点）——API 快照字段
@@ -47,6 +44,9 @@ plugins:
       note: 标量（courseware 知识点页）——根相对路径，指向 bb/ 内容单元（文件或目录）；路径即出身证明；完全未下载单元可缺省（清单标注未下载即构成记录）
     raw_sha256:
       note: 标量（attachments 1:1 代理页）——十六进制 SHA-256，可从 bb/ 机械重算
+  bb-quiz:
+    quiz:
+      note: 块映射（考卷页）——course（课程代码）/ scope（出题范围）/ difficulty_median（难度中值 1-5，认知层级）/ types（题型列表，开放词表）/ source（样例 sample|作业 assignment|习惯 habit）/ answer_of（答案页回链试题文件名）
   bb-track:
     form:
       note: 标量（bb 侧笔记文件可选）——text|image|mixed 形态
