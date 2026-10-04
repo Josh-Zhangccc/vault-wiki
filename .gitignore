@@ -11,3 +11,5 @@ connectors/*/*.egg-info/
 test-repo/*
 !test-repo/.meta/
 !test-repo/.agents/
+# agent 工具本地产物（ZCode 自管，不入库）
+.zcodeignore
