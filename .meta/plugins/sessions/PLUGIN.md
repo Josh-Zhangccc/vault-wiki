@@ -2,21 +2,21 @@
 
 ## 设计概要
 
-- **为什么存在**：会话沉淀的骨干结构——一次协作会话的知识以骨干页归档，高价值主题提升为独立笔记。原 wiki 思想中 sessions 是一等区，2026-09-08 并入 notes 时降格为 type、结构寄居 save 命令；本件立设后结构归位、命令回归纯操作——领地与命令职责分离的一例
+- **为什么存在**：会话沉淀的骨干结构——一次协作会话的知识以骨干页归档，高价值主题提升为独立笔记。原 wiki 思想中 sessions 是一等区；2026-09-08 并入 notes 时降格为 type，结构寄居 save 命令；本件立设后结构归位，命令回归纯操作——领地与命令职责分离的一例
 - **关键裁定**：
-  - 会话页是纪要非镜像：对话消逝后页面即真身，写作即出生（wiki 出身判定的样本）
-  - participants 必填（actor 约定）：单 agent 亦记，多 agent 协作直接扩展列表——为协作态留位
-  - 提升规则：独立高价值主题升 notes 页（出身是知识非会话记录），骨干页留 wikilink——蒸馏物归 notes
+  - 会话页是纪要非镜像：对话消逝后页面即真身，写作即出生——wiki 出身判定的样本
+  - participants 必填，用 actor 约定：单 agent 亦记；多 agent 协作直接扩展列表——为协作态留位
+  - 提升规则：独立高价值主题升 notes 页，出身是知识非会话记录；骨干页留 wikilink——蒸馏物归 notes
   - 不可再生区：只增不改
 
 ## Structure
 
-- `wiki/sessions/**`，默认命名 `YYYY-MM-DD-<主题>.md`
-- type: session（值集见 registry）；participants 必填：YAML 列表，actor 约定（human:名字 / process:流程名 / agent/模型标识）——单 agent 亦记，多 agent 协作直接扩展此列表
-- 骨干页形状：核心结论 / 决策与理由 / 非显然洞见 / 开放问题 / 相关页（提升出的主题以 wikilink 挂接）
-- 提升规则：独立高价值主题升为 `wiki/notes/` 页（出身是知识，非会话记录），骨干页留 wikilink
+- `wiki/sessions/**`；默认命名 `YYYY-MM-DD-<主题>.md`
+- type: session，值集见 registry；participants 必填：YAML 列表，actor 约定即 human:名字、process:流程名、agent/模型标识——单 agent 亦记，多 agent 协作直接扩展此列表
+- 骨干页形状：核心结论；决策与理由；非显然洞见；开放问题；相关页——提升出的主题以 wikilink 挂接
+- 提升规则：独立高价值主题升为 `wiki/notes/` 页，出身是知识非会话记录；骨干页留 wikilink
 
-## Example (backbone page)
+## Example
 
 `wiki/sessions/2026-09-12-雾港美术风格定稿.md`：
 
@@ -47,17 +47,17 @@ tags: [游戏/美术]
 ## Invariants
 
 - 不可再生区：管道与命令只增不改
-- 领地边界与 notes 互补：type: session 必落 `wiki/sessions/`，其余原生笔记落 `wiki/notes/`
-- 提升出的页面属 notes 领地，本插件只拥有骨干页
+- 领地边界与 notes 互补：type: session 必落 `wiki/sessions/`；其余原生笔记落 `wiki/notes/`
+- 提升出的页面属 notes 领地；本插件只拥有骨干页
 
 ## Changelog
 
-- 0.9（2026-09-23）补 wiki 依赖边——内侧插件挂 wiki 对齐 domain 0.1 声明（2026-09-22 域化批次漏收）
-- 0.8（2026-09-13）usage 样例指针显式化——补 `.meta/plugins/sessions/PLUGIN.md` 路径（零先验）
-- 0.7（2026-09-13）注入源移交 manifest：删 Checks / Usage / Inject / Attachments 节，md 回归纯文档
-- 0.6（2026-09-13）立「Usage」节：写侧契约交由命令注入区投影（单一文本源）
-- 0.5（2026-09-12）manifest 去 layer（废分层：注入序改依赖拓扑+字母序，方向校验撤除）
-- 0.4（2026-09-12）标识符英文化：节头 / 附检契约键 / 类型枚举 / 管道调用参数
-- 0.3（2026-09-12）披露修补：内联骨干页全形状样例（冷启动审计猜点：区内无实例）
-- 0.2（2026-09-11）manifest 增 commands: [save]（save 由本插件与 notes 共同驱动）
-- 0.1（2026-09-10）立设：自 save 命令长会话段与 notes 合并区抽出（2026-09-08「细分第二批」回归）；领地 `wiki/sessions/`，participants 用 actor 约定留多 agent 扩展点
+- 0.9 2026-09-23：补 wiki 依赖边——内侧插件挂 wiki，对齐 domain 0.1 声明；2026-09-22 域化批次漏收
+- 0.8 2026-09-13：usage 样例指针显式化——补 `.meta/plugins/sessions/PLUGIN.md` 路径，零先验
+- 0.7 2026-09-13：注入源移交 manifest——删 Checks、Usage、Inject、Attachments 节，md 回归纯文档
+- 0.6 2026-09-13：立「Usage」节——写侧契约交由命令注入区投影，单一文本源
+- 0.5 2026-09-12：manifest 去 layer——废分层：注入序改依赖拓扑加字母序，方向校验撤除
+- 0.4 2026-09-12：标识符英文化——节头、附检契约键、类型枚举、管道调用参数
+- 0.3 2026-09-12：披露修补——内联骨干页全形状样例；冷启动审计猜点：区内无实例
+- 0.2 2026-09-11：manifest 增 commands: [save]——save 由本插件与 notes 共同驱动
+- 0.1 2026-09-10：立设——自 save 命令长会话段与 notes 合并区抽出，2026-09-08「细分第二批」回归；领地 `wiki/sessions/`；participants 用 actor 约定留多 agent 扩展点
