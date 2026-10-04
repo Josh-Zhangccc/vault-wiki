@@ -19,13 +19,13 @@
 
 ## 过往操作
 
+- 2026-10-04 README/AGENTS 陈旧指针修正：入库边界对齐白名单裁定、quickstart 路径、文档指针区与沿革刷新
 - 2026-10-04 docs 迁 .meta/docs——根级纯为数据区
 - 2026-10-04 docs 重整：删 00/01/pointers（已迁，史留）；导论开卷（叙事线+指针思想收编）；quickstart v2（28/13 态）；research×2 留
 - 2026-10-04 机制文档开卷：内核参考 skill v2——机制总述（形态/依赖/投影/绑定/桥/分层 + bb 例），部署侧权威；PLUGIN.md 批次随后
-- 2026-10-04 teach/quiz 改造（所有者裁定）：exams/ 废——素材归 bb notes/（ai 笔记平铺、考卷 testing/）、提炼归 wiki（判分回流 user.md）；bb-exam 更名 bb-quiz；bb-track v0.3 + 命令立设；bb v0.7 共居；teach v0.2 stale/冷启动
-- 2026-10-04 治理：组员账号 CaoSuan-CODE 未经 PR 直推 master（bb-teach/bb-exam 立设 + test-repo 出跟踪，署名冒用）——插件内容补审通过保留；所有者裁定 test-repo 白名单追踪回正；master 开分支保护（require PR、禁 force push）；通报归所有者
-- 2026-10-04 bb-exam 立设：bb-track 的 testing 消费侧（插件 + 命令 + exams/ 容器）——指定范围+样例出英文题 + 中文解析，题型/难度对齐样例、不越界、解析回链 sm-N；插件 28、命令 12
-- 2026-10-04 bb-teach 立设：bb-track 教学消费侧（插件 + 命令同名）——提问即讲解，二维伸缩（熟练度×难度）+ 术语门槛动态化 + 三层反馈闭环（单轮反馈不落盘、仅显著信号经确认收敛 user.md）；插件 27、命令 11
+- 2026-10-04 teach/quiz 改造（所有者裁定）：exams/ 废——素材归 bb notes/、提炼归 wiki（判分回流）；bb-exam 更名 bb-quiz；bb-track v0.3 + 命令；bb v0.7 共居
+- 2026-10-04 治理：组员 CaoSuan-CODE 直推 master（署名冒用）——内容补审保留；test-repo 白名单追踪回正；master 开分支保护
+- 2026-10-04 bb-teach/bb-exam 初版立设（组员）：teach 二维伸缩讲解 + 三层反馈；exam 范围出题 + 判分——后经所有者裁定改造（见上）
 - 2026-10-02 全局域立宪三批（组会衍生）：准则 11 全局件/域件与桥；批一必依校验 + log 域标 + 基座补边；批二 todo/calendar/notes 派生归宿桥；批三认知桥 + bb-track 注册，mapping 边裁撤
 - 2026-10-02 bb 认知线：bb v0.4 笔记区 + bb-track 立设（user.md 两区制、锚 sm-N）携 wiki v0.7、bb-map 0.12；挂缺：课表源与课后触发
 - 2026-10-02 组会（第 3 周）：笔记裁定→bb-track 方向；产品线头脑风暴（teach/test 已立，addition_check/bridge 待议）
