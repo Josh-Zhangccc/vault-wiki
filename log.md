@@ -15,10 +15,10 @@
 - teach/quiz 首轮实测（伸缩/越界/判分）
 - AIE2040 归位补测 + 复问失败问题
 - bb-cli 用户信息优化；email 探路；日更 cron（部署侧）
-- 部署进个人库
 
 ## 过往操作
 
+- 2026-10-04 部署：首座实例库落地 april-linux（家目录即库根）——机器清理三清单、clone 工程仓为升级源、三十插件收敛 verify 全绿、首批设备页两件（april-linux / windows-dev，互设 related）；device v0.2 增工具环境摘要节（在场级、多设备互查注册表、外壳以指针引页）先此入库
 - 2026-10-04 插件：device v0.1 立设——设备档案复用 notes 领地（type: entity 建议、零 type 扩值），device 块映射最小键集（serial/purchased/warranty_until），附检临期扫描 30 天窗口、到期经确认受托入 todo；零命令零新领地
 - 2026-10-04 插件：语言中性化清理批——tag v0.11（「中文为主」拆除，主语言跟 language 页 default 键）+ 八命令主本输出语言节统一改写（map/lark-map/profile/bb-map/bb-track/asset-read/query/save）；纪律级语言硬编码清零（余 AGENTS 准则 7 为开发期实例事实）；calendar 月页节名待裁
 - 2026-10-04 插件：语言中性化批——language v0.2（缺席回落改跟会话语言，中文降为开发期实例事实；分层裁定：源对齐归域件、读者对齐归声明页键）+ bb-quiz v0.4（拆除「英文试题+中文解析」硬编码：题干源对齐、解析读者对齐 annotation 键）+ bb-teach v0.4（讲解语言取 teaching 键 + 术语锚点集优先全局表兜底）；国际生实例零改动可用
