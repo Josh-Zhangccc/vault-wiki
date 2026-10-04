@@ -7,5 +7,8 @@ connectors/*/*.egg-info/
 # bb/ 拉取物仓储 = 实例数据，不入框架仓库（仅保留空种子 .gitkeep）
 /bb/*
 !/bb/.gitkeep
+# exams/ 自测卷容器 = 实例数据，不入框架仓库（仅保留空种子 .gitkeep）
+/exams/*
+!/exams/.gitkeep
 # test-repo：独立沙箱整体出跟踪——实验内容（含真实数据）只在本地、不入史；框架镜像随部署重拷
 test-repo/
