@@ -19,6 +19,7 @@
 
 ## 过往操作
 
+- 2026-10-04 治理：组员账号 CaoSuan-CODE 未经 PR 直推 master（bb-teach/bb-exam 立设 + test-repo 整体出跟踪，署名冒用所有者）——插件内容补审通过保留；所有者裁定 test-repo 白名单式追踪（仅 .meta/.agents 镜像入库）回正未授权变更；master 开分支保护（require PR、禁 force push）；组内通报由所有者发出
 - 2026-10-04 bb-exam 立设：bb-track 的 testing 消费侧（插件 + 命令 + exams/ 容器）——指定范围+样例出英文题 + 中文解析，题型/难度对齐样例、不越界、解析回链 sm-N；插件 28、命令 12
 - 2026-10-04 bb-teach 立设：bb-track 教学消费侧（插件 + 命令同名）——提问即讲解，二维伸缩（熟练度×难度）+ 术语门槛动态化 + 三层反馈闭环（单轮反馈不落盘、仅显著信号经确认收敛 user.md）；插件 27、命令 11
 - 2026-10-02 全局域立宪三批（组会衍生）：准则 11 全局件/域件与桥；批一 kernel 必依校验 + log v0.15 域标 + 五基座补边（vault/project 原缺 trust）；批二 todo/calendar/notes 派生归宿桥；批三 user-profile v0.4 认知桥 + bb-track 注册，mapping 边裁撤（校验实测抓出误判）

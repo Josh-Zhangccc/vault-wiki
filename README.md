@@ -32,9 +32,9 @@
 |------|------|
 | `.meta/` | 原型核心：二十八插件（双根概念 domain / wiki + 域实例族 vault / lark / project / email / bb 及域内件 mapping / structure / lark-docs / lark-im / lark-calendar / bb-map / bb-track / bb-teach / bb-exam，横切件 calendar / notes / sessions / link / tag / trust / index / hot / log / user-profile / todo / tmp；无分层，注入序=依赖拓扑+字母序；全局件可声明桥——必依桥由内核校验域基座挂边完备）、十二命令主本、协议工件（registry / actions / experiments）、机械脚本（wiki_plugin_kernel / pipeline / wikilib，纯标准库零依赖） |
 | `connectors/` | 连接器主本：部署侧 CLI 事实接口 + skill 使用披露（`connectors/*/SKILL.md` 经 kernel deploy 落 `.agents/skills/`；bb-cli 首件） |
-| `wiki/`、`vault/`、`projects/`、`bb/` | 数据区骨架（保持空种子：内容属部署实例，工程内不积累——跑库验证走 test-repo） |
+| `wiki/`、`vault/`、`projects/`、`bb/`、`exams/` | 数据区骨架（保持空种子：内容属部署实例，工程内不积累——跑库验证走 test-repo；exams/ 为 bb-exam 自测卷容器） |
 | `.agents/skills/` | 命令与连接器 skill 部署副本 |
-| `test-repo/` | **独立测试沙箱**：框架镜像随根侧同步重拷，沙箱内实验内容只在本地、不入史；内部不感知本工程 |
+| `test-repo/` | **独立测试沙箱**：白名单式追踪——仅 `.meta/` 与 `.agents/` 框架镜像入库（随根侧同步重拷），沙箱内实验内容只在本地、不入史；内部不感知本工程 |
 | `docs/` | 设计档案：现行 `quickstart.md` 部署走查、`pointers.md` 指针机制、`research-user-profile.md` 设计依据；历史档案 `00-principles.md`、`01-okf.md` 不起现行作用 |
 
 ## 协作
