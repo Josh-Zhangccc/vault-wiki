@@ -31,7 +31,7 @@
 
 改框架的标准流（详见 AGENTS「提交流程」）：自最新 master 拉分支 → 改 manifest / 命令（动手前读 `log.md` 对表现状与下一步）→ `kernel all` 绿 → 小步提交（`模块: 概述`）→ push 开 PR → 管理者审合。
 
-**装一个新域**（把外部源接进来）：拷对应 connector 进 `connectors/` → plugin 命令装域插件 → 首次使用读连接器 skill 披露（如 bb-cli 的凭据与用法）。域的生长路径与判据见机制详解。
+**装一个新域**（把外部源接进来）：拷对应 connector 进 `connectors/` → plugin 命令装域插件 → 首次使用读连接器 skill 披露（如 bb-cli 的凭据与用法）。域的生长路径与判据见机制详解「域的生长」节。
 
 **实验**：一律落 test-repo 沙箱或本地——沙箱实验内容不入史，结论走对话报告或 docs。
 
