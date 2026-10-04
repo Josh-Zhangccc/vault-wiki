@@ -1,11 +1,11 @@
 # 快速开始：把 vault-wiki 装进你的库
 
-> 读者：想把框架装进自己目录（Obsidian 库或任意文件夹）的人，或替你动手的 agent。全程约十分钟；每一步都经干净目录彩排验证（2026-09-13，Windows / Git Bash / Python 3 纯标准库）。
+> 读者：想把框架装进自己目录（Obsidian 库或任意文件夹）的人，或替你动手的 agent。全程约十分钟；每一步都经干净目录彩排验证（2026-09-13 首验，2026-10-04 更新至 28 插件 / 13 命令态）。
 
 ## 你会得到什么
 
 - `vault/` 收真实资产（任意格式），`wiki/` 做代理页与原生笔记；md + 纯文件底座，Obsidian 只是可选 viewer
-- 一个替你经营库的 agent：放资产说「映射」、存洞见说「保存」、问知识说「检索」；索引 / 标签 / 热缓存 / 日志全自动维护
+- 一个替你经营库的 agent：放资产说「映射」、存洞见说「保存」、问知识说「检索」、学课程说「讲解答疑 / 出题自测 / 认知档案」；索引 / 标签 / 热缓存 / 日志全自动维护
 - additive 部署：目标库存量内容一个字节不动
 
 ## 前提
@@ -22,7 +22,7 @@
 
 **② 拷两棵树**到目标库根：`.meta/` 与 `.agents/skills/`——插件主本、命令主本与副本、协议工件、机械脚本全在其中。
 
-**③ 写目标库 AGENTS.md**：外壳自拟（一段身份 + 布局说明）；注入区标记块（`<!-- wiki-inject:start -->` 至 `<!-- wiki-inject:end -->`）从本仓库 AGENTS.md **原样**拷入，一字不改——结构契约的唯一源（范例见 `test-repo/AGENTS.md`）。目标库已有 AGENTS.md 的，只贴注入区块。
+**③ 写目标库 AGENTS.md**：外壳自拟（一段身份 + 布局说明）；注入区标记块（`<!-- wiki-inject:start -->` 至 `<!-- wiki-inject:end -->`）从本仓库 AGENTS.md **原样**拷入，一字不改——结构契约的唯一源。目标库已有 AGENTS.md 的，只贴注入区块。
 
 **④ 建四个空目录**：`vault/`、`wiki/notes/`、`wiki/sessions/`、`wiki/vault/`。派生页（index / tags / hot / log）**不用手造**：首跑管道自建，根索引的 `format_version` 也由管道渲染。
 
@@ -32,7 +32,7 @@
 python .meta/scripts/wiki_plugin_kernel.py all
 ```
 
-预期：11 插件 validate 通过、注入区 unchanged、命令副本 in sync。报错即拷贝不完整，修完重跑。
+预期：28 插件 validate 通过、注入区 unchanged、命令副本 in sync。报错即拷贝不完整，修完重跑。
 
 ## 首跑验证
 
@@ -50,9 +50,15 @@ python .meta/scripts/wiki_plugin_kernel.py all
 | 检索 | 热缓存 → 索引 → grep 综合回答（带 wikilink 引用） |
 | 检查 | 库健康审计 |
 | 插件 | 装卸结构插件 |
-| 内核参考 | wiki_plugin_kernel 用法 |
+| 画像 | 维护对你的持续认知档案 |
+| 认知档案 / 讲解答疑 / 出题自测 | bb 域课程学习族（需先接课程域，见下） |
+| 内核参考 | wiki_plugin_kernel 用法与机制总纲 |
 
-命令细节以 `.agents/skills/` 各 SKILL.md 披露为准。
+命令细节以 `.agents/skills/` 各 SKILL.md 披露为准（十三个，清单见 README）。
+
+## 域插件可选
+
+核心部署只含 vault / wiki 通用能力。外部域按需启用：**bb 课程域**（Blackboard，连接器 `connectors/bb-cli/`，凭据只存本机）、**lark 域**（飞书，lark-cli）、**email 域**——接法 = 拷对应 connector + 装域插件（插件命令装卸），首次使用各连接器 skill 自带披露。
 
 ## 升级与卸载
 
