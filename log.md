@@ -15,9 +15,11 @@
 - teach/quiz 首轮实测（伸缩/越界/判分）
 - AIE2040 归位补测 + 复问失败问题
 - bb-cli 用户信息优化；email 探路；日更 cron（部署侧）
+- sis-cli v0.2：grades 组件 term 交互查询与结构化解析、周课表星期归属、学费/考试计划组件登记（raw 探路）
 
 ## 过往操作
 
+- 2026-10-05 连接器：sis-cli v0.1 立设——SIS（PeopleSoft CS）只读 CLI：同源 ADFS OAuth2 复用、code 经 CUSZ_SSO_LOGIN 表单消费、PS_DEVICEFEATURES 破壳、psc+PTCNAV 组件直击；schedule 全解析（周事件+学期课程）、grades/center/history/appt 文本摘要、raw 透传；只读红线（选课类永不提供）；实证含组件 URL 双源（浏览器菜单+HTTP）
 - 2026-10-04 部署收整：april-linux 实例库自 ~ 迁 ~/repo（库与上游原本分离——~/vault-wiki 为升级源，connectors 随迁）；家级 .agents 回归纯 lark skill，孤儿警告根治；dsh 升 0.2.0-rc.2 并修四插件适配
 - 2026-10-04 部署：首座实例库落地 april-linux（家目录即库根）——机器清理三清单、clone 工程仓为升级源、三十插件收敛 verify 全绿、首批设备页两件（april-linux / windows-dev，互设 related）；device v0.2 增工具环境摘要节（在场级、多设备互查注册表、外壳以指针引页）先此入库
 - 2026-10-04 插件：device v0.1 立设——设备档案复用 notes 领地（type: entity 建议、零 type 扩值），device 块映射最小键集（serial/purchased/warranty_until），附检临期扫描 30 天窗口、到期经确认受托入 todo；零命令零新领地
