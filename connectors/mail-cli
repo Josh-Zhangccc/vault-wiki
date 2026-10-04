@@ -1,16 +1,22 @@
 #!/usr/bin/env python3
 """mail-cli：wiki email 域的最小只读连接器（Microsoft Graph, OAuth2 device flow）。
 
-用法：
-  mail-cli auth start --profile <名>
-  mail-cli auth complete --profile <名> --device-code <code>
-  mail-cli auth status --profile <名>
-  mail-cli fetch --profile <名> [--folder inbox] [--days 7] [--limit 30]
-  mail-cli read --profile <名> --id <message-id>      # 读单封正文（截断 8000 字）
+用法（--account 即插件契约的账户，= wiki/email/<账户>/ 目录名 = profile 名）：
+  mail-cli auth start --account <名>                # 发起 device flow
+  mail-cli auth complete --account <名>             # 轮询至浏览器确认
+  mail-cli auth status --account <名>
+  mail-cli profiles                                 # 账户清单（速写遍历入口）
+  mail-cli folders --account <名> [--all]           # 文件夹树（--all 含子层）
+  mail-cli fetch --account <名> [--folder inbox] [--since D] [--days 7] [--from A]
+                  [--unread] [--headers] [--limit 30] [--next <url>]
+  mail-cli read --account <名> --id <id> [--text]   # 单封正文；--text 抽纯文本
+  mail-cli search --account <名> --query <q> [--folder F] [--limit 10]
+  mail-cli attach ls --account <名> --id <id>
+  mail-cli attach get --account <名> --id <id> --att <aid> --dest <目录>
 
-只读（Graph GET 不改变已读状态），凭据只存本机 ~/.config/mail-cli/<profile>.json，不入库。
+只读（Graph GET 不改变已读状态，PEEK 语义），凭据只存本机 ~/.config/mail-cli/<名>.json，不入库。
 """
-import argparse, json, os, sys, time, urllib.request, urllib.parse
+import argparse, json, os, re, sys, time, urllib.request, urllib.parse, urllib.error
 from datetime import datetime, timedelta, timezone
 
 TENANT = "common"
@@ -18,65 +24,85 @@ CLIENT_ID = "14d82eec-204b-4c2f-b7e8-296a70dab67e"  # Microsoft Graph PowerShell
 SCOPE = "Mail.Read offline_access"
 GRAPH = "https://graph.microsoft.com/v1.0"
 
-def cfg_path(p): return os.path.expanduser(f"~/.config/mail-cli/{p}.json")
+def cfg_dir():
+    d = os.path.expanduser("~/.config/mail-cli")
+    os.makedirs(d, exist_ok=True)
+    return d
+def cfg_path(p): return os.path.join(cfg_dir(), f"{p}.json")
 def load_tok(p):
     f = cfg_path(p)
     return json.load(open(f)) if os.path.exists(f) else None
-def save_tok(p, t):
-    f = cfg_path(p)
-    os.makedirs(os.path.dirname(f), exist_ok=True)
-    json.dump(t, open(f, "w"))
+def save_tok(p, t): json.dump(t, open(cfg_path(p), "w"))
 
-def http(url, data=None, tok=None):
+def out(d): print(json.dumps(d, ensure_ascii=False))
+def fail(e): sys.exit(json.dumps({"ok": False, "error": e}, ensure_ascii=False))
+
+def http(url, data=None, tok=None, binary=False):
     body = urllib.parse.urlencode(data).encode() if data else None
     req = urllib.request.Request(url, data=body)
     if data: req.add_header("Content-Type", "application/x-www-form-urlencoded")
     if tok: req.add_header("Authorization", f"Bearer {tok}")
-    with urllib.request.urlopen(req) as r:
-        return json.loads(r.read())
+    try:
+        with urllib.request.urlopen(req) as r:
+            b = r.read()
+            return b if binary else json.loads(b)
+    except urllib.error.HTTPError as e:
+        try: err = json.loads(e.read()).get("error", {})
+        except Exception: err = {"message": str(e)}
+        if isinstance(err, dict): err = err.get("code") or err.get("message") or str(err)
+        fail(err)
 
-def refresh(profile):
-    tok = load_tok(profile)
-    if not tok: sys.exit(json.dumps({"ok": False, "error": "not_authorized"}))
+def refresh(account):
+    tok = load_tok(account)
+    if not tok: fail("not_authorized")
     if tok.get("expires_at", 0) > time.time() + 60: return tok["access_token"]
     nt = http(f"https://login.microsoftonline.com/{TENANT}/oauth2/v2.0/token", {
         "client_id": CLIENT_ID, "grant_type": "refresh_token",
         "refresh_token": tok["refresh_token"], "scope": SCOPE})
     nt["expires_at"] = time.time() + nt.get("expires_in", 3600)
     nt["account"] = tok.get("account")
-    save_tok(profile, nt)
+    save_tok(account, nt)
     return nt["access_token"]
 
-def form(m):
-    return {"id": m["id"], "received": m.get("receivedDateTime"),
-            "from": (m.get("from") or {}).get("emailAddress", {}).get("address"),
-            "subject": m.get("subject"), "preview": m.get("bodyPreview", "")[:200]}
+# ---------- 视图 ----------
 
-def main():
-    ap = argparse.ArgumentParser()
-    sp = ap.add_subparsers(dest="cmd", required=True)
-    a = sp.add_parser("auth"); asp = a.add_subparsers(dest="act", required=True)
-    for act in ("start", "complete", "status"):
-        p = asp.add_parser(act); p.add_argument("--profile", required=True)
-        if act == "complete": p.add_argument("--device-code", required=True)
-    f = sp.add_parser("fetch")
-    f.add_argument("--profile", required=True)
-    f.add_argument("--folder", default="inbox")
-    f.add_argument("--days", type=int, default=7)
-    f.add_argument("--limit", type=int, default=30)
-    r = sp.add_parser("read"); r.add_argument("--profile", required=True); r.add_argument("--id", required=True)
-    s = sp.add_parser("search"); s.add_argument("--profile", required=True); s.add_argument("--query", required=True); s.add_argument("--limit", type=int, default=10)
-    args = ap.parse_args()
+def strip_html(h):
+    h = re.sub(r"(?is)<(script|style).*?>.*?</\1>", "", h)
+    h = re.sub(r"(?i)<br\s*/?>", "\n", h)
+    h = re.sub(r"(?i)</(p|div|tr|li|h[1-6])>", "\n", h)
+    h = re.sub(r"<[^>]+>", "", h)
+    import html as H
+    h = H.unescape(h)
+    return re.sub(r"\n{3,}", "\n\n", h).strip()
 
-    if args.cmd == "auth" and args.act == "start":
+def hdrs(m):
+    hs = m.get("internetMessageHeaders") or []
+    return {h["name"].lower(): h["value"] for h in hs if h.get("name")}
+
+def form(m, with_headers=False):
+    d = {"id": m["id"], "conversation": m.get("conversationId"),
+         "received": m.get("receivedDateTime"),
+         "from": (m.get("from") or {}).get("emailAddress", {}).get("address"),
+         "subject": m.get("subject"), "unread": not m.get("isRead", True),
+         "preview": m.get("bodyPreview", "")[:200]}
+    if with_headers:
+        h = hdrs(m)
+        d["message_id"] = h.get("message-id")
+        if h.get("references"): d["references"] = h["references"]
+    return d
+
+# ---------- 命令 ----------
+
+def cmd_auth(args):
+    if args.act == "start":
         d = http(f"https://login.microsoftonline.com/{TENANT}/oauth2/v2.0/devicecode",
                  {"client_id": CLIENT_ID, "scope": SCOPE})
-        save_tok(args.profile + ".pending", {"device_code": d["device_code"], "interval": d.get("interval", 5)})
-        print(json.dumps({"ok": True, "verification_url": d.get("verification_url") or d.get("verification_uri"),
-                          "user_code": d["user_code"], "expires_in": d.get("expires_in", 900)}))
-    elif args.cmd == "auth" and args.act == "complete":
-        pend = load_tok(args.profile + ".pending")
-        if not pend: sys.exit(json.dumps({"ok": False, "error": "no_pending_start"}))
+        save_tok(args.account + ".pending", {"device_code": d["device_code"], "interval": d.get("interval", 5)})
+        out({"ok": True, "verification_url": d.get("verification_url") or d.get("verification_uri"),
+             "user_code": d["user_code"], "expires_in": d.get("expires_in", 900)})
+    elif args.act == "complete":
+        pend = load_tok(args.account + ".pending")
+        if not pend: fail("no_pending_start")
         deadline = time.time() + 900
         while time.time() < deadline:
             try:
@@ -86,47 +112,147 @@ def main():
                     "device_code": pend["device_code"], "scope": SCOPE})
                 tok["expires_at"] = time.time() + tok.get("expires_in", 3600)
                 try:
-                    me = http("https://graph.microsoft.com/v1.0/me", tok=tok["access_token"])
+                    me = http(f"{GRAPH}/me", tok=tok["access_token"])
                     tok["account"] = me.get("userPrincipalName")
-                except Exception: pass
-                save_tok(args.profile, tok)
-                os.remove(cfg_path(args.profile + ".pending"))
-                print(json.dumps({"ok": True, "account": tok.get("account")}))
+                except SystemExit: pass
+                save_tok(args.account, tok)
+                os.remove(cfg_path(args.account + ".pending"))
+                out({"ok": True, "account": tok.get("account")})
                 return
             except urllib.error.HTTPError as e:
                 err = json.loads(e.read()).get("error")
                 if err == "authorization_pending": time.sleep(pend.get("interval", 5))
-                else: sys.exit(json.dumps({"ok": False, "error": err}))
-        sys.exit(json.dumps({"ok": False, "error": "timeout"}))
-    elif args.cmd == "auth" and args.act == "status":
-        tok = load_tok(args.profile)
-        print(json.dumps({"ok": bool(tok), "account": (tok or {}).get("account")}))
-    elif args.cmd == "fetch":
-        at = refresh(args.profile)
+                else: fail(err)
+        fail("timeout")
+    elif args.act == "status":
+        tok = load_tok(args.account)
+        out({"ok": bool(tok), "account": (tok or {}).get("account")})
+
+def cmd_profiles(_):
+    accs = []
+    for f in sorted(os.listdir(cfg_dir())):
+        if f.endswith(".json") and not f.endswith(".pending.json"):
+            tok = load_tok(f[:-5])
+            accs.append({"account": f[:-5], "address": (tok or {}).get("account"),
+                         "authorized": bool(tok)})
+    out({"ok": True, "count": len(accs), "profiles": accs})
+
+def walk_folders(tok, parent=None, depth=0, max_depth=1):
+    q = "$top=50"
+    base = (f"{GRAPH}/me/mailFolders?{q}" if parent is None
+            else f"{GRAPH}/me/mailFolders/{urllib.parse.quote(parent)}/childFolders?{q}")
+    res = []
+    for f in http(base, tok=tok).get("value", []):
+        res.append({"id": f["id"], "name": f["displayName"], "path": f["displayName"],
+                    "unread": f.get("unreadItemCount", 0), "total": f.get("totalItemCount", 0),
+                    "children": f.get("childFolderCount", 0)})
+        if depth < max_depth and f.get("childFolderCount"):
+            for c in walk_folders(tok, f["id"], depth + 1, max_depth):
+                c["path"] = f"{f['displayName']}/{c['path']}"
+                res.append(c)
+    return res
+
+def cmd_folders(args):
+    at = refresh(args.account)
+    fs = walk_folders(at, max_depth=99 if args.all else 1)
+    out({"ok": True, "count": len(fs), "folders": fs})
+
+def cmd_fetch(args):
+    at = refresh(args.account)
+    filt = []
+    if args.since:
+        s = args.since if "T" in args.since else f"{args.since}T00:00:00Z"
+        filt.append(f"receivedDateTime ge {s}")
+    elif args.days is not None:
         since = (datetime.now(timezone.utc) - timedelta(days=args.days)).strftime("%Y-%m-%dT%H:%M:%SZ")
-        q = urllib.parse.urlencode({
-            "$top": args.limit, "$orderby": "receivedDateTime desc",
-            "$select": "id,receivedDateTime,from,subject,bodyPreview",
-            "$filter": f"receivedDateTime ge {since}"})
-        base = f"{GRAPH}/me/mailFolders/{args.folder}/messages?{q}" if args.folder != "inbox" else f"{GRAPH}/me/messages?{q}"
-        d = http(base, tok=at)
-        print(json.dumps({"ok": True, "count": len(d.get("value", [])),
-                          "messages": [form(m) for m in d.get("value", [])]}, ensure_ascii=False))
-    elif args.cmd == "read":
-        at = refresh(args.profile)
-        d = http(f"{GRAPH}/me/messages/{urllib.parse.quote(args.id)}", tok=at)
-        print(json.dumps({"ok": True, "subject": d.get("subject"),
-                          "from": (d.get("from") or {}).get("emailAddress", {}).get("address"),
-                          "received": d.get("receivedDateTime"),
-                          "body": d.get("body", {}).get("content", "")[:8000]}, ensure_ascii=False))
-    elif args.cmd == "search":
-        at = refresh(args.profile)
-        q = urllib.parse.quote(f'"{args.query}"')
-        req = urllib.request.Request(f"{GRAPH}/me/messages?$search={q}&$top={args.limit}")
-        req.add_header("Authorization", f"Bearer {at}")
-        with urllib.request.urlopen(req) as resp:
-            d = json.loads(resp.read())
-        print(json.dumps({"ok": True, "count": len(d.get("value", [])),
-                          "messages": [form(m) for m in d.get("value", [])]}, ensure_ascii=False))
+        filt.append(f"receivedDateTime ge {since}")
+    if args.unread: filt.append("isRead eq false")
+    if args.from_addr and "@" in args.from_addr:
+        filt.append(f"from/emailAddress/address eq '{args.from_addr}'")
+    q = {"$top": args.limit, "$orderby": "receivedDateTime desc",
+         "$select": ("id,conversationId,receivedDateTime,from,subject,bodyPreview,isRead"
+                     + (",internetMessageHeaders" if args.headers else ""))}
+    if filt: q["$filter"] = " and ".join(filt)
+    url = args.next or (f"{GRAPH}/me/mailFolders/{args.folder}/messages?{urllib.parse.urlencode(q)}")
+    d = http(url, tok=at)
+    msgs = [form(m, args.headers) for m in d.get("value", [])]
+    if args.from_addr and "@" not in args.from_addr:  # 子串匹配退回客户端
+        msgs = [m for m in msgs if (m["from"] or "").lower().find(args.from_addr.lower()) >= 0]
+    out({"ok": True, "count": len(msgs), "next": d.get("@odata.nextLink"),
+         "messages": msgs})
+
+def cmd_read(args):
+    at = refresh(args.account)
+    d = http(f"{GRAPH}/me/messages/{urllib.parse.quote(args.id)}"
+             f"?$select=id,subject,conversationId,body,internetMessageHeaders", tok=at)
+    body = d.get("body", {}).get("content", "")
+    if args.text and d.get("body", {}).get("contentType") == "html":
+        body = strip_html(body)
+    out({"ok": True, "subject": d.get("subject"),
+         "from": (d.get("from") or {}).get("emailAddress", {}).get("address"),
+         "received": d.get("receivedDateTime"),
+         "message_id": hdrs(d).get("message-id"),
+         "references": hdrs(d).get("references"),
+         "body": body[:8000]})
+
+def cmd_search(args):
+    at = refresh(args.account)
+    q = urllib.parse.quote(f'"{args.query}"')
+    url = (f"{GRAPH}/me/mailFolders/{args.folder}/messages?$search={q}&$top={args.limit}"
+           if args.folder else f"{GRAPH}/me/messages?$search={q}&$top={args.limit}")
+    d = http(url, tok=at)
+    out({"ok": True, "count": len(d.get("value", [])),
+         "messages": [form(m) for m in d.get("value", [])]})
+
+def cmd_attach(args):
+    at = refresh(args.account)
+    if args.act == "ls":
+        d = http(f"{GRAPH}/me/messages/{urllib.parse.quote(args.id)}/attachments", tok=at)
+        out({"ok": True, "count": len(d.get("value", [])),
+             "attachments": [{"id": a["id"], "name": a.get("name"), "size": a.get("size"),
+                              "mime": a.get("contentType"), "inline": a.get("isInline", False)}
+                             for a in d.get("value", [])]})
+    else:
+        os.makedirs(args.dest, exist_ok=True)
+        url = f"{GRAPH}/me/messages/{urllib.parse.quote(args.id)}/attachments/{urllib.parse.quote(args.att, safe='')}/$value"
+        b = http(url, tok=at, binary=True)
+        path = os.path.join(args.dest, os.path.basename(args.name or "attachment.bin"))
+        open(path, "wb").write(b)
+        out({"ok": True, "saved": path, "bytes": len(b)})
+
+def main():
+    ap = argparse.ArgumentParser(prog="mail-cli")
+    sp = ap.add_subparsers(dest="cmd", required=True)
+
+    a = sp.add_parser("auth"); asp = a.add_subparsers(dest="act", required=True)
+    for act in ("start", "complete", "status"):
+        p = asp.add_parser(act); p.add_argument("--account", required=True)
+
+    sp.add_parser("profiles")
+
+    f = sp.add_parser("folders"); f.add_argument("--account", required=True); f.add_argument("--all", action="store_true")
+
+    f = sp.add_parser("fetch"); f.add_argument("--account", required=True)
+    f.add_argument("--folder", default="inbox")
+    f.add_argument("--since"); f.add_argument("--days", type=int, default=None)
+    f.add_argument("--from", dest="from_addr"); f.add_argument("--unread", action="store_true")
+    f.add_argument("--headers", action="store_true")
+    f.add_argument("--limit", type=int, default=30); f.add_argument("--next")
+
+    r = sp.add_parser("read"); r.add_argument("--account", required=True)
+    r.add_argument("--id", required=True); r.add_argument("--text", action="store_true")
+
+    s = sp.add_parser("search"); s.add_argument("--account", required=True)
+    s.add_argument("--query", required=True); s.add_argument("--folder"); s.add_argument("--limit", type=int, default=10)
+
+    t = sp.add_parser("attach"); tsp = t.add_subparsers(dest="act", required=True)
+    for act in ("ls", "get"):
+        p = tsp.add_parser(act); p.add_argument("--account", required=True); p.add_argument("--id", required=True)
+        if act == "ls": continue
+        p.add_argument("--att", required=True); p.add_argument("--dest", required=True); p.add_argument("--name")
+
+    args = ap.parse_args()
+    {"auth": cmd_auth, "profiles": cmd_profiles, "folders": cmd_folders,
+     "fetch": cmd_fetch, "read": cmd_read, "search": cmd_search, "attach": cmd_attach}[args.cmd](args)
 
 if __name__ == "__main__": main()
