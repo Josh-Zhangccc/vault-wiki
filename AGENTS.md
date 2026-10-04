@@ -88,8 +88,8 @@
 - 原生会话 `wiki/sessions/`：会话骨干页（type: session，participants 必填=actor 列表，默认命名 YYYY-MM-DD-<主题>）；高价值主题提升为 `wiki/notes/` 独立页并回链；不可再生区，命令只增不改
 <!-- /plugin:sessions -->
 
-<!-- plugin:tag v0.10 -->
-- 页面 `tags` 字段：YAML 列表，中文为主、英文专名小写 kebab-case，层级 `父/子` ≤2，每页 ≤5；开放语义分类，禁止复述 type
+<!-- plugin:tag v0.11 -->
+- 页面 `tags` 字段：YAML 列表，主语言跟行文声明页 `wiki/language.md` 的 default 键（页面或缺席键跟会话语言）、英文 tag 小写 kebab-case，层级 ≤2（`/` 分隔），每页 ≤5；开放语义分类，禁止复述 type
 <!-- /plugin:tag -->
 
 <!-- plugin:tmp v0.1 -->

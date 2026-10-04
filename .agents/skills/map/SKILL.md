@@ -29,7 +29,7 @@ description: "把 vault/ 中的资产映射为 wiki 代理页：SHA-256、镜像
 
 ## Language
 
-生成内容中文为主，英文专名与路径保留原形。
+产出语言取行文声明页 `wiki/language.md` 的 default 键（页面或缺席键跟会话语言）；专名与路径保留原形。
 
 ## Parameters
 
@@ -55,7 +55,7 @@ description: "把 vault/ 中的资产映射为 wiki 代理页：SHA-256、镜像
 
 <!-- usage:tag -->
 - 写入前读 `wiki/tags.md`，优先复用既有词
-- 新词规范：中文为主、英文小写 kebab-case、层级 `父/子` ≤2、每页 ≤5、禁复述 type
+- 新词规范：主语言跟 language 页 default 键（缺席跟会话语言，防中英混杂碎片化）、英文小写 kebab-case、层级 ≤2、每页 ≤5、禁复述 type
 <!-- /usage:tag -->
 
 <!-- usage:index -->
