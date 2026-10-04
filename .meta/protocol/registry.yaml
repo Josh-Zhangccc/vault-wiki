@@ -62,7 +62,7 @@ plugins:
       note: 块映射——account（所属账户，= 所在目录名）/ kind（页形态：account 身份页 / thread 线程档 / source 源档 / person 人档，开放词表）/ token（身份证明：人档 = 邮箱地址、单件 = Message-ID 一比一、线程档 = members 列表）/ url（webmail 或 message:// 深链）
   language:
     language:
-      note: 块映射（声明页）——规范键 → 一句话规则（开放词表，如 default/proper-noun/code），产出语言与行文基线
+      note: 块映射（声明页）——规范键 → 一句话规则（开放词表，如 default/teaching/annotation），产出语言与行文基线
     terms:
       note: 块映射（声明页）——术语原文 → 统一译名（单行值），跨 session 译名一致性查询件
   lark:

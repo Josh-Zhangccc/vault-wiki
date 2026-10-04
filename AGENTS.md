@@ -68,8 +68,8 @@
 - 热缓存 `wiki/hot.md`：最近变更摘要（≤25 条、<5 日、单条 ≤200 字），agent 进库先读此页；写前先淘汰越界
 <!-- /plugin:hot -->
 
-<!-- plugin:language v0.1 -->
-- 行文声明页 `wiki/language.md`（type: language）：产出语言与行文基线——frontmatter `language` 块映射 = 规范键→一句话规则（开放词表）+ `terms` 块映射 = 术语原文→统一译名，正文沉淀译法注记（只增）；agent 产出写作物落笔前先读此页，页面缺席 = 默认姿态（中文为主、专名保留原文、代码路径命令不译）；本页是默认基线非强制——域件语言特例优先；术语涌现制——无表术语首现括注原文、反复命中才登记，人直接编辑合法
+<!-- plugin:language v0.2 -->
+- 行文声明页 `wiki/language.md`（type: language）：产出语言与行文基线——frontmatter `language` 块映射 = 规范键→一句话规则（开放词表；域件消费键先例：teaching 讲解（bb-teach）、annotation 解析（bb-quiz））+ `terms` 块映射 = 术语原文→统一译名，正文沉淀译法注记（只增）；agent 产出写作物落笔前先读此页，页面或缺席键 = 跟会话语言（对话用什么语言产出就用什么；专名、代码、路径、命令、文件名恒保留原文——语言中性纪律）；框架不预设具体语言，本页是默认基线非强制——域件源对齐纪律（如试题语言跟课程材料）优先；术语涌现制——无表术语首现括注原文、反复命中才登记，人直接编辑合法
 <!-- /plugin:language -->
 
 <!-- plugin:link v0.14 -->
@@ -164,12 +164,12 @@
 - bb 认知档案：每课课程根 user.md（属地域内原生页首例，wiki v0.7 两形）——`## 认知读数` 收敛覆写（锚 courseware sm-N，粗粒度自陈合法，状态词开放；含目标层：课程目标 + 短期优先带时效）+ `## 证据流` 只增（日期+出处+断言+回链）；信号权重 human>machine>ai 笔记（弱证据，人复核升权）；应知不存（差距现算）、错题题级归 assessments 复盘、统计现算；更新双轨（agent 显著信号自发/用户明示），建档懒惰式；采集通道（bb v0.7 共居）——teach 显著答疑落 notes/ ai 笔记（弱证据）、quiz 自测判分落 notes/testing/（machine 证据），入流经用户确认、用法投影挂 bb-track 命令；学期即边界随 term_status 冻结；trust 天花板 machine-confirmed（含 human 证据升 human-reviewed），stale_after 默认 14 天可覆写；笔记区 notes/ 只读，可选属性 origin/form/stage（stage 标记属人）；认知经 user-profile 桥登记——建档时画像在场则维护其 `## 域认知` 节一行（bb + 路径形），缺席跳过不代建
 <!-- /plugin:bb-track -->
 
-<!-- plugin:bb-quiz v0.3 -->
-- 出题自测 bb-quiz（bb-track 的 testing 消费侧）：用户指定范围 + 可选样例 → 生成英文试题（题型与难度中值对齐样例，无样例回落已知作业、再回落用户习惯）+ 中文解析（每题标知识点 sm-N 位置）；知识点全集 = courseware sm-N、范围 = 用户指定子集、不越界（除非用户明示）；选题与难度分布参照 bb-track 熟练度/目标层/错题（stale 保守档、冷启动全场未锚点均匀出题），教学纪要（notes/ ai 笔记）best-effort 按需读；考卷落 bb/<term>/<course>/notes/testing/<名>-试题.md + -答案.md（origin: ai，只增）；判分（作答后）= 答案页追记 `## 判分` + 经确认回写 user.md 证据流（machine 自测）；写后 log 行（other --domain bb）+ verify
+<!-- plugin:bb-quiz v0.4 -->
+- 出题自测 bb-quiz（bb-track 的 testing 消费侧）：用户指定范围 + 可选样例 → 生成试题（题型与难度中值对齐样例，无样例回落已知作业、再回落用户习惯；题干语言源对齐——跟样例/已知作业/课程材料）+ 解析（语言读者对齐——取行文声明页 `wiki/language.md` 的 annotation 键，页面或缺席键跟会话语言；每题标知识点 sm-N 位置）；知识点全集 = courseware sm-N、范围 = 用户指定子集、不越界（除非用户明示）；选题与难度分布参照 bb-track 熟练度/目标层/错题（stale 保守档、冷启动全场未锚点均匀出题），教学纪要（notes/ ai 笔记）best-effort 按需读；考卷落 bb/<term>/<course>/notes/testing/<名>-试题.md + -答案.md（origin: ai，只增）；判分（作答后）= 答案页追记 `## 判分` + 经确认回写 user.md 证据流（machine 自测）；写后 log 行（other --domain bb）+ verify
 <!-- /plugin:bb-quiz -->
 
-<!-- plugin:bb-teach v0.3 -->
-- 教学消费侧 bb-teach（bb-track 的 teaching 消费侧）：提问即讲解——问题定位 courseware sm-N（query 检索 + bb-map 收窄）→ 读 bb-track 认知档案（读数/证据/目标，stale 先核对、未核对前保守档）→ 按熟练度×难度二维伸缩讲解（已知略讲/反问、未知讲透）+ 术语以用户已锚点集为准 + 错题/目标注入 + 锚点回链；三层反馈闭环——单轮反馈不落盘、显著答疑沉淀 ai 笔记落 notes/（origin: ai 弱证据，一篇一问回链锚点）、仅显著信号（跨会话稳定/主动应用/machine 验证）才经确认收敛 user.md（写回委托 bb-track 契约）；讲解对话不写 log、笔记落盘与认知收敛走写后管道；档案缺席（冷启动）全场按未锚点讲、不拒答
+<!-- plugin:bb-teach v0.4 -->
+- 教学消费侧 bb-teach（bb-track 的 teaching 消费侧）：提问即讲解——问题定位 courseware sm-N（query 检索 + bb-map 收窄）→ 读 bb-track 认知档案（读数/证据/目标，stale 先核对、未核对前保守档）→ 按熟练度×难度二维伸缩讲解（已知略讲/反问、未知讲透）+ 讲解语言读者对齐（取行文声明页 `wiki/language.md` 的 teaching 键，页面或缺席键跟会话语言）+ 术语先用户已锚点集、缺省查 language 页全局 terms 表兜底（冲突锚点集优先）+ 错题/目标注入 + 锚点回链；三层反馈闭环——单轮反馈不落盘、显著答疑沉淀 ai 笔记落 notes/（origin: ai 弱证据，一篇一问回链锚点）、仅显著信号（跨会话稳定/主动应用/machine 验证）才经确认收敛 user.md（写回委托 bb-track 契约）；讲解对话不写 log、笔记落盘与认知收敛走写后管道；档案缺席（冷启动）全场按未锚点讲、不拒答
 <!-- /plugin:bb-teach -->
 
 <!-- wiki-inject:end -->

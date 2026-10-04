@@ -51,7 +51,7 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 <!-- /check:hot -->
 
 <!-- check:language -->
-- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：type: language 落 `wiki/language.md` 之外 → error；terms 空值 → warning；声明页缺席 → info（默认姿态容忍）
+- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：type: language 落 `wiki/language.md` 之外 → error；terms 空值 → warning；声明页缺席 → info（跟会话语言容忍）
 <!-- /check:language -->
 
 <!-- check:link -->
