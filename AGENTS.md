@@ -43,7 +43,7 @@
 > 指针需主动更新。跨 session 的重要指针标注 **ATTENTION**；易变状态（进度等）放 `log.md`，不写入本文件。
 
 - `log.md` — 项目日志：现状、阶段、下一步、过往操作 **ATTENTION**
-- `.meta/` — 原型核心：结构插件（`plugins/`——双根概念 domain（外·域契约）与 wiki（内·出身二分）+ 域实例族：vault（默认域，mapping 为其映射法则、structure 管其布局）、lark（外部域基座，指针/档案两形，域内 lark-docs 云文档域 / lark-im 人际域）、project（自立容器域：projects/ 工作区 + wiki 声明页）、email（个人邮箱域：wiki/email/ 账户+三资产+统一速写，v0.1 待连接器实验）、bb（BB 课程域：bb/ 课程工作区 + wiki/bb/ 属地，term/course 双侧同构，bb-map 为其映射法则、bb-track 管认知档案）+ notes/sessions/link/tag/trust/index/hot/log/user-profile/todo + calendar 时间领地（lark-calendar 为源适配器）+ tmp 临时区，无分层，注入序=依赖拓扑+字母序）与命令主本（`command/`）与协议工件（`protocol/`：字段注册表、动作纪律、披露范式 SASU-L）与机械脚本（`scripts/`：wiki_plugin_kernel 装卸/合规/注入/副本 + pipeline 派生层管道 index/tags/hot/log/verify + wikilib 页面解析承重件）；AGENTS.md 注入区为其投影 **ATTENTION**
+- `.meta/` — 原型核心：结构插件（`plugins/`——双根概念 domain（外·域契约）与 wiki（内·出身二分）+ 域实例族：vault（默认域，mapping 为其映射法则、structure 管其布局）、lark（外部域基座，指针/档案两形，域内 lark-docs 云文档域 / lark-im 人际域）、project（自立容器域：projects/ 工作区 + wiki 声明页）、email（个人邮箱域：wiki/email/ 账户+三资产+统一速写，v0.1 待连接器实验）、bb（BB 课程域：bb/ 课程工作区 + wiki/bb/ 属地，term/course 双侧同构，bb-map 为其映射法则、bb-track 管认知档案）+ notes/sessions/link/tag/trust/index/hot/log/user-profile/todo/language + calendar 时间领地（lark-calendar 为源适配器）+ tmp 临时区，无分层，注入序=依赖拓扑+字母序）与命令主本（`command/`）与协议工件（`protocol/`：字段注册表、动作纪律、披露范式 SASU-L）与机械脚本（`scripts/`：wiki_plugin_kernel 装卸/合规/注入/副本 + pipeline 派生层管道 index/tags/hot/log/verify + wikilib 页面解析承重件）；AGENTS.md 注入区为其投影 **ATTENTION**
 - `wiki/`、`vault/`、`projects/`、`bb/` — 数据区骨架（保持空种子：内容属部署实例，工程内不积累——跑库验证走 `test-repo/`）；`.agents/skills/` — 命令与连接器 skill 部署副本
 - `.meta/docs/` — 人的文档（机制权威源在内核参考 skill，docs 不镜像机制）：`intro.md` 导论（为什么走到这里——叙事与谱系）、`mechanics.md` 机制详解（每机制展开一级 + bb 族实例走查）、`usage.md` 使用指南（三循环工作流）、`quickstart.md` 部署走查、`research-*.md` 调研档案（user-profile 画像选型、landscape 对标）
 - `README.md` — 项目章程
@@ -67,6 +67,10 @@
 <!-- plugin:hot v0.10 -->
 - 热缓存 `wiki/hot.md`：最近变更摘要（≤25 条、<5 日、单条 ≤200 字），agent 进库先读此页；写前先淘汰越界
 <!-- /plugin:hot -->
+
+<!-- plugin:language v0.1 -->
+- 行文声明页 `wiki/language.md`（type: language）：产出语言与行文基线——frontmatter `language` 块映射 = 规范键→一句话规则（开放词表）+ `terms` 块映射 = 术语原文→统一译名，正文沉淀译法注记（只增）；agent 产出写作物落笔前先读此页，页面缺席 = 默认姿态（中文为主、专名保留原文、代码路径命令不译）；本页是默认基线非强制——域件语言特例优先；术语涌现制——无表术语首现括注原文、反复命中才登记，人直接编辑合法
+<!-- /plugin:language -->
 
 <!-- plugin:link v0.14 -->
 - 链接语法 `[[页面全名]]`——全名 = wiki/ 内相对路径去末尾 .md（如 `notes/X`、pdf 资产代理 `vault/a.pdf`、md 资产代理 `vault/原名.md`，仅去一个）；禁截断式引用，同名歧义带路径；字段 `related` / `aliases`；断链 = warning（尚未写下），孤儿（无入链无引用，派生页不算源）= notes 知识页 warning、领地值登记页 info（动态读 registry type.values，除 session）

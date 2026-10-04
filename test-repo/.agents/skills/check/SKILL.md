@@ -50,6 +50,10 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 - 与 log 矛盾（log 有记录而 hot 全无踪迹）→ warning
 <!-- /check:hot -->
 
+<!-- check:language -->
+- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：type: language 落 `wiki/language.md` 之外 → error；terms 空值 → warning；声明页缺席 → info（默认姿态容忍）
+<!-- /check:language -->
+
 <!-- check:link -->
 - 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：断链（目标既非页面全名，也非任何页的 aliases）→ warning；hot 手写断链 → warning（不作入链源）；乱码链接（目标含 U+FFFD 替换符，含 related 项）→ error；别名二义（两页声明同一 aliases，解析不确定）→ error；孤儿页（无入链且无 related 引用，入链源只计概念页）→ notes 知识页 warning、领地值登记页 info（registry 领地值除 session，暂无入链为登记常态）；related 单向（A 列 B 而 B 未回列）→ 信息
 - 语义项（check 命令）：入链密度 top 榜 → 信息项（hub 涌现依据，不告警）

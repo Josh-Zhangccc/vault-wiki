@@ -4,7 +4,7 @@
 
 ## 现状（2026-10-04）
 
-工程定位：**团队项目**（2026-10-02 转轨；红线与审合制见 AGENTS）——边用边改。架构终态：双根 domain / wiki + 域实例族 vault / lark / project / email / bb（map·track·teach·quiz 四件族，素材落 notes/ 提炼归 wiki）+ calendar + 横切件与 tmp，共二十八插件、无分层（拓扑+字母序；桥法则准则 11）；十三命令（见 README）。三投影一源（机制总纲见内核参考 skill）。test-repo/ 白名单镜像；connectors/ 首件 bb-cli v0.1.5。
+工程定位：**团队项目**（2026-10-02 转轨；红线与审合制见 AGENTS）——边用边改。架构终态：双根 domain / wiki + 域实例族 vault / lark / project / email / bb（map·track·teach·quiz 四件族，素材落 notes/ 提炼归 wiki）+ calendar + 横切件与 tmp，共二十九插件、无分层（拓扑+字母序；桥法则准则 11）；十三命令（见 README）。三投影一源（机制总纲见内核参考 skill）。test-repo/ 白名单镜像；connectors/ 首件 bb-cli v0.1.5。
 
 ## 阶段
 
@@ -19,6 +19,7 @@
 
 ## 过往操作
 
+- 2026-10-04 插件：language v0.1 立设——行文声明页（language/terms 块映射 + 沉淀节两形分区），产出语言与行文基线、缺席容忍、默认基线非强制（域件特例优先）、术语涌现制；usage_routes 落 save（源侧路由首批应用）；test-repo 镜像重拷
 - 2026-10-04 沙箱使用文档开卷 sandbox.md；沙箱重置并初始化外壳
 - 2026-10-04 内核：cmd-inject 升源侧路由——manifest usage_routes 装即落投影、重复路由校验、披露序定序、ls 路由表；bb 族迁移（teach/quiz v0.3、track v0.4 命令瘦身）
 - 2026-10-04 行文修订三批：docs 四件、README 与插件文档统一重写

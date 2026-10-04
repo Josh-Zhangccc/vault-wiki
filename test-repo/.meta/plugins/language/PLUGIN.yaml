@@ -1,0 +1,21 @@
+id: language
+version: 0.1
+depends:
+  - wiki
+updated: 2026-10-04
+attachment:
+  - "wiki/language.md —— 行文声明页（产出语言与行文基线本体：frontmatter language/terms 块映射 + 正文沉淀节）"
+  - "scripts/check.py —— 附检（领地走位 / terms 空值 / 声明页存在性）"
+fields:
+  language: 块映射（声明页）——规范键 → 一句话规则（开放词表，如 default/proper-noun/code），产出语言与行文基线
+  terms: 块映射（声明页）——术语原文 → 统一译名（单行值），跨 session 译名一致性查询件
+usage_routes:
+  - save
+inject: "行文声明页 `wiki/language.md`（type: language）：产出语言与行文基线——frontmatter `language` 块映射 = 规范键→一句话规则（开放词表）+ `terms` 块映射 = 术语原文→统一译名，正文沉淀译法注记（只增）；agent 产出写作物落笔前先读此页，页面缺席 = 默认姿态（中文为主、专名保留原文、代码路径命令不译）；本页是默认基线非强制——域件语言特例优先；术语涌现制——无表术语首现括注原文、反复命中才登记，人直接编辑合法"
+usage:
+  - 读取时机：产出写作物（wiki 页面、文档、讲解沉淀）落笔前读声明页；页面或键缺席回落默认姿态——正文中文为主、专名保留英文原文、代码/路径/命令/文件名原文不译
+  - 术语纪律：写作遇术语先查 `terms` 映射，有表从表；无表首现括注原文（如「检索增强生成（RAG）」），反复命中才登记（涌现制）；登记条目 = 原文→译名单行，长注记（译法理由、用法例）入正文沉淀节
+  - 层级：默认基线非强制——域件语言特例优先（bb-quiz 英文试题先例）；tag 词形归 tag、称呼与个人动态偏好归 user-profile、域内术语表（bb courseware 对照表）域内自管，本页皆不复述
+  - 维护：`language` 映射以人定为主、agent 可提议；`terms` 映射 agent 可登记但不覆写人定条目（异议呈报）；正文沉淀节只增
+checks:
+  - 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：type: language 落 `wiki/language.md` 之外 → error；terms 空值 → warning；声明页缺席 → info（默认姿态容忍）
