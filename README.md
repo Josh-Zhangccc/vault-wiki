@@ -36,7 +36,7 @@
 | `wiki/`、`vault/`、`projects/`、`bb/` | 数据区骨架（保持空种子：内容属部署实例，工程内不积累——跑库验证走 test-repo） |
 | `.agents/skills/` | 命令与连接器 skill 部署副本 |
 | `test-repo/` | **独立测试沙箱**：白名单式追踪——仅 `.meta/` 与 `.agents/` 框架镜像入库（随根侧同步重拷），沙箱内实验内容只在本地、不入史；内部不感知本工程 |
-| `docs/` | 设计档案：现行 `quickstart.md` 部署走查、`pointers.md` 指针机制、`research-user-profile.md` 设计依据；历史档案 `00-principles.md`、`01-okf.md` 不起现行作用 |
+| `.meta/docs/` | 人的文档：`intro.md` 导论（为什么走到这里，[直达](.meta/docs/intro.md)）、`quickstart.md` 部署走查（[直达](.meta/docs/quickstart.md)）、`research-*.md` 调研档案；机制权威源在内核参考 skill，docs 不镜像机制 |
 
 ## 协作
 

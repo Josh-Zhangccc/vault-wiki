@@ -2,7 +2,7 @@
 
 本仓库（目录 `agent-obsidian-template`，工程暂名 **vault-wiki**）是 vault-wiki 框架的构建工程，兼第一个**原型实例**：2026-09-08 起「插件 + 命令」架构直接落地，规范文档后置蒸馏。**定位团队项目**（2026-10-02 由个人自用转轨；普世化与矩阵化测试搁置，边用边改）。
 
-- 布局：`.meta/`（插件与命令主本，原型核心）· `wiki/`（内外之分的内侧）+ `vault/` / `projects/` / `bb/`（外域容器，数据区）· `.agents/skills/`（部署副本）· `connectors/`（连接器主本：部署侧 CLI 事实接口 + skill 使用披露——`connectors/*/SKILL.md` 经 kernel deploy 落 `.agents/skills/`，bb-cli 首件）· `test-repo/`（**独立测试沙箱**：白名单式追踪——仅 `.meta/` 与 `.agents/` 框架镜像入库、随根侧同步重拷，沙箱内实验内容只在本地、不入史；内部不感知本工程）· `docs/`（设计档案）
+- 布局：`.meta/`（原型核心：插件与命令主本、协议工件、机械脚本、人的文档 `docs/`）· `wiki/`（内外之分的内侧）+ `vault/` / `projects/` / `bb/`（外域容器，数据区）· `.agents/skills/`（部署副本）· `connectors/`（连接器主本：部署侧 CLI 事实接口 + skill 使用披露——`connectors/*/SKILL.md` 经 kernel deploy 落 `.agents/skills/`，bb-cli 首件）· `test-repo/`（**独立测试沙箱**：白名单式追踪——仅 `.meta/` 与 `.agents/` 框架镜像入库、随根侧同步重拷，沙箱内实验内容只在本地、不入史；内部不感知本工程）
 - 术语：**wiki** = md 世界，内外之分的内侧（各域投影 + 原生笔记）；**domain** = 域，wiki 外信息源的适配器契约（vault 是默认域，lark / project / email / bb 亦域）；**vault** = 默认域——真实资产仓库（命令侧只增，删改自由属于人）
 - 冲突裁决：以原型现状与讨论收敛结论为准；规范蒸馏时归并 `docs/` 历史版本
 - 个人库（`D:\Obsidian repo\agent-obsidian`）为只读实证样本：原 wiki 思想已转化为本原型（见 log 2026-09-08）
@@ -33,7 +33,7 @@
 - 个人库 `D:\Obsidian repo\agent-obsidian` 对本工程只读；任何回填动作须用户明确指令。
 - 个人隐私内容（用户档案、日记、个人记录）不得写入本仓库——框架是普世产出。
 - 参考工程（`D:\My Programs\erp - ksbgs`、`D:\My Programs\aijia`）仅作模式参考，不修改其中任何内容。
-- **入库边界（全员）**：仅开发产物入 git——`.meta/`、`connectors/`、`docs/`、根级章程、根级数据容器空种子（`bb/`）、test-repo 白名单镜像（仅 `.meta/` 与 `.agents/`，随根侧同步重拷——2026-10-04 所有者裁定，虚构示例亦不入库）。**永不入库**：真实课程/成绩/提交数据、个人隐私、凭据会话、沙箱实验产物（`test-repo/` 白名单外一切）。`test-repo/` 是独立测试沙箱，沙箱内实验内容只在本地；**一旦发生真实实验，其白名单外一切变更不得提交**，禁止上传任何使用痕迹（镜像更新走根侧重拷，不走沙箱侧同步）。
+- **入库边界（全员）**：仅开发产物入 git——`.meta/`（含 `docs/`）、`connectors/`、根级章程、根级数据容器空种子（`bb/`）、test-repo 白名单镜像（仅 `.meta/` 与 `.agents/`，随根侧同步重拷——2026-10-04 所有者裁定，虚构示例亦不入库）。**永不入库**：真实课程/成绩/提交数据、个人隐私、凭据会话、沙箱实验产物（`test-repo/` 白名单外一切）。`test-repo/` 是独立测试沙箱，沙箱内实验内容只在本地；**一旦发生真实实验，其白名单外一切变更不得提交**，禁止上传任何使用痕迹（镜像更新走根侧重拷，不走沙箱侧同步）。
 - **git 纪律（全员）**：多人经分支开发，进 master 须管理者确认——**管理者由所有者委托 agent 代行（2026-10-02 授权）**：分支审查（红线扫描 + kernel validate + 投影收敛）→ 合并推送 → 远端分支治理（违规即删并通报所有者）→ PR 页操作（评论/审阅/关闭，留痕 GitHub——经 gh CLI，凭据以 GH_TOKEN 环境变量注入，令牌自 `git credential fill` 取、不落屏不落盘），代行动作毕 log 留痕。一次提交只做一件事；合并前自查 diff 不含非开发内容；**为被忽略的实例数据开 gitignore 白名单或强制添加，须仓库所有者明示授权并留痕**（2026-10-02 组员实例页入库事故后立规）；禁止改写历史。**保留事项（不得代行，须所有者明示）**：历史改写、gitignore 豁免、删除非红线违规的他人工作、仓库设置与成员权限、备份删除。
 - **提交流程（全员，标准流程）**：自最新 `master` 拉分支（名 = 模块-主题或 feature/主题）→ 小步提交（`模块: 概述`）→ 完成前自检（`python .meta/scripts/wiki_plugin_kernel.py all` 通过、diff 无非开发内容、log 仅增）→ push 分支后**推荐开 PR**（GitHub 合并请求页，标准报审通道，合并后自动闭合留痕；未开的分支管理者照审照合）→ 管理者审合、删已合分支、log 留痕并通报。
 - **协作对齐（全员）**：改动插件/连接器前先读 `log.md` 现状与下一步，版本号沿 changelog 递进、不预占跳号；实验与测试一律落 test-repo 沙箱或本地，结论走对话报告或 `docs/`。
@@ -45,7 +45,7 @@
 - `log.md` — 项目日志：现状、阶段、下一步、过往操作 **ATTENTION**
 - `.meta/` — 原型核心：结构插件（`plugins/`——双根概念 domain（外·域契约）与 wiki（内·出身二分）+ 域实例族：vault（默认域，mapping 为其映射法则、structure 管其布局）、lark（外部域基座，指针/档案两形，域内 lark-docs 云文档域 / lark-im 人际域）、project（自立容器域：projects/ 工作区 + wiki 声明页）、email（个人邮箱域：wiki/email/ 账户+三资产+统一速写，v0.1 待连接器实验）、bb（BB 课程域：bb/ 课程工作区 + wiki/bb/ 属地，term/course 双侧同构，bb-map 为其映射法则、bb-track 管认知档案）+ notes/sessions/link/tag/trust/index/hot/log/user-profile/todo + calendar 时间领地（lark-calendar 为源适配器）+ tmp 临时区，无分层，注入序=依赖拓扑+字母序）与命令主本（`command/`）与协议工件（`protocol/`：字段注册表、动作纪律、披露范式 SASU-L）与机械脚本（`scripts/`：wiki_plugin_kernel 装卸/合规/注入/副本 + pipeline 派生层管道 index/tags/hot/log/verify + wikilib 页面解析承重件）；AGENTS.md 注入区为其投影 **ATTENTION**
 - `wiki/`、`vault/`、`projects/`、`bb/` — 数据区骨架（保持空种子：内容属部署实例，工程内不积累——跑库验证走 `test-repo/`）；`.agents/skills/` — 命令与连接器 skill 部署副本
-- `docs/` — 人的文档（机制权威源在内核参考 skill 与 `.meta/`，docs 不镜像机制）：`intro.md` 导论（为什么走到这里——叙事与谱系）、`quickstart.md` 部署走查、`research-*.md` 调研档案（user-profile 画像选型、landscape 对标）
+- `.meta/docs/` — 人的文档（机制权威源在内核参考 skill，docs 不镜像机制）：`intro.md` 导论（为什么走到这里——叙事与谱系）、`quickstart.md` 部署走查、`research-*.md` 调研档案（user-profile 画像选型、landscape 对标）
 - `README.md` — 项目章程
 - 设计谱系（讨论记录，只读）：个人库 `wiki/meta/2026-08-25-wiki运行时重构决策.md`、`wiki/sessions/2026-08-25-wiki架构调研与docs-first重构设计.md`
 - 参考工程：`D:\My Programs\erp - ksbgs`（AGENTS.md 模式来源：宪法+指针、log 容量管理、指令集）；`D:\My Programs\aijia`（wiki 指针化引用）
