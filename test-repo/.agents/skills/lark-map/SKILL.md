@@ -34,7 +34,7 @@ description: "把飞书侧资源映射为 wiki/lark/ 指针页：读 profile 与
 
 ## Language
 
-生成内容中文为主，英文专名与路径保留原形。
+产出语言取行文声明页 `wiki/language.md` 的 default 键（页面或缺席键跟会话语言）；专名与路径保留原形。
 
 ## Parameters
 

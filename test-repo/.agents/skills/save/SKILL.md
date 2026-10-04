@@ -44,7 +44,7 @@ type / status 值集以 registry 为准（一次读取锚点，不复抄表）�
 
 ## Writing Rules
 
-陈述句现在时；中文为主；提到的概念 / 页面全部 wikilink；未来会话能冷读此页。
+陈述句现在时；产出语言取行文声明页 `wiki/language.md` 的 default 键（页面或缺席键跟会话语言）；提到的概念 / 页面全部 wikilink；未来会话能冷读此页。
 
 ## Parameters
 

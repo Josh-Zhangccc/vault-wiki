@@ -23,7 +23,7 @@ description: "在 wiki 中检索并综合回答：热缓存→索引→grep→�
 
 ## Answer Rules
 
-- 中文为主；页名以 wikilink 保留
+- 产出语言取行文声明页 `wiki/language.md` 的 default 键（页面或缺席键跟会话语言）；页名以 wikilink 保留
 - 引用内联标注出处
 - 与库内既有内容矛盾时明确标出
 

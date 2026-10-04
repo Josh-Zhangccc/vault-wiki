@@ -32,7 +32,7 @@ description: "按路径取任意格式资产的文本（md 直读 / pdf 经 PyMu
 
 ## Language
 
-中文为主，资产原文语言保留原形。
+产出语言取行文声明页 `wiki/language.md` 的 default 键（页面或缺席键跟会话语言）；资产原文保留原语言原形。
 
 ## Parameters
 
