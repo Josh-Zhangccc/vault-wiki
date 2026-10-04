@@ -19,14 +19,9 @@
 
 ## 过往操作
 
-- 2026-10-04 mechanics 补「域的生长」节：契约六问/写模型三分/投影密度/生长路径/连接器
-- 2026-10-04 test-repo 镜像重拷对齐 28 插件/13 命令态
-- 2026-10-04 使用指南 usage.md 开卷：库经营/课程学习/协作开发三循环工作流
-- 2026-10-04 机制详解 mechanics.md 开卷：一源五投影/形态/依赖/绑定/桥/派生层/装卸，bb 族实例走查
-- 2026-10-04 README/AGENTS 陈旧指针修正：入库边界对齐白名单裁定、quickstart 路径、文档指针区与沿革刷新
-- 2026-10-04 docs 迁 .meta/docs——根级纯为数据区
-- 2026-10-04 docs 重整：删 00/01/pointers（已迁，史留）；导论开卷（叙事线+指针思想收编）；quickstart v2（28/13 态）；research×2 留
-- 2026-10-04 机制文档开卷：内核参考 skill v2——机制总述（形态/依赖/投影/绑定/桥/分层 + bb 例），部署侧权威；PLUGIN.md 批次随后
+- 2026-10-04 PLUGIN.md 批一：bb 族五件升格设计文档——设计概要节（为什么/族内位置/关键裁定含弃案/机制回指），桥指针对齐分工裁定
+- 2026-10-04 docs 补全：mechanics 机制详解（含域的生长节）与 usage 使用指南开卷，指针接线与陈旧修正，test-repo 镜像对齐
+- 2026-10-04 docs 立卷：删 00/01/pointers，intro 导论与 quickstart v2 开卷，research×2 留，迁 .meta/docs，内核参考 skill v2 立机制总纲
 - 2026-10-04 teach/quiz 改造（所有者裁定）：exams/ 废——素材归 bb notes/、提炼归 wiki（判分回流）；bb-exam 更名 bb-quiz；bb-track v0.3 + 命令；bb v0.7 共居
 - 2026-10-04 治理：组员 CaoSuan-CODE 直推 master（署名冒用）——内容补审保留；test-repo 白名单追踪回正；master 开分支保护
 - 2026-10-04 bb-teach/bb-exam 初版立设（组员）：teach 二维伸缩讲解 + 三层反馈；exam 范围出题 + 判分——后经所有者裁定改造（见上）
