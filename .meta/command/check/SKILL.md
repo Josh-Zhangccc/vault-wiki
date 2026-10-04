@@ -151,11 +151,11 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 - 语义项（v0.1 人工，附检后置）：user.md 落课程根之外或四桶内 → error；证据流条目被改写删除 → error；读数条目无可溯证据 → warning；读数仅凭 origin: ai 无复核 → warning；stale 超窗后消费未核对 → info；笔记属性值出开放词表 → info
 <!-- /check:bb-track -->
 
-<!-- check:bb-exam -->
-- 语义项（v0.1 人工，附检后置）：题干/解析引用范围外或课程外知识点 → error；解析缺知识点 sm-N 标注 → warning；难度中值与 source 中值偏离超 1 档 → info；exam 块映射缺 course 或 scope → error；试题页出现答案/解析 → warning
-<!-- /check:bb-exam -->
+<!-- check:bb-quiz -->
+- 语义项（v0.1 人工，附检后置）：考卷落 notes/testing/ 之外 → error；覆写或删除已有考卷 → error；题干/解析引用范围外或课程外知识点 → warning（语义判断）；解析缺知识点 sm-N 标注 → warning；quiz 块映射缺 course 或 scope → warning；试题页出现答案/解析 → warning；判分后未经确认即写 user.md → error；判分缺逐题对错 → warning
+<!-- /check:bb-quiz -->
 
 <!-- check:bb-teach -->
-- 语义项（v0.1 人工，附检后置）：未读 user.md 即讲解 → warning；术语超已锚点集且未当场解释 → warning；对「掌握」档仍长篇灌输 → info；未经确认即写 user.md → error；单轮「懂了」即写「掌握」入 user.md → error；讲解缺 courseware 锚点回链 → info
+- 语义项（v0.1 人工，附检后置）：未读 user.md 即讲解 → warning；术语超已锚点集且未当场解释 → warning；对「掌握」档仍长篇灌输 → info；未经确认即写 user.md → error；单轮「懂了」即写「掌握」入 user.md → error；讲解缺 courseware 锚点回链 → info；ai 笔记落 notes/ 之外 → error；ai 笔记缺 origin: ai 或缺锚点回链 → warning；覆写已有 ai 笔记 → error
 <!-- /check:bb-teach -->
 <!-- check-inject:end -->
