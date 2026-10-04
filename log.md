@@ -19,10 +19,9 @@
 
 ## 过往操作
 
+- 2026-10-04 沙箱使用文档开卷 sandbox.md；沙箱重置并初始化外壳
 - 2026-10-04 内核：cmd-inject 升源侧路由——manifest usage_routes 装即落投影、重复路由校验、披露序定序、ls 路由表；bb 族迁移（teach/quiz v0.3、track v0.4 命令瘦身）
-- 2026-10-04 行文修订批C：插件文档后半十四件
-- 2026-10-04 行文修订批B：插件文档前半十四件
-- 2026-10-04 行文修订批A：docs 四件与 README 重写
+- 2026-10-04 行文修订三批：docs 四件、README 与插件文档统一重写
 - 2026-10-04 PLUGIN.md 二十八件分四批升格设计文档：设计概要节——为什么/族内位置/关键裁定与弃案/机制回指；六桥节按分工裁定降格；plugin 与内核参考 skill 形态规格对齐
 - 2026-10-04 docs 补全：mechanics 机制详解（含域的生长节）与 usage 使用指南开卷，指针接线与陈旧修正，test-repo 镜像对齐
 - 2026-10-04 docs 立卷：删 00/01/pointers，intro 导论与 quickstart v2 开卷，research×2 留，迁 .meta/docs，内核参考 skill v2 立机制总纲

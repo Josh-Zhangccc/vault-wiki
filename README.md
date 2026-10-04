@@ -33,7 +33,7 @@
 |------|------|
 | `.meta/` | 原型核心。二十八插件：双根概念 domain 与 wiki；域实例族 vault、lark、project、email、bb 及域内件 mapping、structure、lark-docs、lark-im、lark-calendar、bb-map、bb-track、bb-teach、bb-quiz；横切件 calendar、notes、sessions、link、tag、trust、index、hot、log、user-profile、todo、tmp。无分层；注入序为依赖拓扑加字母序；全局件可声明桥，必依桥由内核校验域基座挂边完备。另有十三命令主本、协议工件——registry、actions、experiments——与机械脚本 wiki_plugin_kernel、pipeline、wikilib，纯标准库零依赖 |
 | `connectors/` | 连接器主本：部署侧 CLI 事实接口加 skill 使用披露。`connectors/*/SKILL.md` 经 kernel deploy 落 `.agents/skills/`；bb-cli 首件 |
-| `wiki/`、`vault/`、`projects/`、`bb/` | 数据区骨架。保持空种子：内容属部署实例，工程内不积累；跑库验证走 test-repo |
+| `wiki/`、`vault/`、`projects/`、`bb/` | 数据区骨架。保持空种子：内容属部署实例，工程内不积累；跑库验证走 test-repo，用法见 [.meta/docs/sandbox.md](.meta/docs/sandbox.md) |
 | `.agents/skills/` | 命令与连接器 skill 部署副本 |
 | `test-repo/` | 独立测试沙箱。白名单式追踪：仅 `.meta/` 与 `.agents/` 框架镜像入库，随根侧同步重拷；沙箱内实验内容只在本地、不入史；内部不感知本工程 |
 | `.meta/docs/` | 人的文档：`intro.md` 导论、`mechanics.md` 机制详解、`usage.md` 使用指南、`quickstart.md` 部署走查、`research-*.md` 调研档案，直达链接见文末。机制权威源在内核参考 skill，docs 不镜像机制 |

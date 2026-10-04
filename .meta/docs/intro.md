@@ -49,6 +49,7 @@ md 加纯文件是底座。无工具私有格式；Obsidian、WebUI 都只是可
 | 机制总纲 | 内核参考 skill |
 | 机制怎么运作 | `.meta/docs/mechanics.md` |
 | 日常怎么用 | `.meta/docs/usage.md` |
+| 沙箱怎么用 | `.meta/docs/sandbox.md` |
 | 某插件为什么这样设计 | 该插件 `PLUGIN.md` |
 | 调研依据 | `.meta/docs/research-*.md` |
 | 部署走查 | `.meta/docs/quickstart.md` |
