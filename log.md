@@ -19,10 +19,8 @@
 
 ## 过往操作
 
-- 2026-10-04 PLUGIN.md 批四：域件族七件升格设计概要，28 件全数完成；plugin/内核参考 skill 形态规格对齐（设计概要入模板）
-- 2026-10-04 PLUGIN.md 批三：检索/派生件八件（index/hot/link/tag/sessions/tmp/mapping/structure）升格设计概要
-- 2026-10-04 PLUGIN.md 批二：横切全局件八件升格设计概要；六桥节按分工裁定降格（格式权威归 usage 投影）
-- 2026-10-04 PLUGIN.md 批一：bb 族五件升格设计文档——设计概要节（为什么/族内位置/关键裁定含弃案/机制回指），桥指针对齐分工裁定
+- 2026-10-04 行文修订批A：docs 四件与 README 重写
+- 2026-10-04 PLUGIN.md 二十八件分四批升格设计文档：设计概要节——为什么/族内位置/关键裁定与弃案/机制回指；六桥节按分工裁定降格；plugin 与内核参考 skill 形态规格对齐
 - 2026-10-04 docs 补全：mechanics 机制详解（含域的生长节）与 usage 使用指南开卷，指针接线与陈旧修正，test-repo 镜像对齐
 - 2026-10-04 docs 立卷：删 00/01/pointers，intro 导论与 quickstart v2 开卷，research×2 留，迁 .meta/docs，内核参考 skill v2 立机制总纲
 - 2026-10-04 teach/quiz 改造（所有者裁定）：exams/ 废——素材归 bb notes/、提炼归 wiki（判分回流）；bb-exam 更名 bb-quiz；bb-track v0.3 + 命令；bb v0.7 共居
