@@ -164,8 +164,8 @@
 - 出题自测 bb-exam（bb-track 的 testing 消费侧）：用户指定范围 + 可选样例 → 生成英文试题（题型与难度中值对齐样例，无样例回落已知作业、再回落用户习惯）+ 中文解析（每题标知识点 sm-N 位置）；知识点全集 = courseware sm-N、范围 = 用户指定子集、绝不越界（除非用户明示）；选题与难度分布参照 bb-track 熟练度/目标层/错题，按需读 bb-teach 教学纪要；落盘 exams/<课程>/<名>-试题.md + -答案.md；写后 log 行（other --domain bb）+ verify
 <!-- /plugin:bb-exam -->
 
-<!-- plugin:bb-teach v0.1 -->
-- 教学消费侧 bb-teach（bb-track 的 teaching 消费侧）：提问即讲解——问题定位 courseware sm-N（query 检索 + bb-map 收窄）→ 读 bb-track 认知档案（读数/证据/目标，stale 先核对）→ 按熟练度×难度二维伸缩讲解（已知略讲/反问、未知讲透）+ 术语以用户已锚点集为准 + 错题/目标注入 + 锚点回链；三层反馈闭环——单轮反馈不落盘、显著答疑落 session 纪要、仅显著信号（跨会话稳定/主动应用/machine 验证）才经确认收敛 user.md（写回委托 bb-track 契约）；讲解不写 log、仅认知收敛走 bb-track 写后管道；默认纯对话不落盘
+<!-- plugin:bb-teach v0.2 -->
+- 教学消费侧 bb-teach（bb-track 的 teaching 消费侧）：提问即讲解——问题定位 courseware sm-N（query 检索 + bb-map 收窄）→ 读 bb-track 认知档案（读数/证据/目标，stale 先核对、未核对前保守档）→ 按熟练度×难度二维伸缩讲解（已知略讲/反问、未知讲透）+ 术语以用户已锚点集为准 + 错题/目标注入 + 锚点回链；三层反馈闭环——单轮反馈不落盘、显著答疑沉淀 ai 笔记落 notes/（origin: ai 弱证据，一篇一问回链锚点）、仅显著信号（跨会话稳定/主动应用/machine 验证）才经确认收敛 user.md（写回委托 bb-track 契约）；讲解对话不写 log、笔记落盘与认知收敛走写后管道；档案缺席（冷启动）全场按未锚点讲、不拒答
 <!-- /plugin:bb-teach -->
 
 <!-- wiki-inject:end -->
