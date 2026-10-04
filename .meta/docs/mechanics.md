@@ -78,15 +78,13 @@ attachment 值得单独看。bb-quiz 声明了三条：
 
 owner 与 commands 双向声明。命令 SKILL.md frontmatter 写 `owner: 插件id`，或写 `framework` 表示显式无主；插件 manifest 写 `commands: [命令名]`。任一侧单边声明即 validate error——防命令没人管，也防插件虚报命令。
 
-consumes 是跨插件投影。命令 frontmatter 写 `consumes: [有序插件列表]`，序即执行序；owner 驱动的命令必填且含全部 owner。各被消费插件的 `usage` 列表按此序投影进该命令的 `cmd-inject` 标记块。
+用法落向命令有两条路。**拉取侧**：命令 frontmatter 写 `consumes: [插件列表]`，声明要拉取哪些插件的用法；owner 驱动的命令必填且含全部 owner。**源侧路由**：插件 manifest 写 `usage_routes: [命令名列表]`，声明自己的用法额外落向哪些命令——装插件即落投影，无需改目的地命令。在场即注册在推侧兑现：装卸单文件生效。validate 校验路由目标在场、路由件带 usage、与 consumes 重复即 error。
 
-首例走查，看 bb-track 命令这个认知枢纽：
+披露序是呈现序：owner 块在前，按 consumes 序；路由块居中，按依赖拓扑加字母序；其余 consumes 殿后。
 
-```yaml
-consumes: [bb-track, bb-teach, bb-quiz, trust, log]
-```
+首例走查，看 bb-track 命令这个认知枢纽。bb-track 命令只声明 `consumes: [bb-track, trust, log]`；bb-teach 与 bb-quiz 各在 manifest 声明 `usage_routes: [bb-track]`。`all` 之后，bb-track 命令的 SKILL.md 里出现五个 `<!-- usage:<id> -->` 子块：bb-track 自己的写规则、bb-quiz 与 bb-teach 两条采集通道的完整用法、trust 与 log 的写侧规则。效果：任何 agent 走进 bb-track 命令现场，教与考怎么用、判分怎么回流、写后做什么，一次到位，零检索。将来立第三条采集通道，只需新插件写好 usage 加路由声明，投影自动到场，枢纽命令一字不改。
 
-`all` 之后，bb-track 命令的 SKILL.md 里出现五个 `<!-- usage:<id> -->` 子块。自己的写规则在最前；随后是 bb-teach 与 bb-quiz 两条采集通道的完整用法；最后是 trust 与 log 的写侧规则。效果：任何 agent 走进 bb-track 命令现场，教与考怎么用、判分怎么回流、写后做什么，一次到位，零检索。装卸自动增删。将来立第三条采集通道，只需其 manifest 写好 usage 并进 consumes，投影自动到场。在场即注册。
+用法路由全程可查走 `ls`：每个带 usage 的插件列出落向哪些命令；无落向的标注为契约文档面，如 email 声明先立的写侧契约。
 
 ## 5. 桥法则
 
@@ -157,7 +155,7 @@ consumes: [bb-track, bb-teach, bb-quiz, trust, log]
 
 ### 生长路径
 
-契约之后：**域基座**立领地，bb 是双侧同构加 notes/ 共居；**域内件族**跟进——bb-map 投影法则、bb-track 认知档案，形态渐重；**消费侧采集通道**收尾——bb-teach 与 bb-quiz 零领地纯工作流，用法经 consumes 挂枢纽命令。族内依赖链 `bb-quiz → bb-track → bb-map → bb` 即此路径的机械表达，见第 2 节。
+契约之后：**域基座**立领地，bb 是双侧同构加 notes/ 共居；**域内件族**跟进——bb-map 投影法则、bb-track 认知档案，形态渐重；**消费侧采集通道**收尾——bb-teach 与 bb-quiz 零领地纯工作流，用法经源侧路由挂枢纽命令。族内依赖链 `bb-quiz → bb-track → bb-map → bb` 即此路径的机械表达，见第 2 节。
 
 ### 素材与档案
 

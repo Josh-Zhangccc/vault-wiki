@@ -13,7 +13,7 @@ description: "内核与机制参考：投影机七子命令（ls/validate/audit/
 | 子命令 | 作用 | 写盘 |
 |---|---|---|
 | `ls` | 插件清单 + 依赖 + 驱动命令 | 无 |
-| `validate` | 合规检查：manifest 字段、依赖无环、owner×commands 双向一致、consumes 在场且带 usage 列表、桥法则；错误退出码 1 | 无 |
+| `validate` | 合规检查：manifest 字段、依赖无环、owner×commands 双向一致、consumes 在场且带 usage、usage_routes 目标在场且不与 consumes 重复、桥法则；错误退出码 1 | 无 |
 | `audit` | 附检：发现式执行各插件 `scripts/check.py`，只读报告（可带插件 id 只查一个） | 无 |
 | `inject` | 重建三种投影：AGENTS 注入区 + check 检查块 + 命令用法块 | AGENTS.md、含注入区的命令 SKILL.md |
 | `registry` | 重建 registry.yaml 插件段（自各 manifest `fields`） | registry.yaml |
@@ -45,8 +45,10 @@ description: "内核与机制参考：投影机七子命令（ls/validate/audit/
 ## 命令-插件绑定
 
 - **owner × commands 双向声明**：命令 SKILL.md frontmatter `owner: 插件id`（或 `framework`，显式无主），插件 manifest `commands: [命令名]`；任一侧单边声明即 error
-- **consumes（跨插件投影）**：命令 frontmatter `consumes: [有序插件列表]`——序即执行序；owner 驱动的命令必填且含全部 owner；各被消费插件的 `usage` 列表自动投影进该命令 SKILL.md 的 `cmd-inject` 标记块
-- 首例：bb-track 命令 `consumes: [bb-track, bb-teach, bb-quiz, trust, log]`——认知枢纽聚合采集通道用法，装卸自动增删（在场即注册）
+- **consumes（拉取侧）**：命令 frontmatter `consumes: [插件列表]`——目的地声明要拉取哪些插件的 usage；owner 驱动的命令必填且含全部 owner
+- **usage_routes（源侧路由）**：插件 manifest `usage_routes: [命令名列表]`——用法额外落向的命令，装插件即落投影、无需改目的地命令（在场即注册的推侧）；validate 校验目标在场、路由件带 usage、与 consumes 重复即 error
+- **披露序**：owner 块在前（consumes 序）、路由块居中（依赖拓扑加字母序）、其余 consumes 殿后——序是呈现序，不是执行序
+- 首例：bb-teach 与 bb-quiz 各声明 `usage_routes: [bb-track]`——认知枢纽自动聚合采集通道用法；bb-track 命令 consumes 只余自属与工具；`ls` 出用法路由表（无落向者标注契约文档面）
 - **披露在消费现场**原则：集成格式的权威源是 usage（随投影到达命令），不是插件散文——见桥法则末条
 
 ## 投影机制（三投影一源）

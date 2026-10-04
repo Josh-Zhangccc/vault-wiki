@@ -16,7 +16,7 @@ description: "插件生命周期管理：装/升/卸/清单。机械步骤（合
 ## Install <id>
 
 1. 准备 `.meta/plugins/<id>/`：
-   - PLUGIN.yaml：必填七字段 id / version / depends / updated / attachment / fields / inject（`inject` 即注入区投影行，一行中文）+ 可选 commands（驱动的命令）/ usage / checks（块式列表：写侧契约与检查规则的投影源）
+   - PLUGIN.yaml：必填七字段 id / version / depends / updated / attachment / fields / inject（`inject` 即注入区投影行，一行中文）+ 可选 commands（驱动的命令）/ usage / checks（块式列表：写侧契约与检查规则的投影源）/ usage_routes（用法额外落向的命令，源侧路由——装插件即落投影）
    - PLUGIN.md 结构：设计概要（为什么存在 / 族内位置 / 关键裁定含弃案 / 机制回指 mechanics）→ Structure → Invariants → Changelog（纯文档；注入源全在 manifest）
 2. `python .meta/scripts/wiki_plugin_kernel.py validate` —— 合规与依赖检查，错误阻断
 3. `python .meta/scripts/wiki_plugin_kernel.py all` —— 注入区 / registry / 命令副本同步

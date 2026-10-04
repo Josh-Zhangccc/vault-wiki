@@ -29,11 +29,15 @@ manifest 最小 YAML 子集：顶层 `key: value`、`key: []`、块式列表（`
   插件声明不存在的命令、任一侧单边声明（owner 未被 commands 认领，或反之）
 
 命令注入（第三种投影：插件写侧契约 → 命令）：
-- 命令 frontmatter 增可选 consumes：消费其写侧契约的插件 id 有序列表（序即执行序）；
+- 命令 frontmatter 增可选 consumes：消费其写侧契约的插件 id 列表（拉取侧，目的地声明）；
   owner 驱动的命令必填且须含全部 owner
+- manifest 增可选 usage_routes：本插件用法额外落向的命令名列表（源侧路由）——
+  在场即注册的推侧：装插件即落投影，无需改枢纽命令；validate 校验路由目标在场、
+  路由件带 usage、与 consumes 重复路由为 error
 - manifest 的 usage / checks 列表是写侧契约与检查规则的唯一投影源：checks 按注入序
-  投影进 check 命令，usage 按命令 consumes 序投影进其 SKILL.md 的 cmd-inject 标记块
-  （在场即注册）；改契约改 PLUGIN.yaml，命令正文只留操作流程。
+  投影进 check 命令，usage 投影进各命令 SKILL.md 的 cmd-inject 标记块——披露序：
+  owner 块在前（consumes 序）、路由块居中（依赖拓扑加字母序）、其余 consumes 殿后；
+  改契约改 PLUGIN.yaml，命令正文只留操作流程。
   PLUGIN.md 回归纯文档（Role / Structure / Invariants / Changelog）
 
 全局件与域件（宪法准则 11）：
@@ -227,10 +231,10 @@ def _owner_list(owner):
 
 
 def validate_bindings(plugins, errors):
-    """命令-插件绑定：命令 frontmatter owner × 插件 manifest commands 双向一致。"""
+    """命令-插件绑定：owner × commands 双向一致；consumes 拉取与 usage_routes 源侧路由。"""
     import wikilib
 
-    commands, claimed = [], {}  # claimed: 命令 -> owner 集合（framework 除外）
+    commands, claimed, consumes_map = [], {}, {}  # claimed: 命令 -> owner 集合（framework 除外）
     for name in sorted(os.listdir(COMMANDS_DIR)):
         cdir = os.path.join(COMMANDS_DIR, name)
         path = os.path.join(cdir, "SKILL.md")
@@ -242,9 +246,10 @@ def validate_bindings(plugins, errors):
             errors.append(f"[error] command {name}/: frontmatter missing owner (plugin id or framework)")
             continue
         owners = _owner_list(fm["owner"])
-        # consumes（可选；owner 驱动的命令必填且须含全部 owner）：写侧契约消费声明，序即执行序
+        # consumes（可选；owner 驱动的命令必填且须含全部 owner）：写侧契约拉取声明
         consumes = fm.get("consumes")
         consumes = _owner_list(consumes) if consumes else []
+        consumes_map[name] = consumes
         if "framework" not in owners and not consumes:
             errors.append(f"[error] command {name}/: owner-driven command requires consumes (owner usage projects too)")
         for pid in consumes:
@@ -283,6 +288,21 @@ def validate_bindings(plugins, errors):
         for pid in owners:
             if pid in plugins and c not in (plugins[pid].get("commands") or []):
                 errors.append(f"[error] command {c}/: owner {pid} not claimed in manifest commands (one-sided)")
+    # 源侧路由（usage_routes）：装插件即落投影，无需改目的地命令
+    for pid, m in sorted(plugins.items()):
+        routes = m.get("usage_routes")
+        if routes is None:
+            continue
+        if not isinstance(routes, list):
+            errors.append(f"[error] {pid}/: usage_routes must be a list")
+            continue
+        if not (m.get("usage") or []):
+            errors.append(f"[error] {pid}/: usage_routes declared but manifest lacks a usage list")
+        for c in routes:
+            if c not in commands:
+                errors.append(f"[error] {pid}/: usage_routes target command {c} not found (.meta/command/{c}/)")
+            elif pid in consumes_map.get(c, []):
+                errors.append(f"[error] command {c}/: {pid} both routed and in consumes (duplicate routing)")
 
 
 def validate_bridges(plugins, errors):
@@ -412,13 +432,18 @@ def do_check_inject(plugins):
 
 
 def do_cmd_inject(plugins):
-    """自各 manifest 的 usage 列表按命令 consumes 序重建命令注入区（在场即注册，幂等）。
+    """自 manifests 重建命令注入区：consumes 拉取 + usage_routes 源侧路由（在场即注册，幂等）。
 
-    第三种投影：插件写侧契约 → 命令。命令 frontmatter 声明 consumes（有序，
-    序即执行序），各块为对应 manifest usage 列表原文——命令正文只留操作流程，
-    字段契约与管道调用以本区为唯一文本源，装卸插件自动增删。
+    第三种投影：插件写侧契约 → 命令。披露序：owner 块在前（consumes 序）、路由块
+    居中（依赖拓扑加字母序）、其余 consumes 殿后。各块为对应 manifest usage 列表
+    原文——命令正文只留操作流程，装卸插件自动增删。
     """
     import wikilib
+
+    routed = {}  # 命令 -> [插件]（源侧路由，拓扑加字母序）
+    for pid in ordered_plugins(plugins):
+        for c in plugins[pid].get("usage_routes") or []:
+            routed.setdefault(c, []).append(pid)
 
     ok = True
     for name in sorted(os.listdir(COMMANDS_DIR)):
@@ -426,7 +451,8 @@ def do_cmd_inject(plugins):
         if not os.path.exists(path):
             continue
         text = open(path, encoding="utf-8").read()
-        consumes = wikilib.parse_frontmatter(text).get("consumes")
+        fm = wikilib.parse_frontmatter(text)
+        consumes = fm.get("consumes")
         if consumes is None:
             continue
         if not isinstance(consumes, list):
@@ -436,8 +462,14 @@ def do_cmd_inject(plugins):
             print(f"[error] command {name}/: inject markers (cmd-inject:start/end) not found")
             ok = False
             continue
+        owners = [o for o in _owner_list(fm.get("owner") or "") if o != "framework"]
+        seq, seen = [p for p in consumes if p in owners], set()
+        seen.update(seq)
+        seq += [p for p in routed.get(name, []) if p not in seen]
+        seen.update(seq)
+        seq += [p for p in consumes if p not in seen]
         blocks = []
-        for pid in consumes:
+        for pid in seq:
             items = plugins.get(pid, {}).get("usage") or []
             if items:
                 body = "\n".join(f"- {it}" for it in items)
@@ -517,6 +549,30 @@ def do_ls(plugins):
         cmds = ", ".join(plugins[pid].get("commands") or []) or "—"
         print(f"  {pid:<10} {plugins[pid].get('version', '?'):<6} deps {deps}; commands {cmds}")
     print(f"{len(plugins)} plugins (.meta/plugins/; injection order = dependency topo + alphabetical)")
+    # 用法路由表：插件 → 落向命令（自属 + 源侧路由 + 命令拉取）
+    import wikilib
+
+    consumes_map = {}
+    for name in sorted(os.listdir(COMMANDS_DIR)):
+        path = os.path.join(COMMANDS_DIR, name, "SKILL.md")
+        if not os.path.exists(path):
+            continue
+        c = wikilib.parse_frontmatter(open(path, encoding="utf-8").read()).get("consumes")
+        if c is None:
+            continue
+        consumes_map[name] = c if isinstance(c, list) else _owner_list(c)
+    rows = []
+    for pid in sorted(plugins):
+        if not (plugins[pid].get("usage") or []):
+            continue
+        targets = list(dict.fromkeys(
+            list(plugins[pid].get("commands") or [])
+            + list(plugins[pid].get("usage_routes") or [])
+            + [c for c, lst in consumes_map.items() if pid in lst]))
+        rows.append(f"  {pid:<12} → {', '.join(targets) if targets else '（无落向——契约文档面）'}")
+    if rows:
+        print("usage routing (plugin → commands):")
+        print("\n".join(rows))
 
 
 def main():
@@ -542,7 +598,7 @@ def main():
     if errors:
         print(f"[result] validation failed ({len(errors)} errors) — mechanical actions blocked")
         return 1
-    print(f"[validate] all {len(plugins)} plugins passed (fields / id match / deps exist / acyclic / command bindings / bridges)")
+    print(f"[validate] all {len(plugins)} plugins passed (fields / id match / deps exist / acyclic / command bindings / usage routes / bridges)")
     if cmd in ("inject", "all"):
         if not do_inject(plugins):
             return 1
