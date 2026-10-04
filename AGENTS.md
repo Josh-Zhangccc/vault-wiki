@@ -160,6 +160,10 @@
 - bb 认知档案：每课课程根 user.md（属地域内原生页首例，wiki v0.7 两形）——`## 认知读数` 收敛覆写（锚 courseware sm-N，粗粒度自陈合法，状态词开放；含目标层：课程目标 + 短期优先带时效）+ `## 证据流` 只增（日期+出处+断言+回链）；信号权重 human>machine>ai 笔记（弱证据，人复核升权）；应知不存（差距现算）、错题题级归 assessments 复盘、统计现算；更新双轨（agent 显著信号自发/用户明示），建档懒惰式；学期即边界随 term_status 冻结；trust 天花板 machine-confirmed（含 human 证据升 human-reviewed），stale_after 默认 14 天可覆写；笔记区 notes/ 只读，可选属性 origin/form/stage（stage 标记属人）；认知经 user-profile 桥登记——建档时画像在场则维护其 `## 域认知` 节一行（bb + 路径形），缺席跳过不代建
 <!-- /plugin:bb-track -->
 
+<!-- plugin:bb-exam v0.1 -->
+- 出题自测 bb-exam（bb-track 的 testing 消费侧）：用户指定范围 + 可选样例 → 生成英文试题（题型与难度中值对齐样例，无样例回落已知作业、再回落用户习惯）+ 中文解析（每题标知识点 sm-N 位置）；知识点全集 = courseware sm-N、范围 = 用户指定子集、绝不越界（除非用户明示）；选题与难度分布参照 bb-track 熟练度/目标层/错题，按需读 bb-teach 教学纪要；落盘 exams/<课程>/<名>-试题.md + -答案.md；写后 log 行（other --domain bb）+ verify
+<!-- /plugin:bb-exam -->
+
 <!-- plugin:bb-teach v0.1 -->
 - 教学消费侧 bb-teach（bb-track 的 teaching 消费侧）：提问即讲解——问题定位 courseware sm-N（query 检索 + bb-map 收窄）→ 读 bb-track 认知档案（读数/证据/目标，stale 先核对）→ 按熟练度×难度二维伸缩讲解（已知略讲/反问、未知讲透）+ 术语以用户已锚点集为准 + 错题/目标注入 + 锚点回链；三层反馈闭环——单轮反馈不落盘、显著答疑落 session 纪要、仅显著信号（跨会话稳定/主动应用/machine 验证）才经确认收敛 user.md（写回委托 bb-track 契约）；讲解不写 log、仅认知收敛走 bb-track 写后管道；默认纯对话不落盘
 <!-- /plugin:bb-teach -->

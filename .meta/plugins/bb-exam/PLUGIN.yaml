@@ -1,0 +1,27 @@
+id: bb-exam
+version: 0.1
+depends:
+  - bb-track
+  - bb-map
+commands:
+  - bb-exam
+updated: 2026-10-04
+attachment:
+  - "exams/ —— 自测卷容器（每测两份：<名>-试题.md 英文题目 + <名>-答案.md 中文解析；agent 全权读写）"
+fields:
+  exam: "块映射（exams/ 试题与答案页）——course（课程代码）/ scope（出题范围）/ difficulty_median（难度中值 1-5，认知层级）/ types（题型列表，开放词表）/ source（样例 sample|作业 assignment|习惯 habit）/ answer_of（答案页回链试题文件名）"
+inject: "出题自测 bb-exam（bb-track 的 testing 消费侧）：用户指定范围 + 可选样例 → 生成英文试题（题型与难度中值对齐样例，无样例回落已知作业、再回落用户习惯）+ 中文解析（每题标知识点 sm-N 位置）；知识点全集 = courseware sm-N、范围 = 用户指定子集、绝不越界（除非用户明示）；选题与难度分布参照 bb-track 熟练度/目标层/错题，按需读 bb-teach 教学纪要；落盘 exams/<课程>/<名>-试题.md + -答案.md；写后 log 行（other --domain bb）+ verify"
+usage:
+  - "解析输入：范围（章节/单元/sm-N 列表）+ 样例（可选）"
+  - "读知识点全集：courseware sm-N + `## 专有名词` 对照表，取范围内子集"
+  - "读用户认知：user.md 熟练度/目标层/证据流，stale 先核对（纪律见注入区 bb-track 块）"
+  - "定题型与难度中值：样例 → assessments 已知作业 → user-profile 偏好层习惯；难度 = 认知层级 1-5（记忆/理解/应用/分析/综合），中值 M = 样例各题层级中位数"
+  - "按需读 bb-teach 记录：近期 session 纪要（最近教了什么/卡在哪），避免重复或重点测刚教"
+  - "选题：范围内知识点按 生疏/未锚点/错题/短期优先 排序覆盖"
+  - "出题：英文题干、术语对齐 courseware 专有名词表、题型对齐样例、难度围绕 M（生疏偏易、掌握偏难，整体中位数 = M）"
+  - "写解析：中文、每题标知识点 + sm-N wikilink"
+  - "落盘：exams/<course>/<test-name>-试题.md + -答案.md（exam 块映射 + generated + stale_after）"
+  - "不越界：术语/知识点只取自范围内 courseware sm-N，越界弃题重出（除非用户明示）"
+  - "写后：log 行（类型 other --domain bb）+ pipeline.py verify"
+checks:
+  - "语义项（v0.1 人工，附检后置）：题干/解析引用范围外或课程外知识点 → error；解析缺知识点 sm-N 标注 → warning；难度中值与 source 中值偏离超 1 档 → info；exam 块映射缺 course 或 scope → error；试题页出现答案/解析 → warning"
