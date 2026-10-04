@@ -4,7 +4,7 @@
 
 ## 现状（2026-10-04）
 
-工程定位：**团队项目**（2026-10-02 转轨；红线与审合制见 AGENTS）——边用边改。架构终态：双根 domain（域契约）/ wiki（出身二分）+ 域实例族 vault / lark / project / email / bb（map·track·teach·quiz 四件族：track 管档案、teach/quiz 采集，素材落 notes/、提炼归 wiki）+ calendar + 横切件与 tmp，共二十八插件、无分层（拓扑+字母序注入；桥法则准则 11）；十三命令（见 README）。三投影一源（机制总纲见内核参考 skill）。docs/ 四件；test-repo/ 白名单镜像；connectors/ 首件 bb-cli v0.1.5。
+工程定位：**团队项目**（2026-10-02 转轨；红线与审合制见 AGENTS）——边用边改。架构终态：双根 domain（域契约）/ wiki（出身二分）+ 域实例族 vault / lark / project / email / bb（map·track·teach·quiz 四件族：track 管档案、teach/quiz 采集，素材落 notes/、提炼归 wiki）+ calendar + 横切件与 tmp，共二十八插件、无分层（拓扑+字母序；桥法则准则 11）；十三命令（见 README）。三投影一源（机制总纲见内核参考 skill）。docs/ 四件；test-repo/ 白名单镜像；connectors/ 首件 bb-cli v0.1.5。
 
 ## 阶段
 
