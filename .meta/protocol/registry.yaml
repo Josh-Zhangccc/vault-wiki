@@ -57,6 +57,9 @@ plugins:
   calendar:
     calendar:
       note: 块映射（声明页）——源键 → 源声明（值语法归适配器：lark-calendar 用 `lark/<profile> <calendar_id|primary>`）；源键即日程行尾标
+  device:
+    device:
+      note: 块映射（notes 设备档案页）——serial（序列号）/ purchased（购入 YYYY-MM-DD）/ warranty_until（保修或保障类截止 YYYY-MM-DD，附检扫描项）三键最小集，余键开放（model、vendor 等，架构不枚举）
   email:
     email:
       note: 块映射——account（所属账户，= 所在目录名）/ kind（页形态：account 身份页 / thread 线程档 / source 源档 / person 人档，开放词表）/ token（身份证明：人档 = 邮箱地址、单件 = Message-ID 一比一、线程档 = members 列表）/ url（webmail 或 message:// 深链）

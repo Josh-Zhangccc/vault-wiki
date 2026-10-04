@@ -4,7 +4,7 @@
 
 ## 现状（2026-10-04）
 
-工程定位：**团队项目**（2026-10-02 转轨；红线与审合制见 AGENTS）——边用边改。架构终态：双根 domain / wiki + 域实例族 vault / lark / project / email / bb（map·track·teach·quiz 四件族，素材落 notes/ 提炼归 wiki）+ calendar + 横切件与 tmp，共二十九插件、无分层（拓扑+字母序；桥法则准则 11）；十三命令（见 README）。三投影一源（机制总纲见内核参考 skill）。test-repo/ 白名单镜像；connectors/ 首件 bb-cli v0.1.5。
+工程定位：**团队项目**（2026-10-02 转轨；红线与审合制见 AGENTS）——边用边改。架构终态：双根 domain / wiki + 域实例族 vault / lark / project / email / bb（map·track·teach·quiz 四件族，素材落 notes/ 提炼归 wiki）+ calendar + 横切件与 tmp，共三十插件、无分层（拓扑+字母序；桥法则准则 11）；十三命令（见 README）。三投影一源（机制总纲见内核参考 skill）。test-repo/ 白名单镜像；connectors/ 首件 bb-cli v0.1.5。
 
 ## 阶段
 
@@ -19,6 +19,7 @@
 
 ## 过往操作
 
+- 2026-10-04 插件：device v0.1 立设——设备档案复用 notes 领地（type: entity 建议、零 type 扩值），device 块映射最小键集（serial/purchased/warranty_until），附检临期扫描 30 天窗口、到期经确认受托入 todo；零命令零新领地
 - 2026-10-04 插件：语言中性化清理批——tag v0.11（「中文为主」拆除，主语言跟 language 页 default 键）+ 八命令主本输出语言节统一改写（map/lark-map/profile/bb-map/bb-track/asset-read/query/save）；纪律级语言硬编码清零（余 AGENTS 准则 7 为开发期实例事实）；calendar 月页节名待裁
 - 2026-10-04 插件：语言中性化批——language v0.2（缺席回落改跟会话语言，中文降为开发期实例事实；分层裁定：源对齐归域件、读者对齐归声明页键）+ bb-quiz v0.4（拆除「英文试题+中文解析」硬编码：题干源对齐、解析读者对齐 annotation 键）+ bb-teach v0.4（讲解语言取 teaching 键 + 术语锚点集优先全局表兜底）；国际生实例零改动可用
 - 2026-10-04 插件：language v0.1 立设——行文声明页（language/terms 块映射 + 沉淀节两形分区），产出语言与行文基线、缺席容忍、默认基线非强制（域件特例优先）、术语涌现制；usage_routes 落 save（源侧路由首批应用）；test-repo 镜像重拷

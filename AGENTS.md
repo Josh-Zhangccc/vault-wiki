@@ -43,7 +43,7 @@
 > 指针需主动更新。跨 session 的重要指针标注 **ATTENTION**；易变状态（进度等）放 `log.md`，不写入本文件。
 
 - `log.md` — 项目日志：现状、阶段、下一步、过往操作 **ATTENTION**
-- `.meta/` — 原型核心：结构插件（`plugins/`——双根概念 domain（外·域契约）与 wiki（内·出身二分）+ 域实例族：vault（默认域，mapping 为其映射法则、structure 管其布局）、lark（外部域基座，指针/档案两形，域内 lark-docs 云文档域 / lark-im 人际域）、project（自立容器域：projects/ 工作区 + wiki 声明页）、email（个人邮箱域：wiki/email/ 账户+三资产+统一速写，v0.1 待连接器实验）、bb（BB 课程域：bb/ 课程工作区 + wiki/bb/ 属地，term/course 双侧同构，bb-map 为其映射法则、bb-track 管认知档案）+ notes/sessions/link/tag/trust/index/hot/log/user-profile/todo/language + calendar 时间领地（lark-calendar 为源适配器）+ tmp 临时区，无分层，注入序=依赖拓扑+字母序）与命令主本（`command/`）与协议工件（`protocol/`：字段注册表、动作纪律、披露范式 SASU-L）与机械脚本（`scripts/`：wiki_plugin_kernel 装卸/合规/注入/副本 + pipeline 派生层管道 index/tags/hot/log/verify + wikilib 页面解析承重件）；AGENTS.md 注入区为其投影 **ATTENTION**
+- `.meta/` — 原型核心：结构插件（`plugins/`——双根概念 domain（外·域契约）与 wiki（内·出身二分）+ 域实例族：vault（默认域，mapping 为其映射法则、structure 管其布局）、lark（外部域基座，指针/档案两形，域内 lark-docs 云文档域 / lark-im 人际域）、project（自立容器域：projects/ 工作区 + wiki 声明页）、email（个人邮箱域：wiki/email/ 账户+三资产+统一速写，v0.1 待连接器实验）、bb（BB 课程域：bb/ 课程工作区 + wiki/bb/ 属地，term/course 双侧同构，bb-map 为其映射法则、bb-track 管认知档案）+ notes/sessions/link/tag/trust/index/hot/log/user-profile/todo/language/device + calendar 时间领地（lark-calendar 为源适配器）+ tmp 临时区，无分层，注入序=依赖拓扑+字母序）与命令主本（`command/`）与协议工件（`protocol/`：字段注册表、动作纪律、披露范式 SASU-L）与机械脚本（`scripts/`：wiki_plugin_kernel 装卸/合规/注入/副本 + pipeline 派生层管道 index/tags/hot/log/verify + wikilib 页面解析承重件）；AGENTS.md 注入区为其投影 **ATTENTION**
 - `wiki/`、`vault/`、`projects/`、`bb/` — 数据区骨架（保持空种子：内容属部署实例，工程内不积累——跑库验证走 `test-repo/`）；`.agents/skills/` — 命令与连接器 skill 部署副本
 - `.meta/docs/` — 人的文档（机制权威源在内核参考 skill，docs 不镜像机制）：`intro.md` 导论（为什么走到这里——叙事与谱系）、`mechanics.md` 机制详解（每机制展开一级 + bb 族实例走查）、`usage.md` 使用指南（三循环工作流）、`quickstart.md` 部署走查、`research-*.md` 调研档案（user-profile 画像选型、landscape 对标）
 - `README.md` — 项目章程
@@ -63,6 +63,10 @@
 <!-- plugin:wiki v0.7 -->
 - wiki 容器 `wiki/`（内外之分的内侧）：出身二分——属地页两形：代理页（默认，可对账外源的投影，属地路径由各域注入行自披露）与域内原生页（域声明的域侧档案——真身在此、无外源对账，形态归域插件；首例 bb-track 认知档案 user.md）；属地之外其余为原生页（真身在此的写作物；会话页是纪要非镜像——对话消逝后页面即真身，写作即出生）；index / tags / hot / log 为派生页（机械投影）；页面 frontmatter 取最小 YAML 子集（顶层标量 / 块列表 / 一级块映射），更复杂结构不受解析
 <!-- /plugin:wiki -->
+
+<!-- plugin:device v0.1 -->
+- 设备档案：个人设备一设备一页落 `wiki/notes/`（type: entity 形态建议，页名自由、同名尾缀消歧），frontmatter `device` 块映射登 serial / purchased / warranty_until（最小键集，余开放：model、vendor 等）；发票照片类资产走 vault 物化、页面 wikilink 关联（跨件引用不立依赖）；trust 可选挂——人手登记即 human 证据、静态事实不挂 stale_after；到期提醒——附检扫 warranty_until，30 天内临期或已过期呈 warning 清单，经用户确认受托追加 todo 行（受托即追加，不自动写）；设备状态监控与团队借还不做（范围边界）
+<!-- /plugin:device -->
 
 <!-- plugin:hot v0.10 -->
 - 热缓存 `wiki/hot.md`：最近变更摘要（≤25 条、<5 日、单条 ≤200 字），agent 进库先读此页；写前先淘汰越界
