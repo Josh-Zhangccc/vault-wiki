@@ -54,7 +54,7 @@ python .meta/scripts/wiki_plugin_kernel.py all
 | 认知档案 / 讲解答疑 / 出题自测 | bb 域课程学习族（需先接课程域，见下） |
 | 内核参考 | wiki_plugin_kernel 用法与机制总纲 |
 
-命令细节以 `.agents/skills/` 各 SKILL.md 披露为准（十三个，清单见 README）。
+命令细节以 `.agents/skills/` 各 SKILL.md 披露为准（十三个，清单见 README）；工作流串联见 `.meta/docs/usage.md`。
 
 ## 域插件可选
 
