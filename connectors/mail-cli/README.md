@@ -1,47 +1,63 @@
 # mail-cli
 
-wiki email 域的最小只读连接器（Microsoft Graph, OAuth2 device flow）。契约见 `.meta/plugins/email/`。
+wiki email 域的连接器（多 provider：Microsoft Graph / Gmail API / IMAP），OAuth2 device flow 或授权码登录。契约见 `.meta/plugins/email/`。
 
 ## 纪律
 
-- 只读：Graph GET，拉信不隐式标已读（PEEK 语义），不移动不归档不删除
-- 凭据只存本机 `~/.config/mail-cli/<account>.json`，不入库
-- 发送类操作不支持——红线在插件层，连接器无此能力
+- 读侧只读：拉信不隐式标已读（Graph GET / IMAP `BODY.PEEK`），不移动不归档不删除
+- 凭据只存本机 `~/.config/mail-cli/`（0600），不入库；GCP OAuth 客户端同样只落本机 `gcp.json`
+- 发送策略门（见下）：发送类操作在连接器层被人工配置的策略管制
 
 ## 用法
 
-`--account` 即插件契约的账户（= `wiki/email/<账户>/` 目录名 = 连接器 profile 名）。
+`--account` 即插件契约的账户（= `wiki/email/<账户>/` 目录名 = profile 名）。
 
 ```
-mail-cli auth start --account <名>                # 发起 device flow
-mail-cli auth complete --account <名>             # 轮询至浏览器确认
+mail-cli auth start  --account <名> [--provider graph|gmail]     # device flow（graph）/ loopback（gmail）
+mail-cli auth setup  --account <名> --user <地址> --auth-code <码> [--imap-host H] [--smtp-host H]  # imap（如 163）
 mail-cli auth status --account <名>
 mail-cli profiles                                 # 账户清单（速写遍历入口）
-mail-cli folders --account <名> [--all]           # 文件夹树（--all 递归子层）
-mail-cli fetch --account <名> [--folder inbox] [--since D | --days 7] [--from A]
+mail-cli folders --account <名> [--all]           # 文件夹/标签（imap 自动解码中文 UTF-7 文件夹名）
+mail-cli fetch --account <名> [--folder F] [--since D | --days 7] [--from A]
                 [--unread] [--headers] [--limit 30] [--next <url>]
 mail-cli read --account <名> --id <id> [--text]   # 单封正文；--text 抽纯文本
-mail-cli search --account <名> --query <q> [--folder F] [--limit 10]
+mail-cli search --account <名> --query <q> [--limit 10]
 mail-cli attach ls  --account <名> --id <id>
 mail-cli attach get --account <名> --id <id> --att <aid> [--name 文件名] --dest <目录>
+mail-cli draft create --account <名> --to A[,B] [--cc] [--subject S] [--body T | --body-file F]
+                       [--html] [--attach 路径]... [--reply-to <msg-id>]   # 回复自动带线程头
+mail-cli draft list/show/delete --account <名> --id <草稿id>（list 无 --id）
+mail-cli send --account <名> --id <草稿id> [--yes]
 ```
 
-输出恒为单行 JSON。token 到期自动用 refresh_token 续期。
+输出恒为单行 JSON。graph/gmail token 到期自动续期。
 
-## 字段与语义
+## 发送策略（人工配置，连接器只读）
 
-- `fetch` 默认按时间倒序；`--since`（YYYY-MM-DD 或 ISO）与 `--days` 二选一，均转服务端 `$filter`
-- `--from` 含 `@` 走服务端精确过滤，否则退回客户端子串匹配
-- `--headers` 补 `message_id` / `references`（Message-ID 与 References 链）——立线程档的原料；Graph 实测 `internetMessageHeaders` 只能 `$select` 不能 `$expand`
-- `conversationId`（Outlook 会话组）恒返回，作 References 断裂时的兜底聚类信号
-- 分页：结果带 `next`，透传给下一次 `--next` 即续拉
-- `attach get` 落盘文件名取附件元数据名，`--name` 可覆写；适合 vault 物化后走 map 代理
+`~/.config/mail-cli/policy.json`，人手编辑，**缺席 = 全部 deny**：
+
+```json
+{"<账户>": {"send": "deny|confirm|auto", "auto_allow": ["白名单地址"]}}
+```
+
+- `deny`：send 一律拒绝（草稿可建）
+- `confirm`：TTY 回车确认；非 TTY 须 `--yes`（= 用户已在对话明示，agent 只是执行已给出的同意）
+- `auto`：直接放行；配 `auto_allow` 时仅白名单收件人放行，其余落回 confirm
+
+## Provider 路线与实测坑
+
+| provider | 认证 | 路线 | 已知坑 |
+|---|---|---|---|
+| graph（Microsoft/学校） | device flow | Graph API v1.0 | `internetMessageHeaders` 只能 `$select` 不能 `$expand`；学校租户写权限可能要管理员审批 |
+| gmail | loopback（ssh -L 隧道收回调） | Gmail API v1 | **device flow 不放行 Gmail scope**（invalid_scope，TV 客户端也不行）；须桌面客户端 + 本机起临时 HTTP 服务 |
+| imap（163 等） | 授权码（auth setup） | IMAP4_SSL + SMTP_SSL，标准库 | **163 须发 IMAP ID 自报身份**否则 select 报 Unsafe Login；中文文件夹名为 modified UTF-7（已解码）；中文搜索词退回客户端过滤（imaplib 参数仅 ascii） |
 
 ## 依赖
 
-无（Python 3 标准库）。client_id 借用 Microsoft Graph PowerShell 公开 client（TENANT=common，scope `Mail.Read offline_access`）。
+无（Python 3 标准库）。graph 借用 Microsoft Graph PowerShell 公开 client；gmail 需自备 GCP OAuth 客户端（`gcp.json`）。
 
 ## Changelog
 
+- 0.3 2026-10-05：多 provider（graph/gmail/imap）；发送策略门 policy.json（deny/confirm/auto + 白名单）；draft 全套与 send（graph createReply / gmail threadId / imap In-Reply-To 线程头）；163 IMAP ID 与 UTF-7 文件夹解码；gmail loopback 授权流
 - 0.2 2026-10-05：多账户命令面——`--account` 对齐插件契约（原 `--profile`）；新增 profiles / folders / attach ls·get；fetch 增 `--folder/--since/--from/--unread/--headers` 与分页；read 增 `--text` 纯文本抽取与 message-id/references；错误转 JSON 输出
 - 0.1 2026-10-05：立设——auth / fetch / read / search，单行 JSON，自动续期
