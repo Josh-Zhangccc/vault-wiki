@@ -64,8 +64,8 @@
 - wiki 容器 `wiki/`（内外之分的内侧）：出身二分——属地页两形：代理页（默认，可对账外源的投影，属地路径由各域注入行自披露）与域内原生页（域声明的域侧档案——真身在此、无外源对账，形态归域插件；首例 bb-track 认知档案 user.md）；属地之外其余为原生页（真身在此的写作物；会话页是纪要非镜像——对话消逝后页面即真身，写作即出生）；index / tags / hot / log 为派生页（机械投影）；页面 frontmatter 取最小 YAML 子集（顶层标量 / 块列表 / 一级块映射），更复杂结构不受解析
 <!-- /plugin:wiki -->
 
-<!-- plugin:device v0.1 -->
-- 设备档案：个人设备一设备一页落 `wiki/notes/`（type: entity 形态建议，页名自由、同名尾缀消歧），frontmatter `device` 块映射登 serial / purchased / warranty_until（最小键集，余开放：model、vendor 等）；发票照片类资产走 vault 物化、页面 wikilink 关联（跨件引用不立依赖）；trust 可选挂——人手登记即 human 证据、静态事实不挂 stale_after；到期提醒——附检扫 warranty_until，30 天内临期或已过期呈 warning 清单，经用户确认受托追加 todo 行（受托即追加，不自动写）；设备状态监控与团队借还不做（范围边界）
+<!-- plugin:device v0.2 -->
+- 设备档案：个人设备一设备一页落 `wiki/notes/`（type: entity 形态建议，页名自由、同名尾缀消歧），frontmatter `device` 块映射登 serial / purchased / warranty_until（最小键集，余开放：model、vendor 等），正文 `## 工具环境` 摘要节记连接器/运行时/通道在场级信息（跨设备互查，装卸软件时同步；全量软件清单不记——现查即得）；发票照片类资产走 vault 物化、页面 wikilink 关联（跨件引用不立依赖）；trust 可选挂——人手登记即 human 证据、静态事实不挂 stale_after；到期提醒——附检扫 warranty_until，30 天内临期或已过期呈 warning 清单，经用户确认受托追加 todo 行（受托即追加，不自动写）；实时状态监控与团队借还不做（范围边界）
 <!-- /plugin:device -->
 
 <!-- plugin:hot v0.10 -->
