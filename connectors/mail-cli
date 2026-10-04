@@ -1,0 +1,132 @@
+#!/usr/bin/env python3
+"""mail-cli：wiki email 域的最小只读连接器（Microsoft Graph, OAuth2 device flow）。
+
+用法：
+  mail-cli auth start --profile <名>
+  mail-cli auth complete --profile <名> --device-code <code>
+  mail-cli auth status --profile <名>
+  mail-cli fetch --profile <名> [--folder inbox] [--days 7] [--limit 30]
+  mail-cli read --profile <名> --id <message-id>      # 读单封正文（截断 8000 字）
+
+只读（Graph GET 不改变已读状态），凭据只存本机 ~/.config/mail-cli/<profile>.json，不入库。
+"""
+import argparse, json, os, sys, time, urllib.request, urllib.parse
+from datetime import datetime, timedelta, timezone
+
+TENANT = "common"
+CLIENT_ID = "14d82eec-204b-4c2f-b7e8-296a70dab67e"  # Microsoft Graph PowerShell 公开 client
+SCOPE = "Mail.Read offline_access"
+GRAPH = "https://graph.microsoft.com/v1.0"
+
+def cfg_path(p): return os.path.expanduser(f"~/.config/mail-cli/{p}.json")
+def load_tok(p):
+    f = cfg_path(p)
+    return json.load(open(f)) if os.path.exists(f) else None
+def save_tok(p, t):
+    f = cfg_path(p)
+    os.makedirs(os.path.dirname(f), exist_ok=True)
+    json.dump(t, open(f, "w"))
+
+def http(url, data=None, tok=None):
+    body = urllib.parse.urlencode(data).encode() if data else None
+    req = urllib.request.Request(url, data=body)
+    if data: req.add_header("Content-Type", "application/x-www-form-urlencoded")
+    if tok: req.add_header("Authorization", f"Bearer {tok}")
+    with urllib.request.urlopen(req) as r:
+        return json.loads(r.read())
+
+def refresh(profile):
+    tok = load_tok(profile)
+    if not tok: sys.exit(json.dumps({"ok": False, "error": "not_authorized"}))
+    if tok.get("expires_at", 0) > time.time() + 60: return tok["access_token"]
+    nt = http(f"https://login.microsoftonline.com/{TENANT}/oauth2/v2.0/token", {
+        "client_id": CLIENT_ID, "grant_type": "refresh_token",
+        "refresh_token": tok["refresh_token"], "scope": SCOPE})
+    nt["expires_at"] = time.time() + nt.get("expires_in", 3600)
+    nt["account"] = tok.get("account")
+    save_tok(profile, nt)
+    return nt["access_token"]
+
+def form(m):
+    return {"id": m["id"], "received": m.get("receivedDateTime"),
+            "from": (m.get("from") or {}).get("emailAddress", {}).get("address"),
+            "subject": m.get("subject"), "preview": m.get("bodyPreview", "")[:200]}
+
+def main():
+    ap = argparse.ArgumentParser()
+    sp = ap.add_subparsers(dest="cmd", required=True)
+    a = sp.add_parser("auth"); asp = a.add_subparsers(dest="act", required=True)
+    for act in ("start", "complete", "status"):
+        p = asp.add_parser(act); p.add_argument("--profile", required=True)
+        if act == "complete": p.add_argument("--device-code", required=True)
+    f = sp.add_parser("fetch")
+    f.add_argument("--profile", required=True)
+    f.add_argument("--folder", default="inbox")
+    f.add_argument("--days", type=int, default=7)
+    f.add_argument("--limit", type=int, default=30)
+    r = sp.add_parser("read"); r.add_argument("--profile", required=True); r.add_argument("--id", required=True)
+    s = sp.add_parser("search"); s.add_argument("--profile", required=True); s.add_argument("--query", required=True); s.add_argument("--limit", type=int, default=10)
+    args = ap.parse_args()
+
+    if args.cmd == "auth" and args.act == "start":
+        d = http(f"https://login.microsoftonline.com/{TENANT}/oauth2/v2.0/devicecode",
+                 {"client_id": CLIENT_ID, "scope": SCOPE})
+        save_tok(args.profile + ".pending", {"device_code": d["device_code"], "interval": d.get("interval", 5)})
+        print(json.dumps({"ok": True, "verification_url": d.get("verification_url") or d.get("verification_uri"),
+                          "user_code": d["user_code"], "expires_in": d.get("expires_in", 900)}))
+    elif args.cmd == "auth" and args.act == "complete":
+        pend = load_tok(args.profile + ".pending")
+        if not pend: sys.exit(json.dumps({"ok": False, "error": "no_pending_start"}))
+        deadline = time.time() + 900
+        while time.time() < deadline:
+            try:
+                tok = http(f"https://login.microsoftonline.com/{TENANT}/oauth2/v2.0/token", {
+                    "client_id": CLIENT_ID,
+                    "grant_type": "urn:ietf:params:oauth:grant-type:device_code",
+                    "device_code": pend["device_code"], "scope": SCOPE})
+                tok["expires_at"] = time.time() + tok.get("expires_in", 3600)
+                try:
+                    me = http("https://graph.microsoft.com/v1.0/me", tok=tok["access_token"])
+                    tok["account"] = me.get("userPrincipalName")
+                except Exception: pass
+                save_tok(args.profile, tok)
+                os.remove(cfg_path(args.profile + ".pending"))
+                print(json.dumps({"ok": True, "account": tok.get("account")}))
+                return
+            except urllib.error.HTTPError as e:
+                err = json.loads(e.read()).get("error")
+                if err == "authorization_pending": time.sleep(pend.get("interval", 5))
+                else: sys.exit(json.dumps({"ok": False, "error": err}))
+        sys.exit(json.dumps({"ok": False, "error": "timeout"}))
+    elif args.cmd == "auth" and args.act == "status":
+        tok = load_tok(args.profile)
+        print(json.dumps({"ok": bool(tok), "account": (tok or {}).get("account")}))
+    elif args.cmd == "fetch":
+        at = refresh(args.profile)
+        since = (datetime.now(timezone.utc) - timedelta(days=args.days)).strftime("%Y-%m-%dT%H:%M:%SZ")
+        q = urllib.parse.urlencode({
+            "$top": args.limit, "$orderby": "receivedDateTime desc",
+            "$select": "id,receivedDateTime,from,subject,bodyPreview",
+            "$filter": f"receivedDateTime ge {since}"})
+        base = f"{GRAPH}/me/mailFolders/{args.folder}/messages?{q}" if args.folder != "inbox" else f"{GRAPH}/me/messages?{q}"
+        d = http(base, tok=at)
+        print(json.dumps({"ok": True, "count": len(d.get("value", [])),
+                          "messages": [form(m) for m in d.get("value", [])]}, ensure_ascii=False))
+    elif args.cmd == "read":
+        at = refresh(args.profile)
+        d = http(f"{GRAPH}/me/messages/{urllib.parse.quote(args.id)}", tok=at)
+        print(json.dumps({"ok": True, "subject": d.get("subject"),
+                          "from": (d.get("from") or {}).get("emailAddress", {}).get("address"),
+                          "received": d.get("receivedDateTime"),
+                          "body": d.get("body", {}).get("content", "")[:8000]}, ensure_ascii=False))
+    elif args.cmd == "search":
+        at = refresh(args.profile)
+        q = urllib.parse.quote(f'"{args.query}"')
+        req = urllib.request.Request(f"{GRAPH}/me/messages?$search={q}&$top={args.limit}")
+        req.add_header("Authorization", f"Bearer {at}")
+        with urllib.request.urlopen(req) as resp:
+            d = json.loads(resp.read())
+        print(json.dumps({"ok": True, "count": len(d.get("value", [])),
+                          "messages": [form(m) for m in d.get("value", [])]}, ensure_ascii=False))
+
+if __name__ == "__main__": main()
