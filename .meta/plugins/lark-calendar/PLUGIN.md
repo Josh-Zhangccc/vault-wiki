@@ -1,6 +1,12 @@
 # lark-calendar：lark 日历源
 
-桥接件：把 lark-cli 可达的飞书日历投影进 calendar 时间领地——语义依赖两端概念插件（calendar 与 lark，depends 显式声明，拓扑同 mapping 之于 vault+wiki）。无自有领地：页面与格式归 calendar，CLI 纪律归 lark 基座，本插件的全部产出是**源语法与拉取纪律**。
+## 设计概要
+
+- **为什么存在**：calendar 的首个源适配器——把 lark-cli 可达的飞书日历投影进时间领地。桥接件形态：语义依赖两端概念插件（calendar 与 lark），无自有领地，全部产出 = **源语法与拉取纪律**
+- **关键裁定**：
+  - 只写月页 `## 日程` 节（行尾标源键）：不碰手记节、不碰已冻结月页——写边界窄到节级
+  - 源语法 `lark/<profile> <calendar_id|primary>`：profile 须为 wiki/lark/ 现役目录——源声明即可达性证明
+  - 日更节奏 = 部署侧 cron 无人值守会话（全机械，失败源 log 报告不阻断他源）——多源合流容错的一环
 
 ## Structure
 

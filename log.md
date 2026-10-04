@@ -15,10 +15,11 @@
 - teach/quiz 首轮实测（伸缩/越界/判分）
 - AIE2040 归位补测 + 复问失败问题
 - bb-cli 用户信息优化；email 探路；日更 cron（部署侧）
-- PLUGIN.md 批次改进；部署进个人库
+- 部署进个人库
 
 ## 过往操作
 
+- 2026-10-04 PLUGIN.md 批四：域件族七件（vault/lark×4/project/email）升格设计概要；plugin 与内核参考 skill 的形态规格对齐（设计概要入模板）——28 件全数完成
 - 2026-10-04 PLUGIN.md 批三：检索/派生件八件（index/hot/link/tag/sessions/tmp/mapping/structure）升格设计概要
 - 2026-10-04 PLUGIN.md 批二：横切全局件八件升格设计概要；六桥节按分工裁定降格（格式权威归 usage 投影）
 - 2026-10-04 PLUGIN.md 批一：bb 族五件升格设计文档——设计概要节（为什么/族内位置/关键裁定含弃案/机制回指），桥指针对齐分工裁定

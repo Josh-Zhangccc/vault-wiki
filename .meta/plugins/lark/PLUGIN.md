@@ -1,6 +1,14 @@
 # lark：外部域基座
 
-外部域基座（domain 实例，指针落地）：wiki 的代理对象自本地 vault 外推到 CLI 可达的外部系统——以 lark-cli 为事实接口，立「指针页」——token 即身份证明（对照 mapping 代理页的路径 + 哈希证明），新鲜度交给 trust 层（stale 驱动 agent 现拉刷新，机械同步后置）。基座只立 profile 抽象与领地纪律，不载域知识：基座说「一企业一 profile，住在 wiki/lark/<profile>/」，域插件（lark-docs 等）收到后在每个 profile 下平行展开各自文件。
+## 设计概要
+
+- **为什么存在**：外部域基座（domain 实例，指针落地）——wiki 的代理对象自本地 vault 外推到 CLI 可达的外部系统。立「指针页」：token 即身份证明（对照 mapping 的路径 + 哈希证明），新鲜度交给 trust 层（stale 驱动 agent 现拉刷新，机械同步后置）
+- **关键裁定**：
+  - 基座不载域知识：只立 profile 抽象与领地纪律（一企业一 profile，住 `wiki/lark/<profile>/`），域插件（docs / im…）在任一 profile 下平行展开——域内件族的基座范式（mechanics §8）
+  - 指针落地不物化——四轮收敛的弃案：vault 存储、daemon 定时同步、profile 分段内嵌；真相在 lark，本地只投影，agent 即同步器
+  - 领地页面两形（0.2）：指针页全可再生 + 档案页分区（frontmatter 机械区对账维护 / 正文沉淀区只增）——im 域档案页的架构前提
+  - trust 天花板 machine-confirmed、TTL 默认 7 天（身份页覆写）；资源消失标 deprecated 不删
+  - CLI 纪律：`--profile` 必带、auth 现查不落盘、入新域前 `skills read` 先行
 
 ## Structure
 
