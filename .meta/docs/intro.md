@@ -45,6 +45,7 @@ md + 纯文件是底座——无工具私有格式，Obsidian、WebUI 都只是�
 |---|---|
 | 宪法与协作红线 | `AGENTS.md` |
 | 机制总纲（投影/依赖/绑定/桥/分层） | 内核参考 skill |
+| 机制怎么运作（详解与走查） | `.meta/docs/mechanics.md` |
 | 某插件为什么这样设计 | 该插件 `PLUGIN.md` |
 | 调研依据 | `.meta/docs/research-*.md` |
 | 部署走查 | `.meta/docs/quickstart.md` |
