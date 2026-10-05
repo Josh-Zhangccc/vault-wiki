@@ -19,6 +19,7 @@
 
 ## 过往操作
 
+- 2026-10-05 域构修：官方个人文件物化改域内（cuhksz/sis/ + 属地 docs/ 代理页，所有者裁定）——落地判据定为「域有自立容器则域内落地，vault 兜底无容器域」；cuhksz 0.2 / sis 0.2
 - 2026-10-05 连接器：sis-cli v0.3（issue #6 实例首报三缺口）——ICAction POST 导航原语（submit_icaction + raw --post）、transcript 命令（SSS_TSRQST_UNOFF 真 身 + View Report → 官方 PDF 三语言）、identity 命令（prsnldata + PDF 双源 12 字段，覆盖 cuhksz 身份页全字段）、dpr 如实报告（Request Audit 待裁定）；issue 关闭留痕
 - 2026-10-05 修复：域迁移批量替换的双重路径笔误（wiki/cuhksz/cuhksz/bb/——规则产物二次命中，残留检查排除项漏网）；实例侧首报；bb 0.9 / bb-map 0.15 / bb-track·teach·quiz 0.6 归一升版，全库复扫清零、validate 33 全绿
 - 2026-10-05 域构：cuhksz 学校域立设（所有者裁定 bb 降为域内族）——基座（身份页+子系统导航）+ sis 学籍子域（速写页/查询即答/课表源补缺）+ registry 教务制度子域（物化+全校方案指针索引 schemes.md，42 专业页实测）；bb v0.8 挂靠迁路径（wiki/cuhksz/bb/、cuhksz/bb/），族内四件随迁升版；三十三插件 validate 全绿
