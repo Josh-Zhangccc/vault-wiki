@@ -1,24 +1,26 @@
-# 项目日志
+# Project Log
 
-> 追加与修改须标注日期（精确到天）；总量 <2.5k 字；整合压缩须用户同意——团队态下整合权归负责人。
+> Entries are dated (to the day); total <2.5k chars; consolidation requires user consent — in team mode the right belongs to the owner.
+> Language switch 2026-10-06: new entries are written in English from this point on; historical Chinese entries below are preserved as-is (append-only, history untouched).
 
-## 现状（2026-10-06）
+## Status (2026-10-06)
 
-工程定位：**团队项目**（2026-10-02 转轨；红线与审合制见 AGENTS）——边用边改。架构终态：双根 domain / wiki + 域实例族 vault / lark / project / email / bili（查询即答+涌现档案）/ cuhksz（bb·map·track·teach·quiz 族 + sis + registry）+ calendar + 横切件与 tmp，共三十五插件、无分层（拓扑+字母序；桥法则准则 11）；十三命令（见 README）。三投影一源（机制总纲见内核参考 skill）。test-repo/ 白名单镜像；connectors/ 四件（bb-cli / sis-cli / mail-cli / bili-cli）。
+Positioning: **team project** (converted 2026-10-02; red lines & review-merge rules in AGENTS) — fix as used. Architecture end-state: the dual conceptual roots domain / wiki + domain instance families vault / lark / project / email / bili (query-and-answer + emergence archives) / cuhksz (bb·map·track·teach·quiz family + sis + registry) + calendar + cron + cross-cutting pieces & tmp — 35 plugins, no layering (topology + alphabetical; bridge law = principle 11); 13 commands (see README). Three projections, one source (mechanics master doc in the kernel reference skill). test-repo/ whitelist mirrors; connectors/ four (bb-cli / sis-cli / mail-cli / bili-cli). Docs language switched to English 2026-10-06 (batch 1: charters; plugin disclosures / commands / docs / scripts follow in later batches — inject region stays Chinese until the plugin batch rebuilds it).
 
-## 阶段
+## Stage
 
-框架构建（✓ 09-08~12）→ 日常使用与边用边改（**当前**）。
+Framework build (done 09-08~12) → daily use & fix-as-used (**current**).
 
-## 下一步
+## Next steps
 
-- teach/quiz 首轮实测（伸缩/越界/判分）
-- AIE2040 归位补测 + 复问失败问题
-- bb-cli 用户信息优化；email 探路；cron 任务页首批登记与 harness 重放实测
-- bili-cli 登录态实测（个人数据/写白名单首批）与 watch 清单冷启动
-- 实例库迁移（用户跑库）：wiki/bb/ → wiki/cuhksz/bb/、bb/ → cuhksz/bb/ + 画像桥登记行更新（待用户明示库位）；sis-cli v0.3 议：学费/购物车组件登记（raw 探路）、exam 出数据后验证、registry PDF 物化首批
+- teach/quiz first real-use round (scaling / scope / grading)
+- AIE2040 re-basin + re-asking failed questions
+- bb-cli user-info polish; email exploration; first cron task pages + harness replay field-test
+- bili-cli logged-in field-test (personal data / write whitelist first round) and watch-list cold start
+- i18n batches 2+: plugin disclosures (inject region rebuilds via kernel) → commands & connectors → docs & scripts
+- Instance-library migration (user's live repo): wiki/bb/ → wiki/cuhksz/bb/, bb/ → cuhksz/bb/ + profile bridge rows update (awaiting owner's explicit repo location); sis-cli v0.3 agenda: tuition/cart component registration (raw probing), exam verification once published, registry PDF materialization first batch
 
-## 过往操作
+## Past operations
 
 - 2026-10-06 议题：架构演进 issue #12 立档（单仓分层显性化→包格式+索引→subtree split 拆仓三步路线 + 第三方三通道与两安全面；方向共识未排期，痛点到达再走）
 - 2026-10-06 治理：PR #11 审合入库（bili 0.3 + bili-cli 0.2.0，管理者代行 --admin，GitHub 评论留痕）；删已合分支
