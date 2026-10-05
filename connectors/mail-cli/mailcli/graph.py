@@ -5,15 +5,29 @@ from .common import GRAPH, out, fail, http, load_tok, save_tok, cfg_path, strip_
 
 TENANT = "common"
 CLIENT_ID = "14d82eec-204b-4c2f-b7e8-296a70dab67e"  # Microsoft Graph PowerShell 公开 client
-SCOPE = "Mail.Read Mail.ReadWrite Mail.Send offline_access"
+# 最小授权：默认只请求只读 scope（管理员审批通常只拦含写/发的 consent 面）；
+# 写/发 scope 须 auth start --send 显式申请，届时才可能触发租户管理员审批。
+READ_SCOPE = "Mail.Read offline_access"
+FULL_SCOPE = "Mail.Read Mail.ReadWrite Mail.Send offline_access"
+
+def scope_of(tok):
+    """token 实际持有的 scope 集（Graph token 响应带 scope 字段；旧凭据无此字段回退全量，兼容判断）。"""
+    return set((tok.get("scope") or FULL_SCOPE).split())
+
+def need_write(account):
+    if not {"Mail.ReadWrite", "Mail.Send"} <= scope_of(load_tok(account) or {}):
+        fail(f"token_read_only（当前凭据只含只读权限；如需草稿/发送请 auth start --account {account} "
+             "--send 重新授权——宽 scope 可能触发租户管理员审批）")
 
 # ---------- auth ----------
 
 def auth_start(args):
+    scope = FULL_SCOPE if getattr(args, "send", False) else READ_SCOPE
     d = http(f"https://login.microsoftonline.com/{TENANT}/oauth2/v2.0/devicecode",
-             {"client_id": CLIENT_ID, "scope": SCOPE})
+             {"client_id": CLIENT_ID, "scope": scope})
     save_tok(args.account + ".pending",
-             {"device_code": d["device_code"], "interval": d.get("interval", 5), "provider": "graph"})
+            {"device_code": d["device_code"], "interval": d.get("interval", 5),
+             "provider": "graph", "scope": scope})
     out({"ok": True, "verification_url": d.get("verification_url") or d.get("verification_uri"),
          "user_code": d["user_code"], "expires_in": d.get("expires_in", 900)})
 
@@ -26,7 +40,7 @@ def auth_complete(args):
             tok = http(f"https://login.microsoftonline.com/{TENANT}/oauth2/v2.0/token", {
                 "client_id": CLIENT_ID,
                 "grant_type": "urn:ietf:params:oauth:grant-type:device_code",
-                "device_code": pend["device_code"], "scope": SCOPE}, raise_err=True)
+                "device_code": pend["device_code"], "scope": pend.get("scope", READ_SCOPE)}, raise_err=True)
         except urllib.error.HTTPError as e:
             err = json.loads(e.read()).get("error")
             if err == "authorization_pending": time.sleep(pend.get("interval", 5))
@@ -151,6 +165,7 @@ def attach(args, at):
         out({"ok": True, "saved": path, "bytes": len(b)})
 
 def draft(args, at):
+    if args.act in ("create", "delete"): need_write(args.account)
     if args.act == "create":
         if not args.to and not args.reply_to: fail("需要 --to 或 --reply-to")
         body = open(args.body_file).read() if args.body_file else (args.body or "")

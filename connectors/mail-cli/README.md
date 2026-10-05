@@ -13,7 +13,7 @@ wiki email 域的连接器（多 provider：Microsoft Graph / Gmail API / IMAP�
 `--account` 即插件契约的账户（= `wiki/email/<账户>/` 目录名 = profile 名）。
 
 ```
-mail-cli auth start  --account <名> [--provider graph|gmail]     # device flow（graph）/ loopback（gmail）
+mail-cli auth start  --account <名> [--provider graph|gmail] [--send]  # device flow（graph）/ loopback（gmail）；graph 默认仅申请 Mail.Read 只读 scope（只读 consent 面通常无需管理员审批），--send 才含写/发
 mail-cli auth setup  --account <名> --user <地址> --auth-code <码> [--imap-host H] [--smtp-host H]  # imap（如 163）
 mail-cli auth status --account <名>
 mail-cli profiles                                 # 账户清单（速写遍历入口）
@@ -58,6 +58,7 @@ mail-cli send --account <名> --id <草稿id> [--yes]
 
 ## Changelog
 
+- 0.4 2026-10-05：graph 最小授权——默认 scope 收敛为 `Mail.Read offline_access`（读信不再触发写/发 consent 面与随之而来的管理员审批），`auth start --send` 显式申请宽 scope；token 记录已授 scope（刷新保面），draft create/delete 与 send 在只读凭据下提前拒绝（token_read_only）
 - 0.3 2026-10-05：多 provider（graph/gmail/imap）；发送策略门 policy.json（deny/confirm/auto + 白名单）；draft 全套与 send（graph createReply / gmail threadId / imap In-Reply-To 线程头）；163 IMAP ID 与 UTF-7 文件夹解码；gmail loopback 授权流
 - 0.2 2026-10-05：多账户命令面——`--account` 对齐插件契约（原 `--profile`）；新增 profiles / folders / attach ls·get；fetch 增 `--folder/--since/--from/--unread/--headers` 与分页；read 增 `--text` 纯文本抽取与 message-id/references；错误转 JSON 输出
 - 0.1 2026-10-05：立设——auth / fetch / read / search，单行 JSON，自动续期

@@ -80,10 +80,12 @@ def refresh(account):
         from . import graph
         nt = http("https://login.microsoftonline.com/common/oauth2/v2.0/token", {
             "client_id": graph.CLIENT_ID, "grant_type": "refresh_token",
-            "refresh_token": tok["refresh_token"], "scope": graph.SCOPE})
+            "refresh_token": tok["refresh_token"],
+            "scope": tok.get("scope") or graph.READ_SCOPE})
     nt.setdefault("provider", tok.get("provider", "graph"))
     nt["expires_at"] = time.time() + nt.get("expires_in", 3600)
     nt["account"] = tok.get("account")
+    if tok.get("scope"): nt.setdefault("scope", tok["scope"])  # 保留原授权面（响应可无 scope）
     save_tok(account, nt)
     return nt["access_token"]
 

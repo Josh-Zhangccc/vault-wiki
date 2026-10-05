@@ -60,6 +60,7 @@ def cmd_send(args):
     impl = _impl(args.account)
     mode, allow = send_policy(args.account)
     if mode == "deny": fail("send_denied_by_policy")
+    if P(args.account) == "graph": graph.need_write(args.account)  # 只读凭据提前拒绝
     if P(args.account) == "imap":
         imsg, s = impl.send_summary(at, args.id)
         do = lambda: impl.send_do(at, args.id, imsg)
@@ -88,7 +89,10 @@ def main():
     a = sp.add_parser("auth"); asp = a.add_subparsers(dest="act", required=True)
     for act in ("start", "complete", "status", "setup"):
         p = asp.add_parser(act); p.add_argument("--account", required=True)
-        if act == "start": p.add_argument("--provider", choices=["graph", "gmail"], default="graph")
+        if act == "start":
+            p.add_argument("--provider", choices=["graph", "gmail"], default="graph")
+            p.add_argument("--send", action="store_true",
+                           help="申请含写/发的宽 scope（默认仅 Mail.Read 只读——只读面通常无需管理员审批）")
         if act == "setup":
             p.add_argument("--provider", default="imap")
             p.add_argument("--user", required=True); p.add_argument("--auth-code", required=True)
