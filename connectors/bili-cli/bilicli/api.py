@@ -153,22 +153,49 @@ class BiliAPI:
     def video(self, bvid: str):
         return self._call("view", {"bvid": bvid})
 
-    def subtitle(self, bvid: str, page: int = 1):
+    def subtitle(self, bvid: str, page: int = 1, ai: bool = False):
+        """字幕正文。轨道选择：默认取首个非 AI 轨道（无则回落 AI），--ai 强制 AI 轨道；
+        tracks 字段列全部轨道供 agent 判断降级。"""
         view = self._call("view", {"bvid": bvid})
         pages = view.get("pages") or [{}]
         cid = pages[min(page, len(pages)) - 1].get("cid")
         player = self._call("player", {"bvid": bvid, "cid": cid})
         subs = ((player.get("subtitle") or {}).get("subtitles")) or []
+        is_ai = lambda s: str(s.get("lan", "")).startswith("ai-")
+        tracks = [{"lan": s.get("lan"), "ai": is_ai(s)} for s in subs]
         if not subs:
-            return {"cid": cid, "subtitles": []}
-        # 首个字幕轨道正文（列表按站方排序，lan 字段含语言码）
-        url = subs[0]["subtitle_url"]
+            return {"cid": cid, "tracks": tracks, "text": None}
+        if ai:
+            pick = next((s for s in subs if is_ai(s)), subs[0])
+        else:
+            pick = next((s for s in subs if not is_ai(s)), subs[0])
+        url = pick["subtitle_url"]
         if url.startswith("//"):
             url = "https:" + url
         doc = self.s.get(url, timeout=15).json().get("body") or []
         return {
-            "cid": cid, "lan": subs[0].get("lan"), "lines": len(doc),
+            "cid": cid, "lan": pick.get("lan"), "tracks": tracks, "lines": len(doc),
             "text": "\n".join(line.get("content", "") for line in doc),
+        }
+
+    def summary(self, bvid: str):
+        """官方 AI 视频总结（"视频速览"）。端点按 bvid+cid+up_mid 取，WBI 签名；
+        data.code != 0 或空载荷 = 该视频无官方总结（降级链见 SKILL）。"""
+        view = self._call("view", {"bvid": bvid})
+        cid = (view.get("pages") or [{}])[0].get("cid")
+        up_mid = (view.get("owner") or {}).get("mid")
+        params = self._sign({"bvid": bvid, "cid": cid, "up_mid": up_mid})
+        r = self.s.get(API_BASE + ENDPOINTS["conclusion"][0], params=params, timeout=15,
+                       headers={"Referer": f"https://www.bilibili.com/video/{bvid}/"})
+        data = (r.json().get("data") or {})
+        outline = data.get("outline") or []
+        return {
+            "bvid": bvid,
+            "has_summary": data.get("code") == 0 and bool(data.get("model_result") or outline),
+            "model_result": (data.get("model_result") or "")[:4000],
+            "outline": [{"title": o.get("title"),
+                         "bullets": [b.get("content") for b in (o.get("part_outline") or [])][:8]}
+                        for o in outline][:10],
         }
 
     def up_info(self, mid: int):
@@ -204,6 +231,14 @@ class BiliAPI:
         rid = self._bvid_to_aid(bvid)
         return self._call("fav_deal", post=True, extra_form={
             "rid": rid, "type": 2, "add_media_ids": "", "del_media_ids": fid, "media_id": fid,
+        })
+
+    def fav_move(self, bvid: str, src_fid: int, dst_fid: int):
+        """跨夹移动 = 同一 deal 调用内 add 目标夹 + del 源夹（白名单内组合操作）。"""
+        rid = self._bvid_to_aid(bvid)
+        return self._call("fav_deal", post=True, extra_form={
+            "rid": rid, "type": 2, "add_media_ids": dst_fid, "del_media_ids": src_fid,
+            "media_id": src_fid,
         })
 
     def like(self, bvid: str):

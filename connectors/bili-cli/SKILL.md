@@ -1,7 +1,7 @@
 ---
 name: bili-cli
 owner: framework
-description: "Access bilibili.com via the connectors/bili-cli CLI (web-cookie auth, read-mostly): search videos, fetch video details / subtitles, list favorites / watch-later / history, track UP uploads, relay as answer. Small low-risk write whitelist (watch-later add/remove, favorites add/remove, like) — every write needs explicit user request plus the CLI --yes gate. Triggers on: bilibili, bili-cli, B站, B 站, 收藏夹, 稍后再看, 观看历史, UP主, UP 主投稿, 搜索视频."
+description: "Access bilibili.com via the connectors/bili-cli CLI (web-cookie auth, read-mostly): search videos, fetch video details / subtitles / official AI summary, list and manage favorites / watch-later, view history, track UP uploads, relay as answer. Watching pipeline (degradation chain): CC subtitle -> AI subtitle -> official summary -> audio-to-tmp transcription. Small low-risk write whitelist (watch-later add/remove, favorites add/remove/move, like) — every write needs explicit user request plus the CLI --yes gate. Triggers on: bilibili, bili-cli, B站, B 站, 收藏夹, 稍后再看, 观看历史, UP主, UP 主投稿, 搜索视频, 看视频, 视频摘要."
 ---
 
 # bili-cli: bilibili Read-Mostly Connector
@@ -10,8 +10,8 @@ Pull data from bilibili.com via `connectors/bili-cli/` and relay as answer. Quer
 
 ## Scope
 
-Read: video details / pages / stats, subtitles, search (video / UP), personal favorites, watch-later, view history, UP info and recent uploads.
-Write: **whitelist only** (2026-10-06 owner decision) — `watchlater add/remove`, `fav add/remove`, `like`. Every write requires (a) an explicit user verb in conversation (agent-layer rule) AND (b) the CLI `--yes` gate. Everything else — coin, comment, share, follow/unfollow, dm, danmaku — is **never provided and never attempted via raw**.
+Read: video details / pages / stats, subtitles (CC + AI tracks), official AI video summary, search (video / UP), personal favorites, watch-later, view history, UP info and recent uploads.
+Write: **whitelist only** (2026-10-06 owner decision) — `watchlater add/remove`, `fav add/remove/move`, `like`. Every write requires (a) an explicit user verb in conversation (agent-layer rule) AND (b) the CLI `--yes` gate. Everything else — coin, comment, share, follow/unfollow, dm, danmaku — is **never provided and never attempted via raw**.
 
 ## Prerequisites (install / auth)
 
@@ -35,9 +35,10 @@ Write: **whitelist only** (2026-10-06 owner decision) — `watchlater add/remove
 | View history (recent window) | `bili-cli history [--limit 50]` |
 | Search videos / UPs | `bili-cli search <q> [--kind up] [--limit 20]` |
 | Video detail (pages / stats / desc) | `bili-cli video <bvid>` |
-| Subtitle text (first track) | `bili-cli subtitle <bvid> [--page 2]` |
+| Subtitle text (CC track default) | `bili-cli subtitle <bvid> [--page 2] [--ai]` (`tracks` field lists all) |
+| Official AI video summary | `bili-cli summary <bvid>` (**needs login**; `has_summary: false` = none published, fall through the chain) |
 | UP info (+ recent uploads) | `bili-cli up <mid> [--arcs --limit 20]` |
-| Writes (whitelist, need `--yes` + explicit user verb) | `bili-cli watchlater add|remove <bvid> --yes` · `bili-cli fav add|remove <bvid> --fid <id> --yes` · `bili-cli like <bvid> --yes` |
+| Writes (whitelist, need `--yes` + explicit user verb) | `bili-cli watchlater add|remove <bvid> --yes` · `bili-cli fav add|remove <bvid> --fid <id> --yes` · `bili-cli fav move <bvid> --from <id> --to <id> --yes` · `bili-cli like <bvid> --yes` |
 | Any endpoint passthrough | `bili-cli raw <url> [--post]` (reads/inspection only — never for write ops outside the whitelist) |
 
 ## Output notes
@@ -50,7 +51,8 @@ Timestamps are rendered `YYYY-MM-DD HH:MM` local time; durations are seconds (`d
 - Some endpoints throttle anonymous/refresh traffic (code -412 risk control): keep requests serial, reuse one command per need; do not loop aggressively
 - `history` only walks the recent window the API serves; deep history is not exposed
 - Search results are the first page only (page: 1); paginate via `raw` if ever needed
-- Subtitles: uploader-provided CC only; auto-generated AI subtitles are not in the player payload
+- Audio download for transcription is the only materialization path: temp files under `wiki/tmp/`, never into `vault/` or the repo; user confirmation required
+- Watching pipeline (degradation chain, stop at first hit): CC subtitle (`subtitle`) -> AI subtitle track (`subtitle --ai`) -> official AI summary (`summary`) -> audio download into `wiki/tmp/` + local transcription (user-confirmed, delete after use). **Measured**: official summary and AI subtitle tracks require login (-101 anonymous); anonymous watching therefore relies on CC subtitle or transcription
 - Cookie = full account credential: treat like a password; page bodies contain personal data (history, favorites) — relay in conversation only, never commit CLI output into any repo
 
 ## Prohibitions

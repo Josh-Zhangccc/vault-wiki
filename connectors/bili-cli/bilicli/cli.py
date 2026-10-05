@@ -83,6 +83,12 @@ def cmd_fav(args):
             } for r in rows])
         return
     _need_yes(args, args.action)
+    if args.action == "move":
+        if not (args.src_fid and args.dst_fid):
+            raise SystemExit("fav move 须 --from <源夹id> --to <目标夹id>（先 `bili-cli fav` 查清单）")
+        _emit({**api.fav_move(args.bvid, args.src_fid, args.dst_fid), "action": "fav move",
+               "bvid": args.bvid, "from": args.src_fid, "to": args.dst_fid})
+        return
     if not args.fid:
         raise SystemExit("--fid 必带（收藏夹 id，先 `bili-cli fav` 查清单）")
     fn = {"add": api.fav_add, "remove": api.fav_del}[args.action]
@@ -134,7 +140,12 @@ def cmd_video(args):
 
 
 def cmd_subtitle(args):
-    _emit(BiliAPI().subtitle(args.bvid, args.page))
+    _emit(BiliAPI().subtitle(args.bvid, args.page, ai=args.ai))
+
+
+def cmd_summary(args):
+    api = BiliAPI(); api.require_auth("summary")  # 实测 -101：官方总结仅登录态开放
+    _emit(api.summary(args.bvid))
 
 
 def cmd_up(args):
@@ -184,10 +195,12 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--yes", action="store_true", help="写操作显式确认门")
     s.set_defaults(fn=cmd_watchlater)
 
-    s = sub.add_parser("fav", help="收藏夹（夹清单/内容读 / 增删写）")
-    s.add_argument("action", nargs="?", choices=["list", "add", "remove"], default="list")
+    s = sub.add_parser("fav", help="收藏夹（夹清单/内容读 / 增删移写）")
+    s.add_argument("action", nargs="?", choices=["list", "add", "remove", "move"], default="list")
     s.add_argument("bvid", nargs="?", help="写操作目标")
     s.add_argument("--fid", type=int, help="收藏夹 id（读内容/写操作均需）")
+    s.add_argument("--from", dest="src_fid", type=int, help="move 源夹 id")
+    s.add_argument("--to", dest="dst_fid", type=int, help="move 目标夹 id")
     s.add_argument("--limit", type=int, default=30)
     s.add_argument("--yes", action="store_true")
     s.set_defaults(fn=cmd_fav)
@@ -206,10 +219,15 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("bvid")
     s.set_defaults(fn=cmd_video)
 
-    s = sub.add_parser("subtitle", help="字幕正文（首个轨道）")
+    s = sub.add_parser("subtitle", help="字幕正文（默认 CC 轨道，--ai 强制 AI 轨道）")
     s.add_argument("bvid")
     s.add_argument("--page", type=int, default=1, help="分P 序号")
+    s.add_argument("--ai", action="store_true", help="取 AI 字幕轨道（lan ai-*）")
     s.set_defaults(fn=cmd_subtitle)
+
+    s = sub.add_parser("summary", help="官方 AI 视频总结（无则 has_summary=false，走降级链）")
+    s.add_argument("bvid")
+    s.set_defaults(fn=cmd_summary)
 
     s = sub.add_parser("up", help="UP 主信息（可带投稿列表）")
     s.add_argument("mid", type=int)
