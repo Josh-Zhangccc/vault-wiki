@@ -15,11 +15,12 @@
 - teach/quiz 首轮实测（伸缩/越界/判分）
 - AIE2040 归位补测 + 复问失败问题
 - bb-cli 用户信息优化；email 探路；日更 cron（部署侧）
-- sis-cli v0.2：grades/history/appt 的 term 交互查询（POST ICSID）与结构化解析、周课表星期归属（改从 center 页取——Tu/ThFr 实证在场）、学费/考试计划组件登记（raw 探路）
+- sis-cli v0.3 议：学费/购物车组件登记（raw 探路）、exam 出数据后验证、wiki 侧 sis 域插件（先 CLI 后域）
 
 ## 过往操作
 
-- 2026-10-05 治理：PR #2 审合入库（sis-cli v0.1，管理者代行 --admin，GitHub 评论留痕）；同步远端 mail-cli 五提交（v0.1→包化）
+- 2026-10-05 治理：PR #2/#3 审合入库（sis-cli v0.1/v0.2，管理者代行 --admin，GitHub 评论留痕）；同步远端 mail-cli 五提交（v0.1→包化）
+- 2026-10-05 连接器：sis-cli v0.2——term 交互查询打通（radio 解析+POST Continue 纯查询）：grades 换真身 SSR_SSENRL_GRADE（学期成绩行+GPA）、appt 注册窗口、exam 登记（未发布为空）、history 全量直出、schedule --days 星期归属（center 页权威源）
 - 2026-10-05 连接器：sis-cli v0.1 立设——SIS（PeopleSoft CS）只读 CLI：同源 ADFS OAuth2 复用、code 经 CUSZ_SSO_LOGIN 表单消费、PS_DEVICEFEATURES 破壳、psc+PTCNAV 组件直击；schedule 全解析（周事件+学期课程）、grades/center/history/appt 文本摘要、raw 透传；只读红线（选课类永不提供）；实证含组件 URL 双源（浏览器菜单+HTTP）
 - 2026-10-04 部署收整：april-linux 实例库自 ~ 迁 ~/repo（库与上游原本分离——~/vault-wiki 为升级源，connectors 随迁）；家级 .agents 回归纯 lark skill，孤儿警告根治；dsh 升 0.2.0-rc.2 并修四插件适配
 - 2026-10-04 部署：首座实例库落地 april-linux（家目录即库根）——机器清理三清单、clone 工程仓为升级源、三十插件收敛 verify 全绿、首批设备页两件（april-linux / windows-dev，互设 related）；device v0.2 增工具环境摘要节（在场级、多设备互查注册表、外壳以指针引页）先此入库
