@@ -108,8 +108,8 @@
 - 时间领地：声明页 `wiki/calendar.md`（`calendar` 块映射 = 源键→源声明，manual-only 可缺）+ 月页 `wiki/calendar/YYYY-MM.md`（两节制——`## 日程` 源投影整节重刷、`## 手记` 只增；事件行 `- MM-DD HH:MM~HH:MM 标题（源键）` 可带 wikilink，事件不建页）；未来滚动、过去冻结（月份走完不可改写）；月页 stale_after 默认 2 天；与 todo 边界——日历存何时有何事、todo 存何事待办，可单向派生；calendar 按需桥——域件单向派生带源键日程行入当月 `## 日程`（宪法准则 11，格式归本桥）
 <!-- /plugin:calendar -->
 
-<!-- plugin:cuhksz v0.1 -->
-- CUHK-SZ 学校域 `wiki/cuhksz/`（外领地 = cuhk.edu.cn 学校系统族：bb.cuhk.edu.cn 课程运行 · sis.cuhk.edu.cn 学籍制度 · registry.cuhk.edu.cn 教务制度；统一认证 STS ADFS，连接器 bb-cli / sis-cli 纯只读）：域声明页 identity.md（type: cuhksz + sis 块映射学籍身份，**缺席即建**——数据源 sis-cli transcript）；域根只持身份与子系统导航，速写归各子域；子系统族（bb 五件 / sis / registry）经 depends 挂靠、经传递属域；域内互引免桥（宪法准则 11 同域直引）；个人官方 PDF（证明/成绩单）走 vault 物化 + 域内页面 wikilink
+<!-- plugin:cuhksz v0.2 -->
+- CUHK-SZ 学校域 `wiki/cuhksz/`（外领地 = cuhk.edu.cn 学校系统族：bb.cuhk.edu.cn 课程运行 · sis.cuhk.edu.cn 学籍制度 · registry.cuhk.edu.cn 教务制度；统一认证 STS ADFS，连接器 bb-cli / sis-cli 纯只读）：域声明页 identity.md（type: cuhksz + sis 块映射学籍身份，**缺席即建**——数据源 sis-cli transcript）；域根只持身份与子系统导航，速写归各子域；子系统族（bb 五件 / sis / registry）经 depends 挂靠、经传递属域；域内互引免桥（宪法准则 11 同域直引）；个人官方 PDF（证明/成绩单）落 cuhksz/sis/ 域内物化——**域有自立容器则域内落地，vault 仅兜底无容器域**（2026-10-05 所有者裁定修正，弃 device 先例的借 vault 惯性）
 <!-- /plugin:cuhksz -->
 
 <!-- plugin:email v0.3 -->
@@ -164,8 +164,8 @@
 - 教务制度子域（外源 registry.cuhk.edu.cn 教务处官网，**无连接器**——人工下载经用户明示、半自动物化）：物化区 `cuhksz/registry/`（官网 PDF 只增，版本批次进位不覆写）+ 属地 `wiki/cuhksz/registry/`——索引页 schemes.md（全校学院→专业→方案页 URL 指针；建页源：本科专业清单 registry.cuhk.edu.cn/page/20 与本科生手册 /page/22 族，含双主修/联合课程/副修；人机共维护、公开制度导航）与代理页（raw_file/raw_sha256 + 要点蒸馏只增 + 版本对版记录）；**对版节奏** = 学期初与 Senate 公文日人工核对（页面无日期，以 PDF Last-Modified 抽查）；制度对照双源——本区规则 PDF 为制度源、sis-cli 学位进度报告（DPR）为动态源，对照结论涌现入 notes 回链；trust human-reviewed（人工核对）+ 版本锚，无 TTL（制度变更靠对版不靠过期）；停招专业（如电子信息工程 2015-2021）如实标注不删
 <!-- /plugin:registry -->
 
-<!-- plugin:sis v0.1 -->
-- 学籍制度子域 `wiki/cuhksz/sis/`（外源 sis.cuhk.edu.cn，Oracle PeopleSoft CS，连接器 sis-cli 纯只读，用法与命令面见 connectors/sis-cli/SKILL.md）：速写页 inbox.md（近窗蒸馏——本学期课表概要/注册窗口/holds/最新成绩快照，行标学期，整页可再生短 TTL 默认 1 天，**缺席即建**）；**查询即答不默认投影**——成绩/历史/课表/考试现拉即答（term 交互与只读红线见 sis-cli skill），高价值结论涌现入 notes 回链；单向派生只出不回：注册窗口临期 → todo、课表/考试安排 → calendar 日程行（补 bb 挂缺的课表源）、学期成绩（终态事实）→ bb-track 证据流（域内直引免桥，经用户确认）；个人官方 PDF（在读证明/非官方成绩单）经用户明示下载走 vault 物化 + 本域页面 wikilink；官方成绩单申请等写操作**永不入本域**（真实学籍后果）；trust 天花板 machine-confirmed，stale_after = 拉取日 + TTL（日期粒度），agent 即同步器
+<!-- plugin:sis v0.2 -->
+- 学籍制度子域 `wiki/cuhksz/sis/`（外源 sis.cuhk.edu.cn，Oracle PeopleSoft CS，连接器 sis-cli 纯只读，用法与命令面见 connectors/sis-cli/SKILL.md）：速写页 inbox.md（近窗蒸馏——本学期课表概要/注册窗口/holds/最新成绩快照，行标学期，整页可再生短 TTL 默认 1 天，**缺席即建**）；**查询即答不默认投影**——成绩/历史/课表/考试现拉即答（term 交互与只读红线见 sis-cli skill），高价值结论涌现入 notes 回链；单向派生只出不回：注册窗口临期 → todo、课表/考试安排 → calendar 日程行（补 bb 挂缺的课表源）、学期成绩（终态事实）→ bb-track 证据流（域内直引免桥，经用户确认）；个人官方 PDF（在读证明/非官方成绩单）经用户明示下载落 `cuhksz/sis/` 域内物化 + 属地代理页（域有自立容器则域内落地，vault 仅兜底无容器域）；官方成绩单申请等写操作**永不入本域**（真实学籍后果）；trust 天花板 machine-confirmed，stale_after = 拉取日 + TTL（日期粒度），agent 即同步器
 <!-- /plugin:sis -->
 
 <!-- plugin:structure v0.3 -->
