@@ -6,7 +6,7 @@
 - **关键裁定**：
   - 只写月页 `## 日程` 节，行尾标源键：不碰手记节，不碰已冻结月页——写边界窄到节级
   - 源语法 `lark/<profile> <calendar_id|primary>`：profile 须为 wiki/lark/ 现役目录——源声明即可达性证明
-  - 日更节奏 = 部署侧 cron 无人值守会话：全机械；失败源 log 报告，不阻断他源——多源合流容错的一环
+  - 日更节奏 = 经 cron 桥登记任务页（form: session）：登记/重放/对账纪律归 cron 插件，失败源 log 报告不阻断他源——多源合流容错的一环（0.2 挂桥改写）
 
 ## Structure
 
@@ -21,4 +21,5 @@
 
 ## Changelog
 
+- 0.2 2026-10-06：挂 cron 桥——日更节奏披露改写为经任务页登记（form: session），depends 加 cron
 - 0.1 2026-09-19：立设——lark 日历源接入 calendar，首个源适配器；日更 = 部署侧 cron 定时无人值守会话

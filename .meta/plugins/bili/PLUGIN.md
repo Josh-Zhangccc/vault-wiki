@@ -6,7 +6,7 @@
 - **关键裁定**：
   - 写模型归「真相在别处」档：B 站是真身，wiki 侧只持指针与涌现档案；**视频不建页是刻意留白**——bvid 深链 + 标题足够检索，一视频一页的翻译成本不值（对照 email 全量映射禁止的生死线）；UP 主档案是唯一预设档案形态（token = mid 一比一）
   - **低危写白名单制**（用户裁定，与 bb-cli/sis-cli 纯只读红线分叉）：放行三项——稍后再看增删、收藏夹增删、点赞；「低危」判据 = 半私有痕迹 + 可逆 + 无社交骚扰性；投币/评论/转发/关注/私信/弹幕永不提供，raw 亦不承载写。白名单内写操作双层门：agent 层须用户明示动词（照 email 发送红线句式）+ CLI 层 `--yes`（照 mail-cli 发送策略门的 --yes 语义）
-  - **追踪节奏两步走**（用户裁定）：先会话内现拉（零部署成本），watch 清单与速写格式经真实使用稳定后升部署侧 cron 日更——digest 子命令预留，**纯脚本零会话**（pipeline.py 先例，对照 lark-calendar 的会话版：bilibili 拉取-对比-蒸馏是纯机械活，无 agent 判断环节，脚本化更贴合且零持续额度成本）
+  - **追踪节奏两步走**（用户裁定）：先会话内现拉（零部署成本），watch 清单与速写格式经真实使用稳定后升 cron 任务页（form: script）——digest 子命令预留，**纯脚本零会话**（pipeline.py 先例，对照 lark-calendar 的会话版：bilibili 拉取-对比-蒸馏是纯机械活，无 agent 判断环节，脚本化更贴合且零持续额度成本）；节奏落点 0.2 收进 cron 域（声明为源、重放归 cron 插件）
   - **认证走 web cookie**（用户裁定）：SESSDATA/bili_jct 导入（浏览器 DevTools 拷贝），非官方接口、B 站随时改版——连接器持「已知坑」回改区与 raw 透传探路；cookie 即全权凭据，只存本机 `~/.bili-cli/`
   - **自研轻实现**（用户裁定）：requests + 自实现 WBI 签名与 space 风控参数，不依赖社区库——与 bb-cli/sis-cli 同风格，依赖面最小（实测：view/search/up_info/up_arc 匿名全通）
   - **公开查询免登录**：search/video/subtitle/up 无 cookie 可用（个人数据与写命令才需登录态）——连接器实测暴露的设计缺口，登录门槛按命令分级
@@ -30,4 +30,5 @@
 
 ## Changelog
 
+- 0.2 2026-10-06：挂 cron 桥——digest 升级路径落点改 cron 任务页（form: script），depends 加 cron
 - 0.1 2026-10-06：立设——七项设计决策经用户问答收敛（功能面三合一 / web cookie 认证 / 低危写白名单三项 / 自研轻实现 / 先现拉后 cron / 查询即答+涌现档案 / 连接器+域全套）；连接器 bili-cli v0.1.0 同步立设，匿名公开端点实测通过（view/search/up_info/up_arc）；声明先行、实测回改（照 sis-cli 先例）

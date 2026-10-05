@@ -1,11 +1,12 @@
 id: email
-version: 0.3
+version: 0.4
 depends:
   - domain
   - wiki
   - trust
   - log
-updated: 2026-10-02
+  - cron
+updated: 2026-10-06
 attachment:
   - "wiki/email/ —— 个人邮箱域属地（域根：统一速写与全局人档；一账户一目录，目录名 = 连接器 profile 名）"
   - "wiki/email/inbox.md —— 统一收件箱速写（跨账户蒸馏、行标账户、整页可再生、短 TTL）"
@@ -24,6 +25,6 @@ usage:
   - 线程档维护：现拉补新轮次（References 链，断裂按主题+参与人兜底聚类并在机械区注明）；沉淀区 `## 日期 议题→结果` 只增；快照节 `## 快照 YYYY-MM-DD` 重要长邮件可全文（冷源不可变，过时风险低）
   - 单向派生（只出不回）：行动项 → todo；邀请/确认 → calendar 月页日程（源键 = email/<账户>）；附件 → vault 物化后走 map 代理；高价值结论 → save 提升 notes 并回链——todo/calendar/notes 桥，格式细则归桥
   - 只读纪律：PEEK 不隐式标已读、不移动不归档不删除——邮箱原状属于人；起草可以（自动带线程档案上下文），发出/转发/移动/删除永远须用户明示
-  - 日更（可选，无人值守）：部署侧 cron 逐账户刷速写 + 行动项提醒；失败账户报 log 不阻断他账户
+  - 日更（可选，无人值守）：经 cron 桥登记任务页（form: session，domain: email）逐账户刷速写 + 行动项提醒——重放配方见 cron 插件；失败账户报 log 不阻断他账户
 checks:
   - 语义项（v0.1 人工，附检后置）：type: email 页落 `wiki/email/` 之外 → error；人档 token（地址）重复 → error；线程档机械区缺 members（Message-ID 列表）→ warning；速写手编痕迹 → warning；stale 清单（信息级：拉取日 + TTL）

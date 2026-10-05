@@ -4,7 +4,7 @@
 
 ## 现状（2026-10-06）
 
-工程定位：**团队项目**（2026-10-02 转轨；红线与审合制见 AGENTS）——边用边改。架构终态：双根 domain / wiki + 域实例族 vault / lark / project / email / bili（查询即答+涌现档案）/ cuhksz（bb·map·track·teach·quiz 族 + sis + registry）+ calendar + 横切件与 tmp，共三十四插件、无分层（拓扑+字母序；桥法则准则 11）；十三命令（见 README）。三投影一源（机制总纲见内核参考 skill）。test-repo/ 白名单镜像；connectors/ 四件（bb-cli / sis-cli / mail-cli / bili-cli）。
+工程定位：**团队项目**（2026-10-02 转轨；红线与审合制见 AGENTS）——边用边改。架构终态：双根 domain / wiki + 域实例族 vault / lark / project / email / bili（查询即答+涌现档案）/ cuhksz（bb·map·track·teach·quiz 族 + sis + registry）+ calendar + 横切件与 tmp，共三十五插件、无分层（拓扑+字母序；桥法则准则 11）；十三命令（见 README）。三投影一源（机制总纲见内核参考 skill）。test-repo/ 白名单镜像；connectors/ 四件（bb-cli / sis-cli / mail-cli / bili-cli）。
 
 ## 阶段
 
@@ -14,12 +14,13 @@
 
 - teach/quiz 首轮实测（伸缩/越界/判分）
 - AIE2040 归位补测 + 复问失败问题
-- bb-cli 用户信息优化；email 探路；日更 cron（部署侧）
+- bb-cli 用户信息优化；email 探路；cron 任务页首批登记与 harness 重放实测
 - bili-cli 登录态实测（个人数据/写白名单首批）与 watch 清单冷启动
 - 实例库迁移（用户跑库）：wiki/bb/ → wiki/cuhksz/bb/、bb/ → cuhksz/bb/ + 画像桥登记行更新（待用户明示库位）；sis-cli v0.3 议：学费/购物车组件登记（raw 探路）、exam 出数据后验证、registry PDF 物化首批
 
 ## 过往操作
 
+- 2026-10-06 插件：cron 时间自动化领地立设（用户三问收敛——统一登记处/对账+重放/每任务一页；声明为源执行侧为投影，session|script 两形态判据与失败纪律上提）——lark-calendar 0.2 / bili 0.2 / email 0.4 挂桥随迁，散落节奏披露归位；validate 35 全绿
 - 2026-10-06 治理：PR #9 审合入库（bilibili 域 + bili-cli v0.1.0，管理者代行 --admin，GitHub 评论留痕）；删已合分支
 - 2026-10-06 域构：bilibili 域立设（所有者问答收敛七项——功能三合一/web cookie/低危写白名单三项双层门/自研轻实现/先现拉后 cron/查询即答+涌现档案/连接器+域全套）——插件 bili v0.1（挂 todo/calendar/notes 三桥），连接器 bili-cli v0.1.0（WBI 签名+space 风控参数自研实测通，公开查询免登录、写命令 --yes 双门）；README/AGENTS 章程同步（三十四插件、connectors 四件，顺手修 bb/→cuhksz/ 陈旧引用）
 - 2026-10-05 域构修：官方个人文件物化改域内（cuhksz/sis/ + 属地 docs/ 代理页，所有者裁定）——落地判据定为「域有自立容器则域内落地，vault 兜底无容器域」；cuhksz 0.2 / sis 0.2

@@ -1,0 +1,23 @@
+id: cron
+version: 0.1
+bridge: 按需
+depends:
+  - wiki
+  - trust
+  - log
+updated: 2026-10-06
+attachment:
+  - "wiki/cron/ —— 时间自动化领地（每任务一页，纯目录制——目录即声明全集，无根声明页，速览走 index 派生）"
+  - "wiki/cron/<任务名>.md —— 任务页（type: cron；cron 块映射机械区 + 正文两节）"
+fields:
+  cron: "块映射（任务页）——schedule（节奏：crontab 5 字段或人读描述，本地时区默认）/ action（动作一句话）/ form（执行形态：session 会话版 | script 脚本版——判据：有 agent 判断环节 session、纯机械 script）/ domain（属域，域件经桥登记时标，跨域任务可缺省）/ status（active 现役 | paused 暂停 | deprecated 废止）/ last_run（最近运行时刻，机器维护）/ machine（可选：执行机锚，多设备定位，v0.1 只留键不建联动）"
+inject: "时间自动化领地 `wiki/cron/`（周期自动化意图的家，每任务一页纯目录制——目录即声明全集）：任务页 type: cron + `cron` 块映射（schedule 节奏 / action 动作 / form 执行形态 session 会话版|script 脚本版 / domain 属域 / status active|paused|deprecated / last_run 最近运行机器维护 / machine 可选执行机锚）+ 正文两节（`## 任务` 动作详情与指针回链属域 skill；`## 运行纪要` 只增收敛——异常/修复/变更决策，正常运行不记，历史归 log）；**声明为源、执行机构为投影**（harness 可替换，宪法准则 4）——部署/换机重放：active 页逐条落执行侧，session 版在当前 harness 调度设施建任务（prompt 按 SASU-L 自包含：读任务页按页执行 + 失败 log 报告 + 不阻断他任务）、script 版生成系统任务条目（crontab 行/任务计划命令）**经用户确认写入系统**；对账进 check 附检——active 页集 ↔ harness 任务清单 ↔ 系统任务清单（尽力读）三方 diff 漂移 → warning、last_run 超节奏周期 → warning（声明在而投影丢失）；意图变更同步：人改 status 经确认后 agent 同步删/停执行侧任务（双向以声明页为真源）；**统一失败纪律**——失败源 log 报告（类型 other 标任务名）不阻断他任务，修复委托单向派生 todo；cron 按需桥——域件立定时任务时建任务页 + depends 挂本件（宪法准则 11，页骨架与登记/重放/对账纪律归本桥，任务动作形态归域）；边界三分——todo 一次性委托、calendar 事件事实（何时有何事）、cron 周期自动化意图（何时自动做什么），任务产出仍按各域纪律落位"
+usage:
+  - 登记（域件经桥 / 人直接建）：建 wiki/cron/<任务名>.md——cron 块映射最小键集（schedule/action/form/status）+ `## 任务` 节（动作详情：调什么命令或会话开场读什么，回链属域 skill）；域件登记时标 domain 并挂 depends cron
+  - 重放（部署走查 / agent 会话自发）：读 active 任务页逐条落执行侧——session 版经当前 harness 调度设施建任务，prompt 自包含（读 wiki/cron/<任务名>.md 按页执行、失败写 log 行报告、不阻断他任务）；script 版生成 crontab 行 / 任务计划命令，写系统状态经用户确认；执行侧已有任务与声明 diff 时以声明页为准增删
+  - 运行留痕：正常跑毕写 log 行（类型 other 标任务名）+ 任务页 last_run 机械更新；异常进 `## 运行纪要` 只增收敛；修复委托 → todo（单向派生）
+  - 对账（check 附检纪律）：active 页集 ↔ 执行侧任务清单 diff 漂移 → warning；last_run 距今超 schedule 周期且 status: active → warning；paused/deprecated 页仍在执行侧运行 → error
+  - 暂停与废止：人改 status → agent 经确认同步删/停执行侧任务；废止页不删（留档）
+checks:
+  - 机械项：type: cron 页落 wiki/cron/ 之外 → error；任务页缺 cron 块或最小键集（schedule/action/form/status）→ warning；last_run 超 schedule 周期且 active → warning（投影丢失信号）
+  - 语义项（附检后置）：执行侧清单（harness/系统任务，尽力读）与声明页集漂移 → warning

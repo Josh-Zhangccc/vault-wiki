@@ -43,7 +43,7 @@
 > 指针需主动更新。跨 session 的重要指针标注 **ATTENTION**；易变状态（进度等）放 `log.md`，不写入本文件。
 
 - `log.md` — 项目日志：现状、阶段、下一步、过往操作 **ATTENTION**
-- `.meta/` — 原型核心：结构插件（`plugins/`——双根概念 domain（外·域契约）与 wiki（内·出身二分）+ 域实例族：vault（默认域，mapping 为其映射法则、structure 管其布局）、lark（外部域基座，指针/档案两形，域内 lark-docs 云文档域 / lark-im 人际域）、project（自立容器域：projects/ 工作区 + wiki 声明页）、email（个人邮箱域：wiki/email/ 账户+三资产+统一速写，连接器 mail-cli）、bili（bilibili 内容域：wiki/bili/ 身份页+速写+UP 主档案涌现制，查询即答，连接器 bili-cli——低危写白名单三项须用户明示双层门）、cuhksz（学校域基座：身份页 + 子系统族——bb 课程运行（bb/ 工作区 + wiki/cuhksz/bb/ 属地，term/course 双侧同构，bb-map 为其映射法则、bb-track 管认知档案）、sis 学籍制度（wiki/cuhksz/sis/，连接器 sis-cli）、registry 教务制度（物化 + 指针索引））+ notes/sessions/link/tag/trust/index/hot/log/user-profile/todo/language/device + calendar 时间领地（lark-calendar 为源适配器）+ tmp 临时区，无分层，注入序=依赖拓扑+字母序）与命令主本（`command/`）与协议工件（`protocol/`：字段注册表、动作纪律、披露范式 SASU-L）与机械脚本（`scripts/`：wiki_plugin_kernel 装卸/合规/注入/副本 + pipeline 派生层管道 index/tags/hot/log/verify + wikilib 页面解析承重件）；AGENTS.md 注入区为其投影 **ATTENTION**
+- `.meta/` — 原型核心：结构插件（`plugins/`——双根概念 domain（外·域契约）与 wiki（内·出身二分）+ 域实例族：vault（默认域，mapping 为其映射法则、structure 管其布局）、lark（外部域基座，指针/档案两形，域内 lark-docs 云文档域 / lark-im 人际域）、project（自立容器域：projects/ 工作区 + wiki 声明页）、email（个人邮箱域：wiki/email/ 账户+三资产+统一速写，连接器 mail-cli）、bili（bilibili 内容域：wiki/bili/ 身份页+速写+UP 主档案涌现制，查询即答，连接器 bili-cli——低危写白名单三项须用户明示双层门）、cuhksz（学校域基座：身份页 + 子系统族——bb 课程运行（bb/ 工作区 + wiki/cuhksz/bb/ 属地，term/course 双侧同构，bb-map 为其映射法则、bb-track 管认知档案）、sis 学籍制度（wiki/cuhksz/sis/，连接器 sis-cli）、registry 教务制度（物化 + 指针索引））+ notes/sessions/link/tag/trust/index/hot/log/user-profile/todo/language/device + calendar 时间领地（lark-calendar 为源适配器）+ cron 时间自动化领地（声明为源、执行侧为投影，两形态 session|script）+ tmp 临时区，无分层，注入序=依赖拓扑+字母序）与命令主本（`command/`）与协议工件（`protocol/`：字段注册表、动作纪律、披露范式 SASU-L）与机械脚本（`scripts/`：wiki_plugin_kernel 装卸/合规/注入/副本 + pipeline 派生层管道 index/tags/hot/log/verify + wikilib 页面解析承重件）；AGENTS.md 注入区为其投影 **ATTENTION**
 - `wiki/`、`vault/`、`projects/`、`cuhksz/` — 数据区骨架（保持空种子：内容属部署实例，工程内不积累——跑库验证走 `test-repo/`）；`.agents/skills/` — 命令与连接器 skill 部署副本
 - `.meta/docs/` — 人的文档（机制权威源在内核参考 skill，docs 不镜像机制）：`intro.md` 导论（为什么走到这里——叙事与谱系）、`mechanics.md` 机制详解（每机制展开一级 + bb 族实例走查）、`usage.md` 使用指南（三循环工作流）、`quickstart.md` 部署走查、`research-*.md` 调研档案（user-profile 画像选型、landscape 对标）
 - `README.md` — 项目章程
@@ -108,13 +108,13 @@
 - 时间领地：声明页 `wiki/calendar.md`（`calendar` 块映射 = 源键→源声明，manual-only 可缺）+ 月页 `wiki/calendar/YYYY-MM.md`（两节制——`## 日程` 源投影整节重刷、`## 手记` 只增；事件行 `- MM-DD HH:MM~HH:MM 标题（源键）` 可带 wikilink，事件不建页）；未来滚动、过去冻结（月份走完不可改写）；月页 stale_after 默认 2 天；与 todo 边界——日历存何时有何事、todo 存何事待办，可单向派生；calendar 按需桥——域件单向派生带源键日程行入当月 `## 日程`（宪法准则 11，格式归本桥）
 <!-- /plugin:calendar -->
 
+<!-- plugin:cron v0.1 -->
+- 时间自动化领地 `wiki/cron/`（周期自动化意图的家，每任务一页纯目录制——目录即声明全集）：任务页 type: cron + `cron` 块映射（schedule 节奏 / action 动作 / form 执行形态 session 会话版|script 脚本版 / domain 属域 / status active|paused|deprecated / last_run 最近运行机器维护 / machine 可选执行机锚）+ 正文两节（`## 任务` 动作详情与指针回链属域 skill；`## 运行纪要` 只增收敛——异常/修复/变更决策，正常运行不记，历史归 log）；**声明为源、执行机构为投影**（harness 可替换，宪法准则 4）——部署/换机重放：active 页逐条落执行侧，session 版在当前 harness 调度设施建任务（prompt 按 SASU-L 自包含：读任务页按页执行 + 失败 log 报告 + 不阻断他任务）、script 版生成系统任务条目（crontab 行/任务计划命令）**经用户确认写入系统**；对账进 check 附检——active 页集 ↔ harness 任务清单 ↔ 系统任务清单（尽力读）三方 diff 漂移 → warning、last_run 超节奏周期 → warning（声明在而投影丢失）；意图变更同步：人改 status 经确认后 agent 同步删/停执行侧任务（双向以声明页为真源）；**统一失败纪律**——失败源 log 报告（类型 other 标任务名）不阻断他任务，修复委托单向派生 todo；cron 按需桥——域件立定时任务时建任务页 + depends 挂本件（宪法准则 11，页骨架与登记/重放/对账纪律归本桥，任务动作形态归域）；边界三分——todo 一次性委托、calendar 事件事实（何时有何事）、cron 周期自动化意图（何时自动做什么），任务产出仍按各域纪律落位
+<!-- /plugin:cron -->
+
 <!-- plugin:cuhksz v0.2 -->
 - CUHK-SZ 学校域 `wiki/cuhksz/`（外领地 = cuhk.edu.cn 学校系统族：bb.cuhk.edu.cn 课程运行 · sis.cuhk.edu.cn 学籍制度 · registry.cuhk.edu.cn 教务制度；统一认证 STS ADFS，连接器 bb-cli / sis-cli 纯只读）：域声明页 identity.md（type: cuhksz + sis 块映射学籍身份，**缺席即建**——数据源 sis-cli transcript）；域根只持身份与子系统导航，速写归各子域；子系统族（bb 五件 / sis / registry）经 depends 挂靠、经传递属域；域内互引免桥（宪法准则 11 同域直引）；个人官方 PDF（证明/成绩单）落 cuhksz/sis/ 域内物化——**域有自立容器则域内落地，vault 仅兜底无容器域**（2026-10-05 所有者裁定修正，弃 device 先例的借 vault 惯性）
 <!-- /plugin:cuhksz -->
-
-<!-- plugin:email v0.3 -->
-- 个人邮箱域 `wiki/email/`（一账户一目录，agent 调用必带账户）：域根统一速写 `inbox.md`（近窗蒸馏、行标账户、整页可再生、短 TTL）+ 全局人档 `people/`（token = 邮箱地址，跨账户一人一页——token 作用域决定家；aliases 收多地址同人，正文与我的关系只增收敛）；账户目录——身份页 `account.md`（地址/协议/拉取窗口/TTL 覆写/涌现条件/关心区声明）、线程档 `threads/`（机械区 Message-ID 成员列表 + 沉淀区议题结论只增，快照节冷源可全文）、源档 `sources/`（订阅治理：类型/节奏/阅读信号/处置策略）；全量映射禁止——检索现拉即弃，反复命中才立档（涌现制）；单向派生只出不回——行动项→todo、邀请→calendar、附件→vault 物化、高价值→notes（回链线程档）；agent 对邮箱只读（PEEK 不标已读、不移动不删除），发送类操作永远须用户明示；资源消失标 status: deprecated 不删；trust 天花板 machine-confirmed，stale_after = 拉取日 + TTL（默认 1 天，身份页覆写），agent 即同步器
-<!-- /plugin:email -->
 
 <!-- plugin:index v0.12 -->
 - 索引溢出减负制：根 `wiki/index.md` 恒在（含 format_version——页面格式契约版本，不兼容变更时进位），直列全部可达页（本目录 + 未切子树，全路径 wikilink）；某索引清单超窗（≤25 条，参数以 pipeline 源码为准）时按子树页数降序切子目录自立 `index.md`（入口行带页数）——小库常为单索引，披露边界随内容质量浮现；`wiki/tags.md`（tag 反向索引）不变；只聚合、永不手编、纯函数重建、索引不发明结构（本级平铺超窗如实全列，解药是分子目录非改索引）；重建走 `pipeline.py index`，检索第二入口
@@ -144,12 +144,16 @@
 - 课程运行子域（cuhksz 域内）`wiki/cuhksz/bb/`（外领地 bb.cuhk.edu.cn，连接器 bb-cli 纯只读，用法与位置见 bbcli skill）：双侧同构 `<term>/<course>/`——外 `cuhksz/bb/` 课程工作区（机器拉取物：文档类全量物化、媒体类默认指针化、提交件 submissions/，只增；笔记保留子区 notes/——学习笔记住所，人为主、ai 产物共居（teach 讲解沉淀 ai 笔记平铺带 origin: ai、quiz 考卷住 testing/ 子区；ai 产物只增不覆写；删改自由属于人，fetch/对账/映射永不触碰人的笔记、读取合法）），内 `wiki/cuhksz/bb/` 属地，目录名 = 学期名/课程代码（如 2610UG/AIE3005），machine id 与学期状态落身份页 bb 块映射（term_id/course_id/term_status）作一比一身份证明，同期同代码尾缀消歧、停用标 status: deprecated 不删；域根速写页 inbox.md（近窗公告蒸馏 + 临近截止 + 未交提醒双源——作业无提交 ∪ 成绩册有 due 无 attempt，行标课程，整页可再生短 TTL，**缺席即建**；frontmatter 兼域配置——terms 块映射现役学期与冻结标记）；公告拆信不存档（作业变更→assessments、考试/政策/分组→info、行动项→todo、资源发布→fetch 即弃，原文现拉即得）；课件物化后即本地终态资产豁免 TTL；投影细则见 bb-map 插件；凭据会话只存本机不入库；课程/成绩/提交数据属实例数据不入框架仓库；trust 天花板 machine-confirmed，stale_after = 拉取日 + TTL（默认 1 天，速写页覆写；日期粒度，过期判定以当日为限），agent 即同步器
 <!-- /plugin:bb -->
 
-<!-- plugin:bili v0.1 -->
-- bilibili 内容域 `wiki/bili/`（外领地 bilibili.com web API，连接器 bili-cli——web cookie 登录态、只读为主，用法与命令面见 connectors/bili-cli/SKILL.md）：域声明页兼身份页 bili.md（type: bili + bili 块映射 mid/nickname/TTL 覆写 + watch 块映射关注源清单（UP 主名→mid+一句话），**缺席即建**——数据源 bili-cli me）；**查询即答不默认投影**——搜索/视频详情/字幕/收藏夹/历史/稍后再看现拉即答（公开端点免登录、个人数据需登录态，红线见 bili-cli skill），高价值结论涌现入 notes 回链；UP 主档案 up/ 涌现制（反复命中或用户明示才立档——机械区 mid 一比一 + 最新投稿快照 + stale_after 对账维护、沉淀区关注理由与相关结论只增收敛；视频不建页，URL 即指针）；速写页 inbox.md（近窗蒸馏：关注源新投稿 + 个人数据要点，行标来源，整页可再生短 TTL 默认 1 天，**缺席即建**；节奏两步走——现阶段会话内现拉触发，watch 清单与蒸馏格式经真实使用稳定后升部署侧系统定时任务跑 digest（连接器预留子命令，纯脚本零会话））；**低危写白名单**（稍后再看增删/收藏夹增删/点赞，均须用户明示动词 + CLI --yes 双门）之外写操作永不提供（投币/评论/转发/关注/私信/弹幕，raw 亦不承载）；单向派生只出不回：直播/首播等明确时间点 → calendar 日程行、行动项 → todo、高价值结论 → notes（回链属地页）——todo/calendar/notes 三桥；cookie 凭据只存本机不入库、观看历史/收藏夹属实例数据不入框架仓库；trust 天花板 machine-confirmed，stale_after = 拉取日 + TTL（日期粒度，身份页覆写），agent 即同步器
+<!-- plugin:bili v0.2 -->
+- bilibili 内容域 `wiki/bili/`（外领地 bilibili.com web API，连接器 bili-cli——web cookie 登录态、只读为主，用法与命令面见 connectors/bili-cli/SKILL.md）：域声明页兼身份页 bili.md（type: bili + bili 块映射 mid/nickname/TTL 覆写 + watch 块映射关注源清单（UP 主名→mid+一句话），**缺席即建**——数据源 bili-cli me）；**查询即答不默认投影**——搜索/视频详情/字幕/收藏夹/历史/稍后再看现拉即答（公开端点免登录、个人数据需登录态，红线见 bili-cli skill），高价值结论涌现入 notes 回链；UP 主档案 up/ 涌现制（反复命中或用户明示才立档——机械区 mid 一比一 + 最新投稿快照 + stale_after 对账维护、沉淀区关注理由与相关结论只增收敛；视频不建页，URL 即指针）；速写页 inbox.md（近窗蒸馏：关注源新投稿 + 个人数据要点，行标来源，整页可再生短 TTL 默认 1 天，**缺席即建**；节奏两步走——现阶段会话内现拉触发，watch 清单与蒸馏格式经真实使用稳定后升 cron 任务页（form: script，digest 子命令预留，登记/重放纪律见 cron 插件））；**低危写白名单**（稍后再看增删/收藏夹增删/点赞，均须用户明示动词 + CLI --yes 双门）之外写操作永不提供（投币/评论/转发/关注/私信/弹幕，raw 亦不承载）；单向派生只出不回：直播/首播等明确时间点 → calendar 日程行、行动项 → todo、高价值结论 → notes（回链属地页）——todo/calendar/notes 三桥；cookie 凭据只存本机不入库、观看历史/收藏夹属实例数据不入框架仓库；trust 天花板 machine-confirmed，stale_after = 拉取日 + TTL（日期粒度，身份页覆写），agent 即同步器
 <!-- /plugin:bili -->
 
-<!-- plugin:lark-calendar v0.1 -->
-- lark 日历源（calendar 首个适配器）：声明页 `calendar` 块映射值 = `lark/<profile> <calendar_id|primary>`（profile 须为 wiki/lark/ 现役目录）；拉取 `lark-cli --profile <名> calendar …`（instance_view 当月/下月窗口）；只写月页 `## 日程` 节、行尾标源键；不碰手记节与已冻结月页；日更节奏 = 部署侧 cron 定时无人值守会话（全机械，失败源 log 报告不阻断他源）
+<!-- plugin:email v0.4 -->
+- 个人邮箱域 `wiki/email/`（一账户一目录，agent 调用必带账户）：域根统一速写 `inbox.md`（近窗蒸馏、行标账户、整页可再生、短 TTL）+ 全局人档 `people/`（token = 邮箱地址，跨账户一人一页——token 作用域决定家；aliases 收多地址同人，正文与我的关系只增收敛）；账户目录——身份页 `account.md`（地址/协议/拉取窗口/TTL 覆写/涌现条件/关心区声明）、线程档 `threads/`（机械区 Message-ID 成员列表 + 沉淀区议题结论只增，快照节冷源可全文）、源档 `sources/`（订阅治理：类型/节奏/阅读信号/处置策略）；全量映射禁止——检索现拉即弃，反复命中才立档（涌现制）；单向派生只出不回——行动项→todo、邀请→calendar、附件→vault 物化、高价值→notes（回链线程档）；agent 对邮箱只读（PEEK 不标已读、不移动不删除），发送类操作永远须用户明示；资源消失标 status: deprecated 不删；trust 天花板 machine-confirmed，stale_after = 拉取日 + TTL（默认 1 天，身份页覆写），agent 即同步器
+<!-- /plugin:email -->
+
+<!-- plugin:lark-calendar v0.2 -->
+- lark 日历源（calendar 首个适配器）：声明页 `calendar` 块映射值 = `lark/<profile> <calendar_id|primary>`（profile 须为 wiki/lark/ 现役目录）；拉取 `lark-cli --profile <名> calendar …`（instance_view 当月/下月窗口）；只写月页 `## 日程` 节、行尾标源键；不碰手记节与已冻结月页；日更节奏 = 经 cron 桥登记任务页（form: session，登记/重放/对账纪律见 cron 插件，失败源 log 报告不阻断他源）
 <!-- /plugin:lark-calendar -->
 
 <!-- plugin:lark-docs v0.1 -->
