@@ -19,6 +19,7 @@
 
 ## 过往操作
 
+- 2026-10-05 修复：域迁移批量替换的双重路径笔误（wiki/cuhksz/cuhksz/bb/——规则产物二次命中，残留检查排除项漏网）；实例侧首报；bb 0.9 / bb-map 0.15 / bb-track·teach·quiz 0.6 归一升版，全库复扫清零、validate 33 全绿
 - 2026-10-05 域构：cuhksz 学校域立设（所有者裁定 bb 降为域内族）——基座（身份页+子系统导航）+ sis 学籍子域（速写页/查询即答/课表源补缺）+ registry 教务制度子域（物化+全校方案指针索引 schemes.md，42 专业页实测）；bb v0.8 挂靠迁路径（wiki/cuhksz/bb/、cuhksz/bb/），族内四件随迁升版；三十三插件 validate 全绿
 - 2026-10-05 治理：PR #2/#3 审合入库（sis-cli v0.1/v0.2，管理者代行 --admin，GitHub 评论留痕）；同步远端 mail-cli 五提交（v0.1→包化）
 - 2026-10-05 连接器：sis-cli v0.2——term 交互查询打通（radio 解析+POST Continue 纯查询）：grades 换真身 SSR_SSENRL_GRADE（学期成绩行+GPA）、appt 注册窗口、exam 登记（未发布为空）、history 全量直出、schedule --days 星期归属（center 页权威源）
