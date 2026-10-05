@@ -54,6 +54,11 @@ plugins:
       note: 标量（bb 侧笔记文件可选）——human|ai 创作出身；ai 为弱证据，人复核升权
     stage:
       note: 标量（bb 侧笔记文件可选）——snapshot|mature|summary 阶段（临时快照/成熟沉淀/总结集合）；标记属人，变更是认知信号
+  bili:
+    bili:
+      note: 块映射——account（所属账户 = 域身份页，单账户部署可缺省）/ kind（页形态：account 身份页 / up UP 主档案，开放词表）/ mid（身份证明：B 站数字 uid 与页一比一）/ url（空间或视频深链）
+    watch:
+      note: 块映射（域身份页）——UP 主名 → mid + 一句话关注理由；追踪源清单，现拉遍历此表
   calendar:
     calendar:
       note: 块映射（声明页）——源键 → 源声明（值语法归适配器：lark-calendar 用 `lark/<profile> <calendar_id|primary>`）；源键即日程行尾标

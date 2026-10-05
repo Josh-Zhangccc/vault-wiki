@@ -134,6 +134,10 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 - 语义项（v0.1 人工，附检后置）：type: bb 页落 wiki/cuhksz/bb/ 之外 → error；身份页 bb 块映射缺 course_id 或与目录不对应 → error；速写页手编痕迹 → warning；stale 清单（信息级）
 <!-- /check:bb -->
 
+<!-- check:bili -->
+- 语义项（v0.1 人工，附检后置）：type: bili 页落 wiki/bili/ 之外 → error；UP 主档案 mid 重复或与页声明不对应 → error；速写页手编痕迹 → warning；stale 清单（信息级：拉取日 + TTL）
+<!-- /check:bili -->
+
 <!-- check:lark-calendar -->
 - 语义项（v0.1 人工）：声明页 lark 源的 profile 不在 wiki/lark/ 目录集 → warning；日程行源键无对应声明 → warning
 <!-- /check:lark-calendar -->
