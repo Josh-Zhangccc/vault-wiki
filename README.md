@@ -12,7 +12,7 @@
 - 对话中的洞见与决策，**保存**命令沉淀为 `wiki/notes/` 原生笔记；会话骨干页入 `wiki/sessions/`
 - **检索**命令先读热缓存与索引再综合回答，产出带 wikilink 引用的答案
 - 索引、标签、热缓存、运行日志全为派生层自动维护；**检查**命令审计库健康；**插件**命令装卸结构插件
-- 外部源以域接入：lark 与 email 落指针或档案页；calendar 管时间线；project 管项目容器；bb 经 bb-cli 拉取课件、作业与成绩；bilibili 经 bili-cli 现拉即答（搜索/详情/收藏夹/UP 主追踪，低危写白名单须用户明示）。域外翻译，wiki 内全连通
+- 外部源以域接入：lark 与 email 落指针或档案页；calendar 管时间线、cron 管定时任务；project 管项目容器；bb 经 bb-cli 拉取课件、作业与成绩；bilibili 经 bili-cli 现拉即答（搜索/详情/收藏夹/UP 主追踪，低危写白名单须用户明示）。域外翻译，wiki 内全连通
 - **画像**命令维护对使用者的持续认知档案：断言带证据，偏好会过期；个性化决策前先读它
 - **讲解答疑**命令按认知档案个性化讲解——已知略讲或反问，未知讲透；显著答疑沉淀 ai 笔记
 - **出题自测**命令按范围加样例生成英文试题与中文解析；作答后判分回流认知档案
@@ -31,7 +31,7 @@
 
 | 目录 | 内容 |
 |------|------|
-| `.meta/` | 原型核心。三十四插件：双根概念 domain 与 wiki；域实例族 vault、lark、project、email、bili 及 cuhksz 学校域族（基座 cuhksz，域内 bb/bb-map/bb-track/bb-teach/bb-quiz、sis、registry）及域内件 mapping、structure、lark-docs、lark-im、lark-calendar；横切件 calendar、notes、sessions、link、tag、trust、index、hot、log、user-profile、todo、language、device、tmp。无分层；注入序为依赖拓扑加字母序；全局件可声明桥，必依桥由内核校验域基座挂边完备。另有十三命令主本、协议工件——registry、actions、experiments——与机械脚本 wiki_plugin_kernel、pipeline、wikilib，纯标准库零依赖 |
+| `.meta/` | 原型核心。三十五插件：双根概念 domain 与 wiki；域实例族 vault、lark、project、email、bili 及 cuhksz 学校域族（基座 cuhksz，域内 bb/bb-map/bb-track/bb-teach/bb-quiz、sis、registry）及域内件 mapping、structure、lark-docs、lark-im、lark-calendar；横切件 calendar、cron、notes、sessions、link、tag、trust、index、hot、log、user-profile、todo、language、device、tmp。无分层；注入序为依赖拓扑加字母序；全局件可声明桥，必依桥由内核校验域基座挂边完备。另有十三命令主本、协议工件——registry、actions、experiments——与机械脚本 wiki_plugin_kernel、pipeline、wikilib，纯标准库零依赖 |
 | `connectors/` | 连接器主本：部署侧 CLI 事实接口加 skill 使用披露。`connectors/*/SKILL.md` 经 kernel deploy 落 `.agents/skills/`；现有 bb-cli、sis-cli、mail-cli、bili-cli |
 | `wiki/`、`vault/`、`projects/`、`cuhksz/` | 数据区骨架。保持空种子：内容属部署实例，工程内不积累；跑库验证走 test-repo，用法见 [.meta/docs/sandbox.md](.meta/docs/sandbox.md) |
 | `.agents/skills/` | 命令与连接器 skill 部署副本 |
@@ -69,4 +69,4 @@
 
 ## 沿革
 
-2026-08-26 以个人库结构副本起建；08-28 重定位为本工程；09-08 起插件加命令原型直接落地，经真实操作验证后冻结。09-12 重构：概念双插件 wiki 与 vault 立设；原 vault 插件更名 mapping；废除分层；标识符英文化。09-19 lark 族与 calendar 时间领地立设。09-22 域化：domain 双根概念立设，vault、lark、project 三实例合规。09-29 画像独立命令；email 域立设；连接器位立设。10-01 到 10-02 bb 域三件套立设并经四课实验验证；全员协作红线立规；转为团队项目。10-04 bb 认知消费侧改造——bb-teach、bb-quiz、bb-track 命令；机制文档开卷；docs 迁 `.meta/docs/`。10-05 cuhksz 学校域立设，bb 降为域内族，sis 与 registry 子域随立。10-06 bilibili 域立设（查询即答 + 涌现档案，低危写白名单），连接器 bili-cli 首版。设计谱系讨论存于个人库，见 AGENTS.md 指针。
+2026-08-26 以个人库结构副本起建；08-28 重定位为本工程；09-08 起插件加命令原型直接落地，经真实操作验证后冻结。09-12 重构：概念双插件 wiki 与 vault 立设；原 vault 插件更名 mapping；废除分层；标识符英文化。09-19 lark 族与 calendar 时间领地立设。09-22 域化：domain 双根概念立设，vault、lark、project 三实例合规。09-29 画像独立命令；email 域立设；连接器位立设。10-01 到 10-02 bb 域三件套立设并经四课实验验证；全员协作红线立规；转为团队项目。10-04 bb 认知消费侧改造——bb-teach、bb-quiz、bb-track 命令；机制文档开卷；docs 迁 `.meta/docs/`。10-05 cuhksz 学校域立设，bb 降为域内族，sis 与 registry 子域随立。10-06 bilibili 域立设（查询即答 + 涌现档案，低危写白名单），连接器 bili-cli 首版；cron 时间自动化领地立设（声明为源、每任务一页），lark-calendar/bili/email 挂桥随迁。设计谱系讨论存于个人库，见 AGENTS.md 指针。
