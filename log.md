@@ -5,7 +5,7 @@
 
 ## Status (2026-10-06)
 
-Positioning: **team project** (converted 2026-10-02; red lines & review-merge rules in AGENTS) — fix as used. Architecture end-state: the dual conceptual roots domain / wiki + domain instance families vault / lark / project / email / bili (query-and-answer + emergence archives) / cuhksz (bb·map·track·teach·quiz family + sis + registry) + calendar + cron + cross-cutting pieces & tmp — 35 plugins, no layering (topology + alphabetical; bridge law = principle 11); 13 commands (see README). Three projections, one source (mechanics master doc in the kernel reference skill). test-repo/ whitelist mirrors; connectors/ four (bb-cli / sis-cli / mail-cli / bili-cli). Docs language switched to English 2026-10-06 (batch 1: charters; plugin disclosures / commands / docs / scripts follow in later batches — inject region stays Chinese until the plugin batch rebuilds it).
+Positioning: **team project** (converted 2026-10-02; red lines & review-merge rules in AGENTS) — fix as used. Architecture end-state: the dual conceptual roots domain / wiki + domain instance families vault / lark / project / email / bili (query-and-answer + emergence archives) / cuhksz (bb·map·track·teach·quiz family + sis + registry) + calendar + cron + cross-cutting pieces & tmp — 35 plugins, no layering (topology + alphabetical; bridge law = principle 11); 13 commands (see README). Three projections, one source (mechanics master doc in the kernel reference skill). test-repo/ whitelist mirrors; connectors/ four (bb-cli / sis-cli / mail-cli / bili-cli). Docs language switched to English 2026-10-06 (full switch complete, PR #13 + #15).
 
 ## Stage
 
@@ -22,6 +22,7 @@ Framework build (done 09-08~12) → daily use & fix-as-used (**current**).
 
 ## Past operations
 
+- 2026-10-06 governance: PR #15 merged (i18n batches 2-4, full English switch complete — 35 plugin disclosures + attached-audit scripts, 13 command skills, 4 connector docs & CLI messages, docs ×7, protocol artifacts, script comments; executed via 10 parallel subagents under a unified glossary + coordinator convergence; manager delegated --admin, GitHub comment trail); merged branch deleted
 - 2026-10-06 governance: PR #13 merged (i18n batch 1/4 — charters to English; manager delegated --admin, GitHub comment trail); merged branch deleted
 - 2026-10-06 topic：架构演进 issue #12 立档（单仓分层显性化→包格式+索引→subtree split 拆仓三步路线 + 第三方三通道与两安全面；方向共识未排期，痛点到达再走）
 - 2026-10-06 治理：PR #11 审合入库（bili 0.3 + bili-cli 0.2.0，管理者代行 --admin，GitHub 评论留痕）；删已合分支
