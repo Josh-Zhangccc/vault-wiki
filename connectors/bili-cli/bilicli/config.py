@@ -37,4 +37,5 @@ ENDPOINTS = {
     "player": ("/x/player/wbi/v2", True),              # 字幕字典 bvid/cid
     "up_arc": ("/x/space/wbi/arc/search", True),       # UP 主投稿 mid/pn
     "up_info": ("/x/space/wbi/acc/info", True),        # UP 主信息 mid
+    "conclusion": ("/x/web-interface/view/conclusion/get", True),  # 官方 AI 视频总结
 }

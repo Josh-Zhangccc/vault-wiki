@@ -18,11 +18,13 @@ bili-cli watchlater                            # 稍后再看列表
 bili-cli history [--limit N]                   # 观看历史（近窗）
 bili-cli search <q> [--kind video|up] [--limit N]
 bili-cli video <bvid>                          # 详情：分P/统计/简介
-bili-cli subtitle <bvid> [--page N]            # 字幕正文（首个 CC 轨道）
+bili-cli subtitle <bvid> [--page N] [--ai]     # 字幕正文（默认 CC 轨道，--ai 强制 AI 轨道）
+bili-cli summary <bvid>                          # 官方 AI 视频总结（需登录，无则 has_summary=false）
 bili-cli up <mid> [--arcs --limit N]           # UP 主信息（+最新投稿）
 # 写（白名单，双门）：
 bili-cli watchlater add|remove <bvid> --yes
 bili-cli fav add|remove <bvid> --fid <id> --yes
+bili-cli fav move <bvid> --from <id> --to <id> --yes   # 跨夹移动（白名单内组合）
 bili-cli like <bvid> --yes
 bili-cli raw <url> [--post]                    # 透传（探路/对账）
 ```
@@ -39,10 +41,11 @@ bili-cli raw <url> [--post]                    # 透传（探路/对账）
 ## 已知坑（实测回改区）
 
 - 非公开 web API，无稳定性承诺；code -412 = 风控（串行、克制调用）
-- 字幕仅 UP 主上传的 CC；AI 自动字幕不在 player 载荷
+- 看视频降级链（实测）：CC 字幕 → AI 字幕（--ai）→ 官方总结（summary，**需登录** -101 实测）→ 音频落 wiki/tmp/ 本地转写（经确认，用毕即弃）；匿名态 AI 字幕轨道常空
 - search 仅首页；深翻页走 raw
 - 登录失效 code -101 → 重新导出 cookie
 
 ## Changelog
 
+- 0.2.0 2026-10-06：视频入库批（用户四场景对照）——subtitle --ai（AI 轨道）、summary（官方 AI 总结，实测需登录）、fav move（跨夹移动）；看视频降级链披露
 - 0.1.0 2026-10-06：立设——七项设计决策经用户问答收敛（功能面：个人数据+查询+追踪；web cookie 认证；低危写白名单三项；自研轻实现；先现拉后 cron；查询即答+涌现档案；连接器+域全套）
