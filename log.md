@@ -15,10 +15,11 @@
 - teach/quiz 首轮实测（伸缩/越界/判分）
 - AIE2040 归位补测 + 复问失败问题
 - bb-cli 用户信息优化；email 探路；日更 cron（部署侧）
-- sis-cli v0.3 议：学费/购物车组件登记（raw 探路）、exam 出数据后验证、wiki 侧 sis 域插件（先 CLI 后域）
+- 实例库迁移（用户跑库）：wiki/bb/ → wiki/cuhksz/bb/、bb/ → cuhksz/bb/ + 画像桥登记行更新（待用户明示库位）；sis-cli v0.3 议：学费/购物车组件登记（raw 探路）、exam 出数据后验证、registry PDF 物化首批
 
 ## 过往操作
 
+- 2026-10-05 域构：cuhksz 学校域立设（所有者裁定 bb 降为域内族）——基座（身份页+子系统导航）+ sis 学籍子域（速写页/查询即答/课表源补缺）+ registry 教务制度子域（物化+全校方案指针索引 schemes.md，42 专业页实测）；bb v0.8 挂靠迁路径（wiki/cuhksz/bb/、cuhksz/bb/），族内四件随迁升版；三十三插件 validate 全绿
 - 2026-10-05 治理：PR #2/#3 审合入库（sis-cli v0.1/v0.2，管理者代行 --admin，GitHub 评论留痕）；同步远端 mail-cli 五提交（v0.1→包化）
 - 2026-10-05 连接器：sis-cli v0.2——term 交互查询打通（radio 解析+POST Continue 纯查询）：grades 换真身 SSR_SSENRL_GRADE（学期成绩行+GPA）、appt 注册窗口、exam 登记（未发布为空）、history 全量直出、schedule --days 星期归属（center 页权威源）
 - 2026-10-05 连接器：sis-cli v0.1 立设——SIS（PeopleSoft CS）只读 CLI：同源 ADFS OAuth2 复用、code 经 CUSZ_SSO_LOGIN 表单消费、PS_DEVICEFEATURES 破壳、psc+PTCNAV 组件直击；schedule 全解析（周事件+学期课程）、grades/center/history/appt 文本摘要、raw 透传；只读红线（选课类永不提供）；实证含组件 URL 双源（浏览器菜单+HTTP）
