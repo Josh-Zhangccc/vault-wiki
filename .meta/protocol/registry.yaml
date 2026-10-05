@@ -56,7 +56,7 @@ plugins:
       note: 标量（bb 侧笔记文件可选）——snapshot|mature|summary 阶段（临时快照/成熟沉淀/总结集合）；标记属人，变更是认知信号
   bili:
     bili:
-      note: 块映射——account（所属账户 = 域身份页，单账户部署可缺省）/ kind（页形态：account 身份页 / up UP 主档案，开放词表）/ mid（身份证明：B 站数字 uid 与页一比一）/ url（空间或视频深链）
+      note: 块映射——account（所属账户 = 域身份页，单账户部署可缺省）/ kind（页形态：account 身份页 / up UP 主档案 / video 视频档案，开放词表）/ mid（up 档案身份证明：B 站数字 uid 与页一比一）/ bvid（视频档案身份证明，与页一比一）/ title（视频档案页题）/ url（空间或视频深链）
     watch:
       note: 块映射（域身份页）——UP 主名 → mid + 一句话关注理由；追踪源清单，现拉遍历此表
   calendar:

@@ -1,5 +1,5 @@
 id: bili
-version: 0.2
+version: 0.3
 depends:
   - domain
   - wiki
@@ -15,17 +15,20 @@ attachment:
   - "wiki/bili/bili.md —— 域声明页兼账户身份页（type: bili；bili 块映射 mid/nickname/TTL 覆写 + watch 块映射关注源清单，**缺席即建**——数据源 bili-cli me）"
   - "wiki/bili/inbox.md —— 速写页（关注源新投稿 + 个人数据要点，行标来源，整页可再生短 TTL 默认 1 天，**缺席即建**；现阶段会话触发刷新，cron 日更预留）"
   - "wiki/bili/up/ —— UP 主档案（token = mid 与页一比一；机械区对账维护 + 沉淀区只增；涌现制）"
+  - "wiki/bili/video/ —— 视频档案（token = bvid 与页一比一，页名人读标题；**明示制涌现**——用户明示入库或反复查询命中才建，不自动）；两区制——`## 摘要`（ai 产物 origin: ai，可再生成覆写：对固定源蒸馏，源恒在覆写无损）+ `## 评价`（human 证据只增，页升 human-reviewed）"
 fields:
-  bili: "块映射——account（所属账户 = 域身份页，单账户部署可缺省）/ kind（页形态：account 身份页 / up UP 主档案，开放词表）/ mid（身份证明：B 站数字 uid 与页一比一）/ url（空间或视频深链）"
+  bili: "块映射——account（所属账户 = 域身份页，单账户部署可缺省）/ kind（页形态：account 身份页 / up UP 主档案 / video 视频档案，开放词表）/ mid（up 档案身份证明：B 站数字 uid 与页一比一）/ bvid（视频档案身份证明，与页一比一）/ title（视频档案页题）/ url（空间或视频深链）"
   watch: "块映射（域身份页）——UP 主名 → mid + 一句话关注理由；追踪源清单，现拉遍历此表"
-inject: "bilibili 内容域 `wiki/bili/`（外领地 bilibili.com web API，连接器 bili-cli——web cookie 登录态、只读为主，用法与命令面见 connectors/bili-cli/SKILL.md）：域声明页兼身份页 bili.md（type: bili + bili 块映射 mid/nickname/TTL 覆写 + watch 块映射关注源清单（UP 主名→mid+一句话），**缺席即建**——数据源 bili-cli me）；**查询即答不默认投影**——搜索/视频详情/字幕/收藏夹/历史/稍后再看现拉即答（公开端点免登录、个人数据需登录态，红线见 bili-cli skill），高价值结论涌现入 notes 回链；UP 主档案 up/ 涌现制（反复命中或用户明示才立档——机械区 mid 一比一 + 最新投稿快照 + stale_after 对账维护、沉淀区关注理由与相关结论只增收敛；视频不建页，URL 即指针）；速写页 inbox.md（近窗蒸馏：关注源新投稿 + 个人数据要点，行标来源，整页可再生短 TTL 默认 1 天，**缺席即建**；节奏两步走——现阶段会话内现拉触发，watch 清单与蒸馏格式经真实使用稳定后升 cron 任务页（form: script，digest 子命令预留，登记/重放纪律见 cron 插件））；**低危写白名单**（稍后再看增删/收藏夹增删/点赞，均须用户明示动词 + CLI --yes 双门）之外写操作永不提供（投币/评论/转发/关注/私信/弹幕，raw 亦不承载）；单向派生只出不回：直播/首播等明确时间点 → calendar 日程行、行动项 → todo、高价值结论 → notes（回链属地页）——todo/calendar/notes 三桥；cookie 凭据只存本机不入库、观看历史/收藏夹属实例数据不入框架仓库；trust 天花板 machine-confirmed，stale_after = 拉取日 + TTL（日期粒度，身份页覆写），agent 即同步器"
+inject: "bilibili 内容域 `wiki/bili/`（外领地 bilibili.com web API，连接器 bili-cli——web cookie 登录态、只读为主，用法与命令面见 connectors/bili-cli/SKILL.md）：域声明页兼身份页 bili.md（type: bili + bili 块映射 mid/nickname/TTL 覆写 + watch 块映射关注源清单（UP 主名→mid+一句话），**缺席即建**——数据源 bili-cli me）；**查询即答不默认投影**——搜索/视频详情/字幕/收藏夹/历史/稍后再看现拉即答（公开端点免登录、个人数据需登录态，红线见 bili-cli skill），高价值结论涌现入 notes 回链；UP 主档案 up/ 涌现制（反复命中或用户明示才立档——机械区 mid 一比一 + 最新投稿快照 + stale_after 对账维护、沉淀区关注理由与相关结论只增收敛）；视频档案 video/ 明示制涌现（用户明示入库或反复查询命中才建，未入库视频 URL 即指针、引用走正文链接）——两区制 `## 摘要`（ai 产物 origin: ai 可再生成覆写，对固定源蒸馏）+ `## 评价`（human 证据只增，页升 human-reviewed）；**看视频降级链**（停于首中）：CC 字幕 → AI 字幕（需登录）→ 官方总结（需登录）→ 音频落 wiki/tmp/ 本地转写（经用户确认、用毕即弃）；速写页 inbox.md（近窗蒸馏：关注源新投稿 + 个人数据要点，行标来源，整页可再生短 TTL 默认 1 天，**缺席即建**；节奏两步走——现阶段会话内现拉触发，watch 清单与蒸馏格式经真实使用稳定后升 cron 任务页（form: script，digest 子命令预留，登记/重放纪律见 cron 插件））；**低危写白名单**（稍后再看增删/收藏夹增删/点赞，均须用户明示动词 + CLI --yes 双门）之外写操作永不提供（投币/评论/转发/关注/私信/弹幕，raw 亦不承载）；单向派生只出不回：直播/首播等明确时间点 → calendar 日程行、行动项 → todo、高价值结论 → notes（回链属地页）——todo/calendar/notes 三桥；cookie 凭据只存本机不入库、观看历史/收藏夹属实例数据不入框架仓库；trust 天花板 machine-confirmed，stale_after = 拉取日 + TTL（日期粒度，身份页覆写），agent 即同步器"
 usage:
   - 连接纪律：凭据经 bili-cli login 导入（cookie 只存 ~/.bili-cli/ 不落屏不入库）；入域先读 wiki/bili/bili.md（缺席即建：bili-cli me 现拉建页）——追踪范围以 watch 块映射为准，人直接编辑合法（加源/删源）
   - 速写刷新（机械）：遍历 watch 清单逐 UP 拉最新投稿（bili-cli up --arcs）→ 与档案/速写水位对比 → 蒸馏重写 inbox.md（新投稿行 + 个人数据要点行）→ log 行（类型 other）；stale 同此（agent 即同步器）；space 端点连发易 412，串行克制
   - 查询现拉即答：搜索（search --kind video|up）/ 详情与分P（video）/ 字幕（subtitle）/ UP 主（up）免登录可用，收藏夹（fav）/ 历史（history）/ 稍后再看（watchlater）需登录态——呈现即止不落盘；反复命中同一 UP 主 = 立档案的涌现信号
   - 立档（涌现制）：UP 主档案 up/<名>.md（token = mid 一比一；机械区 bili 块映射现拉对账 + 最新投稿快照节 + stale_after，沉淀区 `## 与我` 关注理由与结论只增）；用户明示亦可直建
-  - 低危写：白名单三项（watchlater add/remove、fav add/remove、like）须会话中用户明示动词才执行（agent 层纪律）+ CLI --yes 门双保险；写后 log 行（类型 other）
+  - 低危写：白名单面（watchlater add/remove、fav add/remove/move、like）须会话中用户明示动词才执行（agent 层纪律）+ CLI --yes 门双保险；写后 log 行（类型 other）
+  - 看视频与入库：降级链取口粮（CC 字幕 → AI 字幕 → 官方总结 → tmp 转写经确认）→ 摘要经用户确认落视频页 `## 摘要`（origin: ai，重看可再生成覆写）；`bili-cli video` 元数据落 bili 块映射（bvid 一比一）；音频中间产物只落 wiki/tmp/、用毕即弃
+  - 评价：用户评价视频观点 → 视频页 `## 评价` 只增（日期 + 一句话，human 证据、页升 human-reviewed）；未入库视频评价走 notes 回链 URL 兜底；高价值观点结论 → notes 回链
   - 单向派生（只出不回）：直播/首播时间点 → calendar 月页日程行（源键 bili）；行动项 → todo；高价值结论 → notes 回链属地页——三桥，格式细则归桥
   - cron 升级路径：watch 清单与速写格式稳定后，经 cron 桥登记任务页 wiki/cron/<名>.md（form: script，domain: bili，动作 = bili-cli digest 刷新 inbox.md）——纯脚本零会话，重放配方与失败纪律见 cron 插件
 checks:
-  - 语义项（v0.1 人工，附检后置）：type: bili 页落 wiki/bili/ 之外 → error；UP 主档案 mid 重复或与页声明不对应 → error；速写页手编痕迹 → warning；stale 清单（信息级：拉取日 + TTL）
+  - 语义项（v0.1 人工，附检后置）：type: bili 页落 wiki/bili/ 之外 → error；UP 主档案 mid 或视频档案 bvid 重复、与页声明不对应 → error；速写页手编痕迹 → warning；stale 清单（信息级：拉取日 + TTL）

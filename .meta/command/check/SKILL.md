@@ -136,7 +136,7 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 <!-- /check:bb -->
 
 <!-- check:bili -->
-- 语义项（v0.1 人工，附检后置）：type: bili 页落 wiki/bili/ 之外 → error；UP 主档案 mid 重复或与页声明不对应 → error；速写页手编痕迹 → warning；stale 清单（信息级：拉取日 + TTL）
+- 语义项（v0.1 人工，附检后置）：type: bili 页落 wiki/bili/ 之外 → error；UP 主档案 mid 或视频档案 bvid 重复、与页声明不对应 → error；速写页手编痕迹 → warning；stale 清单（信息级：拉取日 + TTL）
 <!-- /check:bili -->
 
 <!-- check:email -->
