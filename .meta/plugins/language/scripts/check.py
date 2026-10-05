@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""language 插件附检：声明页存在性、领地走位、terms 空值。
+"""language plugin attached audit: declaration page existence, territory misplacement, empty terms values.
 
-声明页缺席 = 默认姿态容忍（合法，info）；terms 值空白即登记瑕疵。
+A missing declaration page = tolerated default posture (legal, info); an empty terms value is a registry defect.
 """
 
 
@@ -11,13 +11,13 @@ def check(ctx):
     decl = False
     for rel, fm, _body in ctx.pages:
         if fm.get("type") == "language" and rel != "language.md":
-            issues.append({"level": "error", "message": f"{rel}：type: language 落声明页之外（领地走位）"})
+            issues.append({"level": "error", "message": f"{rel}: type: language outside the declaration page (territory misplacement)"})
         if rel == "language.md":
             decl = True
             terms = fm.get("terms") or {}
             for k, v in terms.items():
                 if not str(v).strip():
-                    issues.append({"level": "warning", "message": f"terms 空值：{k}（译名缺失，补齐或移除）"})
+                    issues.append({"level": "warning", "message": f"terms empty value: {k} (translated name missing; fill in or remove)"})
     if not decl:
-        issues.append({"level": "info", "message": "无行文声明页（默认姿态容忍）"})
+        issues.append({"level": "info", "message": "no language declaration page (default posture tolerated)"})
     return issues

@@ -1,36 +1,36 @@
-# bili：bilibili 内容域
+# bili: bilibili content domain
 
-## 设计概要
+## Design summary
 
-- **为什么存在**：把 bilibili 接为 wiki 外信息源，三类诉求合一（2026-10-06 用户问答收敛）：个人数据（收藏夹/稍后再看/历史）、公开内容查询（搜索/详情/字幕）、UP 主追踪。设计主轴照 sis 先例——**查询即答 + 涌现档案**：B 站是高频内容流，wiki 是低速沉淀层；默认现拉即答不投影，反复命中才立档
-- **关键裁定**：
-  - 写模型归「真相在别处」档：B 站是真身，wiki 侧只持指针与涌现档案；UP 主档案（token = mid 一比一）与视频档案（token = bvid 一比一）两形；0.1 曾裁定「视频不建页」，**0.3 经用户四场景批改判为明示制涌现**——「AI 看视频摘要入库 + 用户评价观点」需要落点，未入库视频 URL 即指针不变（对照 email 全量映射禁止的生死线：入库仍须明示/反复命中，不自动）
-  - **低危写白名单制**（用户裁定，与 bb-cli/sis-cli 纯只读红线分叉）：放行三项——稍后再看增删、收藏夹增删、点赞；「低危」判据 = 半私有痕迹 + 可逆 + 无社交骚扰性；投币/评论/转发/关注/私信/弹幕永不提供，raw 亦不承载写。白名单内写操作双层门：agent 层须用户明示动词（照 email 发送红线句式）+ CLI 层 `--yes`（照 mail-cli 发送策略门的 --yes 语义）
-  - **追踪节奏两步走**（用户裁定）：先会话内现拉（零部署成本），watch 清单与速写格式经真实使用稳定后升 cron 任务页（form: script）——digest 子命令预留，**纯脚本零会话**（pipeline.py 先例，对照 lark-calendar 的会话版：bilibili 拉取-对比-蒸馏是纯机械活，无 agent 判断环节，脚本化更贴合且零持续额度成本）；节奏落点 0.2 收进 cron 域（声明为源、重放归 cron 插件）
-  - **认证走 web cookie**（用户裁定）：SESSDATA/bili_jct 导入（浏览器 DevTools 拷贝），非官方接口、B 站随时改版——连接器持「已知坑」回改区与 raw 透传探路；cookie 即全权凭据，只存本机 `~/.bili-cli/`
-  - **自研轻实现**（用户裁定）：requests + 自实现 WBI 签名与 space 风控参数，不依赖社区库——与 bb-cli/sis-cli 同风格，依赖面最小（实测：view/search/up_info/up_arc 匿名全通）
-  - **公开查询免登录**：search/video/subtitle/up 无 cookie 可用（个人数据与写命令才需登录态）——连接器实测暴露的设计缺口，登录门槛按命令分级
-  - **看视频降级链与两区制**（0.3，用户场景批）：口粮降级链 CC 字幕 → AI 字幕 → 官方总结（后两者实测需登录 -101）→ tmp 转写经确认；视频页两区制划分照 bb-map 先例——`## 摘要` 是对固定源的可再生蒸馏（ai 产物可再生成覆写，非事件性内容、覆写无损，不违只增纪律）+ `## 评价` 是只增沉淀（human 证据，页的信任锚）
-- **族内位置**：第六个域基座（vault/lark/project/email/cuhksz 之后），不挂靠任何现有域；消费侧三桥（todo/calendar/notes）经 depends 实挂
+- **Why it exists**: hooking bilibili into the wiki as an external source, three demands in one (converged via user Q&A 2026-10-06): personal data (favorites/watchlater/history), public-content queries (search/details/subtitles), UP tracking. The design axis follows the sis precedent — **query-and-answer + emergence archives**: Bilibili is a high-frequency content stream, the wiki a low-velocity accumulation layer; by default fresh-pull answers without projection, only repeated hits earn an archive
+- **Key rulings**:
+  - The write model falls in the 'truth elsewhere' tier: Bilibili is the real body, the wiki side holds only pointers and emergence archives; UP archives (token = mid one-to-one) and video archives (token = bvid one-to-one) as the two forms; 0.1 once ruled 'no pages for videos', **0.3 revised by the user across four scenarios into emergence by explicit request** — 'AI watches the video and archives a summary + the user's review opinions' needed a landing spot; un-archived videos keep the URL as pointer, unchanged (against email's lifeline-level full-mapping ban: archiving still requires explicit request/repeated hits, never automatic)
+  - **Low-risk write whitelist** (user-ruled, forking from the bb-cli/sis-cli pure-read-only red line): three items released — watchlater add/remove, favorites add/remove, like; the 'low-risk' criteria = semi-private traces + reversible + no social harassment; coin/reply/repost/follow/DM/danmaku never offered, raw carries no writes either. Whitelisted writes take a double gate: agent layer requires the user's explicit verb (following the email send-red-line phrasing) + CLI layer `--yes` (following the --yes semantics of mail-cli's send-policy gate)
+  - **Tracking cadence in two steps** (user-ruled): first in-session fresh pulls (zero deployment cost); once the watch list and digest format stabilize through real use, promote to a cron task page (form: script) — digest subcommand reserved, **pure script, zero sessions** (pipeline.py precedent, versus lark-calendar's session edition: bilibili's pull-compare-distill is purely mechanical work with no agent judgment, scripting fits better and costs zero standing quota); the cadence landing in 0.2 moved into the cron domain (declared as a source, replay belongs to the cron plugin)
+  - **Auth via web cookie** (user-ruled): SESSDATA/bili_jct imported (copied from browser DevTools), unofficial API, Bilibili may change it any time — the connector carries a 'known pitfalls' rework area and raw pass-through probing; the cookie is an all-powerful credential, stored only on the local machine `~/.bili-cli/`
+  - **Self-built lightweight implementation** (user-ruled): requests + self-implemented WBI signing and space anti-risk-control parameters, no community-library dependency — same style as bb-cli/sis-cli, minimal dependency surface (field-tested: view/search/up_info/up_arc all pass anonymously)
+  - **Public queries login-free**: search/video/subtitle/up work without cookies (only personal data and write commands need the login state) — a design gap exposed by connector field tests, the login threshold graded per command
+  - **Watch-video degradation chain and two-section regime** (0.3, user-scenario batch): the substance chain CC subtitles → AI subtitles → official summary (the latter two field-tested as login-required, -101) → tmp transcription on confirmation; the video page's two-section split follows the bb-map precedent — `## Summary` is a regenerable distillation of a fixed source (an ai product, regenerable and overwritable, non-event content, overwriting lossless, violating no append-only discipline) + `## Review` is the append-only accumulation (human evidence, the page's trust anchor)
+- **Position in the family**: the sixth domain base (after vault/lark/project/email/cuhksz), attaching to no existing domain; the consumer side's three bridges (todo/calendar/notes) attached via depends
 
 ## Structure
 
-- `wiki/bili/bili.md`——域声明页兼账户身份页：`bili` 块映射（mid/nickname/TTL 覆写）+ `watch` 块映射（UP 主名 → mid + 一句话关注理由，追踪源清单——人直接编辑合法，加减源即调整追踪范围）；**缺席即建**，数据源 `bili-cli me`
-- `wiki/bili/inbox.md`——速写页：近窗蒸馏（关注源新投稿 + 个人数据要点：稍后再看数/新收藏等），行标来源，整页可再生，短 TTL 默认 1 天（身份页覆写）；**缺席即建**；刷新现阶段 = 会话内现拉触发（agent 即同步器），升级路径 = 部署侧脚本 cron
-- `wiki/bili/up/`——UP 主档案（涌现制：反复命中或用户明示才立档，不预立）：默认命名 `<名>.md`；`bili` 块映射机械区（mid 一比一 + kind: up + url）+ 最新投稿快照节（现拉对账维护）+ 正文沉淀区 `## 与我`（关注理由、相关结论，只增收敛）；资源消失（删稿/注销）标 status: deprecated 不删
-- `wiki/bili/video/`——视频档案（**明示制涌现**：用户明示入库或反复查询命中才建）：默认命名 `<清洗后标题>.md`，`bili` 块映射机械区（bvid 一比一 + mid + title + url）；两区制正文——`## 摘要`（origin: ai，可再生成覆写）+ `## 评价`（human 证据只增：日期 + 观点）；未入库视频不建页，URL 即指针落速写/日历/notes 正文
+- `wiki/bili/bili.md` — domain declaration page doubling as account identity page: `bili` block mapping (mid/nickname/TTL override) + `watch` block mapping (UP name → mid + one-sentence follow reason, the tracked-source list — direct human edits legal, adding/removing sources adjusts the tracking scope); **create when absent**, data source `bili-cli me`
+- `wiki/bili/inbox.md` — digest page: recent-window distillation (new uploads from followed sources + personal-data highlights: watchlater count/new favorites etc.), lines tagged with the source, whole page regenerable, short TTL default 1 day (overridable on the identity page); **create when absent**; refresh at this stage = in-session fresh-pull triggering (the agent is the synchronizer), upgrade path = deployment-side script cron
+- `wiki/bili/up/` — UP archives (emergence-based: archived only on repeated hits or explicit user request, never pre-created): default naming `<name>.md`; `bili` block mapping mechanical section (mid one-to-one + kind: up + url) + latest-uploads snapshot section (maintained by fresh-pull reconciliation) + body accumulation section `## Relation to me` (follow reasons, related conclusions, append-only converging); resources gone (deleted uploads/account closed) → mark status: deprecated, never delete
+- `wiki/bili/video/` — video archives (**emergence by explicit request**: created only on explicit user request to archive or repeated query hits): default naming `<sanitized title>.md`, `bili` block mapping mechanical section (bvid one-to-one + mid + title + url); two-section body — `## Summary` (origin: ai, regenerable and overwritable) + `## Review` (human evidence append-only: date + opinion); un-archived videos get no page, the URL is the pointer landing in digest/calendar/notes bodies
 
 ## Invariants
 
-- 契约六问：外领地 = bilibili.com（api.bilibili.com web API，连接器 bili-cli）；落地 = 指针 + 涌现档案（翻译成本：视频零、UP 主档案涌现）；身份证明 = mid 与页一比一（域身份页自持账户 mid）；属地 = `wiki/bili/`；写模型 = 只读为主 + 低危写白名单三项须用户明示且双层门；信任 = TTL 懒刷新，agent 即同步器，天花板 machine-confirmed
-- 查询即答不默认投影：枚举只服务速写与 watch 解析；检索现拉即弃，反复命中才立档——涌现制
-- 低危写白名单是**封闭集**：白名单外写操作永不提供、永不经 raw 试图；白名单内写无用户明示动词不执行，`--yes` 是第二道门不是第一道
-- 单向派生只出不回：直播/首播时间点进 calendar；行动项进 todo；高价值结论进 notes 回链属地页——三桥，格式权威在各全局件 usage，经投影到消费现场
-- 资源消失标 status: deprecated，不删
-- 隐私红线：观看历史/收藏夹/个人数据属实例数据，不入框架仓库与 test-repo；cookie 凭据只存本机，不落屏不落盘外泄
+- Contract six questions: external territory = bilibili.com (api.bilibili.com web API, connector bili-cli); landing = pointers + emergence archives (translation cost: videos zero, UP archives emergent); identity proof = mid one-to-one with the page (the domain identity page holds the account mid itself); territory = `wiki/bili/`; write model = read-mostly + the three low-risk write whitelist items requiring explicit user request and the double gate; trust = TTL lazy refresh, the agent is the synchronizer, ceiling machine-confirmed
+- Query-and-answer, no default projection: enumeration serves only the digest and watch resolution; retrieval is pull-and-discard, only repeated hits earn an archive — emergence-based
+- The low-risk write whitelist is a **closed set**: write operations outside the whitelist are never offered, never attempted via raw; whitelisted writes without the user's explicit verb do not execute, `--yes` is the second gate, not the first
+- One-way derivation out-only: livestream/premiere time points go to calendar; action items go to todo; high-value conclusions go to notes backlinking the territory page — three bridges, format authority in each global plugin's usage, projected to the point of consumption
+- Resources gone → mark status: deprecated, never delete
+- Privacy red line: watch history/favorites/personal data are instance data, never entering the framework repo or test-repo; cookie credentials stay on the local machine, never echoed, never leaked to disk
 
 ## Changelog
 
-- 0.3 2026-10-06：视频入库批（用户四场景对照）——改「视频不建页」为视频档案明示制涌现（video/ 两区制：摘要可覆写 + 评价只增）；看视频降级链披露（实测：官方总结与 AI 字幕需登录）；连接器 0.2.0（subtitle --ai / summary / fav move）
-- 0.2 2026-10-06：挂 cron 桥——digest 升级路径落点改 cron 任务页（form: script），depends 加 cron
-- 0.1 2026-10-06：立设——七项设计决策经用户问答收敛（功能面三合一 / web cookie 认证 / 低危写白名单三项 / 自研轻实现 / 先现拉后 cron / 查询即答+涌现档案 / 连接器+域全套）；连接器 bili-cli v0.1.0 同步立设，匿名公开端点实测通过（view/search/up_info/up_arc）；声明先行、实测回改（照 sis-cli 先例）
+- 0.3 2026-10-06: video-archival batch (user four-scenario review) — 'no pages for videos' revised into video archives with emergence by explicit request (video/ two-section regime: overwritable summary + append-only review); watch-video degradation chain disclosed (field-tested: official summary and AI subtitles need login); connector 0.2.0 (subtitle --ai / summary / fav move)
+- 0.2 2026-10-06: attach the cron bridge — the digest upgrade-path landing changed to a cron task page (form: script), depends adds cron
+- 0.1 2026-10-06: established — seven design decisions converged via user Q&A (three-in-one feature surface / web-cookie auth / three-item low-risk write whitelist / self-built lightweight implementation / fresh-pull first then cron / query-and-answer + emergence archives / connector + domain full set); connector bili-cli v0.1.0 established in sync, anonymous public endpoints field-tested passing (view/search/up_info/up_arc); declaration first, field-test rework (following the sis-cli precedent)

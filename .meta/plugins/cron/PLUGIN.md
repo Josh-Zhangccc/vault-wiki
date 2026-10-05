@@ -1,31 +1,31 @@
-# cron：时间自动化领地
+# cron: time-automation territory
 
-## 设计概要
+## Design Overview
 
-- **为什么存在**：定时任务的「节奏」曾散落三处（lark-calendar 会话版日更、email 可选日更、bili digest 预留），而执行机构（harness 调度器 / 系统任务计划）per-workspace、机器绑定、换机重装即丢——「何时该自动做什么」的意图没有家：执行侧有任务无档案，wiki 侧有披露无登记。本插件给意图一个 md 的家
-- **关键裁定**：
-  - **声明为源、执行机构为投影**：三投影一源在执行维度的延伸，化解宪法准则 4 张力（harness 可替换）——crontab 5 字段语义是跨 harness 通用语言，翻译律归重放配方；换 harness / 换机 = 读声明页重放
-  - **每任务一页纯目录制**（2026-10-06 用户裁定，弃单声明页案）：目录即声明全集，无根声明页——对照 project 域需要 `wiki/projects.md` 的原因（其容器在 wiki 外），cron 任务页本就在 wiki 内；速览走 index 派生页
-  - **对账 + 重放**（用户裁定）：声明是真源——漂移进 check 附检（声明页集 ↔ harness 任务清单 ↔ 系统任务清单三方 diff），重放配方标准化；写系统状态与删停执行侧任务均经用户确认（照 device 附检受托先例）
-  - **执行形态二分上提**（从 bili 裁定泛化为全局判据）：有 agent 判断环节 → session（无人值守会话）；纯机械 → script（系统任务跑连接器子命令，零额度）——各域只标 form，不再各自发明节奏披露
-  - **统一失败纪律**（从 lark-calendar 上提）：失败源 log 报告不阻断他任务；修复委托单向派生 todo
-  - **无人值守会话 SASU-L**：被调度唤醒的 agent 零先验——重放时 prompt 必须自包含（读任务页按页执行 + 失败 log 报告），配方归本件 usage；这是「知识层不漏进架构」在会话边界的应用
-  - **machine 锚留白**：多设备部署时定位执行机，v0.1 只留可选键不建 device 联动，边用边改
-- **族内位置**：全局件（横切时间自动化），非域件不 depends domain；域件经按需桥挂靠登记——本件持「谁在、何时跑、怎么重放对账」，任务动作形态归各域（准则 11 桥哲学）
+- **Why it exists**: the 'cadence' of scheduled tasks was once scattered across three places (lark-calendar's session-edition daily refresh, email's optional daily refresh, bili digest reserved), while the executors (harness scheduler / system task scheduler) are per-workspace, machine-bound, and lost on machine change or reinstall — the intent of 'what should be automated when' had no home: the execution side had tasks but no archive, the wiki side had disclosures but no registry. This plugin gives the intent an md home
+- **Key rulings**:
+  - **Declaration-as-source, executor-as-projection**: an extension of three-projections-one-source into the execution dimension, dissolving the constitutional-principle-4 tension (harness replaceable) — the crontab 5-field semantics are the cross-harness lingua franca, the translation rule belonging to the replay recipe; changing harness / machine = read the declaration pages and replay
+  - **One page per task, pure-directory scheme** (user ruling 2026-10-06, the single-declaration-page proposal rejected): the directory is the full declaration set, no root declaration page — contrast with why the project domain needs `wiki/projects.md` (its container lies outside wiki), while cron task pages are already inside wiki; quick views go through the derived index page
+  - **Reconciliation + replay** (user ruling): the declaration is the source of truth — drift enters the check attached audit (declaration page set ↔ harness task list ↔ system task list, three-way diff), the replay recipe standardized; writing system state and deleting/stopping execution-side tasks both go through user confirmation (following the device attached-audit delegation precedent)
+  - **Execution-shape dichotomy lifted** (generalized from the bili ruling into a global criterion): any agent-judgment step → session (unattended session); purely mechanical → script (system task running a connector subcommand, zero quota) — each domain merely tags form, no longer inventing its own cadence disclosures
+  - **Unified failure discipline** (lifted from lark-calendar): failed sources report via log, never blocking other tasks; repair delegations one-way derive into todo
+  - **Unattended-session SASU-L**: an agent woken by the scheduler has zero priors — at replay the prompt must be self-contained (read the task page and execute per the page + report failures via log); the recipe belongs to this plugin's usage; this is the application of 'no knowledge layer leaking into the architecture' at the session boundary
+  - **machine anchor left blank**: locates the executing machine in multi-device deployments; v0.1 keeps only the optional key, no device linkage built; refine through use
+- **Position in the family**: a global plugin (cross-cutting time automation), not a domain plugin, does not depend on domain; domain plugins attach and register via the on-demand bridge — this plugin holds 'who is present, when it runs, how to replay and reconcile'; task action shapes belong to each domain (the principle-11 bridge philosophy)
 
 ## Structure
 
-- `wiki/cron/<任务名>.md`——任务页：`cron` 块映射机械区（schedule / action / form / domain / status / last_run / machine 可选）+ 正文两节——`## 任务`（动作详情：调什么命令或会话开场读什么，回链属域 skill）、`## 运行纪要`（只增收敛：异常、修复、变更决策；正常运行不记——log 已有行，防长毛）
-- 无根声明页：目录即全集；index 派生收录速览
+- `wiki/cron/<task name>.md` — task page: `cron` block mapping mechanical zone (schedule / action / form / domain / status / last_run / machine optional) + two body sections — `## Task` (action details: which command to call or what the session opening reads, back-linking the owning domain's skill), `## Run Notes` (append-only and convergent: anomalies, repairs, change decisions; normal runs unrecorded — log already has lines, to prevent bloat)
+- No root declaration page: the directory is the full set; the derived index includes quick views
 
 ## Invariants
 
-- 声明为源：执行侧（harness 调度器 / 系统任务计划）是可替换投影，重放与对账均以声明页为准
-- 系统态写入须用户确认：script 版落系统任务、status 变更同步删/停执行侧——照 device 附检受托先例
-- 正常运行不写任务页史；运行纪要只收异常与变更；last_run 由机器维护
-- status: paused / deprecated 页不删（留档），deprecated 任务仍留在目录供谱系查考
-- 边界三分：todo 一次性委托 · calendar 事件事实（何时有何事）· cron 周期自动化意图（何时自动做什么）；任务产出按各域纪律落位（如 lark-calendar 日更产出进月页日程节、bili digest 刷速写页）
+- Declaration-as-source: the execution side (harness scheduler / system task scheduler) is a replaceable projection; replay and reconciliation both defer to the declaration pages
+- System-state writes require user confirmation: the script edition landing system tasks, status changes syncing deletes/stops on the execution side — following the device attached-audit delegation precedent
+- Normal runs write no task-page history; run notes take only anomalies and changes; last_run is machine-maintained
+- status: paused / deprecated pages are never deleted (kept for the record); deprecated tasks remain in the directory for lineage reference
+- Three-way boundary: todo one-shot delegations · calendar event facts (what happens when) · cron recurring automation intent (what to automate when); task outputs land per each domain's discipline (e.g. lark-calendar's daily-refresh output goes into the month page's schedule section, bili digest refreshes the digest page)
 
 ## Changelog
 
-- 0.1 2026-10-06：立设——三问收敛（统一登记处含会话/脚本两形态、对账+重放、每任务一页）；lark-calendar 0.2 / bili 0.2 / email 0.4 挂桥随迁（散落节奏披露改写归位）
+- 0.1 2026-10-06: established — three questions converged (a unified registry covering both session/script shapes, reconciliation + replay, one page per task); lark-calendar 0.2 / bili 0.2 / email 0.4 moved along with the bridge attachment (scattered cadence disclosures rewritten into place)

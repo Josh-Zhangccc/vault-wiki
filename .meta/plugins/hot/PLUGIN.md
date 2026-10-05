@@ -1,40 +1,40 @@
-# hot：热缓存
+# hot: Hot Cache
 
-## 设计概要
+## Design Summary
 
-- **为什么存在**：最近变更摘要页——agent 进库的最低成本入口，先读 hot 再按需深入；与 index 检索入口相对，hot 是「现在」的入口。只是缓存：丢失可从 log 与库中重建
-- **关键裁定**：
-  - 硬上限三件套——25 条、5 日、单条 200 字：参数依原库实测校准，单条中位 389 字、最大 4959 字，失控实证；机械权威源在 pipeline.py
-  - 写前淘汰义务：窗外即删；淘汰与截短由脚本机械执行，不询问——缓存不膨胀
-  - 唯一手写链接的派生页：断链受检但不作入链源，link 契约
+- **Why it exists**: the recent-change digest page — the lowest-cost entry for an agent entering the repository, read hot first then dig deeper as needed; opposite the index retrieval entry, hot is the entry to "now". Merely a cache: if lost, rebuildable from log and the repository
+- **Key rulings**:
+  - Hard-cap trio — 25 entries, 5 days, 200 characters per entry: parameters calibrated against the original repository's measurements — per-entry median 389 characters, maximum 4959, runaway proven; the mechanical authoritative source is pipeline.py
+  - The evict-before-write duty: outside the window means delete; eviction and truncation are performed mechanically by the script, no asking — the cache does not bloat
+  - The only derived page with hand-written links: broken links are checked but it is not an inbound-link source, per the link contract
 
 ## Structure
 
-- 单文件 `wiki/hot.md`，分节组织——Recent map、Recent save、Recent query、Recent check 等
-- 条目：日期加 wikilink 加一句话核心，至多 200 字符，硬上限
+- Single file `wiki/hot.md`, organized in sections — Recent map, Recent save, Recent query, Recent check, etc.
+- Entry: date plus wikilink plus a one-sentence essence, at most 200 characters, a hard cap
 
 ## Invariants
 
-- 可整体再生：hot 只是缓存，丢失可从 log 与库中重建
-- 滚动窗口：窗外即删；淘汰与截短由脚本机械执行，不询问
+- Wholly regenerable: hot is merely a cache; if lost, rebuildable from log and the repository
+- Rolling window: outside the window means delete; eviction and truncation are performed mechanically by the script, no asking
 
 ## Config
 
 ```yaml config
-hot.max_entries: 25        # 机械权威源在 pipeline.py，脚本源码即规则清单
+hot.max_entries: 25        # mechanical authoritative source in pipeline.py; the script source is the rule list
 hot.max_days: 5
-hot.max_entry_chars: 200   # 参数依原库实测校准：单条中位 389 字、最大 4959 字，失控实证
+hot.max_entry_chars: 200   # parameters calibrated against the original repository's measurements: per-entry median 389 chars, max 4959, runaway proven
 ```
 
 ## Changelog
 
-- 0.10 2026-09-23：补 wiki 依赖边——内侧插件挂 wiki，对齐 domain 0.1 声明；2026-09-22 域化批次漏收
-- 0.9 2026-09-13：usage 类型参数补值集出处——同 log，指向 AGENTS 注入区 log 块
-- 0.8 2026-09-13：注入源移交 manifest——删 Checks、Usage、Inject、Attachments 节，md 回归纯文档
-- 0.7 2026-09-13：立「Usage」节——写侧契约交由命令注入区投影，单一文本源
-- 0.6 2026-09-12：manifest 去 layer——废分层：注入序改依赖拓扑加字母序，方向校验撤除
-- 0.5 2026-09-12：标识符英文化——节头、附检契约键、类型枚举、管道调用参数
-- 0.4 2026-09-10：写入机械化——走 pipeline.py hot，淘汰与截短由脚本执行；参数权威源移交脚本源码
-- 0.3 2026-09-10：manifest 增 layer: derived——分层立设：派生层，零依赖
-- 0.2 2026-09-09：单条长度上限 200 字符，加写前淘汰义务明文化
-- 0.1 2026-09-08：自原 wiki hot 结构转化
+- 0.10 2026-09-23: added the wiki dependency edge — inner-side plugins attach to wiki, aligning with the domain 0.1 declaration; omitted from the 2026-09-22 domain-ization batch
+- 0.9 2026-09-13: usage's type parameter gained its value-set source — same as log, pointing to the log block of the AGENTS injection region
+- 0.8 2026-09-13: injection source moved to the manifest — removed Checks, Usage, Inject, Attachments sections, md returned to pure documentation
+- 0.7 2026-09-13: established the "Usage" section — the write-side contract is projected by the command's injection region, a single text source
+- 0.6 2026-09-12: manifest dropped layer — layering abolished: injection order changed to dependency topology plus alphabetical order, direction checks removed
+- 0.5 2026-09-12: identifiers anglicized — section headers, attached-audit contract keys, type enums, pipeline call parameters
+- 0.4 2026-09-10: writing mechanized — via pipeline.py hot, eviction and truncation performed by the script; the authoritative source of parameters moved to the script source
+- 0.3 2026-09-10: manifest gained layer: derived — layering established: derived layer, zero dependencies
+- 0.2 2026-09-09: per-entry length cap of 200 characters, plus the evict-before-write duty written down
+- 0.1 2026-09-08: converted from the original wiki hot structure

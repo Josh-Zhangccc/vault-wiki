@@ -1,33 +1,33 @@
-# todo：临时记忆
+# todo: temporary memory
 
-## 设计概要
+## Design Overview
 
-- **为什么存在**：跨 session 的委托队列——新 session 按 SASU-L 拿不到旧对话，system prompt、AGENTS、skills、用户原话都不携带；本页加 AGENTS 注入行指针是 L 层的挂载点。本质是**未来时刻的指针集合**，时间维指针的显式实例：受托即写下「何时读到此条则行动」，agent 是指针执行器
-- **关键裁定**：
-  - 全库第一个可销账页面：受托，触发即提醒，销账——`[x]` 加 log 行——清理即已结至多 20 条静默删。log 只增、notes 只增、profile 收敛留痕；唯 todo 有销账语义。历史归 log，本页只留活工作集
-  - 读取优先序：新 session 先读本页，先于 hot——可能有到期委托需主动行动；hot 只是上下文预热
-  - 不挂命令，模式例外，设计裁定：条目格式极简，无管道联动；读写契约由注入行自带
-  - 触发两类：日期——YYYY-MM-DD，机械可扫描；与情境，语义激活
+- **Why it exists**: the cross-session delegation queue — a new session cannot reach past conversations under SASU-L; system prompt, AGENTS, skills, and the user's own words carry none of it; this page plus the AGENTS injection-line pointer is a mount point on the L layer. In essence a **collection of pointers to future moments**, an explicit instance of time-dimensional pointers: upon delegation one writes down 'act when this line is read at such a time' — the agent is a pointer executor
+- **Key rulings**:
+  - The first settleable page in the whole library: delegated, reminded on trigger, settled — `[x]` plus a log line — cleanup being silent deletion of settled entries beyond a cap of 20. log is append-only, notes append-only, profile converges with traces; only todo has settlement semantics. History goes to log; this page keeps only the live working set
+  - Read-priority order: a new session reads this page first, before hot — there may be due delegations requiring proactive action; hot is merely context warm-up
+  - No attached command — a pattern exception, by design ruling: entry format minimal, no pipeline linkage; the read/write contract travels with the injection line
+  - Two trigger kinds: date — YYYY-MM-DD, mechanically scannable; and context, semantically activated
 
 ## Structure
 
-- `wiki/todo.md` 单页，type: todo；首次受托自建。条目 = 列表项 `- [ ] 触发：内容（by, at）`；触发分日期与情境两类
-- 零页面字段：条目级 by 与 at 用全局 actor 约定，见 registry 头部；销账历史写入 `wiki/log.md`——跨进 log 插件领地，是 depends log 的原因
+- `wiki/todo.md` single page, type: todo; self-created on first delegation. An entry = a list item `- [ ] trigger: content (by, at)`; triggers come in two kinds, date and context
+- Zero page fields: entry-level by and at use the global actor convention, see the registry header; settlement history is written to `wiki/log.md` — crossing into the log plugin's territory, the reason for depends log
 
 ## Invariants
 
-- 条目完整生命周期：受托；触发即提醒；销账——`[x]` 加 log 行；清理——已结 ≤20 静默删，log 已有记录。全库第一个可销账页面：log 只增、notes 只增、profile 收敛留痕，唯 todo 有销账语义
-- 本页只留活工作集，历史归 log：销账事件即记，类型 todo；清理无事件不记
-- 有价值的委托完成时走 save 沉淀为知识；本页不管历史
-- 读取优先序：新 session 先读本页，先于 hot——可能有到期委托需主动行动；hot 只是上下文预热
-- 不挂命令，模式例外，设计裁定：条目格式极简、无管道联动；读写契约由注入行自带
+- Full entry lifecycle: delegated; reminded on trigger; settled — `[x]` plus a log line; cleaned up — settled capped at 20, silently deleted, log already holding the record. The first settleable page in the whole library: log append-only, notes append-only, profile converging with traces; only todo has settlement semantics
+- This page keeps only the live working set; history goes to log: settlement events recorded as they happen, type todo; cleanup is not an event and is not recorded
+- Valuable delegations are distilled into knowledge via save upon completion; this page keeps no history
+- Read-priority order: a new session reads this page first, before hot — there may be due delegations requiring proactive action; hot is merely context warm-up
+- No attached command — a pattern exception, by design ruling: entry format minimal, no pipeline linkage; the read/write contract travels with the injection line
 
-## 桥：按需
+## Bridge: on-demand
 
-派生归宿桥，管行动项：域件单向派生行动项入本页，只出不回。宪法准则 11。挂靠基数**按需**——有此派生的域件自行声明或经基座传递，缺席容忍。格式权威在本件 usage，经投影到消费现场，分工裁定。本节详述：派生侧不建页面不另立格式，条目即本页条目形；域件保留一句自述披露，SASU-L。
+A derivation-destination bridge governing action items: domain plugins one-way derive action items into this page, out-only. Constitutional principle 11. Attachment cardinality **on-demand** — domain plugins with such derivations declare it themselves or inherit it via a base, absence tolerated. Format authority is in this plugin's usage, projected to the point of consumption — division-of-labor ruling. This section elaborates: the deriving side creates no pages and invents no formats; an entry takes exactly this page's entry form; the domain plugin keeps a one-sentence self-description disclosure, SASU-L.
 
 ## Changelog
 
-- 0.3 2026-10-02：全局域批二——立按需桥即派生归宿；域件自述保留加指针
-- 0.2 2026-10-02：补「缺席即建」——新会话首读发现 todo.md 缺席即建空页，入口纪律不落空；修订指引登记项，实验实证
-- 0.1 2026-09-14：立设——`wiki/todo.md` 委托队列，type: todo 入 registry 领地值；销账历史归 log，log 类型值集扩 todo；不挂命令——写入契约由注入行自带
+- 0.3 2026-10-02: global-domain batch two — established the on-demand bridge as the derivation destination; domain-plugin self-descriptions retained with a pointer
+- 0.2 2026-10-02: added 'create on absence' — when a new session's first read finds todo.md absent, it creates an empty page, so the entry discipline never falls through; guideline registration entry revised, empirically verified
+- 0.1 2026-09-14: established — the `wiki/todo.md` delegation queue, type: todo entered the registry territory values; settlement history goes to log, the log type value set extended with todo; no attached command — the write contract travels with the injection line

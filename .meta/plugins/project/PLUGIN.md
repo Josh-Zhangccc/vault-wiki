@@ -1,31 +1,31 @@
-# project：项目容器
+# project: project containers
 
-## 设计概要
+## Design summary
 
-- **为什么存在**：自立容器域，domain 实例——**写模型刚性分叉的范例**：过程容器须全权读写，落进 vault 只增纪律即瘫痪；domain 两纪律的判断法实证，见 mechanics 第 8 节。项目 = 有目标、有阶段、有完成判据的中长期事项；本体是真实工作区 `projects/<项目名>/`。本仓库自身即此形态的活例
-- **关键裁定**：
-  - wiki 只披露不承载：声明页告诉 agent 有哪些项目；涉及项目内容的检索直查 `projects/` 子树——md 原生领地的零翻译投影密度
-  - 项目自足：进目录即得全部上下文；惯例自述 project.md 四区——目标与上下文、阶段、任务行、决策只增。任务行不建页，行级轻量，先轻后重
-  - 声明与现状双向 diff，structure 先例第二消费者：漂移 warning，处置属人
-  - 双边界：与 todo——todo 是 agent 委托活工作集，project.md 任务是持久分解事实源；与 vault——vault 存资产即只增，projects 存工作区即全权；需要改动既有文件的工作进 projects
+- **Why it exists**: a self-standing container domain, a domain instance — **the exemplar of a rigid write-model fork**: a process container needs full read/write; landing it inside vault's append-only discipline would paralyze it. Empirical proof of the domain two-discipline test, see mechanics section 8. A project = a mid-to-long-term undertaking with a goal, stages and completion criteria; the body is the real workspace `projects/<project name>/`. This very repo is a living instance of this form
+- **Key rulings**:
+  - The wiki discloses, it does not host: the declaration page tells the agent which projects exist; searches involving project content go directly to the `projects/` subtree — zero-translation projection density for an md-native territory
+  - Project self-sufficiency: entering the directory yields the full context; the conventional self-description project.md has four sections — goal & context, stages, task lines, decisions append-only. Task lines are not pages, line-level lightweight, light before heavy
+  - Declaration versus reality bidirectional diff, the structure precedent's second consumer: drift → warning, disposal belongs to the human
+  - Dual boundary: with todo — todo is the agent's working set of delegated tasks, project.md tasks are the persistent decomposition source of truth; with vault — vault stores assets hence append-only, projects store workspaces hence full authority; work that needs to modify existing files goes into projects
 
 ## Structure
 
-- `projects/<项目名>/`——项目工作区；结构自由，代码、文档、素材皆可；惯例带自述 `project.md`
-- `project.md`，工作区自述，非 wiki 页：frontmatter 从简——title、stage、due 可选；stage 词表开放：规划、进行、暂停、完成。正文四区沿用行级轻量：目标与上下文；阶段——编号加 checkbox 加目标日期；任务 `- [ ] 一句话（截止 YYYY-MM-DD）`，行不建页；决策 `- 日期 决定 X 因为 Y`，只增
-- `wiki/projects.md`，type: project——声明页：frontmatter `projects` 块映射 = 项目名到一句话，机器可读；正文放横切备注
+- `projects/<project name>/` — project workspace; free structure, code, documents and materials all welcome; conventionally carries the self-description `project.md`
+- `project.md`, the workspace self-description, not a wiki page: frontmatter kept minimal — title, stage, due optional; stage vocabulary open: planning, in-progress, paused, completed. The body's four sections keep line-level lightweight: goal & context; stages — numbered plus checkboxes plus target dates; tasks `- [ ] one sentence (due YYYY-MM-DD)`, lines not pages; decisions `- date decided X because Y`, append-only
+- `wiki/projects.md`, type: project — declaration page: frontmatter `projects` block mapping = project name to one sentence, machine-readable; the body holds cross-cutting remarks
 
 ## Invariants
 
-- wiki 只披露不承载：项目内容不进 wiki，涉及项目内容的检索直查 `projects/` 子树；声明页是唯一 wiki 侧产物
-- 声明与现状双向 diff，structure 先例：声明的项目无目录 → warning；目录未声明 → warning；处置属人
-- 与 todo 边界不变：todo 是 agent 委托活工作集，`project.md` 任务是持久分解事实源
-- 完成判据达成 → 自述 `stage: 完成`；工作区不删，声明页可注明
-- 与 vault 边界：vault 存资产，命令侧只增；projects 存工作区，全权读写——需要改动既有文件的工作进 projects，存放与产出物进 vault
+- The wiki discloses, it does not host: project content never enters the wiki, searches involving project content go directly to the `projects/` subtree; the declaration page is the sole wiki-side product
+- Declaration versus reality bidirectional diff, the structure precedent: a declared project with no directory → warning; an undeclared directory → warning; disposal belongs to the human
+- The todo boundary unchanged: todo is the agent's working set of delegated tasks, `project.md` tasks are the persistent decomposition source of truth
+- Completion criteria met → self-description `stage: completed`; the workspace is not deleted, the declaration page may annotate
+- The vault boundary: vault stores assets, command side append-only; projects store workspaces, full read/write — work that needs to modify existing files goes into projects, storage and outputs go into vault
 
 ## Changelog
 
-- 0.4 2026-10-02：全局域批一——挂 trust 与 log 必依桥边；宪法准则 11，kernel 校验完备性
-- 0.3 2026-09-22：域化——depends 增 domain，自立容器域；wiki 侧仅声明披露 = md 原生领地的零翻译投影密度；契约见 domain 插件
-- 0.2 2026-09-19：本体出 wiki——项目落根容器 `projects/<名>/`，工作区 agent 全权读写；四区自述随项目即 `project.md`；wiki 端收敛为声明页加双向 diff，structure 先例第二消费者；0.1 的 `wiki/projects/` 领地退役
-- 0.1 2026-09-19：立设——一项目一页四区制、stage 开放词表、todo 边界、任务行轻量即先轻后重裁定
+- 0.4 2026-10-02: global-domain batch one — attach the mandatory trust and log bridge edges; constitution principle 11, kernel verifies completeness
+- 0.3 2026-09-22: domainization — depends adds domain, a self-standing container domain; wiki-side declaration-only disclosure = zero-translation projection density for an md-native territory; contract in the domain plugin
+- 0.2 2026-09-19: the body leaves the wiki — projects land in the root container `projects/<name>/`, workspaces with full agent read/write; the four-section self-description travels with the project as `project.md`; the wiki side converges to the declaration page plus bidirectional diff, the structure precedent's second consumer; 0.1's `wiki/projects/` territory retired
+- 0.1 2026-09-19: established — one project one page four-section regime, open stage vocabulary, the todo boundary, task-line lightweight i.e. the light-before-heavy ruling

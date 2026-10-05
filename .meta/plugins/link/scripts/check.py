@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""link 插件附检：机械项（断链 / 乱码 / 别名歧义 / 孤儿 / related 单向）。
+"""link plugin attached audit: mechanical items (broken links / garbled text / alias ambiguity / orphans / one-way related).
 
-入链密度 top 榜（hub 涌现依据）是分析项，归 check 命令语义项。
-概念页判定与 pipeline 同构：保留名（index/log）、wiki 根派生页（hot/tags）、
-archive/ 子树与 tmp/ 临时区不算链接源，也不受图检查（派生页链接一切，否则孤儿
-永不触发；草稿断链 = 尚未写下，转正时闭合）。
-hot 是唯一手写链接的派生页：断链受检，但不作入链源、不入孤儿图。
-领地值页（registry type.values 除 session——机械登记类）暂无入链是登记常态：
-孤儿降为信息级，原生页（notes 知识页）保持 warning。领地值集动态读 registry，
-新领地类型自动覆盖，免逐类型维护。
+The in-link density top list (evidence for hub emergence) is an analytical item, under the check command's semantic items.
+Concept-page determination is isomorphic to the pipeline: reserved names (index/log), wiki-root derived pages (hot/tags),
+the archive/ subtree and the tmp/ temporary zone are not link sources and are exempt from graph checks (derived pages link
+to everything, otherwise orphans would never trigger; a broken link in a draft = not yet written down, closed upon promotion).
+hot is the only derived page with handwritten links: its broken links are checked, but it is not an in-link source and stays
+out of the orphan graph.
+Territory-value pages (registry type.values except session — the mechanical-registry kind) having no in-links yet is the
+registry norm: orphans are downgraded to info level there, while native pages (notes knowledge pages) stay warning. The
+territory value set is read dynamically from registry, so new territory types are covered automatically — no per-type upkeep.
 """
 import os
 import re
@@ -36,21 +37,21 @@ def _concept(rel):
     if d == "" and fn in ROOT_DERIVED:
         return False
     if rel.startswith("tmp/") or d.startswith("tmp/") or d == "tmp":
-        return False  # 临时区：不作链接源、不受图检查（草稿断链豁免）
+        return False  # temporary zone: not a link source, exempt from graph checks (draft broken-link exemption)
     return not (rel.startswith("archive/") or d.startswith("archive/") or d == "archive")
 
 
 def _target(text):
-    """related 项或 wikilink 文本 → 目标全名（容忍 [[x|显示]] 与裸名两种形态）。"""
+    """related item or wikilink text → target full name (tolerates both [[x|display]] and bare-name forms)."""
     return str(text).strip().lstrip("[").split("|")[0].strip().rstrip("]")
 
 
-TERRITORY_LABELS = {"source": "代理页", "lark": "指针页", "calendar": "时间页",
-                    "structure": "声明页", "todo": "委托页", "profile": "画像页", "project": "项目页"}
+TERRITORY_LABELS = {"source": "proxy page", "lark": "pointer page", "calendar": "time page",
+                    "structure": "declaration page", "todo": "delegation page", "profile": "profile page", "project": "project page"}
 
 
 def _territory_types(root):
-    """registry type.values（领地值封闭集）动态读取；session 除外（知识骨干，孤儿提示有意义）。"""
+    """Read registry type.values (closed set of territory values) dynamically; session excluded (knowledge backbone, orphan hint is meaningful there)."""
     try:
         text = open(os.path.join(root, ".meta", "protocol", "registry.yaml"), encoding="utf-8").read()
         m = re.search(r"values: \[([^\]]+)\]", text)
@@ -63,14 +64,14 @@ def check(ctx):
     issues = []
     pages = list(ctx.pages)
     names = {_name_of(rel) for rel, _fm, _b in pages}
-    # 别名表与二义（error：让 [[别名]] 解析不确定）
+    # alias table and ambiguity (error: makes [[alias]] resolution indeterminate)
     alias_map = {}
     for rel, fm, _b in pages:
         for a in _as_list(fm.get("aliases")):
             alias_map.setdefault(str(a).strip(), set()).add(_name_of(rel))
     for a, owners in sorted(alias_map.items()):
         if len(owners) > 1:
-            issues.append({"level": "error", "message": f"别名 {a!r} 二义：{'、'.join(sorted(owners))}——解析不确定，须裁决"})
+            issues.append({"level": "error", "message": f"alias {a!r} ambiguous: {', '.join(sorted(owners))} — resolution indeterminate, needs adjudication"})
     referenced, related_map = set(), {}
     for rel, fm, body in pages:
         if not _concept(rel):
@@ -79,29 +80,29 @@ def check(ctx):
         for m in WIKILINK_RE.finditer(body):
             t = m.group(1).strip()
             if "\ufffd" in t:
-                issues.append({"level": "error", "message": f"{rel}：乱码链接 [[{m.group(1)}]]"})
+                issues.append({"level": "error", "message": f"{rel}: garbled link [[{m.group(1)}]]"})
             elif t not in names and t not in alias_map:
-                issues.append({"level": "warning", "message": f"{rel}：断链 [[{t}]]（既非页面全名，也非任何 aliases）"})
+                issues.append({"level": "warning", "message": f"{rel}: broken link [[{t}]] (neither a page full name nor any aliases)"})
             referenced.add(t)
         rels = [_target(r) for r in _as_list(fm.get("related"))]
         related_map[src] = {t for t in rels if t}
         for t in rels:
             if "\ufffd" in t:
-                issues.append({"level": "error", "message": f"{rel}：related 乱码项 {t!r}"})
+                issues.append({"level": "error", "message": f"{rel}: related garbled item {t!r}"})
             elif t not in names and t not in alias_map:
-                issues.append({"level": "warning", "message": f"{rel}：related 断链 [[{t}]]"})
+                issues.append({"level": "warning", "message": f"{rel}: related broken link [[{t}]]"})
             referenced.add(t)
-    # hot：手写链接面（断链受检；不作入链源、不入孤儿图）
+    # hot: handwritten-link surface (broken links checked; not an in-link source, out of the orphan graph)
     for rel, _fm, body in pages:
         if _name_of(rel) != "hot":
             continue
         for m in WIKILINK_RE.finditer(body):
             t = m.group(1).strip()
             if "\ufffd" in t:
-                issues.append({"level": "error", "message": f"{rel}：乱码链接 [[{m.group(1)}]]"})
+                issues.append({"level": "error", "message": f"{rel}: garbled link [[{m.group(1)}]]"})
             elif t not in names and t not in alias_map:
-                issues.append({"level": "warning", "message": f"{rel}：hot 断链 [[{t}]]（手写摘要链接失效）"})
-    # 孤儿（无入链且无 related 引用；源只计概念页；领地值登记页降 info）
+                issues.append({"level": "warning", "message": f"{rel}: hot broken link [[{t}]] (handwritten summary link no longer valid)"})
+    # orphans (no in-links and no related references; sources count concept pages only; territory-value registry pages downgraded to info)
     territory = _territory_types(ctx.root)
     for rel, fm, _b in pages:
         if not _concept(rel):
@@ -109,13 +110,13 @@ def check(ctx):
         if _name_of(rel) not in referenced:
             ptype = fm.get("type")
             if ptype in territory:
-                label = TERRITORY_LABELS.get(ptype, "领地页")
-                issues.append({"level": "info", "message": f"{rel}：{label}暂无入链（登记常态，不告警）"})
+                label = TERRITORY_LABELS.get(ptype, "territory page")
+                issues.append({"level": "info", "message": f"{rel}: {label} has no in-links yet (registry norm, not an alert)"})
             else:
-                issues.append({"level": "warning", "message": f"{rel}：孤儿页（无入链且无 related 引用）"})
-    # related 单向（信息：不对称提示，非错误）
+                issues.append({"level": "warning", "message": f"{rel}: orphan page (no in-links and no related references)"})
+    # related one-way (informational: asymmetry hint, not an error)
     for src, rels in sorted(related_map.items()):
         for t in sorted(rels):
             if t in related_map and src not in related_map[t]:
-                issues.append({"level": "info", "message": f"{src}：related 单向（列出 [[{t}]]，对方未回列）"})
+                issues.append({"level": "info", "message": f"{src}: related one-way (lists [[{t}]], other side does not list back)"})
     return issues
