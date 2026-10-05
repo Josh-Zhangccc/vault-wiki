@@ -2,7 +2,7 @@
 
 本仓库（目录 `agent-obsidian-template`，工程暂名 **vault-wiki**）是 vault-wiki 框架的构建工程，兼第一个**原型实例**：2026-09-08 起「插件 + 命令」架构直接落地，规范文档后置蒸馏。**定位团队项目**（2026-10-02 由个人自用转轨；普世化与矩阵化测试搁置，边用边改）。
 
-- 布局：`.meta/`（原型核心：插件与命令主本、协议工件、机械脚本、人的文档 `docs/`）· `wiki/`（内外之分的内侧）+ `vault/` / `projects/` / `bb/`（外域容器，数据区）· `.agents/skills/`（部署副本）· `connectors/`（连接器主本：部署侧 CLI 事实接口 + skill 使用披露——`connectors/*/SKILL.md` 经 kernel deploy 落 `.agents/skills/`，bb-cli 首件）· `test-repo/`（**独立测试沙箱**：白名单式追踪——仅 `.meta/` 与 `.agents/` 框架镜像入库、随根侧同步重拷，沙箱内实验内容只在本地、不入史；内部不感知本工程）
+- 布局：`.meta/`（原型核心：插件与命令主本、协议工件、机械脚本、人的文档 `docs/`）· `wiki/`（内外之分的内侧）+ `vault/` / `projects/` / `cuhksz/`（外域容器，数据区——cuhksz/ 学校域：bb/ 课程运行工作区 + registry/ 教务制度物化区）· `.agents/skills/`（部署副本）· `connectors/`（连接器主本：部署侧 CLI 事实接口 + skill 使用披露——`connectors/*/SKILL.md` 经 kernel deploy 落 `.agents/skills/`，bb-cli 首件）· `test-repo/`（**独立测试沙箱**：白名单式追踪——仅 `.meta/` 与 `.agents/` 框架镜像入库、随根侧同步重拷，沙箱内实验内容只在本地、不入史；内部不感知本工程）
 - 术语：**wiki** = md 世界，内外之分的内侧（各域投影 + 原生笔记）；**domain** = 域，wiki 外信息源的适配器契约（vault 是默认域，lark / project / email / bb 亦域）；**vault** = 默认域——真实资产仓库（命令侧只增，删改自由属于人）
 - 冲突裁决：以原型现状与讨论收敛结论为准；规范蒸馏时归并 `.meta/docs/` 历史版本
 - 个人库（`D:\Obsidian repo\agent-obsidian`）为只读实证样本：原 wiki 思想已转化为本原型（见 log 2026-09-08）
@@ -33,7 +33,7 @@
 - 个人库 `D:\Obsidian repo\agent-obsidian` 对本工程只读；任何回填动作须用户明确指令。
 - 个人隐私内容（用户档案、日记、个人记录）不得写入本仓库——框架是普世产出。
 - 参考工程（`D:\My Programs\erp - ksbgs`、`D:\My Programs\aijia`）仅作模式参考，不修改其中任何内容。
-- **入库边界（全员）**：仅开发产物入 git——`.meta/`（含 `docs/`）、`connectors/`、根级章程、根级数据容器空种子（`bb/`）、test-repo 白名单镜像（仅 `.meta/` 与 `.agents/`，随根侧同步重拷——2026-10-04 所有者裁定，虚构示例亦不入库）。**永不入库**：真实课程/成绩/提交数据、个人隐私、凭据会话、沙箱实验产物（`test-repo/` 白名单外一切）。`test-repo/` 是独立测试沙箱，沙箱内实验内容只在本地；**一旦发生真实实验，其白名单外一切变更不得提交**，禁止上传任何使用痕迹（镜像更新走根侧重拷，不走沙箱侧同步）。
+- **入库边界（全员）**：仅开发产物入 git——`.meta/`（含 `docs/`）、`connectors/`、根级章程、根级数据容器空种子（`cuhksz/`）、test-repo 白名单镜像（仅 `.meta/` 与 `.agents/`，随根侧同步重拷——2026-10-04 所有者裁定，虚构示例亦不入库）。**永不入库**：真实课程/成绩/提交数据、个人隐私、凭据会话、沙箱实验产物（`test-repo/` 白名单外一切）。`test-repo/` 是独立测试沙箱，沙箱内实验内容只在本地；**一旦发生真实实验，其白名单外一切变更不得提交**，禁止上传任何使用痕迹（镜像更新走根侧重拷，不走沙箱侧同步）。
 - **git 纪律（全员）**：多人经分支开发，进 master 须管理者确认——**管理者由所有者委托 agent 代行（2026-10-02 授权）**：分支审查（红线扫描 + kernel validate + 投影收敛）→ 合并推送 → 远端分支治理（违规即删并通报所有者）→ PR 页操作（评论/审阅/关闭，留痕 GitHub——经 gh CLI，凭据以 GH_TOKEN 环境变量注入，令牌自 `git credential fill` 取、不落屏不落盘），代行动作毕 log 留痕。一次提交只做一件事；合并前自查 diff 不含非开发内容；**为被忽略的实例数据开 gitignore 白名单或强制添加，须仓库所有者明示授权并留痕**（2026-10-02 组员实例页入库事故后立规）；禁止改写历史。**保留事项（不得代行，须所有者明示）**：历史改写、gitignore 豁免、删除非红线违规的他人工作、仓库设置与成员权限、备份删除。
 - **提交流程（全员，标准流程）**：自最新 `master` 拉分支（名 = 模块-主题或 feature/主题）→ 小步提交（`模块: 概述`）→ 完成前自检（`python .meta/scripts/wiki_plugin_kernel.py all` 通过、diff 无非开发内容、log 仅增）→ push 分支后**推荐开 PR**（GitHub 合并请求页，标准报审通道，合并后自动闭合留痕；未开的分支管理者照审照合）→ 管理者审合、删已合分支、log 留痕并通报。
 - **协作对齐（全员）**：改动插件/连接器前先读 `log.md` 现状与下一步，版本号沿 changelog 递进、不预占跳号；实验与测试一律落 test-repo 沙箱或本地，结论走对话报告或 `docs/`。
@@ -43,8 +43,8 @@
 > 指针需主动更新。跨 session 的重要指针标注 **ATTENTION**；易变状态（进度等）放 `log.md`，不写入本文件。
 
 - `log.md` — 项目日志：现状、阶段、下一步、过往操作 **ATTENTION**
-- `.meta/` — 原型核心：结构插件（`plugins/`——双根概念 domain（外·域契约）与 wiki（内·出身二分）+ 域实例族：vault（默认域，mapping 为其映射法则、structure 管其布局）、lark（外部域基座，指针/档案两形，域内 lark-docs 云文档域 / lark-im 人际域）、project（自立容器域：projects/ 工作区 + wiki 声明页）、email（个人邮箱域：wiki/email/ 账户+三资产+统一速写，v0.1 待连接器实验）、bb（BB 课程域：bb/ 课程工作区 + wiki/bb/ 属地，term/course 双侧同构，bb-map 为其映射法则、bb-track 管认知档案）+ notes/sessions/link/tag/trust/index/hot/log/user-profile/todo/language/device + calendar 时间领地（lark-calendar 为源适配器）+ tmp 临时区，无分层，注入序=依赖拓扑+字母序）与命令主本（`command/`）与协议工件（`protocol/`：字段注册表、动作纪律、披露范式 SASU-L）与机械脚本（`scripts/`：wiki_plugin_kernel 装卸/合规/注入/副本 + pipeline 派生层管道 index/tags/hot/log/verify + wikilib 页面解析承重件）；AGENTS.md 注入区为其投影 **ATTENTION**
-- `wiki/`、`vault/`、`projects/`、`bb/` — 数据区骨架（保持空种子：内容属部署实例，工程内不积累——跑库验证走 `test-repo/`）；`.agents/skills/` — 命令与连接器 skill 部署副本
+- `.meta/` — 原型核心：结构插件（`plugins/`——双根概念 domain（外·域契约）与 wiki（内·出身二分）+ 域实例族：vault（默认域，mapping 为其映射法则、structure 管其布局）、lark（外部域基座，指针/档案两形，域内 lark-docs 云文档域 / lark-im 人际域）、project（自立容器域：projects/ 工作区 + wiki 声明页）、email（个人邮箱域：wiki/email/ 账户+三资产+统一速写，v0.1 待连接器实验）、cuhksz（学校域基座：身份页 + 子系统族——bb 课程运行（bb/ 工作区 + wiki/cuhksz/bb/ 属地，term/course 双侧同构，bb-map 为其映射法则、bb-track 管认知档案）、sis 学籍制度（wiki/cuhksz/sis/，连接器 sis-cli）、registry 教务制度（物化 + 指针索引））+ notes/sessions/link/tag/trust/index/hot/log/user-profile/todo/language/device + calendar 时间领地（lark-calendar 为源适配器）+ tmp 临时区，无分层，注入序=依赖拓扑+字母序）与命令主本（`command/`）与协议工件（`protocol/`：字段注册表、动作纪律、披露范式 SASU-L）与机械脚本（`scripts/`：wiki_plugin_kernel 装卸/合规/注入/副本 + pipeline 派生层管道 index/tags/hot/log/verify + wikilib 页面解析承重件）；AGENTS.md 注入区为其投影 **ATTENTION**
+- `wiki/`、`vault/`、`projects/`、`cuhksz/` — 数据区骨架（保持空种子：内容属部署实例，工程内不积累——跑库验证走 `test-repo/`）；`.agents/skills/` — 命令与连接器 skill 部署副本
 - `.meta/docs/` — 人的文档（机制权威源在内核参考 skill，docs 不镜像机制）：`intro.md` 导论（为什么走到这里——叙事与谱系）、`mechanics.md` 机制详解（每机制展开一级 + bb 族实例走查）、`usage.md` 使用指南（三循环工作流）、`quickstart.md` 部署走查、`research-*.md` 调研档案（user-profile 画像选型、landscape 对标）
 - `README.md` — 项目章程
 - 设计谱系（讨论记录，只读）：个人库 `wiki/meta/2026-08-25-wiki运行时重构决策.md`、`wiki/sessions/2026-08-25-wiki架构调研与docs-first重构设计.md`
@@ -104,13 +104,13 @@
 - 信任字段（页面可选）：`generated`（谁生成）/ `verified`（事件列表，项单行 by+at）/ `stale_after`（过期时刻）/ `sources`（来源与信号）；层级推导不落盘——无记录=unverified、仅 agent/process=machine-confirmed、含 human=human-reviewed、过 stale_after=stale
 <!-- /plugin:trust -->
 
-<!-- plugin:bb v0.7 -->
-- BB 课程域 `wiki/bb/`（外领地 bb.cuhk.edu.cn，连接器 bb-cli 纯只读，用法与位置见 bbcli skill）：双侧同构 `<term>/<course>/`——外 `bb/` 课程工作区（机器拉取物：文档类全量物化、媒体类默认指针化、提交件 submissions/，只增；笔记保留子区 notes/——学习笔记住所，人为主、ai 产物共居（teach 讲解沉淀 ai 笔记平铺带 origin: ai、quiz 考卷住 testing/ 子区；ai 产物只增不覆写；删改自由属于人，fetch/对账/映射永不触碰人的笔记、读取合法）），内 `wiki/bb/` 属地，目录名 = 学期名/课程代码（如 2610UG/AIE3005），machine id 与学期状态落身份页 bb 块映射（term_id/course_id/term_status）作一比一身份证明，同期同代码尾缀消歧、停用标 status: deprecated 不删；域根速写页 inbox.md（近窗公告蒸馏 + 临近截止 + 未交提醒双源——作业无提交 ∪ 成绩册有 due 无 attempt，行标课程，整页可再生短 TTL，**缺席即建**；frontmatter 兼域配置——terms 块映射现役学期与冻结标记）；公告拆信不存档（作业变更→assessments、考试/政策/分组→info、行动项→todo、资源发布→fetch 即弃，原文现拉即得）；课件物化后即本地终态资产豁免 TTL；投影细则见 bb-map 插件；凭据会话只存本机不入库；课程/成绩/提交数据属实例数据不入框架仓库；trust 天花板 machine-confirmed，stale_after = 拉取日 + TTL（默认 1 天，速写页覆写；日期粒度，过期判定以当日为限），agent 即同步器
-<!-- /plugin:bb -->
-
 <!-- plugin:calendar v0.2 -->
 - 时间领地：声明页 `wiki/calendar.md`（`calendar` 块映射 = 源键→源声明，manual-only 可缺）+ 月页 `wiki/calendar/YYYY-MM.md`（两节制——`## 日程` 源投影整节重刷、`## 手记` 只增；事件行 `- MM-DD HH:MM~HH:MM 标题（源键）` 可带 wikilink，事件不建页）；未来滚动、过去冻结（月份走完不可改写）；月页 stale_after 默认 2 天；与 todo 边界——日历存何时有何事、todo 存何事待办，可单向派生；calendar 按需桥——域件单向派生带源键日程行入当月 `## 日程`（宪法准则 11，格式归本桥）
 <!-- /plugin:calendar -->
+
+<!-- plugin:cuhksz v0.1 -->
+- CUHK-SZ 学校域 `wiki/cuhksz/`（外领地 = cuhk.edu.cn 学校系统族：bb.cuhk.edu.cn 课程运行 · sis.cuhk.edu.cn 学籍制度 · registry.cuhk.edu.cn 教务制度；统一认证 STS ADFS，连接器 bb-cli / sis-cli 纯只读）：域声明页 identity.md（type: cuhksz + sis 块映射学籍身份，**缺席即建**——数据源 sis-cli transcript）；域根只持身份与子系统导航，速写归各子域；子系统族（bb 五件 / sis / registry）经 depends 挂靠、经传递属域；域内互引免桥（宪法准则 11 同域直引）；个人官方 PDF（证明/成绩单）走 vault 物化 + 域内页面 wikilink
+<!-- /plugin:cuhksz -->
 
 <!-- plugin:email v0.3 -->
 - 个人邮箱域 `wiki/email/`（一账户一目录，agent 调用必带账户）：域根统一速写 `inbox.md`（近窗蒸馏、行标账户、整页可再生、短 TTL）+ 全局人档 `people/`（token = 邮箱地址，跨账户一人一页——token 作用域决定家；aliases 收多地址同人，正文与我的关系只增收敛）；账户目录——身份页 `account.md`（地址/协议/拉取窗口/TTL 覆写/涌现条件/关心区声明）、线程档 `threads/`（机械区 Message-ID 成员列表 + 沉淀区议题结论只增，快照节冷源可全文）、源档 `sources/`（订阅治理：类型/节奏/阅读信号/处置策略）；全量映射禁止——检索现拉即弃，反复命中才立档（涌现制）；单向派生只出不回——行动项→todo、邀请→calendar、附件→vault 物化、高价值→notes（回链线程档）；agent 对邮箱只读（PEEK 不标已读、不移动不删除），发送类操作永远须用户明示；资源消失标 status: deprecated 不删；trust 天花板 machine-confirmed，stale_after = 拉取日 + TTL（默认 1 天，身份页覆写），agent 即同步器
@@ -140,9 +140,9 @@
 - 默认域——真实资产仓库 `vault/`，wiki 侧属地 `wiki/vault/`：容纳任意格式资产，兼作他域落地仓储（url 字段即借道接口）；命令侧只增，删改自由属于人；布局规约归 structure 插件
 <!-- /plugin:vault -->
 
-<!-- plugin:bb-map v0.13 -->
-- bb 映射法则：属地 wiki/bb/<term>/<course>/ 规范形四桶（bb/ 保源形，桶名 v0.4 终裁：courseware/assessments/attachments；课程根另容 user.md 认知档案——bb-track 域内原生页，不受四桶约束）——info.md 课程信息页兼身份页（bb 块映射 term_id/course_id/term_status + 大纲课程政策类要点蒸馏（开放词表：评分/考核/师资/TA/分组/教学语言/AI 政策，info-N 锚点，缺项标未提供）+ 备注沉淀；存「何时有何事」，被评分事务全要素归 assessments）；courseware/ 知识点页每内容单元一份（单元 = bb/ 目录「讲义+附属文件合一」或扁平单文件，平行同类目录合为一页；知识点摘要（sm-N 锚点 + 一行概括 + 章节提示）+ 专有名词对照表 + 单元文件清单（清单即对应关系）+ raw_path 指针（未下载单元可缺省）；纯代理）；assessments/ 聚合页每作业/考试一页（汇总列 Weighted Total/Total 排除；四要素：要求/参考蒸馏（req-N/ref-N 锚点）/提交/结果机械快照，due 缺省不告警、无提交独立话术；assessment 块映射 due/submitted_at/score/status/column_id + raw 块映射角色→bb/ 路径 + `## 复盘` 沉淀只增）；attachments/ 1:1 代理平铺（raw_file/raw_sha256，纯代理）；落位判据——有成绩册列或提交动作→assessments/（汇总列与分节登记列除外——分节登记列 = 非知识考核的分节/出勤登记，如 Tutorial Section）、老师非讲义资产→attachments/、内容单元→courseware/、结构事实入 info.md；讲义/附件边界：随周次内容→courseware、支撑性资源→attachments；info 与 assessments 两形分区（机械区可再生覆写+沉淀区只增，重建不得触碰），courseware/attachments 纯代理（珍贵内容入 notes）；映射不改 bb/ 源侧、不复制原文全文、源消失标 deprecated 不删；API 快照节挂 stale_after=拉取日+TTL，本地对账代理无 TTL
-<!-- /plugin:bb-map -->
+<!-- plugin:bb v0.8 -->
+- 课程运行子域（cuhksz 域内）`wiki/cuhksz/bb/`（外领地 bb.cuhk.edu.cn，连接器 bb-cli 纯只读，用法与位置见 bbcli skill）：双侧同构 `<term>/<course>/`——外 `cuhksz/bb/` 课程工作区（机器拉取物：文档类全量物化、媒体类默认指针化、提交件 submissions/，只增；笔记保留子区 notes/——学习笔记住所，人为主、ai 产物共居（teach 讲解沉淀 ai 笔记平铺带 origin: ai、quiz 考卷住 testing/ 子区；ai 产物只增不覆写；删改自由属于人，fetch/对账/映射永不触碰人的笔记、读取合法）），内 `wiki/cuhksz/bb/` 属地，目录名 = 学期名/课程代码（如 2610UG/AIE3005），machine id 与学期状态落身份页 bb 块映射（term_id/course_id/term_status）作一比一身份证明，同期同代码尾缀消歧、停用标 status: deprecated 不删；域根速写页 inbox.md（近窗公告蒸馏 + 临近截止 + 未交提醒双源——作业无提交 ∪ 成绩册有 due 无 attempt，行标课程，整页可再生短 TTL，**缺席即建**；frontmatter 兼域配置——terms 块映射现役学期与冻结标记）；公告拆信不存档（作业变更→assessments、考试/政策/分组→info、行动项→todo、资源发布→fetch 即弃，原文现拉即得）；课件物化后即本地终态资产豁免 TTL；投影细则见 bb-map 插件；凭据会话只存本机不入库；课程/成绩/提交数据属实例数据不入框架仓库；trust 天花板 machine-confirmed，stale_after = 拉取日 + TTL（默认 1 天，速写页覆写；日期粒度，过期判定以当日为限），agent 即同步器
+<!-- /plugin:bb -->
 
 <!-- plugin:lark-calendar v0.1 -->
 - lark 日历源（calendar 首个适配器）：声明页 `calendar` 块映射值 = `lark/<profile> <calendar_id|primary>`（profile 须为 wiki/lark/ 现役目录）；拉取 `lark-cli --profile <名> calendar …`（instance_view 当月/下月窗口）；只写月页 `## 日程` 节、行尾标源键；不碰手记节与已冻结月页；日更节奏 = 部署侧 cron 定时无人值守会话（全机械，失败源 log 报告不阻断他源）
@@ -160,19 +160,31 @@
 - 代理层 `wiki/vault/`：与根 `vault/` 1:1 镜像（代理名 = 原名 + .md），页面必有 raw_file / raw_sha256；路径即出身证明
 <!-- /plugin:mapping -->
 
+<!-- plugin:registry v0.1 -->
+- 教务制度子域（外源 registry.cuhk.edu.cn 教务处官网，**无连接器**——人工下载经用户明示、半自动物化）：物化区 `cuhksz/registry/`（官网 PDF 只增，版本批次进位不覆写）+ 属地 `wiki/cuhksz/registry/`——索引页 schemes.md（全校学院→专业→方案页 URL 指针；建页源：本科专业清单 registry.cuhk.edu.cn/page/20 与本科生手册 /page/22 族，含双主修/联合课程/副修；人机共维护、公开制度导航）与代理页（raw_file/raw_sha256 + 要点蒸馏只增 + 版本对版记录）；**对版节奏** = 学期初与 Senate 公文日人工核对（页面无日期，以 PDF Last-Modified 抽查）；制度对照双源——本区规则 PDF 为制度源、sis-cli 学位进度报告（DPR）为动态源，对照结论涌现入 notes 回链；trust human-reviewed（人工核对）+ 版本锚，无 TTL（制度变更靠对版不靠过期）；停招专业（如电子信息工程 2015-2021）如实标注不删
+<!-- /plugin:registry -->
+
+<!-- plugin:sis v0.1 -->
+- 学籍制度子域 `wiki/cuhksz/sis/`（外源 sis.cuhk.edu.cn，Oracle PeopleSoft CS，连接器 sis-cli 纯只读，用法与命令面见 connectors/sis-cli/SKILL.md）：速写页 inbox.md（近窗蒸馏——本学期课表概要/注册窗口/holds/最新成绩快照，行标学期，整页可再生短 TTL 默认 1 天，**缺席即建**）；**查询即答不默认投影**——成绩/历史/课表/考试现拉即答（term 交互与只读红线见 sis-cli skill），高价值结论涌现入 notes 回链；单向派生只出不回：注册窗口临期 → todo、课表/考试安排 → calendar 日程行（补 bb 挂缺的课表源）、学期成绩（终态事实）→ bb-track 证据流（域内直引免桥，经用户确认）；个人官方 PDF（在读证明/非官方成绩单）经用户明示下载走 vault 物化 + 本域页面 wikilink；官方成绩单申请等写操作**永不入本域**（真实学籍后果）；trust 天花板 machine-confirmed，stale_after = 拉取日 + TTL（日期粒度），agent 即同步器
+<!-- /plugin:sis -->
+
 <!-- plugin:structure v0.3 -->
 - vault 结构声明 `wiki/structure.md`（type: structure）：frontmatter `structure` 块映射 = 目录→一句话语义，正文写预设（日期/格式/类型/混合，可嵌套）与说明；agent 放置资产先读此页按位落放；页面缺席 = 平铺容忍；人调整 vault 后同步声明，check 机械 diff（未声明的顶层目录 / 声明不存在的目录 → warning）
 <!-- /plugin:structure -->
 
-<!-- plugin:bb-track v0.4 -->
+<!-- plugin:bb-map v0.14 -->
+- bb 映射法则：属地 wiki/cuhksz/cuhksz/bb/<term>/<course>/ 规范形四桶（bb/ 保源形，桶名 v0.4 终裁：courseware/assessments/attachments；课程根另容 user.md 认知档案——bb-track 域内原生页，不受四桶约束）——info.md 课程信息页兼身份页（bb 块映射 term_id/course_id/term_status + 大纲课程政策类要点蒸馏（开放词表：评分/考核/师资/TA/分组/教学语言/AI 政策，info-N 锚点，缺项标未提供）+ 备注沉淀；存「何时有何事」，被评分事务全要素归 assessments）；courseware/ 知识点页每内容单元一份（单元 = bb/ 目录「讲义+附属文件合一」或扁平单文件，平行同类目录合为一页；知识点摘要（sm-N 锚点 + 一行概括 + 章节提示）+ 专有名词对照表 + 单元文件清单（清单即对应关系）+ raw_path 指针（未下载单元可缺省）；纯代理）；assessments/ 聚合页每作业/考试一页（汇总列 Weighted Total/Total 排除；四要素：要求/参考蒸馏（req-N/ref-N 锚点）/提交/结果机械快照，due 缺省不告警、无提交独立话术；assessment 块映射 due/submitted_at/score/status/column_id + raw 块映射角色→bb/ 路径 + `## 复盘` 沉淀只增）；attachments/ 1:1 代理平铺（raw_file/raw_sha256，纯代理）；落位判据——有成绩册列或提交动作→assessments/（汇总列与分节登记列除外——分节登记列 = 非知识考核的分节/出勤登记，如 Tutorial Section）、老师非讲义资产→attachments/、内容单元→courseware/、结构事实入 info.md；讲义/附件边界：随周次内容→courseware、支撑性资源→attachments；info 与 assessments 两形分区（机械区可再生覆写+沉淀区只增，重建不得触碰），courseware/attachments 纯代理（珍贵内容入 notes）；映射不改 bb/ 源侧、不复制原文全文、源消失标 deprecated 不删；API 快照节挂 stale_after=拉取日+TTL，本地对账代理无 TTL
+<!-- /plugin:bb-map -->
+
+<!-- plugin:bb-track v0.5 -->
 - bb 认知档案：每课课程根 user.md（属地域内原生页首例，wiki v0.7 两形）——`## 认知读数` 收敛覆写（锚 courseware sm-N，粗粒度自陈合法，状态词开放；含目标层：课程目标 + 短期优先带时效）+ `## 证据流` 只增（日期+出处+断言+回链）；信号权重 human>machine>ai 笔记（弱证据，人复核升权）；应知不存（差距现算）、错题题级归 assessments 复盘、统计现算；更新双轨（agent 显著信号自发/用户明示），建档懒惰式；采集通道（bb v0.7 共居）——teach 显著答疑落 notes/ ai 笔记（弱证据）、quiz 自测判分落 notes/testing/（machine 证据），入流经用户确认、用法投影挂 bb-track 命令；学期即边界随 term_status 冻结；trust 天花板 machine-confirmed（含 human 证据升 human-reviewed），stale_after 默认 14 天可覆写；笔记区 notes/ 只读，可选属性 origin/form/stage（stage 标记属人）；认知经 user-profile 桥登记——建档时画像在场则维护其 `## 域认知` 节一行（bb + 路径形），缺席跳过不代建
 <!-- /plugin:bb-track -->
 
-<!-- plugin:bb-quiz v0.4 -->
-- 出题自测 bb-quiz（bb-track 的 testing 消费侧）：用户指定范围 + 可选样例 → 生成试题（题型与难度中值对齐样例，无样例回落已知作业、再回落用户习惯；题干语言源对齐——跟样例/已知作业/课程材料）+ 解析（语言读者对齐——取行文声明页 `wiki/language.md` 的 annotation 键，页面或缺席键跟会话语言；每题标知识点 sm-N 位置）；知识点全集 = courseware sm-N、范围 = 用户指定子集、不越界（除非用户明示）；选题与难度分布参照 bb-track 熟练度/目标层/错题（stale 保守档、冷启动全场未锚点均匀出题），教学纪要（notes/ ai 笔记）best-effort 按需读；考卷落 bb/<term>/<course>/notes/testing/<名>-试题.md + -答案.md（origin: ai，只增）；判分（作答后）= 答案页追记 `## 判分` + 经确认回写 user.md 证据流（machine 自测）；写后 log 行（other --domain bb）+ verify
+<!-- plugin:bb-quiz v0.5 -->
+- 出题自测 bb-quiz（bb-track 的 testing 消费侧）：用户指定范围 + 可选样例 → 生成试题（题型与难度中值对齐样例，无样例回落已知作业、再回落用户习惯；题干语言源对齐——跟样例/已知作业/课程材料）+ 解析（语言读者对齐——取行文声明页 `wiki/language.md` 的 annotation 键，页面或缺席键跟会话语言；每题标知识点 sm-N 位置）；知识点全集 = courseware sm-N、范围 = 用户指定子集、不越界（除非用户明示）；选题与难度分布参照 bb-track 熟练度/目标层/错题（stale 保守档、冷启动全场未锚点均匀出题），教学纪要（notes/ ai 笔记）best-effort 按需读；考卷落 cuhksz/bb/<term>/<course>/notes/testing/<名>-试题.md + -答案.md（origin: ai，只增）；判分（作答后）= 答案页追记 `## 判分` + 经确认回写 user.md 证据流（machine 自测）；写后 log 行（other --domain bb）+ verify
 <!-- /plugin:bb-quiz -->
 
-<!-- plugin:bb-teach v0.4 -->
+<!-- plugin:bb-teach v0.5 -->
 - 教学消费侧 bb-teach（bb-track 的 teaching 消费侧）：提问即讲解——问题定位 courseware sm-N（query 检索 + bb-map 收窄）→ 读 bb-track 认知档案（读数/证据/目标，stale 先核对、未核对前保守档）→ 按熟练度×难度二维伸缩讲解（已知略讲/反问、未知讲透）+ 讲解语言读者对齐（取行文声明页 `wiki/language.md` 的 teaching 键，页面或缺席键跟会话语言）+ 术语先用户已锚点集、缺省查 language 页全局 terms 表兜底（冲突锚点集优先）+ 错题/目标注入 + 锚点回链；三层反馈闭环——单轮反馈不落盘、显著答疑沉淀 ai 笔记落 notes/（origin: ai 弱证据，一篇一问回链锚点）、仅显著信号（跨会话稳定/主动应用/machine 验证）才经确认收敛 user.md（写回委托 bb-track 契约）；讲解对话不写 log、笔记落盘与认知收敛走写后管道；档案缺席（冷启动）全场按未锚点讲、不拒答
 <!-- /plugin:bb-teach -->
 

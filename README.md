@@ -31,7 +31,7 @@
 
 | 目录 | 内容 |
 |------|------|
-| `.meta/` | 原型核心。三十插件：双根概念 domain 与 wiki；域实例族 vault、lark、project、email、bb 及域内件 mapping、structure、lark-docs、lark-im、lark-calendar、bb-map、bb-track、bb-teach、bb-quiz；横切件 calendar、notes、sessions、link、tag、trust、index、hot、log、user-profile、todo、language、device、tmp。无分层；注入序为依赖拓扑加字母序；全局件可声明桥，必依桥由内核校验域基座挂边完备。另有十三命令主本、协议工件——registry、actions、experiments——与机械脚本 wiki_plugin_kernel、pipeline、wikilib，纯标准库零依赖 |
+| `.meta/` | 原型核心。三十三插件：双根概念 domain 与 wiki；域实例族 vault、lark、project、email 及 cuhksz 学校域族（基座 cuhksz，域内 bb/bb-map/bb-track/bb-teach/bb-quiz、sis、registry）及域内件 mapping、structure、lark-docs、lark-im、lark-calendar；横切件 calendar、notes、sessions、link、tag、trust、index、hot、log、user-profile、todo、language、device、tmp。无分层；注入序为依赖拓扑加字母序；全局件可声明桥，必依桥由内核校验域基座挂边完备。另有十三命令主本、协议工件——registry、actions、experiments——与机械脚本 wiki_plugin_kernel、pipeline、wikilib，纯标准库零依赖 |
 | `connectors/` | 连接器主本：部署侧 CLI 事实接口加 skill 使用披露。`connectors/*/SKILL.md` 经 kernel deploy 落 `.agents/skills/`；bb-cli 首件 |
 | `wiki/`、`vault/`、`projects/`、`bb/` | 数据区骨架。保持空种子：内容属部署实例，工程内不积累；跑库验证走 test-repo，用法见 [.meta/docs/sandbox.md](.meta/docs/sandbox.md) |
 | `.agents/skills/` | 命令与连接器 skill 部署副本 |

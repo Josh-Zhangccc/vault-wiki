@@ -57,6 +57,9 @@ plugins:
   calendar:
     calendar:
       note: 块映射（声明页）——源键 → 源声明（值语法归适配器：lark-calendar 用 `lark/<profile> <calendar_id|primary>`）；源键即日程行尾标
+  cuhksz:
+    sis:
+      note: 块映射（学籍身份页 identity.md）——student_id / college / school / major / admitted / status（数据源 sis-cli transcript；与连接器身份一比一，即域身份证明）
   device:
     device:
       note: 块映射（notes 设备档案页）——serial（序列号）/ purchased（购入 YYYY-MM-DD）/ warranty_until（保修或保障类截止 YYYY-MM-DD，附检扫描项）三键最小集，余键开放（model、vendor 等，架构不枚举）
@@ -98,9 +101,15 @@ plugins:
   project:
     projects:
       note: 块映射（声明页）——项目名 → 一句话定位；键应与 projects/ 下目录一一对应（双向 diff）
+  registry:
+    registry:
+      note: 块映射（索引/代理页）——source（官网页 URL）/ edition（版本锚：入学年级批次 + 公文/Senate 编号，如 AB2025_C037）/ raw_file / raw_sha256
   sessions:
     participants:
       note: YAML 列表，actor 约定（human:名字 / process:流程名 / agent/模型标识），多 agent 协作扩展点
+  sis:
+    sis_inbox:
+      note: 块映射（速写页可选）——term（现役学期名）/ ttl（TTL 覆写，天）；缺席跟默认
   tag:
     tags:
       note: YAML 列表 ≤5；主语言跟 language 页 default 键（缺席跟会话）；英文 tag 小写 kebab-case；层级 ≤2、`/` 分隔；禁复述 type

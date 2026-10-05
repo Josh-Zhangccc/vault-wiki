@@ -93,13 +93,13 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 - 语义（check 命令）：stale 页处置分诊（刷新时刻 / 重验证 / 废弃）——人决
 <!-- /check:trust -->
 
-<!-- check:bb -->
-- 语义项（v0.1 人工，附检后置）：type: bb 页落 wiki/bb/ 之外 → error；身份页 bb 块映射缺 course_id 或与目录不对应 → error；速写页手编痕迹 → warning；stale 清单（信息级）
-<!-- /check:bb -->
-
 <!-- check:calendar -->
 - 语义项（v0.1 人工，附检后置）：月页文件名非 YYYY-MM 或落 wiki/calendar/ 之外 → error；已过月份月页改写痕迹 → error（git 审计）；声明页缺 `calendar` 块 → info（manual-only 常态）
 <!-- /check:calendar -->
+
+<!-- check:cuhksz -->
+- 语义项（v0.1 人工，附检后置）：type: cuhksz 页落 wiki/cuhksz/ 之外 → error；identity.md 缺 sis 块映射或 student_id → error
+<!-- /check:cuhksz -->
 
 <!-- check:email -->
 - 语义项（v0.1 人工，附检后置）：type: email 页落 `wiki/email/` 之外 → error；人档 token（地址）重复 → error；线程档机械区缺 members（Message-ID 列表）→ warning；速写手编痕迹 → warning；stale 清单（信息级：拉取日 + TTL）
@@ -130,9 +130,9 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 - 机械项（信息级）：画像页缺失（未触发常态，profile 首建随触发）
 <!-- /check:user-profile -->
 
-<!-- check:bb-map -->
-- 语义项（v0.1 人工，附检后置）：属地页落四桶之外 → error（课程根 user.md 除外——bb-track 域内原生页）；知识点页 raw_path 悬挂 → error（缺省合法——未下载单元以清单标注即构成记录）；info.md 缺 bb 块映射（term_id/course_id/term_status）或与目录不对应 → error；attachments 代理 raw_file 指 bb/ 不存在文件 → error；assessments 页缺 raw 块映射或 column_id → warning；汇总列（Weighted Total/Total）建页 → warning；知识点页缺 `## 知识点摘要` 或摘要点缺 sm-N 锚点 → warning；知识点页缺 `## 专有名词` → info；info 蒸馏节缺课程政策类要点 → info；assessments 有要求源但要求节未蒸馏 → info；源文件消失未标 deprecated → warning；沉淀区（备注/复盘）被重建改写 → error；映射完整性（bb/ 内容单元无对应页）→ info
-<!-- /check:bb-map -->
+<!-- check:bb -->
+- 语义项（v0.1 人工，附检后置）：type: bb 页落 wiki/cuhksz/bb/ 之外 → error；身份页 bb 块映射缺 course_id 或与目录不对应 → error；速写页手编痕迹 → warning；stale 清单（信息级）
+<!-- /check:bb -->
 
 <!-- check:lark-calendar -->
 - 语义项（v0.1 人工）：声明页 lark 源的 profile 不在 wiki/lark/ 目录集 → warning；日程行源键无对应声明 → warning
@@ -151,9 +151,21 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 - 语义项（check 命令）：失配处置分诊（描述仍适用 → 机械重算自动修复，毕即写 log 行（类型 map，一句话含资产名与「原文已变，描述仍适用」）；疑似失效 → 人决重映射或删）；日记类全文复制豁免判断；孤儿代理处置前先处置引用（同步改引用或留 aliases 重定向）
 <!-- /check:mapping -->
 
+<!-- check:registry -->
+- 语义项（v0.1 人工，附检后置）：代理页缺 raw_file/raw_sha256 → error；索引页指针 URL 抽查失效 → warning；物化区文件无对应代理页 → warning
+<!-- /check:registry -->
+
+<!-- check:sis -->
+- 语义项（v0.1 人工，附检后置）：type: sis 页落 wiki/cuhksz/sis/ 之外 → error；速写页手编痕迹 → warning；stale 清单（信息级）
+<!-- /check:sis -->
+
 <!-- check:structure -->
 - 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：声明 diff——vault 顶层目录未声明 → warning、声明键指向不存在目录 → warning；type: structure 落 `wiki/structure.md` 之外 → error；声明页缺席 → info（平铺容忍）
 <!-- /check:structure -->
+
+<!-- check:bb-map -->
+- 语义项（v0.1 人工，附检后置）：属地页落四桶之外 → error（课程根 user.md 除外——bb-track 域内原生页）；知识点页 raw_path 悬挂 → error（缺省合法——未下载单元以清单标注即构成记录）；info.md 缺 bb 块映射（term_id/course_id/term_status）或与目录不对应 → error；attachments 代理 raw_file 指 bb/ 不存在文件 → error；assessments 页缺 raw 块映射或 column_id → warning；汇总列（Weighted Total/Total）建页 → warning；知识点页缺 `## 知识点摘要` 或摘要点缺 sm-N 锚点 → warning；知识点页缺 `## 专有名词` → info；info 蒸馏节缺课程政策类要点 → info；assessments 有要求源但要求节未蒸馏 → info；源文件消失未标 deprecated → warning；沉淀区（备注/复盘）被重建改写 → error；映射完整性（bb/ 内容单元无对应页）→ info
+<!-- /check:bb-map -->
 
 <!-- check:bb-track -->
 - 语义项（v0.1 人工，附检后置）：user.md 落课程根之外或四桶内 → error；证据流条目被改写删除 → error；读数条目无可溯证据 → warning；读数仅凭 origin: ai 无复核 → warning；stale 超窗后消费未核对 → info；笔记属性值出开放词表 → info
