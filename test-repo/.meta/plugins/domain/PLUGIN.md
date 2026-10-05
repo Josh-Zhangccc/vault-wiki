@@ -1,43 +1,43 @@
-# domain：域抽象
+# domain: Domain Abstraction
 
-## 设计概要
+## Design Summary
 
-- **为什么存在**：双根概念的**外根**——「外」的本体声明：wiki 只认内外；域即 domain，是 wiki 外信息源的存在形态，也就是一份待填的适配器契约。概念声明件：立抽象、定律与纪律；具体域以 depends 边实例化——域生长机制的源头，见 mechanics 第 8 节
-- **关键裁定**：
-  - 契约六问：外领地、落地策略、身份证明、wiki 属地、写模型、信任模型。设计一个域，就是逐问作答
-  - 三定律：落地本质是写模型选择；翻译成本决定投影密度；治理页在 wiki 内，治理对象在 wiki 外
-  - 两纪律加入场券：借 vault 或指针为默认姿态，自立容器是例外——何时例外：写模型分叉，或结构刚性分叉；域须在 wiki 内可发现；可对账性是入场券——源已消逝的遗存不立域，归原生领地
-  - 实例化表达全在 depends 图：域本体直连本件，域内件经传递属域；内侧件挂 wiki，不挂本件
+- **Why it exists**: the **outer root** of the dual-root concept — the ontological declaration of "outer": wiki recognizes only inner and outer; a domain is the form in which information sources outside wiki exist, i.e. an adapter contract waiting to be filled in. A concept-declaration plugin: it establishes the abstraction, laws, and disciplines; concrete domains are instantiated via depends edges — the source of the domain growth mechanism, see Section 8 of mechanics
+- **Key rulings**:
+  - Six contract questions: external territory, landing strategy, identity proof, wiki-side territory, write model, trust model. Designing a domain means answering them one by one
+  - Three laws: landing is essentially a write-model choice; translation cost determines projection density; governance pages live inside wiki, governance targets outside
+  - Two disciplines plus the admission ticket: borrowing vault or pointers is the default posture, self-standing containers are the exception — when to except: write-model divergence, or structural-rigidity divergence; domains must be discoverable within wiki; reconcilability is the admission ticket — relics whose source has already vanished do not establish a domain, they belong to the native territory
+  - Instantiation is expressed entirely in the depends graph: domain bases connect directly to this plugin, in-domain plugins belong to their domain transitively; inner-side plugins attach to wiki, not to this plugin
 
 ## Structure
 
-无自有结构与文件。实例化表达全在 depends 图：域本体插件直接依赖本插件；域内插件依赖各自域，如 structure 依赖 vault、lark-docs 依赖 lark，传递即成员；内侧插件如 notes 与 sessions 挂 wiki，不挂本插件。
+No structure or files of its own. Instantiation is expressed entirely in the depends graph: domain-base plugins depend directly on this plugin; in-domain plugins depend on their respective domains — e.g. structure depends on vault, lark-docs depends on lark — transitivity means membership; inner-side plugins such as notes and sessions attach to wiki, not to this plugin.
 
 ## Invariants
 
-契约六问，每域自答：
+Six contract questions, each domain answers for itself:
 
-- 外领地——信息住哪：`vault/`、lark-cli 可达系统、`projects/**`
-- 落地策略——借 vault 物化、自立容器、指针不落地
-- 身份证明——vault 用路径加哈希；lark 用 token 与页一比一；project 用路径加声明页双向 diff
-- wiki 侧属地——域投影页住哪：`wiki/vault/`、`wiki/lark/<profile>/`、声明页；属地路径由各域注入行自披露
-- 写模型——只增、全权读写、可再生覆写
-- 信任模型——原文不可变、TTL 懒刷新、活文档
+- External territory — where the information lives: `vault/`, systems reachable via lark-cli, `projects/**`
+- Landing strategy — materialize via vault, self-standing container, pointer without landing
+- Identity proof — vault uses path plus hash; lark uses a one-to-one token-to-page mapping; project uses path plus a two-way diff against the declaration page
+- Wiki-side territory — where the domain's projection pages live: `wiki/vault/`, `wiki/lark/<profile>/`, declaration pages; territory paths are self-disclosed by each domain's injection line
+- Write model — append-only, full read/write, regenerable overwrite
+- Trust model — immutable originals, lazy TTL refresh, living documents
 
-三定律：
+Three laws:
 
-- 落地选择本质是写模型选择：终态资产进只增仓储，如 vault；过程容器全权读写，如 project；真相在别处用指针，如 lark
-- 翻译成本决定投影密度：任意格式取 1:1 镜像；API 后取指针页；md 原生仅声明披露
-- 治理页在 wiki 内、治理对象在 wiki 外——structure.md 与 profile.md 同形
+- The landing choice is essentially a write-model choice: final-state assets go into an append-only repository, e.g. vault; process containers get full read/write, e.g. project; when truth lives elsewhere, use pointers, e.g. lark
+- Translation cost determines projection density: arbitrary formats take a 1:1 mirror; behind APIs take pointer pages; md-native takes declaration-only disclosure
+- Governance pages inside wiki, governance targets outside — structure.md and profile.md share the same shape
 
-两纪律：
+Two disciplines:
 
-- 借 vault 或指针为默认姿态，自立容器是例外——何时例外：写模型或结构刚性分叉；project 落 vault 即瘫痪是范例
-- 域须在 wiki 内可发现：声明页或注入行；未登记视为不存在
-- 域的入场券是可对账性：外领地存活且可访问、身份证明可建立、wiki 侧属地路径在域声明内——三者齐备方可立域；源已消逝的遗存，如会话纪要——对话运行时消逝后页面即真身——不立域，归原生领地
+- Borrowing vault or pointers is the default posture, self-standing containers are the exception — when to except: write-model or structural-rigidity divergence; project landing in vault would be crippled, that is the paradigm case
+- Domains must be discoverable within wiki: declaration page or injection line; unregistered means nonexistent
+- A domain's admission ticket is reconcilability: the external territory is alive and accessible, identity proof can be established, and the wiki-side territory path is stated within the domain declaration — only when all three are in place may a domain be established; relics whose source has already vanished, e.g. session minutes — once the conversation runtime vanishes the page is the true body — do not establish a domain, they belong to the native territory
 
-熵增落位：跨域语义消歧在 adapter 写入时完成，读时靠路径出身；wiki 内词表统一，链接图全连通；tag 教义不动，域内自由生长继续成立。
+Where the entropy goes: cross-domain semantic disambiguation is completed at adapter write time, reads rely on path origin; within wiki the vocabulary stays unified and the link graph fully connected; the tag doctrine is untouched, free growth within domains keeps holding.
 
 ## Changelog
 
-- 0.1 2026-09-22：立设——蒸馏自 2026-09-19 域问题报告与四轮讨论；vault、lark、project 三实例先行合规
+- 0.1 2026-09-22: established — distilled from the 2026-09-19 domain problem report and four rounds of discussion; the three instances vault, lark, and project brought into compliance first

@@ -1,27 +1,27 @@
-# lark-docs：云文档域
+# lark-docs: cloud-docs domain
 
-## 设计概要
+## Design summary
 
-- **为什么存在**：服务 profile 抽象的域插件——飞书云文档，即知识库与云盘，的访问与映射。关心区制：云文档量大且用户只关心局部；映射以关心区为唯一入口
-- **关键裁定**：
-  - 全量映射明令禁止：枚举只服务两件事——枢纽页「结构速写」与关心区解析；指针页仅落关心区内对象
-  - 三件套：枢纽、关心区、按区映射。`docs.md` 枢纽收关心区到范围，是实例配置，人可改 agent 可读；结构速写是蒸馏非镜像，stale_after 管；关心区子树平铺容忍
-  - 快照节选段追加，禁全文复制——蒸馏是默认姿态
-  - kind 词表开放，跟 lark obj_type：docx、wiki、sheet、base、file 等
+- **Why it exists**: a domain plugin serving the profile abstraction — access to and mapping of Lark cloud docs, i.e. the knowledge base and the drive. Areas-of-interest regime: cloud docs are massive and the user cares only about parts; mapping takes the area of interest as its only entry
+- **Key rulings**:
+  - Full mapping explicitly forbidden: enumeration serves exactly two things — the hub page's 'structure digest' and area-of-interest resolution; pointer pages land only for objects inside areas of interest
+  - The three-piece set: hub, areas of interest, per-area mapping. The `docs.md` hub collects area-of-interest to scope, is instance configuration, human-editable agent-readable; the structure digest is a distillation not a mirror, governed by stale_after; flat tolerance inside area-of-interest subtrees
+  - Snapshot sections append selected excerpts, full-text copying forbidden — distillation is the default posture
+  - kind vocabulary open, following lark obj_type: docx, wiki, sheet, base, file, etc.
 
 ## Structure
 
-- `<profile>/docs.md`，kind: docs——域枢纽：frontmatter `docs` 块映射 = 关心区到范围一句话，实例配置，人可改 agent 可读；正文「云盘结构速写」由 agent 蒸馏——知识空间清单、顶层目录、一句话，带 stale_after，非镜像
-- `<profile>/docs/<关心区>/…`——指针页子树；关心区一层，往下平铺容忍
-- kind 词表开放，跟 lark obj_type：docx、wiki、sheet、base、file 等
+- `<profile>/docs.md`, kind: docs — domain hub: frontmatter `docs` block mapping = area of interest to one-sentence scope, instance configuration, human-editable agent-readable; body 'drive structure digest' distilled by the agent — knowledge-space list, top-level directories, one sentence each, with stale_after, not a mirror
+- `<profile>/docs/<area-of-interest>/…` — pointer page subtree; one level of areas of interest, flat tolerance below
+- kind vocabulary open, following lark obj_type: docx, wiki, sheet, base, file, etc.
 
 ## Invariants
 
-- 全量映射禁止；关心区是映射的唯一入口
-- 结构速写是蒸馏产物，过期走 stale_after，不追求与 lark 侧实时一致
-- 指针页正文一行摘要起步；快照节 `## 快照 YYYY-MM-DD` 选段追加、禁全文复制
-- TTL 默认 7 天，profile.md 可覆写
+- Full mapping forbidden; the area of interest is the only entry to mapping
+- The structure digest is a distillation product, expiry via stale_after, no pursuit of real-time parity with the lark side
+- Pointer page body starts from a one-line summary; snapshot section `## Snapshot YYYY-MM-DD` appends selected excerpts, full-text copying forbidden
+- TTL default 7 days, overridable in profile.md
 
 ## Changelog
 
-- 0.1 2026-09-19：立设——docs.md 三件套：结构速写、关心区、按区映射
+- 0.1 2026-09-19: established — the docs.md three-piece set: structure digest, areas of interest, per-area mapping

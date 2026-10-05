@@ -4,17 +4,17 @@ bridge: 按需
 depends:
   - wiki
   - trust
-updated: 2026-10-02
+updated: 2026-10-06
 attachment:
-  - "wiki/calendar.md —— 声明页（`calendar` 块映射 = 源键→源声明；随首个源接入时自建，manual-only 可缺）"
-  - "wiki/calendar/ —— 月页 YYYY-MM.md（一页一月，两节制）"
+  - "wiki/calendar.md — declaration page (`calendar` block mapping = source key → source declaration; self-created when the first source attaches, manual-only may be absent)"
+  - "wiki/calendar/ — month pages YYYY-MM.md (one page per month, two-section scheme)"
 fields:
-  calendar: "块映射（声明页）——源键 → 源声明（值语法归适配器：lark-calendar 用 `lark/<profile> <calendar_id|primary>`）；源键即日程行尾标"
-inject: "时间领地：声明页 `wiki/calendar.md`（`calendar` 块映射 = 源键→源声明，manual-only 可缺）+ 月页 `wiki/calendar/YYYY-MM.md`（两节制——`## 日程` 源投影整节重刷、`## 手记` 只增；事件行 `- MM-DD HH:MM~HH:MM 标题（源键）` 可带 wikilink，事件不建页）；未来滚动、过去冻结（月份走完不可改写）；月页 stale_after 默认 2 天；与 todo 边界——日历存何时有何事、todo 存何事待办，可单向派生；calendar 按需桥——域件单向派生带源键日程行入当月 `## 日程`（宪法准则 11，格式归本桥）"
+  calendar: "block mapping (declaration page) — source key → source declaration (value syntax belongs to the adapter: lark-calendar uses `lark/<profile> <calendar_id|primary>`); the source key is the end-of-line tag on schedule lines"
+inject: "Time territory: declaration page `wiki/calendar.md` (`calendar` block mapping = source key → source declaration, manual-only may be absent) + month pages `wiki/calendar/YYYY-MM.md` (two-section scheme — `## Schedule` is the source projection, refreshed wholesale by section; `## Manual Notes` is append-only; event lines `- MM-DD HH:MM~HH:MM Title (source key)` may carry a wikilink, events get no pages); future rolling, past frozen (a month may not be rewritten once over); month pages stale_after defaults to 2 days; boundary with todo — the calendar stores what happens when, todo stores what is pending, one-way derivation allowed; calendar on-demand bridge — domain plugins one-way derive source-keyed schedule lines into the current month's `## Schedule` (constitutional principle 11, format owned by this bridge)"
 usage:
-  - 同步（机械）：读声明页源清单 → 逐源由其适配器拉当月与下月 → 整节重刷各月页 `## 日程`（行尾标源键）→ `pipeline.py verify` + log 行 + 提交（`映射: calendar`）
-  - 日更（无人值守会话）：部署侧 cron 定时触发同步会话，全机械无需确认，失败源 log 报告不阻断他源；语义增强（事件备注、链接补全）留交互会话
-  - 手记：当月 `## 手记` 追加一行（日期 + 一句话），只增不改
-  - 冻结：月份走完的月页不再改写；改期等变更记入新月页
+  - Sync (mechanical): read the declaration page's source list → each source pulled for the current and next month by its adapter → wholesale section refresh of each month page's `## Schedule` (lines tagged with the source key) → `pipeline.py verify` + log line + commit (`映射: calendar`)
+  - Daily refresh (unattended session): deployment-side cron triggers the sync session on schedule, fully mechanical, no confirmation needed; failed sources are reported via log and do not block other sources; semantic enhancements (event notes, link completion) are left to interactive sessions
+  - Manual notes: append one line to the current month's `## Manual Notes` (date + one sentence), append-only, never modified
+  - Freezing: month pages are never rewritten once the month is over; changes such as rescheduling are recorded in the new month's page
 checks:
-  - 语义项（v0.1 人工，附检后置）：月页文件名非 YYYY-MM 或落 wiki/calendar/ 之外 → error；已过月份月页改写痕迹 → error（git 审计）；声明页缺 `calendar` 块 → info（manual-only 常态）
+  - Semantic (v0.1 manual, attached audit deferred): month page file name not YYYY-MM or landing outside wiki/calendar/ → error; traces of rewriting a past month's page → error (git audit); declaration page missing the `calendar` block → info (the manual-only norm)

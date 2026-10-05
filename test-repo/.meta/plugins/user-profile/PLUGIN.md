@@ -1,39 +1,39 @@
-# user-profile：用户画像
+# user-profile: user profile
 
-## 设计概要
+## Design Overview
 
-- **为什么存在**：对使用者的持续认知档案——把「用户是谁、偏好什么」从对话记忆变成可检查的页面：断言带证据，偏好会过期，更新留痕。定位为 agent 记忆线的 user profile，面向真实使用者；不是产品设计线的虚构 persona。维度框架借前者研究，更新机制借后者；选型依据 `research-user-profile.md`
-- **关键裁定**：
-  - 收敛式更新：新值取代旧值，正文留痕——区别于 notes 只增不改；画像页是全库第一个可更新语义页面
-  - 零自有字段：留痕与信任全复用 trust；维度不枚举，架构不预置字段清单
-  - 断言证据 = 正文行内 wikilink，指向 wiki 内任意页面——引用即链接，跨域不立机制依赖
-  - 更新统一走 profile 命令，2026-09-29 脱离 map 与 save 寄生；双轨触发：用户明示，或 agent 识别显著信号
-  - mapping 边裁撤，2026-10-02：桥法则下其经 vault 链达 domain 致全局件误判，kernel 实测抓出——「挂边无害」前提失效
-  - 隐私双设防：日记类资产只记元信号，内容不进画像；画像内容属实例数据不入库
+- **Why it exists**: a continuing cognition profile of the user — turning 'who the user is and what they prefer' from conversational memory into a checkable page: assertions carry evidence, preferences expire, updates leave traces. Positioned as the user profile of the agent memory line, facing the real user; not the fictional persona of the product-design line. The dimension framework borrows from the former's research, the update mechanism from the latter; selection rationale in `research-user-profile.md`
+- **Key rulings**:
+  - Convergence-style updates: new values replace old ones, trace left in the body — distinct from notes' append-only; the profile page is the first semantically updatable page in the whole library
+  - Zero own fields: traces and trust fully reuse trust; dimensions not enumerated, the architecture presets no field list
+  - Assertion evidence = inline wikilinks in the body, pointing to any page inside wiki — a citation is a link, no cross-domain mechanism dependencies
+  - Updates uniformly go through the profile command, shedding the map/save parasitism on 2026-09-29; dual-track triggering: explicit user request, or the agent recognizing significant signals
+  - The mapping edge was removed 2026-10-02: under the bridge law it reached domain via the vault chain, causing a global plugin to be misjudged — caught by an actual kernel test; the 'hanging edges are harmless' premise failed
+  - Privacy double safeguard: diary-type assets record only meta-signals, content never entering the profile; profile content is instance data, never entering the repo
 
 ## Structure
 
-- `wiki/profile.md`——单页档案，type: profile。静态身份层——称呼、语言、背景——与动态偏好层——题材、风格、习惯——分节开放；维度不枚举
-- 零自有字段：留痕与信任全复用 trust，即 generated、verified、stale_after、sources
-- 断言证据 = 正文行内 wikilink，指向 wiki 内任意页面——会话页、vault 代理页、lark 档案页、notes。引用即链接，跨域不立机制依赖；depends 三条：wiki、trust、sessions。mapping 边 2026-10-02 裁撤——桥法则下其经 vault 链达 domain 致全局件误判，2026-09-29「挂边无害」前提失效
+- `wiki/profile.md` — a single-page profile, type: profile. Static identity layer — form of address, language, background — and dynamic preference layer — subjects, style, habits — in open sections; dimensions not enumerated
+- Zero own fields: traces and trust fully reuse trust, namely generated, verified, stale_after, sources
+- Assertion evidence = inline wikilinks in the body, pointing to any page inside wiki — session pages, vault proxy pages, lark archive pages, notes. A citation is a link, no cross-domain mechanism dependencies; three depends edges: wiki, trust, sessions. The mapping edge was removed 2026-10-02 — under the bridge law it reached domain via the vault chain, causing a global plugin to be misjudged; the 2026-09-29 'hanging edges are harmless' premise failed
 
 ## Invariants
 
-- 收敛式更新：新值取代旧值、正文留痕，单行记谁何时改了什么——区别于 notes 的只增不改；画像页是全库第一个可更新语义页面
-- 更新统一走 profile 命令，双轨触发——用户明示，或 agent 识别显著信号自发调用；2026-09-29 起脱离 map 与 save 寄生，画像证据天然跨域
-- 断言必带证据 wikilink；单条增量断言不等于偏好，偏好是页内聚合出的模式
-- 日记类资产只记元信号——有无、节奏；内容不进画像。豁免随 mapping；隐私红线二次设防
-- 隐私红线：画像内容是实例数据，不入框架仓库与 test-repo
-- 画像页不打 tags：单页领地、直接读取，不入词表检索——明示决定，非遗漏
-- 画像页缺失不等于错误：未触发是常态；profile 首建随首次触发，不依赖初始化机制
+- Convergence-style updates: new values replace old ones, trace left in the body, a single line recording who changed what and when — distinct from notes' append-only; the profile page is the first semantically updatable page in the whole library
+- Updates uniformly go through the profile command, dual-track triggering — explicit user request, or the agent's spontaneous call upon recognizing significant signals; since 2026-09-29 free of the map/save parasitism, profile evidence naturally cross-domain
+- Assertions must carry evidence wikilinks; a single incremental assertion is not itself a preference — preferences are patterns aggregated within the page
+- Diary-type assets record only meta-signals — presence, cadence; content never enters the profile. The exemption followed mapping; a second privacy red-line safeguard
+- Privacy red line: profile content is instance data, never entering the framework repo or test-repo
+- The profile page carries no tags: a single-page territory, read directly, not in vocabulary retrieval — an explicit decision, not an omission
+- Profile page absence is not an error: untriggered is the norm; profile self-creates on first trigger, independent of any initialization mechanism
 
-## 桥：按需
+## Bridge: on-demand
 
-认知桥：全局画像对域级认知页的扩展点，宪法准则 11。画像正文设 `## 域认知` 节；行 = 域名加认知页路径形 wikilink，bb-track user.md 首例，路径形通配多课多档。挂靠基数**按需**：有认知档案的域件注册，登记由域件建档动作维护；画像缺席则域件照常工作，按需桥缺席容错；画像在场也只聚合指针，不复制域状态。消费纪律：个性化输出前读画像**及其登记认知页**——桥只持「谁在、去哪读」；认知页形态知识归域插件，各件各管各的披露，SASU-L。零自有字段裁定不破：登记走正文节，不动 frontmatter。行格式权威在登记侧域件 usage，bb-track 先例；本节为详述，分工裁定。
+The cognition bridge: the global profile's extension point toward domain-level cognition pages, constitutional principle 11. The profile body carries a `## Domain Cognition` section; a line = domain name plus a path-form wikilink to the cognition page, bb-track user.md the first case, the path form wildcarding multiple courses and archives. Attachment cardinality **on-demand**: domain plugins with cognition profiles register, and registration is maintained by the domain plugin's archive-creation action; if the profile is absent the domain plugin works as usual — on-demand bridge absence tolerance; even with the profile present it only aggregates pointers, never copying domain state. Consumption discipline: before personalized output, read the profile **and its registered cognition pages** — the bridge holds only 'who is present, where to read'; cognition-page shape knowledge belongs to the domain plugins, each disclosing its own, SASU-L. The zero-own-fields ruling stands unbroken: registration goes through a body section, never touching frontmatter. Line-format authority lives in the registering-side domain plugin's usage, the bb-track precedent; this section is the elaboration — division-of-labor ruling.
 
 ## Changelog
 
-- 0.4 2026-10-02：全局域批三——立认知桥，按需：画像正文 `## 域认知` 登记节、聚合不复制、前置读取纪律；bb-track user.md 首例注册；mapping 边裁撤——桥法则下经 vault 链达 domain 致全局件误判，kernel 实测抓出，「挂边无害」前提失效
-- 0.3 2026-09-29：profile 命令立设——写侧脱离 map 与 save 双入口寄生，两命令 consumes 摘除；证据域放开为 wiki 内页面，销跨域归属悬置；首建随触发自建，收编初始化挂账画像部分；tag 明示不打；depends 维持，裁定：引用级边保留不裁
-- 0.2 2026-09-14：usage 补画像提炼方法论——信号判据、分层落点、断言具体可证；蒸馏的可执行部分入写侧契约，SASU-L 披露闭环：agent 跑 map 与 save 即知如何提炼，不依赖模型先验；全文仍留 `docs/research-user-profile.md`
-- 0.1 2026-09-13：立设——`wiki/profile.md` 收敛式认知档案，type: profile 入 registry 值集；depends 为 wiki、trust、mapping、sessions；双信号通道挂 save 与 map，consumes 插 trust 后派生前；检查三项——断言证据闸门即 warning、领地走错即 error、页面缺失即信息级
+- 0.4 2026-10-02: global-domain batch three — established the cognition bridge, on-demand: the profile body `## Domain Cognition` registration section, aggregate-don't-copy, read-first discipline; bb-track user.md the first registration; the mapping edge removed — under the bridge law it reached domain via the vault chain, causing a global plugin to be misjudged, caught by an actual kernel test; the 'hanging edges are harmless' premise failed
+- 0.3 2026-09-29: profile command established — the write side shed its parasitism on the map and save dual entry points, both commands' consumes entries removed; the evidence domain opened to any page inside wiki, dissolving the cross-domain ownership suspension; first creation self-builds on trigger, absorbing the profile part of the pending initialization items; tags explicitly not applied; depends kept, ruling: reference-level edges retained, not cut
+- 0.2 2026-09-14: usage added the profile distillation methodology — signal criteria, layered placement, assertions concrete and verifiable; the executable part of the distillation entered the write-side contract, closing the SASU-L disclosure loop: an agent running map or save knows how to distill, without relying on model priors; the full text remains in `docs/research-user-profile.md`
+- 0.1 2026-09-13: established — `wiki/profile.md` convergence-style cognition profile, type: profile entered the registry value set; depends were wiki, trust, mapping, sessions; dual signal channels hung on save and map, consumes inserted after trust and before derivation; three checks — the assertion evidence gate as warning, wrong territory as error, page absence as info-level

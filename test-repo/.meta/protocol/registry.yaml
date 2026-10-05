@@ -1,130 +1,138 @@
-# vault-wiki 字段注册表（协议工件，聚合投影）
+# vault-wiki Field Registry (protocol artifact, aggregated projection)
 #
-# 规则：
-# - 协议段（protocol）是权威源，修订须过 check
-# - 插件段（plugins）聚合自各 PLUGIN.yaml 的 fields 声明；check 校验一致，偏差以 PLUGIN.yaml 为准重写本表
-# - 预留段（reserved）是回填通道：合法暂存字段，ghost 检查豁免，待未来插件认领
-# - map / save 第 0 步必读本表（一次读取锚点：字段与值集在写入前可见，不扫描全库）
-# - 字段叠层组合：一个页面 = 协议字段 + 各插件字段（如 source 页 = 协议 + vault + tag）
-# - actor 约定（一切署名字段的统一值格式）：human:名字（如 human:Joss）/ process:流程名（如 process:hash-recalc）/ agent/模型标识（如 agent/GLM-5.3）
-# - 旧值迁移映射：seed→draft、developing→draft、done→stable
+# Rules:
+# - The protocol section is the authoritative source; revisions must pass check
+# - The plugins section is aggregated from the fields declarations of each PLUGIN.yaml; check validates consistency, and on deviation this table is rewritten with PLUGIN.yaml as the authority
+# - The reserved section is a backfill channel: legitimate staging fields, exempt from the ghost check, awaiting a future plugin's claim
+# - map / save read this table as step 0 (one-read anchor: fields and value sets are visible before writing, no full-repo scan)
+# - Fields stack by composition: one page = protocol fields + each plugin's fields (e.g. a source page = protocol + vault + tag)
+# - Actor convention (the unified value format for all attribution fields): human:name (e.g. human:Joss) / process:workflow name (e.g. process:hash-recalc) / agent/model identifier (e.g. agent/GLM-5.3)
+# - Legacy value migration mapping: seed→draft, developing→draft, done→stable
 
 protocol:
   type:
     values: [source, session, profile, todo, structure, language, lark, calendar, project, email, bb, tmp]
-    note: 领地值封闭（扩值须修订本表）——决定页面归属与机械检查：source=代理页、session=sessions 领地、profile=画像页、todo=临时记忆页、structure=结构声明页、language=行文声明页（wiki/language.md，`language`/`terms` 块映射，归 language 插件）、lark=外部指针页（wiki/lark/ 领地，token 即身份证明，归 lark 插件族）、calendar=时间领地页（月页，两节制）、project=项目声明页（wiki/projects.md，`projects` 块映射；项目本体在根容器 projects/）、email=个人邮箱域页（wiki/email/ 领地——速写/人档/线程档/源档，token = 邮箱地址或 Message-ID，归 email 插件）、bb=BB 课程域页（wiki/bb/ 领地——域根速写与课程身份页，term_id/course_id 即身份证明，归 bb 插件）、tmp=临时页（路径即领地，派生层隐身）；导入/互操作消费侧容忍未知 type
+    note: "Territory values are closed (extending values requires revising this table)—determines page ownership and mechanical checks: source=proxy page, session=sessions territory, profile=profile page, todo=temporary memory page, structure=structure declaration page, language=language declaration page (wiki/language.md, `language`/`terms` block mappings, owned by the language plugin), lark=external pointer page (wiki/lark/ territory, the token is the identity proof, owned by the lark plugin family), calendar=time territory page (month page, two-section system), project=project declaration page (wiki/projects.md, `projects` block mapping; the project proper lives in the root container projects/), email=personal mailbox domain page (wiki/email/ territory—digest page / people / threads / sources archives, token = email address or Message-ID, owned by the email plugin), bb=BB course domain page (wiki/bb/ territory—domain-root digest page and course identity pages, term_id/course_id is the identity proof, owned by the bb plugin), tmp=temporary page (path is the territory, invisible to the derived layer); import/interop consumer sides tolerate unknown types"
     defaults: [concept, qa, decision, entity, comparison]
-    defaults_note: 形态默认词表——notes 领地内的知识形态，无机械语义；实例开放自扩（不须修订本表），优先复用防词表碎片
+    defaults_note: "Form defaults vocabulary—knowledge forms within the notes territory, no mechanical semantics; instances extend it freely (no revision of this table required), prefer reuse to prevent vocabulary fragmentation"
   status:
     values: [draft, stable, deprecated]
-    note: 生命周期三值；deprecated = 为链接与历史保留、但已非当前
+    note: "Three lifecycle values; deprecated = kept for links and history but no longer current"
   title:
-    note: 页面标题，字符串，建议必填
+    note: "Page title, a string; recommended as a required field"
   description:
-    note: 一句话描述（≤80 字）；索引条目与 viewer 提示的数据源，缺失时索引取正文首句
+    note: "One-sentence description (≤80 characters); data source for index entries and viewer hints; when absent, the index takes the first sentence of the body"
   created:
     note: YYYY-MM-DD
   updated:
-    note: YYYY-MM-DD，任何写操作刷新
+    note: "YYYY-MM-DD, refreshed by any write operation"
 
 plugins:
   bb:
     bb:
-      note: 块映射（课程身份页）——term_id（学期 machine id，如 _426_1）/ course_id（课程 machine id，如 _18030_1）/ term_status（现役|冻结——自 inbox terms 推导落页，消除单点依赖）；与属地目录一比一，即身份证明
+      note: block mapping (course identity page) — term_id (term machine id, e.g. _426_1) / course_id (course machine id, e.g. _18030_1) / term_status (active|frozen — derived from inbox terms and written to the page, eliminating the single dependency point); one-to-one with the territory directory, i.e. the identity proof
     terms:
-      note: 块映射（域根速写页）——term 目录名 → 一句话（现役/冻结标记 + term_id）；现役学期即拉取与速写的默认作用域
+      note: block mapping (domain-root digest page) — term directory name → one sentence (active/frozen flag + term_id); the active term is the default scope for pulling and digesting
   bb-map:
     assessment:
-      note: 块映射（assessments 聚合页机械区）——due（截止）/ submitted_at（提交时刻）/ score 与 possible（得分/满分）/ status（Graded|NeedsGrading|None）/ column_id 与 attempt_id（成绩册列与提交记录 id，对账锚点）——API 快照字段
+      note: block mapping (assessments aggregate-page mechanical region) — due (deadline) / submitted_at (submission time) / score and possible (score/full marks) / status (Graded|NeedsGrading|None) / column_id and attempt_id (gradebook column and submission-record ids, reconciliation anchors) — API snapshot fields
     raw:
-      note: 块映射（assessments 聚合页多源对账）——角色 → bb/ 相对路径（要求/参考/提交，开放词表），聚合页与 bb/ 文件群的对应关系；允许多页引用同一文件（共享要求文件为正常形态）
+      note: block mapping (assessments aggregate-page multi-source reconciliation) — role → bb/ relative path (requirement/reference/submission, open vocabulary), the correspondence between the aggregate page and the bb/ file group; multiple pages may reference the same file (a shared requirement file is a normal shape)
     raw_file:
-      note: 标量（attachments 1:1 代理页）——根相对路径，指向 bb/ 原件（词形语义同 mapping）
+      note: scalar (attachments 1:1 proxy page) — root-relative path pointing at the bb/ original (word-form and semantics same as mapping)
     raw_path:
-      note: 标量（courseware 知识点页）——根相对路径，指向 bb/ 内容单元（文件或目录）；路径即出身证明；完全未下载单元可缺省（清单标注未下载即构成记录）
+      note: scalar (courseware knowledge-point page) — root-relative path pointing at a bb/ content unit (file or directory); the path is the birth certificate; may be absent for entirely undownloaded units (the list marking it undownloaded is itself the record)
     raw_sha256:
-      note: 标量（attachments 1:1 代理页）——十六进制 SHA-256，可从 bb/ 机械重算
+      note: scalar (attachments 1:1 proxy page) — hexadecimal SHA-256, mechanically recomputable from bb/
   bb-quiz:
     quiz:
-      note: 块映射（考卷页）——course（课程代码）/ scope（出题范围）/ difficulty_median（难度中值 1-5，认知层级）/ types（题型列表，开放词表）/ source（样例 sample|作业 assignment|习惯 habit）/ answer_of（答案页回链试题文件名）
+      note: block mapping (paper page) — course (course code) / scope (question scope) / difficulty_median (difficulty median 1-5, cognitive levels) / types (question-type list, open vocabulary) / source (sample|assignment|habit) / answer_of (answers page backlinking the questions file name)
   bb-track:
     form:
-      note: 标量（bb 侧笔记文件可选）——text|image|mixed 形态
+      note: scalar (optional on bb-side note files) — text|image|mixed form
     origin:
-      note: 标量（bb 侧笔记文件可选）——human|ai 创作出身；ai 为弱证据，人复核升权
+      note: scalar (optional on bb-side note files) — human|ai authorship; ai is weak evidence, human review promotes its weight
     stage:
-      note: 标量（bb 侧笔记文件可选）——snapshot|mature|summary 阶段（临时快照/成熟沉淀/总结集合）；标记属人，变更是认知信号
+      note: scalar (optional on bb-side note files) — snapshot|mature|summary stage (ad-hoc snapshot/matured write-up/collected summary); the marking belongs to the human, changes are cognition signals
+  bili:
+    bili:
+      note: block mapping — account (owning account = the domain identity page, omittable in single-account deployments) / kind (page form: account identity page / up UP archive / video video archive, open vocabulary) / mid (up archive identity proof: the Bilibili numeric uid one-to-one with the page) / bvid (video archive identity proof, one-to-one with the page) / title (video archive page title) / url (space or video deep link)
+    watch:
+      note: block mapping (domain identity page) — UP name → mid + one-sentence follow reason; the tracked-source list, fresh pulls traverse this table
   calendar:
     calendar:
-      note: 块映射（声明页）——源键 → 源声明（值语法归适配器：lark-calendar 用 `lark/<profile> <calendar_id|primary>`）；源键即日程行尾标
+      note: block mapping (declaration page) — source key → source declaration (value syntax belongs to the adapter: lark-calendar uses `lark/<profile> <calendar_id|primary>`); the source key is the end-of-line tag on schedule lines
+  cron:
+    cron:
+      note: block mapping (task page) — schedule (cadence: crontab 5-field or human-readable description, local timezone by default) / action (the action in one sentence) / form (execution shape: session edition | script edition — criterion: any agent-judgment step means session, purely mechanical means script) / domain (owning domain, tagged when a domain plugin registers via the bridge, omittable for cross-domain tasks) / status (active in-service | paused suspended | deprecated retired) / last_run (most recent run time, machine-maintained) / machine (optional: executing-machine anchor for multi-device location; v0.1 keeps only the key, no linkage built)
   cuhksz:
     sis:
-      note: 块映射（学籍身份页 identity.md）——student_id / college / school / major / admitted / status（数据源 sis-cli transcript；与连接器身份一比一，即域身份证明）
+      note: block mapping (enrollment identity page identity.md) — student_id / college / school / major / admitted / status (data source: sis-cli transcript; one-to-one with the connector identity, i.e. the domain identity proof)
   device:
     device:
-      note: 块映射（notes 设备档案页）——serial（序列号）/ purchased（购入 YYYY-MM-DD）/ warranty_until（保修或保障类截止 YYYY-MM-DD，附检扫描项）三键最小集，余键开放（model、vendor 等，架构不枚举）
+      note: block mapping (device profile page in notes) — serial (serial number) / purchased (purchase date YYYY-MM-DD) / warranty_until (warranty or coverage end date YYYY-MM-DD, the attached-audit scan item), a three-key minimal set; remaining keys open (model, vendor, etc.; the architecture does not enumerate)
   email:
     email:
-      note: 块映射——account（所属账户，= 所在目录名）/ kind（页形态：account 身份页 / thread 线程档 / source 源档 / person 人档，开放词表）/ token（身份证明：人档 = 邮箱地址、单件 = Message-ID 一比一、线程档 = members 列表）/ url（webmail 或 message:// 深链）
+      note: block mapping — account (owning account, = the containing directory name) / kind (page form: account identity page / thread thread archive / source source archive / person person archive, open vocabulary) / token (identity proof: person archive = email address, single item = Message-ID one-to-one, thread archive = members list) / url (webmail or message:// deep link)
   language:
     language:
-      note: 块映射（声明页）——规范键 → 一句话规则（开放词表，如 default/teaching/annotation），产出语言与行文基线
+      note: block mapping (declaration page) — canonical key → one-sentence rule (open vocabulary, e.g. default/teaching/annotation); output language and writing baseline
     terms:
-      note: 块映射（声明页）——术语原文 → 统一译名（单行值），跨 session 译名一致性查询件
+      note: block mapping (declaration page) — term original → unified translation (single-line value); the cross-session translation-consistency lookup piece
   lark:
     lark:
-      note: 块映射——profile（所属企业身份，= 所在目录名）/ kind（页形态：profile 身份页、docs 域枢纽、docx|wiki|sheet|base|file… 对象类型，开放词表归域插件约束）/ token（对象 token，身份证明，页↔token 一比一）/ url（lark 侧地址）
+      note: block mapping — profile (owning enterprise identity, = the containing directory name) / kind (page form: profile identity page, docs domain hub, docx|wiki|sheet|base|file… object types, open vocabulary constrained by domain plugins) / token (object token, identity proof, page↔token one-to-one) / url (lark-side address)
   lark-docs:
     docs:
-      note: 块映射（docs.md 枢纽）——关心区名 → 范围一句话（知识空间名 / 云盘目录 / 特定对象，agent 经 lark-cli 解析）；关心区 = 指针页目录段
+      note: block mapping (docs.md hub) — area-of-interest name → one-sentence scope (knowledge space name / drive directory / specific object, resolved by the agent via lark-cli); area of interest = the directory segment of pointer pages
   lark-im:
     chat_id:
-      note: 标量（人档）——p2p 单聊 chat_id 锚（拉消息入口，无单聊缺省）
+      note: scalar (person archive) — p2p chat chat_id anchor (entry point for pulling messages, absent when no p2p chat)
     department:
-      note: 标量（人档）——部门，contact 解析填充
+      note: scalar (person archive) — department, filled by contact resolution
     im:
-      note: 块映射（im.md 枢纽）——策略键 → 一句话：群同步 / 涌现 / 关注 / 排除等人档涌现与同步范围声明
+      note: block mapping (im.md hub) — policy key → one sentence: group-sync / emergence / watch / exclude, declarations of person-archive emergence and sync scope
     key_members:
-      note: YAML 列表（群档）——关键人 wikilink（群主必在，余为已建档者）；不存全员名单
+      note: YAML list (group archive) — key people as wikilinks (the group owner always present, the rest those already archived); no full member roster stored
     position:
-      note: 标量（人档）——职位，contact 解析填充
+      note: scalar (person archive) — position, filled by contact resolution
   link:
     aliases:
-      note: YAML 列表，别名/短名，供链接解析
+      note: YAML list, aliases/short names, for link resolution
     related:
-      note: YAML 列表，相关页全名 wikilink
+      note: YAML list, full-name wikilinks of related pages
   mapping:
     raw_file:
-      note: 根相对路径，代理页必有
+      note: root-relative path, always present on proxy pages
     raw_sha256:
-      note: 十六进制 SHA-256，可从 vault 机械重算
+      note: hexadecimal SHA-256, mechanically recomputable from vault
   project:
     projects:
-      note: 块映射（声明页）——项目名 → 一句话定位；键应与 projects/ 下目录一一对应（双向 diff）
+      note: block mapping (declaration page) — project name → one-sentence positioning; keys should correspond one-to-one with the directories under projects/ (bidirectional diff)
   registry:
     registry:
-      note: 块映射（索引/代理页）——source（官网页 URL）/ edition（版本锚：入学年级批次 + 公文/Senate 编号，如 AB2025_C037）/ raw_file / raw_sha256
+      note: block mapping (index/proxy pages) — source (official page URL) / edition (version anchor: admission-cohort batch + document/Senate number, e.g. AB2025_C037) / raw_file / raw_sha256
   sessions:
     participants:
-      note: YAML 列表，actor 约定（human:名字 / process:流程名 / agent/模型标识），多 agent 协作扩展点
+      note: YAML list, actor convention (human:name / process:flow name / agent/model id), the multi-agent collaboration extension point
   sis:
     sis_inbox:
-      note: 块映射（速写页可选）——term（现役学期名）/ ttl（TTL 覆写，天）；缺席跟默认
+      note: block mapping (optional on the digest page) — term (active term name) / ttl (TTL override, days); absent → default
   tag:
     tags:
-      note: YAML 列表 ≤5；主语言跟 language 页 default 键（缺席跟会话）；英文 tag 小写 kebab-case；层级 ≤2、`/` 分隔；禁复述 type
+      note: YAML list ≤5; primary language follows the language page's default key (absent → session language); English tags lowercase kebab-case; hierarchy ≤2, `/` separated; restating type forbidden
   trust:
     generated:
-      note: 块式映射 by/at（actor 约定 + YYYY-MM-DD），页面由谁生成
+      note: block-style mapping by/at (actor convention + YYYY-MM-DD), who generated the page
     sources:
-      note: 来源列表，项含 id / resource / 可信度信号（author、usage_count、last_modified）
+      note: source list, items contain id / resource / credibility signals (author, usage_count, last_modified)
     stale_after:
-      note: YYYY-MM-DD 绝对时刻；过期判定 = now ≥ stale_after 的纯比较
+      note: YYYY-MM-DD absolute moment; expiry check = the pure comparison now ≥ stale_after
     verified:
-      note: 事件列表，项单行 `by: <actor>, at: <日期>`，可多次追加；信任层级由此推导
+      note: event list, items single-line `by: <actor>, at: <date>`, appendable multiple times; the trust level is derived from this
   vault:
     url:
-      note: 来源 URL；URL 型资产的出处登记（来源保全），人工放入可选、agent 通道（delegate 等）必填；兼作他域借道 vault 落地的接口
+      note: Source URL; provenance registration for URL-type assets (source preservation), optional for manual placement, required for agent channels (delegate etc.); also the interface for other domains to land via vault
 
 reserved: {}
 

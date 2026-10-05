@@ -1,39 +1,39 @@
-# link：链接层
+# link: Link Layer
 
-## 设计概要
+## Design Summary
 
-- **为什么存在**：wiki 的本体结构——页面间的引用关系；链接是知识的价值所在，思维发生在碰撞处。字段件：拥有链接语法与 related、aliases 字段，托管图性质健康检查——断链与孤儿
-- **关键裁定**：
-  - 全名制而非标题制：`[[页面全名]]` = wiki/ 内相对路径去一个 .md——「路径即出身」在链接层的延伸；禁截断式引用；同名歧义带路径，消歧不靠猜
-  - 断链不当畸形：断链可能是尚未写下的知识，TODO 占位是正常态；warning 不 error；拿不准宁可留 TODO 不猜
-  - 孤儿判定的入链源只计概念页：派生页与 tmp 不算源——否则索引链接一切，孤儿永不触发；机械登记类领地页降 info，登记是常态；notes 知识页保持 warning
-  - 语法约定必须入注入行：约定原只活在附检源码时，零先验必猜错，0.8 实证——披露完备的教训样本
+- **Why it exists**: wiki's ontological structure — reference relations between pages; links are where the value of knowledge lies, thinking happens where things collide. A field plugin: owns the link syntax and the related and aliases fields, and hosts the graph-property health checks — broken links and orphans
+- **Key rulings**:
+  - Full names, not titles: `[[page full name]]` = the relative path within wiki/ minus one .md — an extension of "the path is the origin" into the link layer; truncated references forbidden; same-name ambiguity resolved by path, disambiguation never by guessing
+  - Broken links are not defects: a broken link may be knowledge not yet written down, TODO placeholders are a normal state; warning not error; when unsure, better to leave a TODO than to guess
+  - Inbound sources for orphan detection count only concept pages: derived pages and tmp don't count — otherwise the index links everything and orphans never trigger; mechanical-registration territory pages drop to info, registration being the norm; notes knowledge pages stay warning
+  - The syntax conventions must enter the injection line: when the conventions lived only in the attached-audit source, a zero-prior agent was bound to guess wrong, proven in 0.8 — a lesson specimen of disclosure completeness
 
 ## Structure
 
-- `related` 字段：YAML 列表；本页主题相关页面的全名，即 wikilink
-- `aliases` 字段：YAML 列表；本页别名与短名，供链接解析与检索
-- wikilink 语法约定：`[[页面全名]]`。**全名 = 页面文件在 wiki/ 内的相对路径去末尾 .md**，如 `notes/X`；md 资产的代理文件是 `原名.md.md`，全名为 `vault/原名.md`，仅去一个。禁止截断式部分引用，长复合名必须写全；同名歧义时带路径
+- `related` field: YAML list; full names of pages related to this page's topic, i.e. wikilinks
+- `aliases` field: YAML list; this page's aliases and short names, for link resolution and retrieval
+- wikilink syntax conventions: `[[page full name]]`. **Full name = the page file's relative path within wiki/ minus the trailing .md**, e.g. `notes/X`; an md asset's proxy file is `<name>.md.md`, its full name `vault/<name>.md`, only one removed. Truncated partial references are forbidden; long compound names must be written in full; on same-name ambiguity, include the path
 
 ## Invariants
 
-- 链接目标必须可解析：全名命中页面，或命中某页的 aliases
-- 断链不静默但不当畸形处理：断链可能是尚未写下的知识，TODO 占位属正常形态；拿不准目标时宁可留 TODO 也不猜
-- 孤儿判定是图性质：无入链且无 related 引用的页面才算孤儿；**入链源只计概念页**——index、hot、log、tags 与 archive/ 等派生页、tmp/ 临时区即草稿断链豁免不算链接源，否则索引链接一切，孤儿永不触发。领地值页——registry 领地值除 session，即 source、lark、calendar、structure、todo、profile、project、tmp，机械登记类——暂无入链是登记常态，降为信息级；notes 知识页保持 warning。hot 是唯一手写链接的派生页：断链受检但不作入链源
+- Link targets must resolve: the full name hits a page, or hits some page's aliases
+- Broken links are not silent but not treated as defects: a broken link may be knowledge not yet written down, TODO placeholders are a normal shape; when unsure of the target, better to leave a TODO than to guess
+- Orphan detection is a graph property: only a page with no inbound links and no related references is an orphan; **inbound sources count only concept pages** — index, hot, log, tags and other derived pages, the archive/ subtree, and the tmp/ temporary zone with its draft broken-link exemption — none count as link sources, otherwise the index links everything and orphans never trigger. Territory-value pages — registry territory values except session, i.e. source, lark, calendar, structure, todo, profile, project, tmp, the mechanical-registration kinds — having no inbound links yet is the registration norm, downgraded to info; notes knowledge pages stay warning. hot is the only derived page with hand-written links: its broken links are checked but it is not an inbound-link source
 
 ## Changelog
 
-- 0.14 2026-09-23：补 wiki 依赖边——内侧插件挂 wiki，对齐 domain 0.1 声明；2026-09-22 域化批次漏收
-- 0.13 2026-09-19：_concept 排除 wiki/tmp/——临时区不作链接源、不受图检查；草稿断链 = 尚未写下，转正时闭合
-- 0.12 2026-09-19：孤儿 info 集改动态读 registry type.values 除 session——新领地类型自动覆盖，硬编码集退役，project 立设前置
-- 0.11 2026-09-19：孤儿 info 集扩至全部领地值除 session——calendar 冒烟实锤 calendar.md 与月页误报 warning；判定与 registry 领地值对齐，不再逐类型挤牙膏
-- 0.10 2026-09-19：孤儿降级判定路径制改 type 制，source 与 lark 同待遇——lark 族落地冒烟实锤：新指针页全量误报 warning
-- 0.9 2026-09-13：附检补 hot 手写断链扫描；孤儿分级——代理页降 info；专家评审：warning 通胀；注入行补 md 资产全名例
-- 0.8 2026-09-13：全名定义入注入行与 Structure——test-repo 走查发现：约定原只活在附检源码，零先验必猜错
-- 0.7 2026-09-13：注入源移交 manifest——删 Checks、Inject、Attachments 节，md 回归纯文档
-- 0.6 2026-09-12：manifest 去 layer——废分层：注入序改依赖拓扑加字母序，方向校验撤除
-- 0.5 2026-09-12：标识符英文化——节头、附检契约键、类型枚举、管道调用参数
-- 0.4 2026-09-11：机械项收编附检脚本——断链、乱码、孤儿、新增别名二义即 error，与 related 单向即信息；hub 榜留语义项
-- 0.3 2026-09-10：断链降级 warning——尚未写下的知识，非畸形；孤儿判定作用域明文，派生页不算入链源
-- 0.2 2026-09-10：manifest 增 layer: field——分层立设：字段层，零依赖
-- 0.1 2026-09-09：新立——链接语法与 related、aliases 字段；断链检查自原 lint 转化；孤儿检查自 notes 移交
+- 0.14 2026-09-23: added the wiki dependency edge — inner-side plugins attach to wiki, aligning with the domain 0.1 declaration; omitted from the 2026-09-22 domain-ization batch
+- 0.13 2026-09-19: _concept excluded wiki/tmp/ — the temporary zone is not a link source and is exempt from graph checks; a draft's broken link = not yet written down, closed upon promotion
+- 0.12 2026-09-19: the orphan info set changed to dynamically reading registry type.values except session — new territory types covered automatically, the hardcoded set retired, prerequisite for project's establishment
+- 0.11 2026-09-19: the orphan info set extended to all territory values except session — calendar smoke testing confirmed false-positive warnings on calendar.md and month pages; the judgment aligned with registry territory values, no more squeezing toothpaste type by type
+- 0.10 2026-09-19: the orphan-downgrade criterion changed from path-based to type-based, source and lark treated alike — the lark-family landing smoke test confirmed: new pointer pages falsely warned en masse
+- 0.9 2026-09-13: attached audit gained the hot hand-written broken-link scan; orphan grading — proxy pages dropped to info; expert review: warning inflation; the injection line gained the md-asset full-name example
+- 0.8 2026-09-13: the full-name definition entered the injection line and Structure — test-repo walkthrough finding: the conventions lived only in the attached-audit source, a zero-prior agent was bound to guess wrong
+- 0.7 2026-09-13: injection source moved to the manifest — removed Checks, Inject, Attachments sections, md returned to pure documentation
+- 0.6 2026-09-12: manifest dropped layer — layering abolished: injection order changed to dependency topology plus alphabetical order, direction checks removed
+- 0.5 2026-09-12: identifiers anglicized — section headers, attached-audit contract keys, type enums, pipeline call parameters
+- 0.4 2026-09-11: mechanical items absorbed into the attached-audit script — broken links, garbled text, orphans; new alias-ambiguity as error, and one-way related as info; the hub list kept as a semantic item
+- 0.3 2026-09-10: broken links downgraded to warning — knowledge not yet written down, not a defect; the orphan-detection scope written down, derived pages don't count as inbound sources
+- 0.2 2026-09-10: manifest gained layer: field — layering established: field layer, zero dependencies
+- 0.1 2026-09-09: newly established — link syntax and the related and aliases fields; the broken-link check converted from the original lint; the orphan check moved over from notes

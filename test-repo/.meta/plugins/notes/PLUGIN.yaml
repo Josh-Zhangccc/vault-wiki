@@ -3,16 +3,16 @@ version: 0.15
 bridge: 按需
 depends:
   - wiki
-updated: 2026-10-02
+updated: 2026-10-06
 attachment:
-  - "wiki/notes/ —— 原生笔记区"
+  - "wiki/notes/ — native notes zone"
 fields: {}
 commands:
   - save
-inject: "原生笔记 `wiki/notes/`：出身在 wiki 的知识，细分靠 type 字段（形态词表开放，默认值见 registry）；不可再生区，命令只增不改；session 与 profile 型不落本区（归 sessions / user-profile 领地）；notes 按需桥——域件单向派生高价值结论涌现入本区、须回链来源页（宪法准则 11，格式归本桥）"
+inject: "Native notes `wiki/notes/`: knowledge whose provenance is the wiki itself, subdivided by the type field (open form vocabulary, default values in registry); no-regeneration zone, commands append-only and never modify; session and profile types do not land in this zone (they belong to the sessions / user-profile territories); notes on-demand bridge — domain plugins one-way derive high-value conclusions into this zone on an emergence basis, and must back-link the source page (constitutional principle 11, format owned by this bridge)"
 usage:
-  - 落点 `wiki/notes/<标题>.md`，文件名自由（人起名）；type 形态词表见 registry（开放自扩），领地值不落本区
-  - 只增：命令不整页重写既有笔记；更新 = 用户指令下的追加式并入（正文留痕）或人手改
+  - Landing spot `wiki/notes/<title>.md`, file name free (named by humans); type form vocabulary in registry (open, self-extended by instances), territory values do not land in this zone
+  - Append-only: commands never rewrite an existing note wholesale; updating = append-style merge under user instruction (trace left in the body) or manual human edits
 checks:
-  - 笔记被命令覆盖的痕迹 → error
-  - 近似重复笔记（Jaccard > 0.7）→ warning
+  - Traces of a note overwritten by a command → error
+  - Near-duplicate notes (Jaccard > 0.7) → warning

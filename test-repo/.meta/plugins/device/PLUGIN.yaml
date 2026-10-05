@@ -2,19 +2,19 @@ id: device
 version: 0.2
 depends:
   - wiki
-updated: 2026-10-04
+updated: 2026-10-06
 attachment:
-  - "wiki/notes/ —— 设备档案页住所（一设备一页，type: entity 建议，device 块映射登序列号/购入/保修）"
-  - "scripts/check.py —— 附检（warranty_until 临期 30 天 / 已过期 → warning 清单）"
+  - "wiki/notes/ — home of device profile pages (one page per device, type: entity suggested, device block mapping registering serial/purchase/warranty)"
+  - "scripts/check.py — attached audit (warranty_until within 30 days of expiry / already expired → warning list)"
 fields:
-  device: 块映射（notes 设备档案页）——serial（序列号）/ purchased（购入 YYYY-MM-DD）/ warranty_until（保修或保障类截止 YYYY-MM-DD，附检扫描项）三键最小集，余键开放（model、vendor 等，架构不枚举）
-inject: "设备档案：个人设备一设备一页落 `wiki/notes/`（type: entity 形态建议，页名自由、同名尾缀消歧），frontmatter `device` 块映射登 serial / purchased / warranty_until（最小键集，余开放：model、vendor 等），正文 `## 工具环境` 摘要节记连接器/运行时/通道在场级信息（跨设备互查，装卸软件时同步；全量软件清单不记——现查即得）；发票照片类资产走 vault 物化、页面 wikilink 关联（跨件引用不立依赖）；trust 可选挂——人手登记即 human 证据、静态事实不挂 stale_after；到期提醒——附检扫 warranty_until，30 天内临期或已过期呈 warning 清单，经用户确认受托追加 todo 行（受托即追加，不自动写）；实时状态监控与团队借还不做（范围边界）"
+  device: block mapping (device profile page in notes) — serial (serial number) / purchased (purchase date YYYY-MM-DD) / warranty_until (warranty or coverage end date YYYY-MM-DD, the attached-audit scan item), a three-key minimal set; remaining keys open (model, vendor, etc.; the architecture does not enumerate)
+inject: "Device profiles: one page per personal device in `wiki/notes/` (type: entity as a suggested form; page name free, same names disambiguated by suffix); the frontmatter `device` block mapping registers serial / purchased / warranty_until (minimal key set, the rest open: model, vendor, etc.); the body `## Tool Environment` summary section records presence-level info on connectors/runtimes/channels (for cross-device lookup, synced when software is (un)installed; no full software inventory — look it up live); invoice-photo-type assets are materialized via vault and linked to the page by wikilink (cross-plugin references establish no dependency); trust optional — human registration is itself human evidence, static facts carry no stale_after; expiry reminders — the attached audit scans warranty_until, presenting a warning list for entries within 30 days or already expired, and appends a todo line upon user confirmation as a delegation (append upon delegation, never written automatically); real-time status monitoring and team device lending are not done (scope boundary)"
 usage:
-  - 登记：对话内自然语言编辑即可（无命令）——一设备一页落 `wiki/notes/`，type: entity（形态建议），页名自由、同名尾缀消歧；`device` 块映射最小键 serial / purchased / warranty_until，余键开放
-  - 工具环境：设备页正文 `## 工具环境` 摘要节——记连接器在场（lark-cli、bb-cli 等）、运行时（python、node）、通道（ssh、web 入口）与设备用途定位；只记在场级、不记精确版本（现查）；装卸软件时同步本节；全量软件清单不记；本节是跨设备互查的注册表——AGENTS 外壳只及本机，设备页覆盖全部相关设备，外壳以指针引到设备页
-  - 资产关联：发票、照片、截图类资产 vault 物化后以 wikilink 关联设备页；跨件引用不立依赖
-  - 信任：可选挂 trust——人手登记天然含 human 证据；静态事实不挂 stale_after（非拉取物、无 TTL 语义）；工具环境节在场级粒度、同样不挂
-  - 到期处置：附检呈临期清单（warranty_until 30 天内或已过期）→ 会话呈报 → 用户确认后受托追加 todo 行（触发条件 = 到期日 + 一句话 + by/at）；不自动写入
-  - 检索：走 query 常规通道，notes 领地规则全盘适用（tags 正常打、只增）
+  - Registration: natural-language editing in conversation suffices (no command) — one page per device in `wiki/notes/`, type: entity (suggested form); page name free, same names disambiguated by suffix; `device` block mapping minimal keys serial / purchased / warranty_until, remaining keys open
+  - Tool environment: the device page body's `## Tool Environment` summary section — records connector presence (lark-cli, bb-cli, etc.), runtimes (python, node), channels (ssh, web entries) and the device's purpose; only presence-level, never exact versions (look up live); sync this section when software is (un)installed; no full software inventory; this section is the cross-device lookup registry — the AGENTS shell reaches only this machine, device pages cover all relevant devices, the shell pointing to the device pages
+  - Asset linking: invoice, photo, and screenshot assets are materialized in vault and linked to the device page via wikilink; cross-plugin references establish no dependency
+  - Trust: optional — human registration naturally carries human evidence; static facts get no stale_after (not pulled artifacts, no TTL semantics); the tool-environment section is presence-level and likewise carries none
+  - Expiry disposal: the attached audit presents the nearing-expiry list (warranty_until within 30 days or already expired) → reported in session → after user confirmation a todo line is appended as a delegation (trigger condition = expiry date + one sentence + by/at); never written automatically
+  - Retrieval: via the query channel as usual; notes territory rules apply in full (tags applied normally, append-only)
 checks:
-  - 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：device 块映射的 warranty_until 距今 ≤30 天 → warning 临期；已过期 → warning 过期；日期非法 → warning
+  - Mechanical (attached-audit script `scripts/check.py`, executed discovery-style by audit): device block mapping's warranty_until within ≤30 days of today → warning nearing expiry; already expired → warning expired; invalid date → warning

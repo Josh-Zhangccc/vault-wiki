@@ -1,39 +1,39 @@
-# index：索引
+# index: Index
 
-## 设计概要
+## Design Summary
 
-- **为什么存在**：检索的便宜入口，query 的第二层，逐层下钻的指针结构。派生层聚合页——诞生于上级的减负需要，不是目录的「应该承担」
-- **关键裁定**：
-  - 溢出减负制，0.10 终形：小库全部内容直列根索引，一张走天下——工程库 4 归 1，test-repo 实测 8 归 1；内容长大到哪里，披露边界就出现在哪里。解药永远是分子目录，不是改索引
-  - 纯函数重建，永不手编：减负切分是结构现状的函数；同结构必同结果，无历史状态
-  - 索引不发明结构：索引只反映结构，永不暗示目录该怎么组织——对内容质量保持沉默
-  - 根索引即版本自述处：format_version 是页面格式契约版本，不兼容变更时进位
+- **Why it exists**: a cheap retrieval entry, the second layer of query, a pointer structure for drilling down level by level. A derived-layer aggregation page — born of the parent's offloading need, not a directory's "supposed duty"
+- **Key rulings**:
+  - Overflow-offloading scheme, final shape in 0.10: a small repository lists all content directly in the root index, one page serves all — the engineering repository went 4-to-1, test-repo measured 8-to-1; wherever content grows, the disclosure boundary appears there. The cure is always subdirectories, never index changes
+  - Pure-function rebuild, never hand-edited: the offloading split is a function of the structural status quo; same structure, same result, no historical state
+  - Indexes do not invent structure: an index only reflects structure, never hints how directories should be organized — silent on content quality
+  - The root index is the version self-statement spot: format_version is the page-format contract version, bumped on incompatible changes
 
 ## Structure
 
-- 根 `wiki/index.md` 恒在：format_version frontmatter，即页面格式契约版本，不兼容变更时进位——根索引即版本自述处；直列可达页面，收本目录与未切子树，全路径 wikilink
-- 其余目录 `index.md` 按溢出减负诞生：某索引清单——页条目加目录条目——超窗时，按子树页数降序、同数按名序切出子目录自立索引，直至装下；递归适用
-- 条目 = wikilink 加描述——frontmatter `description` 优先，缺失取正文首个非空非结构行截 80 字；概念页按 type 分组；切出子目录入口行带子树计数；空子树即 0 页保留一行可见性，无链接，不入断链图
-- `wiki/tags.md`：tag 到页面的反向索引，聚合 tag 插件的字段
+- The root `wiki/index.md` is always present: a format_version frontmatter, i.e. the page-format contract version, bumped on incompatible changes — the root index is the version self-statement spot; it directly lists reachable pages, taking in this directory and un-split subtrees, full-path wikilinks
+- Other directories' `index.md` are born of overflow offloading: when some index list — page entries plus directory entries — overflows the window, subtrees are split out in descending page-count order, ties by name order, into their own index, until it fits; applies recursively
+- Entry = wikilink plus description — frontmatter `description` first, falling back to the body's first non-empty non-structural line truncated at 80 characters; concept pages grouped by type; a split-out subdirectory's entry line carries the subtree count; an empty subtree keeps a 0-page visibility line, with no link, outside the broken-link graph
+- `wiki/tags.md`: the tag-to-page reverse index, aggregating the tag plugin's field
 
 ## Invariants
 
-- 索引页全部可再生、永不手编：只聚合、不原创；纯函数重建——减负切分是结构现状的函数，同结构必同结果，无历史状态
-- 窗口参数以 `pipeline.py` 源码为准，脚本源码即规则清单；并回上级后多余的旧索引随重建机械删除
-- 索引不发明结构：索引的存在与内容只反映结构，永不暗示目录该怎么组织；本级平铺文件超窗时如实超窗，分目录属人与领地插件
-- 与实际页面集一致；保留名文件即 index 与 log、wiki 根派生页即 hot 与 tags、archive/ 子树、tmp/ 临时区即派生层隐身，不视为概念页、不入索引
+- Index pages are wholly regenerable, never hand-edited: aggregate only, originate nothing; pure-function rebuild — the offloading split is a function of the structural status quo, same structure same result, no historical state
+- Window parameters defer to the `pipeline.py` source code; the script source is the rule list; obsolete old indexes after merge-back into the parent are mechanically deleted on rebuild
+- Indexes do not invent structure: the existence and content of an index only reflect structure, never hint how directories should be organized; when a level's flat files overflow the window, they are listed over the window as-is; splitting directories belongs to humans and territory plugins
+- Consistent with the actual page set; reserved-name files, i.e. index and log, the wiki root's derived pages, i.e. hot and tags, the archive/ subtree, and the tmp/ temporary zone are invisible to the derived layer: not concept pages, not indexed
 
 ## Changelog
 
-- 0.12 2026-09-23：补 wiki 依赖边——内侧插件挂 wiki，对齐 domain 0.1 声明；2026-09-22 域化批次漏收
-- 0.11 2026-09-19：概念页判定排除 wiki/tmp/——临时区不入索引与 tags，tmp 插件立设配套
-- 0.10 2026-09-19：每目录制改溢出减负制——清单窗口至多 M、子树降序切出、根恒在、空子树可见性行；小库坍缩单索引，工程库 4 归 1、test-repo 实测 8 归 1；不变量增「纯函数重建」与「索引不发明结构」
-- 0.9 2026-09-13：format_version 语义入库内披露——专家评审：实例内无溯源；索引描述截断补省略号，pipeline `_cut`
-- 0.8 2026-09-13：注入源移交 manifest——删 Checks、Usage、Inject、Attachments 节，md 回归纯文档
-- 0.7 2026-09-13：立「Usage」节——写侧契约交由命令注入区投影，单一文本源
-- 0.6 2026-09-13：根索引版本自述字段更名 format_version——格式契约内化，插件清零外部契约引用
-- 0.5 2026-09-12：manifest 去 layer——废分层：注入序改依赖拓扑加字母序，方向校验撤除
-- 0.4 2026-09-12：标识符英文化——节头、附检契约键、类型枚举、管道调用参数
-- 0.3 2026-09-10：每目录化，渐进披露——根页带版本自述字段、子目录带计数；重建脚本化 pipeline.py index 与 tags，LLM 不手写
-- 0.2 2026-09-10：manifest 增 layer: derived——分层立设：派生层，只向下依赖 tag
-- 0.1 2026-09-08：自原 wiki index 即 master catalog 规则转化；改为只整体重建、不增量写
+- 0.12 2026-09-23: added the wiki dependency edge — inner-side plugins attach to wiki, aligning with the domain 0.1 declaration; omitted from the 2026-09-22 domain-ization batch
+- 0.11 2026-09-19: concept-page detection excluded wiki/tmp/ — the temporary zone stays out of indexes and tags, in step with the tmp plugin's establishment
+- 0.10 2026-09-19: the per-directory scheme changed to the overflow-offloading scheme — list window of at most M, subtree-descending splits, the root always present, empty-subtree visibility lines; small repositories collapse to a single index, the engineering repository 4-to-1, test-repo measured 8-to-1; invariants gained "pure-function rebuild" and "indexes do not invent structure"
+- 0.9 2026-09-13: the format_version semantics entered the in-repository disclosure — expert review: no provenance inside the instance; index-description truncation gained an ellipsis, pipeline `_cut`
+- 0.8 2026-09-13: injection source moved to the manifest — removed Checks, Usage, Inject, Attachments sections, md returned to pure documentation
+- 0.7 2026-09-13: established the "Usage" section — the write-side contract is projected by the command's injection region, a single text source
+- 0.6 2026-09-13: the root index's version self-statement field renamed format_version — the format contract internalized, the plugin's external contract references zeroed
+- 0.5 2026-09-12: manifest dropped layer — layering abolished: injection order changed to dependency topology plus alphabetical order, direction checks removed
+- 0.4 2026-09-12: identifiers anglicized — section headers, attached-audit contract keys, type enums, pipeline call parameters
+- 0.3 2026-09-10: per-directory indexing, progressive disclosure — root page carrying the version self-statement field, subdirectories carrying counts; rebuilds scripted as pipeline.py index and tags, LLMs never hand-write
+- 0.2 2026-09-10: manifest gained layer: derived — layering established: derived layer, depending only on tag
+- 0.1 2026-09-08: converted from the original wiki index, i.e. the master-catalog rules; changed to whole rebuilds only, no incremental writes

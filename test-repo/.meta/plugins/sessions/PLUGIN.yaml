@@ -2,18 +2,18 @@ id: sessions
 version: 0.9
 depends:
   - wiki
-updated: 2026-09-23
+updated: 2026-10-06
 attachment:
-  - "wiki/sessions/ —— 原生会话区，session 型骨干页"
+  - "wiki/sessions/ — native sessions zone, session-type backbone pages"
 fields:
-  participants: "YAML 列表，actor 约定（human:名字 / process:流程名 / agent/模型标识），多 agent 协作扩展点"
+  participants: "YAML list, actor convention (human:name / process:flow name / agent/model id), the multi-agent collaboration extension point"
 commands:
   - save
-inject: "原生会话 `wiki/sessions/`：会话骨干页（type: session，participants 必填=actor 列表，默认命名 YYYY-MM-DD-<主题>）；高价值主题提升为 `wiki/notes/` 独立页并回链；不可再生区，命令只增不改"
+inject: "Native sessions `wiki/sessions/`: session backbone pages (type: session, participants required = actor list, default naming YYYY-MM-DD-<topic>); high-value topics promoted to standalone `wiki/notes/` pages with a back-link; no-regeneration zone, commands append-only and never modify"
 usage:
-  - 落点 `wiki/sessions/YYYY-MM-DD-<主题>.md`（默认命名），type: session，participants 必填（actor 列表）
-  - 骨干页五节形状：核心结论 / 决策与理由 / 非显然洞见 / 开放问题 / 相关页（全形状样例见 `.meta/plugins/sessions/PLUGIN.md` Example 节）
-  - 独立高价值主题提升为 `wiki/notes/` 页，骨干页留 wikilink；提升前先去重
+  - Landing spot `wiki/sessions/YYYY-MM-DD-<topic>.md` (default naming), type: session, participants required (actor list)
+  - Backbone page five-section shape: Core Conclusions / Decisions & Rationale / Non-obvious Insights / Open Questions / Related Pages (full-shape sample in the Example section of `.meta/plugins/sessions/PLUGIN.md`)
+  - Standalone high-value topics promoted to `wiki/notes/` pages, the backbone page keeping a wikilink; dedupe before promotion
 checks:
-  - 机械项（audit 覆盖）：session 型页面在 `wiki/sessions/` 之外（或反向）→ warning；participants 缺失或项不符 actor 约定 → warning
-  - 语义：骨干页过度膨胀（该提升未提升）→ warning
+  - Mechanical (covered by audit): session-type pages outside `wiki/sessions/` (or the reverse) → warning; participants missing or entries violating the actor convention → warning
+  - Semantic: backbone page bloated past due promotion (should have been promoted but was not) → warning

@@ -1,37 +1,37 @@
-# tag：语义分类
+# tag: Semantic Classification
 
-## 设计概要
+## Design Summary
 
-- **为什么存在**：跨全部页面的语义分类——零基础设施的语义索引：语义工作在写入时完成，map 与 save 顺手打标；检索时只做机械匹配
-- **关键裁定**：
-  - type 与 tags 分工：type 是协议封闭枚举，出身，给机器读；tags 是开放语义分类，给人与 agent 检索——两轴不混，禁止复述 type
-  - 词表自由生长，治理靠事后合并，不做前置受控——与「架构不枚举」一致
-  - 纪律轻量：主语言跟 language 页 default 键（缺席跟会话语言，防词表中英混杂碎片化）；英文专名 kebab-case；层级 `/` 分隔至多两层；每页至多 5 个，软上限。原「中文为主」硬编码于语言中性化批（2026-10-04）拆除——中文只是本工程开发期实例事实
+- **Why it exists**: semantic classification across all pages — a semantic index with zero infrastructure: the semantic work is done at write time, map and save tag along the way; retrieval only does mechanical matching
+- **Key rulings**:
+  - Division of labor between type and tags: type is a closed protocol enum, origin, for machines to read; tags are open semantic classification, for humans and agents to retrieve — the two axes never mix, restating type is forbidden
+  - The vocabulary grows freely, governance is after-the-fact merging, no up-front control — consistent with "the architecture does not enumerate"
+  - Lightweight discipline: the primary language follows the language page's default key (absent → session language, preventing mixed Chinese-English fragmentation of the vocabulary); English proper names in kebab-case; hierarchy `/`-separated up to two levels; at most 5 per page, a soft cap. The former "Chinese-primary" hardcoding was removed in the language-neutralization batch (2026-10-04) — Chinese was merely a development-phase instance fact of this project
 
 ## Structure
 
-拥有 `tags` 字段规范：
+Owns the `tags` field conventions:
 
-- YAML 列表；主语言跟 language 页 default 键（缺席跟会话语言），英文专名保留原形
-- 英文 tag 用小写 kebab-case，如 local-llm
-- 层级允许 `父/子` 形式；深度至多 2
-- 每页至多 5，软上限
+- YAML list; the primary language follows the language page's default key (absent → session language), English proper names keep their original form
+- English tags use lowercase kebab-case, e.g. local-llm
+- Hierarchy allows the `parent/child` form; depth at most 2
+- At most 5 per page, a soft cap
 
 ## Invariants
 
-- `type` 是协议封闭枚举，出身，给机器读；`tags` 是开放语义分类，给人与 agent 检索；禁止复述 type 语义
-- 词表自由生长；治理靠事后合并，不做前置受控
+- `type` is a closed protocol enum, origin, for machines to read; `tags` are open semantic classification, for humans and agents to retrieve; restating type semantics is forbidden
+- The vocabulary grows freely; governance is after-the-fact merging, no up-front control
 
 ## Changelog
 
-- 0.11 2026-10-04：语言中性化——「中文为主」拆除，主语言跟 language 页 default 键（缺席跟会话语言）；层级表述改「≤2、`/` 分隔」；英文 kebab-case 词形规则保留（本就中性）；与 language v0.2 后续清理批同批
-- 0.10 2026-09-23：补 wiki 依赖边——内侧插件挂 wiki，对齐 domain 0.1 声明；2026-09-22 域化批次漏收
-- 0.9 2026-09-13：checks 合并执行者统一为机械确认项；专家评审：与 actions.md 两说
-- 0.8 2026-09-13：注入源移交 manifest——删 Checks、Usage、Inject、Attachments 节，md 回归纯文档
-- 0.7 2026-09-13：立「Usage」节——写侧契约交由命令注入区投影，单一文本源
-- 0.6 2026-09-12：manifest 去 layer——废分层：注入序改依赖拓扑加字母序，方向校验撤除
-- 0.5 2026-09-12：标识符英文化——节头、附检契约键、类型枚举、管道调用参数
-- 0.4 2026-09-11：附检增层级深度校验，父/子至多 2，空段告警
-- 0.3 2026-09-10：manifest 增 layer: field——分层立设：字段层，零依赖
-- 0.2 2026-09-09：机械检查项落为附检脚本 scripts/check.py；本文件保留语义项
-- 0.1 2026-09-08：新立，吸收原 lint 近重复检查思想
+- 0.11 2026-10-04: language neutralization — "Chinese-primary" removed; the primary language follows the language page's default key (absent → session language); hierarchy wording changed to "≤2, `/` separated"; the English kebab-case word-shape rule kept (already neutral); same batch as the language v0.2 follow-up cleanup
+- 0.10 2026-09-23: added the wiki dependency edge — inner-side plugins attach to wiki, aligning with the domain 0.1 declaration; omitted from the 2026-09-22 domain-ization batch
+- 0.9 2026-09-13: checks merged with executors unified as mechanically-confirmed items; expert review: two conflicting tellings versus actions.md
+- 0.8 2026-09-13: injection source moved to the manifest — removed Checks, Usage, Inject, Attachments sections, md returned to pure documentation
+- 0.7 2026-09-13: established the "Usage" section — the write-side contract is projected by the command's injection region, a single text source
+- 0.6 2026-09-12: manifest dropped layer — layering abolished: injection order changed to dependency topology plus alphabetical order, direction checks removed
+- 0.5 2026-09-12: identifiers anglicized — section headers, attached-audit contract keys, type enums, pipeline call parameters
+- 0.4 2026-09-11: attached audit gained the hierarchy-depth check, parent/child at most 2, empty-segment warnings
+- 0.3 2026-09-10: manifest gained layer: field — layering established: field layer, zero dependencies
+- 0.2 2026-09-09: mechanical check items landed in the attached-audit script scripts/check.py; this file keeps the semantic items
+- 0.1 2026-09-08: newly established, absorbing the original lint's near-duplicate check idea

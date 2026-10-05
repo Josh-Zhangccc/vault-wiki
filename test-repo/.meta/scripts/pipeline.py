@@ -1,25 +1,31 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""派生层写后管道：index / tags / hot / log / verify。
+"""Derived-layer post-write pipeline: index / tags / hot / log / verify.
 
-定位（.meta/protocol/actions.md 执行原则）：确定性的结构操作交给本脚本，
-语义判断交给 LLM。重建与滚动规则、窗口参数以本文件源码为准（脚本源码即
-规则清单），PLUGIN.md 保留语义说明；命令收尾统一引用本管道，不各自手写
-派生页。verify 是写后自证（attester 最小形）：LLM 执行、脚本认证。
+Positioning (.meta/protocol/actions.md execution principles): deterministic structural
+operations go to this script; semantic judgment goes to the LLM. Rebuild and rolling
+rules and window parameters are governed by this file's source (the script source is
+the rule list); PLUGIN.md keeps the semantic explanation; commands uniformly end by
+invoking this pipeline instead of hand-writing derived pages themselves. verify is
+post-write self-attestation (the minimal attester form): the LLM executes, the script
+certifies.
 
-用法:
-  python .meta/scripts/pipeline.py index              # 重建索引（溢出减负制，幂等；含并回后的多余索引删除）
-  python .meta/scripts/pipeline.py tags               # 重建 wiki/tags.md（幂等）
-  python .meta/scripts/pipeline.py hot <类型> <一句话>   # 淘汰越界 + 置顶加热缓存条目
-  python .meta/scripts/pipeline.py log <类型> <一句话> [--domain 域]   # 容量归档 + 置顶加 log 行（域标可缺省——无域事务）
-  python .meta/scripts/pipeline.py verify             # 写后自证：附检 + 派生区漂移检查
+Usage:
+  python .meta/scripts/pipeline.py index              # rebuild indexes (overflow-offloading scheme, idempotent; includes deleting surplus indexes after merging back)
+  python .meta/scripts/pipeline.py tags               # rebuild wiki/tags.md (idempotent)
+  python .meta/scripts/pipeline.py hot <type> <one-liner>   # evict out-of-window entries + prepend a hot-cache entry
+  python .meta/scripts/pipeline.py log <type> <one-liner> [--domain domain]   # capacity archive + prepend a log line (domain tag optional — domainless transactions)
+  python .meta/scripts/pipeline.py verify             # post-write self-attestation: attached audits + derived-area drift check
 
-类型枚举：map / save / query / check / plugin / todo / profile / other（log 插件）。
-概念页判定（谁入索引）：wiki/ 下所有 .md，排除——保留名（index.md、log.md）、
-wiki 根派生页（hot.md、tags.md）、archive/ 子树（不可变区，本脚本永不改写其中文件）、
-tmp/ 子树（临时区：派生层隐身，无留存承诺，见 tmp 插件）。
-索引溢出减负制：单张索引清单 ≤INDEX_MAX_ENTRIES 条（页条目 + 目录条目）；根索引恒在，
-超窗时按子树页数降序（同数按名序）切出子目录自立索引，直至装下；纯函数重建（同结构同结果）。
+Type enumeration: map / save / query / check / plugin / todo / profile / other (the log plugin).
+Concept-page determination (what enters the index): all .md under wiki/, excluding —
+reserved names (index.md, log.md), wiki-root derived pages (hot.md, tags.md), the
+archive/ subtree (immutable region, never rewritten by this script), and the tmp/
+subtree (temporary zone: invisible to the derived layer, no retention promise, see the
+tmp plugin). Index overflow-offloading scheme: a single index list holds at most
+INDEX_MAX_ENTRIES entries (page entries + directory entries); the root index always
+exists; on overflow, split off the subdirectories with the most pages (ties by name)
+into their own indexes until it fits; pure-function rebuild (same structure, same result).
 """
 import datetime
 import os
@@ -38,14 +44,14 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 WIKI = os.path.join(ROOT, "wiki")
 FORMAT_VERSION = "0.2"
 DESC_MAX = 80
-ROOT_RESERVED = {"hot.md", "tags.md"}  # wiki 根派生页（log.md/index.md 为保留名，统一排除）
+ROOT_RESERVED = {"hot.md", "tags.md"}  # wiki-root derived pages (log.md/index.md are reserved names, excluded uniformly)
 
-# 滚动窗口参数（hot / log 插件的机械权威源；PLUGIN.md 为语义说明）
+# rolling-window parameters (mechanical authoritative source for the hot / log plugins; PLUGIN.md keeps the semantic explanation)
 HOT_MAX_ENTRIES = 25
 HOT_MAX_DAYS = 5
 HOT_MAX_CHARS = 200
 LOG_MAX_ENTRIES = 100
-INDEX_MAX_ENTRIES = 25  # 单张索引清单窗口（页条目 + 目录条目；溢出减负切分依据）
+INDEX_MAX_ENTRIES = 25  # single index-list window (page entries + directory entries; overflow-offloading split basis)
 TYPE_ORDER = ["map", "save", "query", "check", "plugin", "todo", "profile", "other"]
 HOT_HEADER = ("# 热缓存\n\n> 最近变更摘要；≤25 条且 <5 日，窗外即删；可整体再生。"
               "规则见 `.meta/plugins/hot/`，写走 `pipeline.py hot`。\n")
@@ -58,7 +64,7 @@ def _today():
     return datetime.date.today().isoformat()
 
 
-# ---------- 概念页与 index / tags ----------
+# ---------- concept pages and index / tags ----------
 
 def _cut(text):
     return text if len(text) <= DESC_MAX else text[: DESC_MAX - 1] + "…"
@@ -76,24 +82,24 @@ def _desc(fm, body):
 
 
 def concept_pages():
-    """[(页面全名=路径去 .md, 所在目录, frontmatter, 描述)]，按全名排序。"""
+    """[(page full name = path minus .md, containing dir, frontmatter, description)], sorted by full name."""
     out = []
     for rel, fm, body in wikilib.walk_pages(ROOT):
         d, _, fn = rel.rpartition("/")
         if fn in ("index.md", "log.md"):
-            continue  # 保留名：非概念页
+            continue  # reserved names: not concept pages
         if d == "" and fn in ROOT_RESERVED:
             continue
         if rel.startswith("archive/") or d.startswith("archive/") or d == "archive":
             continue
         if rel.startswith("tmp/") or d.startswith("tmp/") or d == "tmp":
-            continue  # 临时区：派生层隐身
+            continue  # temporary zone: invisible to the derived layer
         out.append((rel[:-3], d, fm, _desc(fm, body)))
     return sorted(out)
 
 
 def all_dirs(pages):
-    """wiki/ 下应生成 index 的目录集（含空目录；排除 archive/ 子树）。"""
+    """The set of directories under wiki/ that should get an index (including empty ones; excluding the archive/ subtree)."""
     dirs = {""}
     for _, d, _, _ in pages:
         parts = d.split("/") if d else []
@@ -101,16 +107,16 @@ def all_dirs(pages):
             dirs.add("/".join(parts[:i]))
     for dirpath, subdirs, _files in os.walk(WIKI):
         if "archive" in subdirs:
-            subdirs.remove("archive")  # 不下钻不可变区
+            subdirs.remove("archive")  # do not descend into the immutable region
         if "tmp" in subdirs:
-            subdirs.remove("tmp")  # 临时区不建索引
+            subdirs.remove("tmp")  # no index for the temporary zone
         rel = os.path.relpath(dirpath, WIKI).replace(os.sep, "/")
         dirs.add("" if rel == "." else rel)
     return dirs
 
 
 def subdirs_of(d, dirs):
-    """d 的直接子目录名（已排序）。"""
+    """Direct subdirectory names of d (sorted)."""
     prefix = d + "/" if d else ""
     depth = d.count("/") + 1 if d else 0
     return sorted(x[len(prefix):] for x in dirs
@@ -122,12 +128,14 @@ def _count_subtree(full, pages):
 
 
 def plan_index_dirs(pages, dirs):
-    """溢出减负规划：返回应生成 index.md 的目录集（根恒在）。
+    """Overflow-offloading plan: returns the set of directories that should get an index.md (the root always present).
 
-    目录清单 = 本目录概念页 + 未切子树页（透明内联）+ 目录条目行；超窗时按
-    子树页数降序（同数按名序）切出子目录自立索引，直至装下。切出至少省
-    S-1 行，故 S<2 的子目录永不被切；空子树（S=0）内联成本按 1 行计（可见性行）。
-    纯函数：同结构必同结果，无历史状态。
+    A directory's list = its own concept pages + pages of un-split subtrees (transparent
+    inlining) + directory entry lines; on overflow, split off the subdirectories with the
+    most pages (ties by name) into their own indexes until it fits. A split saves at least
+    S-1 lines, so a subdirectory with S<2 is never split; an empty subtree (S=0) costs
+    one inline line (the visibility line). Pure function: same structure guarantees the
+    same result, no historical state.
     """
     own = {}
     for _, d, _, _ in pages:
@@ -154,7 +162,7 @@ def plan_index_dirs(pages, dirs):
 
 
 def visible_pages(d, pages, planned):
-    """d 的索引直列页面：本目录页 + 途经无已切目录的全部下级页（透明内联）。"""
+    """Pages listed directly in d's index: this directory's pages + all descendant pages whose path crosses no split directory (transparent inlining)."""
     pre = d + "/" if d else ""
     out = []
     for name, dd, fm, desc in pages:
@@ -168,7 +176,7 @@ def visible_pages(d, pages, planned):
 
 
 def render_index(d, pages, dirs, planned):
-    """目录 d 的 index.md 全文（溢出减负制：直列可达页，已切子目录作入口行）。"""
+    """Full text of directory d's index.md (overflow-offloading scheme: reachable pages listed directly; split subdirectories as entry lines)."""
     is_root = d == ""
     lines = []
     if is_root:
@@ -186,7 +194,7 @@ def render_index(d, pages, dirs, planned):
         if full in planned:
             entries.append(f"- [[{full}/index|{s}/]]（{n} 页）")
         elif n == 0:
-            entries.append(f"- {s}/（0 页）")  # 空子树可见性行：无索引可链，不入断链图
+            entries.append(f"- {s}/（0 页）")  # empty-subtree visibility line: no index to link, excluded from the broken-link graph
     if entries:
         lines += ["## 子目录", ""] + entries + [""]
     groups = {}
@@ -258,12 +266,12 @@ def do_index(check_only=False):
         elif write_changed(path, content):
             changed += 1
             print(f"[index] rebuilt wiki/{rel}")
-    # 非计划 index.md（减负并回后的旧索引）：删除 / 报漂移；archive/ 与 tmp/ 子树不碰
+    # unplanned index.md files (old indexes after offloading merges back): delete / report drift; archive/ and tmp/ subtrees untouched
     for dirpath, subdirs, files in os.walk(WIKI):
         if "archive" in subdirs:
-            subdirs.remove("archive")  # 不下钻不可变区
+            subdirs.remove("archive")  # do not descend into the immutable region
         if "tmp" in subdirs:
-            subdirs.remove("tmp")  # 临时区非本管道辖域
+            subdirs.remove("tmp")  # the temporary zone is outside this pipeline's jurisdiction
         if "index.md" not in files:
             continue
         rel = os.path.relpath(os.path.join(dirpath, "index.md"), WIKI).replace(os.sep, "/")
@@ -273,7 +281,7 @@ def do_index(check_only=False):
             else:
                 os.remove(os.path.join(WIKI, rel))
                 changed += 1
-                print(f"[index] removed wiki/{rel}（并回上级）")
+                print(f"[index] removed wiki/{rel} (merged back into parent)")
     if not check_only:
         print(f"[index] done, {changed} file(s) changed (idempotent)")
     return drift
@@ -294,14 +302,14 @@ def do_tags(check_only=False):
     return []
 
 
-# ---------- hot / log 滚动 ----------
+# ---------- hot / log rolling ----------
 
 def do_hot(kind, text):
     if kind not in TYPE_ORDER:
         print(f"[hot] type must be one of {'/'.join(TYPE_ORDER)} (got {kind})")
         return False
     entry = f"- {_today()} {text}"[:HOT_MAX_CHARS]
-    # 收集既有条目（带节归属），机械淘汰越界
+    # collect existing entries (with section membership), mechanically evict out-of-window ones
     sections = {t: [] for t in TYPE_ORDER}
     hot_path = os.path.join(WIKI, "hot.md")
     if os.path.exists(hot_path):
@@ -315,9 +323,9 @@ def do_hot(kind, text):
             if dm and cur:
                 if (datetime.date.today() - datetime.date.fromisoformat(dm.group(1))).days < HOT_MAX_DAYS:
                     sections[cur].append(raw[:HOT_MAX_CHARS])
-    sections[kind].insert(0, entry)  # 置顶
+    sections[kind].insert(0, entry)  # prepend
     flat = [e for t in TYPE_ORDER for e in sections[t]]
-    if len(flat) > HOT_MAX_ENTRIES:  # 整体超限：按日期统一取新近 25 条（稳定排序，同日保持节序）
+    if len(flat) > HOT_MAX_ENTRIES:  # overall overflow: keep the 25 most recent by date uniformly (stable sort, same-day keeps section order)
         keep = set(sorted(flat, key=lambda e: e[2:12], reverse=True)[:HOT_MAX_ENTRIES])
         for t in TYPE_ORDER:
             sections[t] = [e for e in sections[t] if e in keep]
@@ -336,7 +344,7 @@ def do_hot(kind, text):
 
 
 def _split_domain(args):
-    """自参数表摘出 --domain 域 / --domain=域（log 桥域标），余参原序返回。"""
+    """Extract --domain <domain> / --domain=<domain> from the argument list (the log bridge's domain tag); the remaining args are returned in order."""
     dom, rest, i = None, [], 0
     while i < len(args):
         if args[i] == "--domain" and i + 1 < len(args):
@@ -363,9 +371,9 @@ def do_log(kind, text, domain=None):
             if DATE_RE.match(raw):
                 entries.append(raw)
     tag = f" [{domain}]" if domain else ""
-    entries.insert(0, f"- {_today()} {kind}{tag}：{text}")  # 置顶追加，既有条目不改写
+    entries.insert(0, f"- {_today()} {kind}{tag}：{text}")  # prepend; existing entries are never rewritten
     overflow = entries[LOG_MAX_ENTRIES:]
-    if overflow:  # 窗口超限：最旧一段按条目月份分组搬入 archive/<月>/log.md（只搬位置）
+    if overflow:  # window overflow: the oldest stretch is grouped by entry month into archive/<month>/log.md (position move only)
         for month in sorted({e[2:9] for e in overflow}):
             moved = [e for e in overflow if e[2:9] == month]
             adir = os.path.join(WIKI, "archive", month)
@@ -378,7 +386,7 @@ def do_log(kind, text, domain=None):
     return True
 
 
-# ---------- 写后自证 ----------
+# ---------- post-write self-attestation ----------
 
 def do_verify():
     ok = True

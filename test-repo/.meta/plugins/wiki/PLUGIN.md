@@ -1,37 +1,37 @@
-# wiki：md 世界
+# wiki: The md World
 
-## 设计概要
+## Design Summary
 
-- **为什么存在**：双根概念的**内根**——与 domain 外根成对，声明 wiki 是什么、页面出身如何判定。概念声明件：不拥有领地、字段、命令或脚本，只持不变量；mechanics 第 8 节的「内」半边
-- **关键裁定**：
-  - 内外之分是第一刀：wiki = md 世界之总集——各域投影加原生知识，是 agent 与人的公共语言层；外侧一切归 domain 契约
-  - 出身二分，0.7 扩为属地两形：判定一页是什么，先看路径再看 frontmatter——路径即出身证明，不靠元数据自陈
-  - 属地两形，2026-10-02 组会：代理页——可对账外源的投影；加域内原生页——域侧档案真身在此，bb-track user.md 首例。扶正 lark 与 email 档案页既有张力，非开例外口
-  - 会话页是纪要非镜像：对话消逝后页面即真身，写作即出生——与 lark-im 档案的界线在源是否存活可对账
-  - frontmatter 取最小 YAML 子集：解析器宽松但边界即此——顶层标量、块列表、一级块映射；更复杂结构静默变形，即页面格式契约
+- **Why it exists**: the **inner root** of the dual-root concept — paired with the outer root domain, it declares what wiki is and how page origin is determined. A concept-declaration plugin: it owns no territory, fields, commands, or scripts, holding only invariants; the "inner" half of Section 8 of mechanics
+- **Key rulings**:
+  - The inner/outer distinction is the first cut: wiki = the totality of the md world — projections of all domains plus native knowledge, the common language layer between agent and human; everything on the outer side belongs to the domain contract
+  - Origin dichotomy, expanded in 0.7 into two territory forms: to determine what a page is, look at the path first, then the frontmatter — the path is the origin proof, not a metadata self-claim
+  - Two territory forms, 2026-10-02 group meeting: proxy pages — projections of reconcilable external sources; plus in-domain native pages — domain-side archives whose true body lives here, first case bb-track user.md. This legitimizes the existing tension of lark and email archive pages, it does not open an exception hatch
+  - Session pages are minutes, not mirrors: once the conversation vanishes the page is the true body, writing is birth — the line versus lark-im archives is whether the source is alive and reconcilable
+  - frontmatter takes a minimal YAML subset: the parser is lenient but this is the boundary — top-level scalars, block lists, one-level block mappings; more complex structures silently deform; this is the page-format contract
 
 ## Structure
 
-容器 `wiki/`，区划出身二分，页面出身三层：
+Container `wiki/`, zoned by the origin dichotomy, pages have three origin layers:
 
-- 域属地，各域声明属地之页，两形：代理页是默认——可对账外源的投影，vault 资产、lark 对象等，属地路径由各域注入行自披露；**域内原生页**是域声明的域侧档案——真身在此，无外源可对账，形态归域插件；首例 bb-track 认知档案 user.md；lark 人档、email 人档本带此张力，此番扶正非开口
-- 原生领地，其余：真身在此的写作物——notes 知识、sessions 纪要、tmp 与 todo 工作区、profile 认知档案。其中会话页是纪要非镜像：对话运行时消逝后页面即真身，写作即出生；与 lark-im 档案的界线在源是否存活可对账，判断法见 domain
-- 派生设施：index、tags、hot、log——机械投影，环境零边
+- Domain territories, pages each domain declares as its territory, in two forms: proxy pages are the default — projections of reconcilable external sources, vault assets, lark objects, etc., territory paths self-disclosed by each domain's injection line; **in-domain native pages** are domain-side archives declared by a domain — the true body lives here, no external source to reconcile, shape owned by the domain plugin; first case bb-track cognition profile user.md; lark person files and email person files carried this tension all along, this move legitimizes them rather than opening a hatch
+- Native territory, everything else: writings whose true body lives here — notes knowledge, sessions minutes, tmp and todo workspaces, profile cognition profile. Among them session pages are minutes, not mirrors: once the conversation runtime vanishes the page is the true body, writing is birth; the line versus lark-im archives is whether the source is alive and reconcilable, judgment method in domain
+- Derived facilities: index, tags, hot, log — mechanical projections, zero edges to the environment
 
-横向件——tag、trust、link——占字段与语法，不占页面，不属页面出身分层。
+Cross-cutting plugins — tag, trust, link — occupy fields and syntax, not pages, and do not belong to the page-origin layering.
 
 ## Invariants
 
-- 路径即出身证明：判定一页是什么，先看它在哪——上述三区，再看 frontmatter；属地归哪个域同样从路径惯例读出，声明本体在各域 manifest
-- 库内一切文本 UTF-8；知识页 type 必填；保留名豁免
-- frontmatter 取最小 YAML 子集——顶层标量、块列表、一级块映射：解析器宽松但边界即此，更复杂结构会静默变形
+- The path is the origin proof: to determine what a page is, first look at where it is — among the three zones above — then at the frontmatter; which domain a territory belongs to is likewise read from path convention, the declaration proper lives in each domain's manifest
+- All text in the repository is UTF-8; type is required on knowledge pages; reserved-name exemptions apply
+- frontmatter takes a minimal YAML subset — top-level scalars, block lists, one-level block mappings: the parser is lenient but this is the boundary; more complex structures will silently deform
 
 ## Changelog
 
-- 0.7 2026-10-02：属地两形——代理页为默认，加域内原生页即域声明的域侧档案、形态归域插件；组会裁定，bb-track 认知档案 user.md 首例；扶正 lark 与 email 档案页既有张力，非开例外口
-- 0.6 2026-09-29：叙事补强——出身二分说破为页面出身三层：域属地、原生领地、派生设施；补横向件定位；sessions 定性纪要非镜像，源消逝页面即真身
-- 0.5 2026-09-22：域化——出身二分泛化为「各域声明属地之页」，去 vault 特指硬编码；属地归域从路径惯例读，声明在各域 manifest；首段改内外之分叙事
-- 0.4 2026-09-13：注入行补 frontmatter 最小 YAML 子集边界——专家评审：合法子集未定义
-- 0.3 2026-09-13：注入源移交 manifest——删 Checks、Inject、Attachments 节，md 回归纯文档
-- 0.2 2026-09-13：纯化——删「归 X 插件」反向引用与锚点虚衔，区划按出身自足陈述
-- 0.1 2026-09-12：立设——概念声明插件，出身二分不变量自原 vault 插件 PLUGIN.md 移籍
+- 0.7 2026-10-02: two territory forms — proxy pages as the default, plus in-domain native pages, i.e. domain-side archives declared by a domain with shape owned by the domain plugin; group-meeting ruling, first case bb-track cognition profile user.md; legitimizes the existing tension of lark and email archive pages, not an exception hatch
+- 0.6 2026-09-29: narrative reinforcement — the origin dichotomy spelled out as three page-origin layers: domain territories, native territory, derived facilities; added cross-cutting plugin positioning; sessions characterized as minutes not mirrors, the source vanishes and the page is the true body
+- 0.5 2026-09-22: domain-ization — the origin dichotomy generalized to "pages each domain declares as its territory", removing the vault-specific hardcoding; territory-to-domain mapping read from path convention, declarations in each domain's manifest; first paragraph rewritten to the inner/outer narrative
+- 0.4 2026-09-13: injection line gained the minimal-YAML-subset frontmatter boundary — expert review: the legal subset was undefined
+- 0.3 2026-09-13: injection source moved to the manifest — removed Checks, Inject, Attachments sections, md returned to pure documentation
+- 0.2 2026-09-13: purification — removed "see plugin X" back-references and nominal anchors, zones stated self-sufficiently by origin
+- 0.1 2026-09-12: established — concept-declaration plugin, the origin-dichotomy invariant migrated from the original vault plugin's PLUGIN.md

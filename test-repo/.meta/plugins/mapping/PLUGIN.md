@@ -1,32 +1,32 @@
-# mapping：vault 域映射法则
+# mapping: vault Domain Mapping Rules
 
-## 设计概要
+## Design Summary
 
-- **为什么存在**：vault 域的映射法则——把 `vault/` 每个文件映射为 `wiki/vault/` 代理页，map 命令执行；任意格式资产的投影取 1:1 镜像密度，是投影密度的最密端，见 mechanics 第 8 节。代理是资产在 md 世界的代表：登记加一行描述起步，摘要是可选增强
-- **关键裁定**：
-  - 1:1 镜像零特例：md 文件同样有代理，防 wiki 原生与代理混淆；代理名 = 原名加 .md，防同名碰撞
-  - 哈希是失配探测器，不是执法器：原文变化的处置走 check 分诊，分诊毕写 log 留痕——映射不裁决
-  - 代理页属可再生区：珍贵内容写 notes，不留代理页；正文不复制原文全文——代理非副本
+- **Why it exists**: the mapping rules of the vault domain — maps every file in `vault/` to a proxy page in `wiki/vault/`, executed by the map command; projections of arbitrary-format assets take the 1:1 mirror density, the densest end of projection density, see Section 8 of mechanics. A proxy is the asset's representative in the md world: registration plus a one-line description to start, summaries are optional enhancements
+- **Key rulings**:
+  - 1:1 mirror with zero exceptions: md files also get proxies, preventing confusion between wiki-native and proxy; proxy name = original name plus .md, preventing name collisions
+  - The hash is a mismatch detector, not an enforcer: disposition of original changes goes through check triage, and triage writes a log line when done — mapping does not adjudicate
+  - Proxy pages belong to the regenerable zone: precious content goes into notes, not proxy pages; the body never copies the full original text — a proxy is not a copy
 
 ## Structure
 
-- `wiki/vault/**` 与 `vault/**` 一比一镜像：路径同构；代理文件名 = 原文件全名加 `.md`——如 `a.pdf` 对应 `a.pdf.md`，防同名碰撞
-- md 文件同样有代理，无特例
+- `wiki/vault/**` and `vault/**` in a one-to-one mirror: paths isomorphic; proxy file name = the original file's full name plus `.md` — e.g. `a.pdf` corresponds to `a.pdf.md`, preventing name collisions
+- md files also get proxies, no exceptions
 
 ## Invariants
 
-- 路径即出身证明：`wiki/vault/` 下页面必有 vault 对应物；出身二分的概念归 wiki 插件。保留名 `index.md` 豁免——目录索引属导航层，非概念页，无 vault 对应物不算孤儿代理
-- 登记字段 raw_file 与 raw_sha256 可从 vault 机械重算
-- 代理页属可再生区：管道可重跑覆盖；珍贵内容写入 notes，不留在代理页
-- 代理正文不得复制原文全文
+- The path is the origin proof: pages under `wiki/vault/` always have a vault counterpart; the origin-dichotomy concept belongs to the wiki plugin. Reserved name `index.md` exemption — directory indexes belong to the navigation layer, not concept pages; having no vault counterpart does not count as an orphan proxy
+- The registration fields raw_file and raw_sha256 are mechanically recomputable from vault
+- Proxy pages belong to the regenerable zone: pipelines may rerun and overwrite; precious content is written into notes, not kept in proxy pages
+- A proxy body must not copy the full original text
 
 ## Changelog
 
-- 0.8 2026-09-22：域化——首段自「桥接件」改称「vault 域映射法则」，语义与机制零变化，定位归位；depends 维持 vault 与 wiki 两端
-- 0.7 2026-09-14：vault 治理批次——孤儿代理报文增引用计数，删前见影响面；分诊重算毕即写 log 行，变更留痕——快照模型下失配事实曾无声消失；usage 增 url 登记契约，vault 来源保全的写入侧
-- 0.6 2026-09-13：附检补缺登记字段硬检查——专家评审：注入区称必有而附检静默跳过
-- 0.5 2026-09-13：usage 吸收日记类豁免——自 map 命令禁则移入，消正文回声
-- 0.4 2026-09-13：注入源移交 manifest——删 Fields、Checks、Usage、Inject、Attachments 节，md 回归纯文档
-- 0.3 2026-09-13：立「Usage」节——写侧契约交由命令注入区投影，单一文本源
-- 0.2 2026-09-12：命令 ingest 更名 map 并瘦身——打磨询问移除，纯登记；vault 治理另议
-- 0.1 2026-09-12：自 vault 插件更名立设，版本重起，旧史见 git——语义依赖 vault 与 wiki；「命令对 vault 只增，删改自由属于人」条款移交 vault 概念插件注入行；出身二分概念移交 wiki 插件
+- 0.8 2026-09-22: domain-ization — the first paragraph renamed from "bridge plugin" to "vault domain mapping rules", zero change in semantics and mechanism, positioning set right; depends keeps the two ends vault and wiki
+- 0.7 2026-09-14: vault governance batch — orphan-proxy messages gained reference counts, see the impact surface before deleting; triage writes a log line right after recalculation, leaving an audit trail of changes — under the snapshot model, mismatch facts used to vanish silently; usage gained the url registration contract, the write side of vault source preservation
+- 0.6 2026-09-13: attached audit gained the hard check for missing registration fields — expert review: the injection region said always-present while the attached audit silently skipped
+- 0.5 2026-09-13: usage absorbed the diary-type exemption — moved in from the map command's prohibitions, removing the body echo
+- 0.4 2026-09-13: injection source moved to the manifest — removed Fields, Checks, Usage, Inject, Attachments sections, md returned to pure documentation
+- 0.3 2026-09-13: established the "Usage" section — the write-side contract is projected by the command's injection region, a single text source
+- 0.2 2026-09-12: command ingest renamed map and slimmed — the polishing questions removed, pure registration; vault governance discussed separately
+- 0.1 2026-09-12: renamed and established from the vault plugin, version restarted, old history in git — semantically depends on vault and wiki; the clause "commands are append-only toward vault, freedom to delete and modify belongs to the human" moved to the vault concept plugin's injection line; the origin-dichotomy concept moved to the wiki plugin

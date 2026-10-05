@@ -1,7 +1,7 @@
 id: wiki
 version: 0.7
 depends: []
-updated: 2026-10-02
+updated: 2026-10-06
 attachment: []
 fields: {}
-inject: "wiki 容器 `wiki/`（内外之分的内侧）：出身二分——属地页两形：代理页（默认，可对账外源的投影，属地路径由各域注入行自披露）与域内原生页（域声明的域侧档案——真身在此、无外源对账，形态归域插件；首例 bb-track 认知档案 user.md）；属地之外其余为原生页（真身在此的写作物；会话页是纪要非镜像——对话消逝后页面即真身，写作即出生）；index / tags / hot / log 为派生页（机械投影）；页面 frontmatter 取最小 YAML 子集（顶层标量 / 块列表 / 一级块映射），更复杂结构不受解析"
+inject: "wiki container `wiki/` (the inner side of the inner/outer distinction): origin dichotomy — territory pages in two forms: proxy pages (default, projections of reconcilable external sources, territory paths self-disclosed by each domain's injection line) and in-domain native pages (domain-side archives declared by the domain — the true body lives here, no external source to reconcile, shape owned by the domain plugin; first case bb-track cognition profile user.md); everything outside territories is native pages (writings whose true body lives here; session pages are minutes not mirrors — once the conversation vanishes the page is the true body, writing is birth); index / tags / hot / log are derived pages (mechanical projections); page frontmatter takes a minimal YAML subset (top-level scalars / block lists / one-level block mappings), more complex structures are not parsed"

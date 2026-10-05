@@ -1,178 +1,178 @@
-# 机制详解
+# Mechanics in Detail
 
-> 读者：要动手改框架的组员与贡献者。机制规则的权威源是内核参考 skill 与 `.meta/` 源码。本文把总纲展开一级：原理、实例走查与动手流程，不复制规则原文；与源冲突时以源为准。撰写 2026-10-04。
+> Audience: members and contributors who will modify the framework. The authoritative source of mechanical rules is the kernel reference skill and the `.meta/` source code. This document expands the master outline by one level — principles, instance walkthroughs, and hands-on procedures — without copying rule text; where it conflicts with the source, the source prevails. Written 2026-10-04.
 
-## 0. 一源五投影
+## 0. One Source, Five Projections
 
-每个插件一个目录，住 `.meta/plugins/<id>/`。`PLUGIN.yaml` 是机器可读本体，即 manifest。内核脚本从 manifest 出发，向五处机械投影：
+Each plugin is one directory, living at `.meta/plugins/<id>/`. `PLUGIN.yaml` is the machine-readable body — the manifest. From the manifest, the kernel script mechanically projects into five places:
 
-| 投影 | 落点 | 源键 | 谁在读 |
+| Projection | Landing point | Source key | Who reads it |
 |---|---|---|---|
-| AGENTS 注入区 | `<!-- plugin:<id> v<x> -->` 标记块 | `inject` | 每个 session 的 agent；宪法级披露 |
-| check 检查块 | check 命令内 `check-inject` 块 | `checks` | 检查命令；语义项规则 |
-| 命令用法块 | 各命令内 `cmd-inject` 块 | `usage`，按 consumes 序 | 命令执行现场；写侧规则 |
-| registry 插件段 | `.meta/protocol/registry.yaml` | `fields` | 写页前查字段词表的命令 |
-| skill 副本 | `.agents/skills/<命令>/` | 命令与连接器主本 | 部署侧 agent |
+| AGENTS injection region | `<!-- plugin:<id> v<x> -->` marker block | `inject` | The agent of every session; constitution-level disclosure |
+| check inspection block | the `check-inject` block inside the check command | `checks` | The check command; semantic items |
+| command usage block | the `cmd-inject` block inside each command | `usage`, in consumes order | Command execution sites; write-side rules |
+| registry plugin section | `.meta/protocol/registry.yaml` | `fields` | Commands consulting the field vocabulary before writing pages |
+| skill copy | `.agents/skills/<command>/` | command and connector masters | Deployment-side agents |
 
-关键性质是幂等重建。标记块内禁手编，重建即覆写；块外正文属人。不存在第二事实源：改规则就是改 manifest，随后 `all` 一条命令收敛。文档漂移这一类问题被整类消灭——投影与本体不会不一致，因为它们不是两份东西。
+The key property is idempotent rebuilding. Hand-editing inside marker blocks is forbidden — a rebuild overwrites; prose outside the blocks belongs to humans. There is no second source of truth: changing a rule means changing the manifest, after which the single command `all` converges everything. The whole class of documentation-drift problems is eliminated wholesale — projections and the body cannot disagree, because they are not two separate things.
 
-走查一粒真实样本。bb-quiz 的 manifest 里 `inject:` 是一行中文，说明出题自测做什么、产物落在哪。`all` 跑完，这行字逐字出现在 AGENTS 注入区 `<!-- plugin:bb-quiz v0.2 -->` 块里。agent 日常读到的是投影；装卸插件时才碰 manifest 本体。
+Walk through one real sample. In bb-quiz's manifest, `inject:` is a single Chinese line stating what the quiz self-test does and where its products land. After `all` runs, that line appears verbatim in the AGENTS injection region inside the `<!-- plugin:bb-quiz v0.2 -->` block. What agents read day to day is the projection; the manifest body is touched only when (un)installing plugins.
 
-## 1. 插件形态
+## 1. Plugin Shape
 
-一插件一目录，三件套：
+One plugin, one directory, three pieces:
 
-- `PLUGIN.yaml` — manifest，本体
-- `PLUGIN.md` — 纯文档：设计概要、Structure、Invariants、Changelog。为什么这样设计归此；机制共性归内核参考
-- `scripts/check.py` — 可选附检。定义 `check(ctx)` 返回 `[{level, message}]`，只读零副作用；形状由 AST 静态校验
+- `PLUGIN.yaml` — the manifest, the body
+- `PLUGIN.md` — pure documentation: design summary, Structure, Invariants, Changelog. The why of the design lives here; mechanical commonality belongs to the kernel reference
+- `scripts/check.py` — optional attached audit. Defines `check(ctx)` returning `[{level, message}]`, read-only with zero side effects; the shape is statically validated via AST
 
-manifest 七个必填键，以 bb-quiz v0.2 的真实值示意：
+Seven required manifest keys, illustrated with real values from bb-quiz v0.2:
 
-| 键 | 语义 | 实例 |
+| Key | Semantics | Instance |
 |---|---|---|
-| `id` / `version` / `updated` | 身份与版本；沿 changelog 递进不跳号 | `bb-quiz` / `0.2` / `2026-10-04` |
-| `depends` | 依赖列表 | `[bb-track, bb-map]` |
-| `attachment` | 领地声明：拥有即写，借读即只读消费 | 见下 |
-| `fields` | 自有页面字段；进 registry 全局词表 | `quiz`，考卷块映射 |
-| `inject` | 注入区一行的源；宪法级披露 | 见 AGENTS bb-quiz 块 |
+| `id` / `version` / `updated` | Identity and version; advance along the changelog without skipping numbers | `bb-quiz` / `0.2` / `2026-10-04` |
+| `depends` | Dependency list | `[bb-track, bb-map]` |
+| `attachment` | Territory declaration: owning means writing, borrowing means read-only consumption | see below |
+| `fields` | The plugin's own page fields; enter the registry's global vocabulary | `quiz`, the exam-paper block mapping |
+| `inject` | The source of the injection-region line; constitution-level disclosure | see the AGENTS bb-quiz block |
 
-可选键四个。`commands` 声明本插件驱动的命令；`usage` 是写侧规则列表；`checks` 是检查规则；`bridge` 是桥声明，仅全局件可持。
+Four optional keys. `commands` declares the commands this plugin drives; `usage` is the write-side rule list; `checks` is the inspection rules; `bridge` is the bridge declaration, which only global pieces may hold.
 
-attachment 值得单独看。bb-quiz 声明了三条：
+attachment deserves a closer look. bb-quiz declares three entries:
 
-- `bb/<term>/<course>/notes/testing/` 是考卷子区，本插件拥有。每测一组试题加答案；判分追记在答案页
-- `wiki/bb/<term>/<course>/user.md` 是认知档案，归 bb-track。本插件只读；判分回写要经 bb-track 的写规则
-- `courseware/` 与 `assessments/` 归 bb-map。本插件只读，取 sm-N 锚点、专有名词表和已知作业
+- `bb/<term>/<course>/notes/testing/` is the exam-paper sub-region, owned by this plugin. Each test run adds a question set plus answers; grading is appended on the answer page
+- `wiki/bb/<term>/<course>/user.md` is the cognition profile, owned by bb-track. This plugin reads it only; grading writes back through bb-track's write rules
+- `courseware/` and `assessments/` belong to bb-map. This plugin reads them only, taking sm-N anchors, the terminology table, and known assignments
 
-第一条是拥有，后两条是借读：领地属别的插件，写路径要经其规则。attachment 就是框架的产权登记。谁拥有哪片路径、谁只读消费谁，一眼可查，机械可检。
+The first is ownership; the latter two are borrows: the territory belongs to another plugin, and write paths must pass through its rules. attachment is the framework's property registry. Who owns which paths, who read-only consumes whom — visible at a glance, mechanically checkable.
 
-## 2. 依赖与注入序
+## 2. Dependencies and Injection Order
 
-`depends` 声明依赖。validate 校验两件事：依赖存在，且无环——环路由 DFS 检出。
+`depends` declares dependencies. validate checks two things: dependencies exist, and there are no cycles — cycles are detected via DFS.
 
-域件是 depends 链可达 `domain` 的插件。直连 domain 者为域基座，即 vault、lark、project、email、bb 五件；域内件经传递属域，不必直连。bb-quiz 不直连 domain：它经 `bb-quiz → bb-track → bb-map → bb → domain` 到达，即为域件。
+A domain piece is any plugin whose depends chain reaches `domain`. Those connecting to domain directly are domain bases — the five pieces vault, lark, project, email, bb; pieces inside a domain belong to it transitively, without connecting directly. bb-quiz does not connect to domain directly: it arrives via `bb-quiz → bb-track → bb-map → bb → domain`, and is thus a domain piece.
 
-注入序 = 依赖拓扑加同批字母序：被依赖者先注入，同批按名字排。看 bb 族的 depends 与注入区真实顺序：
+Injection order = dependency topology plus alphabetical order within a batch: dependees are injected first; same-batch pieces sort by name. Look at the bb family's depends and the real order in the injection region:
 
-| 插件 | depends | 效果 |
+| Plugin | depends | Effect |
 |---|---|---|
-| bb | `[domain, wiki, trust, log]` | 域基座，族内最先注入 |
-| bb-map | `[bb, wiki]` | 映射法则，在 bb 之后 |
-| bb-track | `[bb, bb-map, trust, wiki]` | 认知档案，在 bb-map 之后 |
-| bb-quiz / bb-teach | `[bb-track, bb-map]` | 采集通道；同批按名字，quiz 先于 teach |
+| bb | `[domain, wiki, trust, log]` | Domain base, injected first within the family |
+| bb-map | `[bb, wiki]` | Mapping law, after bb |
+| bb-track | `[bb, bb-map, trust, wiki]` | Cognition profile, after bb-map |
+| bb-quiz / bb-teach | `[bb-track, bb-map]` | Collection channels; same batch sorted by name — quiz before teach |
 
-这保证一件事：消费侧插件注入时，它消费的披露一定已在场。bb-teach 的注入行说「纪律见 bb-track 块」，那块必然在它上面。另有一条域纪律：域须在 wiki 内可发现，声明页或注入行皆可；域件不立根容器。
+This guarantees one thing: when a consumer-side plugin is injected, the disclosures it consumes are already present. bb-teach's injection line says "discipline, see the bb-track block" — that block is necessarily above it. There is one more domain discipline: a domain must be discoverable inside the wiki, via declaration page or injection line; domain pieces create no root containers.
 
-## 3. 投影走查
+## 3. Projection Walkthrough
 
-假设要给 bb-quiz 的写侧规则加一条纪律，会发生什么：
+Suppose you want to add one discipline to bb-quiz's write-side rules — here is what happens:
 
-1. 改 `.meta/plugins/bb-quiz/PLUGIN.yaml` 的 `usage:` 列表，加一行。顺手 `version` 进位、`updated` 刷新；PLUGIN.md 的 Changelog 加一行
-2. 跑 `python .meta/scripts/wiki_plugin_kernel.py all`。依次发生：validate 先行，不过则阻断，修完重跑；若 inject 行也改了，AGENTS 注入区重建；bb-quiz 与 bb-track 两个命令 SKILL 主本的 cmd-inject 块重建——usage 出现在所有 consumes 含 bb-quiz 的命令里；registry 插件段重建；skills 副本同步
-3. 自查 diff。变更只应落在 manifest、两个命令 SKILL 主本、`.agents/skills/` 副本；若动了 inject 或 fields，AGENTS 与 registry 也变。此外任何变更都是异常
-4. 提交，格式 `插件: bb-quiz …`；一次提交只做一件事
+1. Edit the `usage:` list in `.meta/plugins/bb-quiz/PLUGIN.yaml` and add a line. While at it, bump `version` and refresh `updated`; add a line to PLUGIN.md's Changelog
+2. Run `python .meta/scripts/wiki_plugin_kernel.py all`. In sequence: validate goes first — failure blocks, fix and rerun; if the inject line changed too, the AGENTS injection region is rebuilt; the cmd-inject blocks of the two command SKILL masters bb-quiz and bb-track are rebuilt — the usage appears in every command whose consumes includes bb-quiz; the registry plugin section is rebuilt; skill copies are synced
+3. Self-review the diff. Changes should land only in the manifest, the two command SKILL masters, and the `.agents/skills/` copies; if inject or fields changed, AGENTS and registry change as well. Any change beyond these is an anomaly
+4. Commit in the format `plugin: bb-quiz …`; one commit does one thing
 
-这是「一源五投影」的日常体感：你只写了一份东西，五处自动一致。
+This is the everyday feel of "one source, five projections": you wrote one thing, and five places agree automatically.
 
-## 4. 命令绑定
+## 4. Command Binding
 
-owner 与 commands 双向声明。命令 SKILL.md frontmatter 写 `owner: 插件id`，或写 `framework` 表示显式无主；插件 manifest 写 `commands: [命令名]`。任一侧单边声明即 validate error——防命令没人管，也防插件虚报命令。
+owner and commands are mutual declarations. A command's SKILL.md frontmatter writes `owner: <plugin-id>`, or `framework` to mean explicitly ownerless; a plugin manifest writes `commands: [command names]`. A one-sided declaration on either side is a validate error — preventing unowned commands and plugins falsely claiming commands alike.
 
-用法落向命令有两条路。**拉取侧**：命令 frontmatter 写 `consumes: [插件列表]`，声明要拉取哪些插件的用法；owner 驱动的命令必填且含全部 owner。**源侧路由**：插件 manifest 写 `usage_routes: [命令名列表]`，声明自己的用法额外落向哪些命令——装插件即落投影，无需改目的地命令。在场即注册在推侧兑现：装卸单文件生效。validate 校验路由目标在场、路由件带 usage、与 consumes 重复即 error。
+Usage lands on commands by two routes. **Pull side**: a command's frontmatter writes `consumes: [plugin list]`, declaring which plugins' usage it pulls; owner-driven commands must fill it in and include all owners. **Source-side routing**: a plugin manifest writes `usage_routes: [command name list]`, declaring which additional commands its usage lands on — installing the plugin lands the projection, with no need to edit destination commands. Presence-as-registration is honored on the push side: (un)installing a single file takes effect. validate checks that routing targets are present, that routing plugins carry usage, and that duplication with consumes is an error.
 
-披露序是呈现序：owner 块在前，按 consumes 序；路由块居中，按依赖拓扑加字母序；其余 consumes 殿后。
+Disclosure order is presentation order: owner blocks first, in consumes order; routed blocks in the middle, in dependency topology plus alphabetical order; the remaining consumes bring up the rear.
 
-首例走查，看 bb-track 命令这个认知枢纽。bb-track 命令只声明 `consumes: [bb-track, trust, log]`；bb-teach 与 bb-quiz 各在 manifest 声明 `usage_routes: [bb-track]`。`all` 之后，bb-track 命令的 SKILL.md 里出现五个 `<!-- usage:<id> -->` 子块：bb-track 自己的写规则、bb-quiz 与 bb-teach 两条采集通道的完整用法、trust 与 log 的写侧规则。效果：任何 agent 走进 bb-track 命令现场，教与考怎么用、判分怎么回流、写后做什么，一次到位，零检索。将来立第三条采集通道，只需新插件写好 usage 加路由声明，投影自动到场，枢纽命令一字不改。
+First-case walkthrough: the bb-track command, this cognition hub. The bb-track command declares only `consumes: [bb-track, trust, log]`; bb-teach and bb-quiz each declare `usage_routes: [bb-track]` in their manifests. After `all`, the bb-track command's SKILL.md contains five `<!-- usage:<id> -->` sub-blocks: bb-track's own write rules, the full usage of the two collection channels bb-quiz and bb-teach, and the write-side rules of trust and log. The effect: any agent stepping into the bb-track command site gets — in one place, with zero retrieval — how teaching and quizzing are used, how grading flows back, and what to do after writes. To establish a third collection channel later, the new plugin only needs well-written usage plus a routing declaration; the projection arrives automatically and the hub command changes not one character.
 
-用法路由全程可查走 `ls`：每个带 usage 的插件列出落向哪些命令；无落向的标注为契约文档面，如 email 声明先立的写侧契约。
+Usage routing is inspectable at any time via `ls`: every plugin carrying usage lists the commands it lands on; those with no landing are marked as the contract-documentation surface — e.g. email's write-side contract, declared ahead of use.
 
-## 5. 桥法则
+## 5. The Bridge Law
 
-全局件是横切服务与归宿：trust、log、todo、calendar、notes、user-profile。它们可声明桥；域件持桥即 error。
+Global pieces are cross-cutting services and destinations: trust, log, todo, calendar, notes, user-profile. They may declare bridges; a domain piece holding a bridge is an error.
 
-必依桥在 manifest 写 `bridge: 必依`：全部域基座必须有对本件的 depends 边，缺边即 validate error。log 是实例——第 2 节表里 bb 的 depends 中那条 `log` 边就是必依桥所迫：任何域的产生必有痕迹。这是拓扑完备性不变量，不是风格建议。
+A must-attach bridge is written in the manifest as `bridge: 必依`: every domain base must have a depends edge to the piece; a missing edge is a validate error. log is an instance — the `log` edge in bb's depends in the section 2 table is forced by the must-attach bridge: any domain's activity must leave a trace. This is a topology-completeness invariant, not a style suggestion.
 
-按需桥在 manifest 写 `bridge: 按需`：缺席容忍。user-profile 的认知桥是实例——bb-track 建档时画像在场才登记一行；缺席跳过不代建，不报错。
+An on-demand bridge is written as `bridge: 按需`: absence is tolerated. user-profile's cognition bridge is an instance — bb-track registers one line only if the profile is present when it creates the archive; if absent it skips, creating nothing on the profile's behalf and raising no error.
 
-为什么 consumes 替代不了桥，2026-10-04 裁定给出两条硬理由：
+Why consumes cannot replace bridges — the 2026-10-04 ruling gives two hard reasons:
 
-1. 必依完备校验是拓扑约束。「五个域基座一个都不能少挂边」是图上的全局不变量；consumes 是单命令的列表，表达不了全局完备性
-2. 领地间写入发生在一切命令执行中。todo 派生、calendar 派生、notes 涌现不经过某个单点命令容器，没有可以挂 consumes 的地方
+1. Must-attach completeness checking is a topological constraint. "All five domain bases, not one may lack an edge" is a global graph invariant; consumes is a single command's list and cannot express global completeness
+2. Writes across territories happen in every command execution. todo derivation, calendar derivation, notes emergence — none of them pass through some single-point command container; there is nowhere to hang consumes
 
-分工：桥持校验与声明——谁可挂、基数、完备性检查、缺席容忍；披露分发归投影——集成格式的权威源是 usage，随 cmd-inject 到达消费现场。
+Division of labor: the bridge holds validation and declaration — who may attach, cardinality, completeness checking, absence tolerance; disclosure distribution belongs to projection — the authoritative source of the integration format is usage, arriving at consumption sites via cmd-inject.
 
-## 6. 派生层
+## 6. The Derived Layer
 
-内核管框架区，即插件与投影；pipeline 管数据区，即 wiki 派生页。命令是 `python .meta/scripts/pipeline.py index / tags / hot / log / verify`：
+The kernel governs the framework area — plugins and projections; pipeline governs the data area — wiki derived pages. The commands are `python .meta/scripts/pipeline.py index / tags / hot / log / verify`:
 
-- **index / tags**：目录索引与标签反向索引。纯函数重建，只聚合不发明结构；某索引清单超窗时切子目录自立索引——解药是分子目录，不是改索引
-- **hot**：最近变更热缓存。至多 25 条、5 日内、单条 200 字以内；agent 进库先读
-- **log**：运行日志写行与滚动归档。窗口至多 100 条，超限机械归档到 `wiki/archive/月/log.md`
-- **verify**：写后一致性检查。map、save 等命令的写后管道以它收尾
+- **index / tags**: directory indexes and the tag reverse index. Pure-function rebuilds that only aggregate, never inventing structure; when an index list overflows the window, split the subdirectory into its own index — the cure is more subdirectories, not editing the index
+- **hot**: the recent-change hot cache. At most 25 entries, within 5 days, each entry under 200 characters; agents read it first on entering the vault
+- **log**: run-log line writing and rolling archive. Window at most 100 entries; overflow is mechanically archived to `wiki/archive/<month>/log.md`
+- **verify**: post-write consistency check. The post-write pipelines of commands like map and save end with it
 
-派生页与投影是同一哲学的两种应用：投影从 manifest 派生，框架侧无第二源；派生页从库内容派生，数据侧无第二源。手编派生页是徒劳的，下次重建即覆写。
+Derived pages and projections are two applications of one philosophy: projections derive from manifests — no second source on the framework side; derived pages derive from vault content — no second source on the data side. Hand-editing a derived page is futile; the next rebuild overwrites it.
 
-## 7. 装卸生命周期
+## 7. (Un)install Lifecycle
 
-装卸的语义流程走 plugin 命令，agent 做语义部分；机械步骤即本 CLI。
+The semantic flow of (un)installing goes through the plugin command, where the agent does the semantic part; the mechanical steps are this CLI.
 
-装，五步：准备 `.meta/plugins/<id>/` 三件；`validate`，错误阻断；`all`，投影到场；冒烟——`audit <id>`，加按 PLUGIN.md 关键流程走一遍；log 记 plugin 行。
+Install, five steps: prepare the three pieces under `.meta/plugins/<id>/`; `validate` — errors block; `all` — projections arrive; smoke test — `audit <id>`, plus a walk-through of the key flows per PLUGIN.md; log a plugin line.
 
-升，三步：改插件，`version` 进位，Changelog 加行；`all`；log 行。
+Upgrade, three steps: edit the plugin, bump `version`, add a Changelog line; `all`; log line.
 
-卸，四步：`validate`，有插件依赖它即阻断，除非用户显式级联；目录移出——归档留存，物理删除永远属人；`all`，投影随之消失；log 行。
+Uninstall, four steps: `validate` — if any plugin depends on it, blocked, unless the user explicitly cascades; move the directory out — archived and kept, physical deletion forever belongs to humans; `all` — the projections vanish with it; log line.
 
-纪律：脚本错误一律阻断，警告仅报告；版本沿 changelog 递进，不预占跳号。
+Discipline: script errors always block, warnings only report; versions advance along the changelog — no pre-reserving or skipping numbers.
 
-## 8. 域的生长
+## 8. How Domains Grow
 
-框架对 wiki 外的信息源不设白名单。接入是回答同一份契约，生长遵循同一条路径。以 bb 族贯穿，它是最完整的一族。
+The framework sets no whitelist for information sources outside the wiki. Integration is answering the same contract, and growth follows the same path. Follow the bb family through — it is the most complete family.
 
-### 契约六问
+### The Contract's Six Questions
 
-设计一个域就是逐问作答。答案落进域基座的领地声明与注入行：
+Designing a domain is answering the questions one by one. The answers land in the domain base's territory declaration and injection line:
 
-| 问 | bb 族的答案 |
+| Question | The bb family's answer |
 |---|---|
-| 外领地在哪 | bb.cuhk.edu.cn，连接器 bb-cli 纯只读 |
-| 落地策略 | 双侧同构：`bb/` 工作区加 `wiki/bb/` 属地 |
-| 身份证明 | 学期名与课程代码目录，加 bb 块映射 machine id |
-| wiki 侧属地 | `wiki/bb/<term>/<course>/`，bb-map 四桶投影 |
-| 写模型 | 拉取物只增；notes/ 人为主，ai 产物只增不覆写 |
-| 信任模型 | machine-confirmed 天花板；stale_after = 拉取日 + TTL |
+| Where is the external territory | bb.cuhk.edu.cn, connector bb-cli purely read-only |
+| Landing strategy | Isomorphic two sides: `bb/` workspace plus `wiki/bb/` territory |
+| Identity proof | Term-name and course-code directories, plus machine ids in the bb block mapping |
+| wiki-side territory | `wiki/bb/<term>/<course>/`, bb-map's four-bucket projection |
+| Write model | Fetched artifacts append-only; notes/ human-led, ai products append-only without overwrite |
+| Trust model | machine-confirmed ceiling; stale_after = fetch date + TTL |
 
-### 写模型三分
+### Three Write Models
 
-落地本质是写模型选择，三个原型：
+Landing is essentially a write-model choice, with three archetypes:
 
-- **终态资产 → 只增仓储**。真身落地后不再变，如 vault 资产、bb 物化课件。命令侧只增，删改自由属于人
-- **过程容器 → 全权读写**。agent 要在其中工作，如 `projects/`、bb notes/ 的 ai 产物
-- **真相在别处 → 指针**。源头会变，本地不需要副本，如 lark 指针页、bb 媒体类默认指针化。stale_after 管时效；agent 即同步器
+- **Final-state asset → append-only store**. Once landed, the body no longer changes — e.g. vault assets, bb materialized courseware. The command side is append-only; deletion and modification belong to humans
+- **Process container → full read-write**. The agent works inside it — e.g. `projects/`, ai products in bb notes/
+- **Truth lives elsewhere → pointer**. The source changes and no local copy is needed — e.g. lark pointer pages, bb media defaulting to pointers. stale_after governs freshness; the agent is the synchronizer
 
-### 投影密度
+### Projection Density
 
-投影密度随翻译成本递减，三档。**镜像**：1:1 代理，如 mapping。**指针**：token 加 url 加快照选段，如 lark。**仅披露**：一行注入加按需现拉，如 email 检索。默认姿态是借 vault 或指针；自立容器是例外——何时例外：写模型分叉，或结构由源硬性规定。bb 因双侧结构刚性自立。
+Projection density decreases as translation cost rises, in three grades. **Mirror**: a 1:1 proxy, e.g. mapping. **Pointer**: token plus url plus snapshot excerpts, e.g. lark. **Disclosure-only**: one injection line plus on-demand live pulls, e.g. email retrieval. The default posture is borrowing vault or pointers; self-standing containers are the exception — when: the write model forks, or the structure is rigidly dictated by the source. bb stands alone for its rigid two-sided structure.
 
-### 生长路径
+### The Growth Path
 
-契约之后：**域基座**立领地，bb 是双侧同构加 notes/ 共居；**域内件族**跟进——bb-map 投影法则、bb-track 认知档案，形态渐重；**消费侧采集通道**收尾——bb-teach 与 bb-quiz 零领地纯工作流，用法经源侧路由挂枢纽命令。族内依赖链 `bb-quiz → bb-track → bb-map → bb` 即此路径的机械表达，见第 2 节。
+After the contract: the **domain base** establishes the territory — bb is isomorphic two sides plus notes/ cohabitation; the **in-domain piece family** follows — bb-map's projection law, bb-track's cognition profile, shapes growing heavier; **consumer-side collection channels** close it out — bb-teach and bb-quiz, zero territory, pure workflow, usage hung on hub commands via source-side routing. The in-family dependency chain `bb-quiz → bb-track → bb-map → bb` is the mechanical expression of this path — see section 2.
 
-### 素材与档案
+### Material and Archives
 
-域内两分。过程产物住域工作区：拉取物、人的笔记、ai 笔记、考卷判分。沉淀结论住 wiki 属地：投影页、认知读数。wiki 收蒸馏物，不收过程。这条线与全局纪律同构，只是落到了域内。
+A two-way split inside the domain. Process products live in the domain workspace: fetched artifacts, human notes, ai notes, exam papers and grading. Settled conclusions live in the wiki territory: projection pages, cognition readings. The wiki takes distillates, not process. This line is isomorphic to the global discipline, only landed inside the domain.
 
-### 连接器
+### Connectors
 
-连接器住 `connectors/`，是域的部署侧 CLI 事实接口加使用披露：`connectors/<名>/SKILL.md` 经 kernel `deploy` 落 `.agents/skills/` 副本。与命令的区别：命令是纯 wiki 操作，主本在 `.meta/command/`；连接器是对外部系统的取数通道，凭据只存本机、不入库、不落盘。域插件声明领地与纪律，连接器提供事实接口。纪律与工具分离。
+Connectors live in `connectors/` — the domain's deployment-side CLI de-facto interface plus usage disclosure: `connectors/<name>/SKILL.md` lands as the `.agents/skills/` copy via kernel `deploy`. The difference from commands: commands are pure wiki operations, masters in `.meta/command/`; connectors are data-fetching channels to external systems — credentials stay on the local machine, never committed, never persisted to disk. Domain plugins declare territory and discipline; connectors provide the de-facto interface. Discipline and tooling are separate.
 
-## 9. 场景速查
+## 9. Scenario Quick Reference
 
-| 你想做 | 动作 |
+| You want to | Action |
 |---|---|
-| 改写侧规则 / 检查规则 / 注入行 | 改 manifest 对应键，跑 `all` |
-| 给命令挂新插件的用法 | 该插件 manifest 写 `usage`；命令 frontmatter consumes 加 id；跑 `all` |
-| 改连接器 skill | 改 `connectors/*/SKILL.md` 主本，跑 `deploy` 或 `all` |
-| 健康快检 | `validate` 加 `audit`；完整审计走 check 命令 |
-| 装卸插件 | plugin 命令做语义，本 CLI 做机械 |
-| 重建数据区派生页 | `pipeline.py index` 或 `tags`；hot 与 log 随写随维护 |
-| 接一个新外部源 | 答契约六问，见第 8 节；写连接器；plugin 命令装域基座与域内件 |
+| Change write-side rules / inspection rules / the injection line | Edit the corresponding manifest key, run `all` |
+| Attach a new plugin's usage to a command | That plugin's manifest writes `usage`; the command's frontmatter consumes adds the id; run `all` |
+| Edit a connector skill | Edit the `connectors/*/SKILL.md` master, run `deploy` or `all` |
+| Quick health check | `validate` plus `audit`; full audit via the check command |
+| (Un)install a plugin | The plugin command does semantics, this CLI does mechanics |
+| Rebuild data-area derived pages | `pipeline.py index` or `tags`; hot and log are maintained as writes happen |
+| Integrate a new external source | Answer the contract's six questions, see section 8; write a connector; the plugin command installs the domain base and in-domain pieces |

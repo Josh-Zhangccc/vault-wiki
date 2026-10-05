@@ -1,25 +1,25 @@
-# 披露范式：SASU-L 与零污染纪律
+# Disclosure paradigm: SASU-L and the zero-contamination discipline
 
-> 2026-09-12 裁定：工程定位个人自用，测试集矩阵与交叉验证协议裁撤（未执行，设计留档于 git 历史）。本文保留 SASU-L 披露范式与零污染纪律，作为写 skill / 文档与自查的镜子。
-> 依据（2026-09-12 两轮实证：虚构库冷启动、真实库 25 件迁移）：真实部署中 agent 只按 SASU-L 顺序获知信息、零先验；框架一切「默认已知」都是知识层的不通用（准则 2 试金石延伸）。实证规律——猜错点 = 规范缺样例处；行为离散点 = 规则不在执行现场处；隐性腐化 = 形式层反馈缺失处。
+> Ruling of 2026-09-12: with the project positioned for personal use, the test-set matrix and cross-validation protocol were abolished (never executed; the design is preserved in git history). This document retains the SASU-L disclosure paradigm and the zero-contamination discipline, as a mirror for writing skills / docs and for self-review.
+> Basis (two rounds of empirical work on 2026-09-12: cold start on a fictional vault, migration of 25 items in a real vault): in real deployments the agent knows things only in SASU-L order, with zero priors; every "assumed known" in the framework is non-portable knowledge-layer leakage (an extension of the principle-2 touchstone). Empirical regularities—wrong-guess points = where the spec lacks examples; behavioral divergence points = where rules are absent from the execution site; silent rot = where formal-layer feedback is missing.
 
-## SASU-L：环境唯一的披露通道
+## SASU-L: the environment's only disclosure channel
 
-1. **S**（system prompt）— harness 基座：身份、工具集、行为通则。框架不可控，视为给定环境；不同 harness 的 S 差异不归框架的账（含 AGENTS.md 是否自动注入本身也是 S 层属性）
-2. **A**（AGENTS.md）— 工作区宪法：系统注入，含插件注入区——身份、准则、结构地图
-3. **S**（Skills）— 能力面：技能**描述**在会话起点可得；正文按触发载入——实际读取发生在 L 内
-4. **U**（user prompt）— 用户原话：任务语义的唯一合法来源
-5. **L**（loop）— 执行-观察循环：读锚点、读页面、调工具、写后反馈。锚点与页面（registry、词表、PLUGIN.md、hot、index、存量页）是 **L 内访问的资源，不是独立阶段**；**存量页面是规范的一部分**——agent 以既有页面为格式参照（实证：迁移实验多个 session 查先例页对齐格式），故金样质量即披露质量
+1. **S** (system prompt) — the harness base: identity, toolset, general behavioral rules. Outside the framework's control; treat it as the given environment; differences in S across harnesses are not charged to the framework's account (including whether AGENTS.md is auto-injected at all—that too is an S-layer property)
+2. **A** (AGENTS.md) — the workspace constitution: system-injected, including the plugin injection region—identity, principles, structural map
+3. **S** (Skills) — the capability surface: skill **descriptions** are available at session start; bodies load on trigger—the actual reading happens inside L
+4. **U** (user prompt) — the user's own words: the sole legitimate source of task semantics
+5. **L** (loop) — the execute-observe cycle: reading anchors, reading pages, calling tools, post-write feedback. Anchors and pages (registry, vocabulary, PLUGIN.md, hot, index, pre-existing pages) are **resources accessed within L, not standalone stages**; **pre-existing pages are part of the spec**—the agent uses existing pages as format references (empirically: multiple sessions in the migration experiment consulted precedent pages to align format), hence gold-sample quality is disclosure quality
 
-前四环是静态可得性顺序；一切实际读取都发生在 L。除此之外的信息——训练先验、塞进提示的规范复述、口头惯例——在 agent 侧等同不存在。
+The first four links are a static availability ordering; all actual reading happens in L. Any information beyond this—training priors, spec restatements stuffed into prompts, verbal conventions—counts as nonexistent on the agent side.
 
-## 零污染纪律（对照与抽查时沿用）
+## Zero-contamination discipline (also used for comparisons and spot checks)
 
-- 冷启动 subagent：无对话历史；prompt 只含两样——环境供给（角色定位 + 工作目录）与 **U 层用户任务原文**
-- **U 层纯度**：不得复述任何 S / A 层内容（例：不得写「记得复用词表」「记得走管道」——那是 Skills 层职责，复述会虚高度量）
-- 交互环节（确认 / 询问）以「实验口径」声明代理方式，但不得顺便给出格式答案
-- 需要对照时：改动前后各跑同型任务，比摩擦点；不同时运行互相污染
+- Cold-start subagent: no conversation history; the prompt contains only two things—what the environment supplies (role positioning + working directory) and the **U-layer original user task text**
+- **U-layer purity**: no restating any S / A layer content (e.g. do not write "remember to reuse the vocabulary" or "remember to run the pipeline"—that is the Skills layer's job; restating it inflates the measurement)
+- Interaction steps (confirmations / questions) declare their proxy approach under an "experiment protocol" statement, but must not slip in format answers along the way
+- When a comparison is needed: run the same type of task before and after the change and compare friction points; running them simultaneously contaminates both
 
-## 以用代验（2026-09-12 起）
+## Validate by use (since 2026-09-12)
 
-改动有效与否以真实使用反馈为准：摩擦点（猜格式、漏步骤、对同一件事反复解释）即规范空洞；修一处、用一处，不设矩阵门槛。
+Whether a change works is judged by real-use feedback: friction points (guessing formats, missed steps, repeatedly explaining the same thing) are spec voids; fix one spot, use one spot—no matrix thresholds.

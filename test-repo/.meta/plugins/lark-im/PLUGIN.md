@@ -1,31 +1,31 @@
-# lark-im：人际域
+# lark-im: interpersonal domain
 
-## 设计概要
+## Design summary
 
-- **为什么存在**：以 lark-cli 为接口的人际档案层——群档加人档。人是关系的锚，不是档案行：wiki 存**人际版图**——有哪些群、跟谁打交道、议题结论；不存消息记录，不做通讯录镜像
-- **关键裁定**：
-  - 人档涌现制：p2p 单聊过、用户点名、高频交互才建档——条件写枢纽策略块；contact 只解析不遍历。「全量映射禁」的 im 版
-  - 群档只存关键人不存全员：群主必在；余为已建档者，wikilink 指向人档
-  - 议题记录按需且经确认：谁问谁拉——时间窗加 threads 展开话题楼；蒸馏成节经用户确认后追加；默认零消息正文
-  - 发送、回复、加急等写面操作永远须用户明示
-  - 隐私红线：关系描述等主观内容属实例数据，不入框架仓库与 test-repo
+- **Why it exists**: an interpersonal archive layer with lark-cli as its interface — group archives plus person archives. People are anchors of relationships, not roster rows: the wiki stores the **interpersonal landscape** — which groups exist, who one deals with, topic conclusions; it stores no message logs and mirrors no address book
+- **Key rulings**:
+  - Person archives emergence-based: archived only after a p2p chat, a user naming, or high-frequency interaction — conditions written in the hub policy block; contact resolves, never traverses. The im edition of 'full mapping forbidden'
+  - Group archives store key people, not the full roster: the owner always present; the rest are those already archived, wikilinks pointing to person archives
+  - Topic records on demand and confirmed: whoever asks, pulls — time window plus threads expanding the reply chains; distilled into a section appended after user confirmation; zero message bodies by default
+  - Send, reply, urgent and other write-side operations always require explicit user request
+  - Privacy red line: subjective content such as relationship descriptions is instance data, never entering the framework repo or test-repo
 
 ## Structure
 
-- `<profile>/im.md`，kind: im——域枢纽：frontmatter `im` 块映射 = 策略，键如群同步、涌现、关注、排除，值一句话；人档涌现条件在此声明
-- `<profile>/im/chats/<群名>.md`，kind: chat——群档：frontmatter 机械区收 `lark` 身份字段、`description` 群功能一句话、`key_members` 关键人 wikilink；正文沉淀区 = 议题记录，append-only，`## YYYY-MM-DD 议题：X → 结果：Y`，按需写入
-- `<profile>/im/people/<姓名>.md`，kind: person——人档：token = open_id，app 内稳定；基本信息 `department` 与 `position` 由 contact 解析填充；`chat_id` 为 p2p 单聊锚，一人一档吃掉 p2p 页，无单聊则缺省；正文沉淀区 = 与我的关系，主观，只增收敛
-- 目录两分 chats/ 与 people/；文件名机械清洗——非法字符、emoji；重名加短 token 尾缀
+- `<profile>/im.md`, kind: im — domain hub: frontmatter `im` block mapping = policies, keys such as group-sync, emergence, watch, exclude, values one sentence each; person-archive emergence conditions declared here
+- `<profile>/im/chats/<group name>.md`, kind: chat — group archive: frontmatter mechanical section holds the `lark` identity fields, `description` a one-sentence group purpose, `key_members` key people as wikilinks; body accumulation section = topic records, append-only, `## YYYY-MM-DD Topic: X → Result: Y`, written on demand
+- `<profile>/im/people/<name>.md`, kind: person — person archive: token = open_id, stable within the app; basics `department` and `position` filled by contact resolution; `chat_id` the p2p chat anchor, one person one archive absorbs the p2p page, absent when no p2p chat; body accumulation section = relationship with me, subjective, append-only converging
+- Directory split in two, chats/ and people/; filenames mechanically sanitized — illegal characters, emoji; duplicates get a short token suffix
 
 ## Invariants
 
-- 人档涌现制：p2p 单聊过、用户点名即枢纽关注清单、高频交互——条件写枢纽策略块，不做全员建档；群参与人不存全名单，只存关键人——群主必在，余为已建档者，wikilink 指向人档
-- 群档对账走 lark-map：`im +chat-list` 全量枚举，token 与页 diff，建档即群功能蒸馏加 key_members 群主起步、改机械区、退群标 `status: deprecated`；人不枚举
-- 议题记录按需：谁问谁拉——时间窗、contact 翻译人名、threads 展开话题楼；蒸馏成节**经用户确认后追加**；默认零消息正文
-- 发送、回复、加急等写面操作永远须用户明示；lark-map 只读
-- 隐私红线：关系描述等主观内容属实例数据，不入框架仓库与 test-repo，demo 用假人
-- trust lazy-refresh 同基座：TTL 默认 7 天，身份页可覆写
+- Person archives emergence-based: p2p chatted, named by the user (the hub watch list), high-frequency interaction — conditions written in the hub policy block, no archiving of everyone; group participants store no full roster, only key people — the owner always present, the rest those already archived, wikilinks pointing to person archives
+- Group archive reconciliation via lark-map: `im +chat-list` full enumeration, token versus page diff, archiving means group-purpose distillation plus key_members starting from the owner, mechanical-section updates, a left group marked `status: deprecated`; people are never enumerated
+- Topic records on demand: whoever asks, pulls — time window, contact translating the names, threads expanding the reply chains; distilled into a section **appended after user confirmation**; zero message bodies by default
+- Send, reply, urgent and other write-side operations always require explicit user request; lark-map is read-only
+- Privacy red line: subjective content such as relationship descriptions is instance data, never entering the framework repo or test-repo; demos use fictional people
+- trust lazy-refresh same as the base: TTL default 7 days, overridable on the identity page
 
 ## Changelog
 
-- 0.1 2026-09-19：立设——群档与人档目录两分、涌现制即策略入枢纽、关键人制、议题按需沉淀
+- 0.1 2026-09-19: established — the group/person archive directory split, the emergence regime with policies in the hub, the key-people regime, topics accumulated on demand

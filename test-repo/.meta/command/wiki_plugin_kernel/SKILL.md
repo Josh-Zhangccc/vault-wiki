@@ -1,83 +1,83 @@
 ---
 name: wiki_plugin_kernel
 owner: framework
-description: "内核与机制参考：投影机七子命令（ls/validate/audit/inject/registry/deploy/all）+ 插件机制全述——manifest / 依赖 / 三投影 / 命令绑定 / 桥法则 / 分层原则（bb 域贯穿示例）。Triggers on: 插件内核, wiki_plugin_kernel, kernel, 注入块更新, 投影重建, 插件机制, 更新注入."
+description: "Kernel and mechanics reference: the projector's seven subcommands (ls/validate/audit/inject/registry/deploy/all) + a full account of the plugin mechanics — manifest / dependencies / the three projections / command binding / bridge rules / layering principles (a bb-domain worked example). Triggers on: 插件内核, wiki_plugin_kernel, kernel, 注入块更新, 投影重建, 插件机制, 更新注入."
 ---
 
-# wiki_plugin_kernel：内核与机制参考
+# wiki_plugin_kernel: kernel and mechanics reference
 
-`python .meta/scripts/wiki_plugin_kernel.py <子命令>`——框架侧唯一投影机：PLUGIN.yaml 是本体，AGENTS 注入区、check 检查块、命令用法块、注册表插件段、命令与连接器 skill 副本全是它的投影。幂等，随时可跑，漂移即修复。本 skill 兼作**机制总纲**：部署实例只带 AGENTS.md 注入区 + skills 副本即自足，本文件是机制原理在部署侧的权威住所。
+`python .meta/scripts/wiki_plugin_kernel.py <subcommand>` — the framework side's only projector: PLUGIN.yaml is the body; the AGENTS.md injection region, the check check blocks, the command usage blocks, the registry plugin section, and the command and connector skill copies are all its projections. Idempotent, runnable at any time; drift is fixed on the run. This skill also serves as the **mechanics master outline**: a deployed instance carrying only the AGENTS.md injection region + skill copies is self-sufficient; this file is the authoritative home of the mechanics on the deployment side.
 
-## 子命令
+## Subcommands
 
-| 子命令 | 作用 | 写盘 |
+| Subcommand | Purpose | Disk writes |
 |---|---|---|
-| `ls` | 插件清单 + 依赖 + 驱动命令 | 无 |
-| `validate` | 合规检查：manifest 字段、依赖无环、owner×commands 双向一致、consumes 在场且带 usage、usage_routes 目标在场且不与 consumes 重复、桥法则；错误退出码 1 | 无 |
-| `audit` | 附检：发现式执行各插件 `scripts/check.py`，只读报告（可带插件 id 只查一个） | 无 |
-| `inject` | 重建三种投影：AGENTS 注入区 + check 检查块 + 命令用法块 | AGENTS.md、含注入区的命令 SKILL.md |
-| `registry` | 重建 registry.yaml 插件段（自各 manifest `fields`） | registry.yaml |
-| `deploy` | 同步 skill 主本（`.meta/command/*/` 命令 + `connectors/*/` 连接器）→ `.agents/skills/` 副本；孤儿副本仅报告（删除属人） | 副本 |
-| `all` | validate + inject + registry + deploy 一步到位 | 以上全部 |
+| `ls` | plugin list + dependencies + driven commands | none |
+| `validate` | compliance checks: manifest fields, acyclic dependencies, owner×commands bidirectional consistency, consumes present with usage, usage_routes targets present and not duplicating consumes, bridge rules; exit code 1 on error | none |
+| `audit` | attached audit: executes each plugin's `scripts/check.py` on discovery, read-only report (may take a plugin id to check just one) | none |
+| `inject` | rebuilds the three projections: the AGENTS injection region + the check check blocks + the command usage blocks | AGENTS.md, command SKILL.md files containing injection regions |
+| `registry` | rebuilds the registry.yaml plugin section (from each manifest's `fields`) | registry.yaml |
+| `deploy` | syncs skill masters (`.meta/command/*/` commands + `connectors/*/` connectors) → `.agents/skills/` copies; orphan copies are reported only (deletion belongs to the human) | copies |
+| `all` | validate + inject + registry + deploy in one step | all of the above |
 
-## 典型场景
+## Typical scenarios
 
-- **改了 PLUGIN.yaml**（inject / checks / usage / fields / 版本）：`python .meta/scripts/wiki_plugin_kernel.py all`——日常标准动作，一条命令全部收敛；validate 不过则阻断，修完重跑
-- **只刷注入块**：`inject` 够用，但注意它改的是 `.meta/command/` 主本，副本须 `deploy` 才同步——所以日常一律用 `all`
-- **健康快检**：`validate`（结构）+ `audit`（附检）；完整审计（含语义项）走 check 命令
-- **装卸插件**：语义流程（决策、目录归档、log 行）走 plugin 命令；其中的机械步骤即本 CLI 的 `validate` / `all` / `audit`
-- **改了连接器 skill**（`connectors/*/SKILL.md` 主本）：跑 `deploy`（或 `all`）同步副本——连接器 skill 不进 `.meta/command/`（命令族纯 wiki 操作）
+- **PLUGIN.yaml changed** (inject / checks / usage / fields / version): `python .meta/scripts/wiki_plugin_kernel.py all` — the daily standard action; one command converges everything; if validate fails it blocks — fix and rerun
+- **Only refreshing injection blocks**: `inject` suffices, but note it modifies the `.meta/command/` masters; copies sync only via `deploy` — hence always use `all` in daily work
+- **Quick health check**: `validate` (structure) + `audit` (attached audit); a full audit (including semantic items) goes through the check command
+- **(Un)installing plugins**: the semantic flow (decisions, directory archiving, log line) goes through the plugin command; the mechanical steps inside it are exactly this CLI's `validate` / `all` / `audit`
+- **Connector skill changed** (`connectors/*/SKILL.md` master): run `deploy` (or `all`) to sync copies — connector skills never enter `.meta/command/` (the command family is pure wiki operation)
 
-## 插件形态
+## Plugin shape
 
-- **一插件一目录**（`.meta/plugins/<id>/`）：`PLUGIN.yaml`（manifest，机器可读本体）+ `PLUGIN.md`（纯文档：设计概要（为什么 / 族内位置 / 关键裁定与弃案）/ Structure / Invariants / Changelog——**设计理由与各件细节归此**，机制共性归本参考）+ 可选 `scripts/check.py`（附检）
-- **manifest 键**：必填七键 `id / version / depends / updated / attachment / fields / inject`；可选 `commands`（本插件驱动的命令名）、`usage`（写侧契约列表——第三投影源）、`checks`（检查规则列表——check 投影源）、`bridge`（桥声明，见桥法则）
-- **attachment** = 声明领地与借读关系（谁拥有哪片路径、谁只读消费谁的页）；**fields** = 自有页面字段（进 registry，全局词表）；**inject** = 注入区一行（宪法级披露，agent 进库即知）
-- **附检契约**：`scripts/check.py` 定义 `check(ctx)` 返回 `[{level, message}]`；只读零副作用，修复归命令/人；AST 静态校验契约形状
+- **One plugin, one directory** (`.meta/plugins/<id>/`): `PLUGIN.yaml` (the manifest, the machine-readable body) + `PLUGIN.md` (pure documentation: design summary (why / family position / key rulings and rejected alternatives) / Structure / Invariants / Changelog — **design rationale and per-plugin details belong here**; mechanics commonalities belong to this reference) + optional `scripts/check.py` (attached audit)
+- **Manifest keys**: seven required keys `id / version / depends / updated / attachment / fields / inject`; optional `commands` (command names this plugin drives), `usage` (write-side contract list — the third projection source), `checks` (check-rule list — the check projection source), `bridge` (bridge declaration, see bridge rules)
+- **attachment** = declares territory and borrow-read relationships (who owns which paths, who read-only consumes whose pages); **fields** = owned page fields (enter the registry, the global vocabulary); **inject** = one injection-region line (constitutional-level disclosure, known to the agent the moment it enters the repository)
+- **Attached-audit contract**: `scripts/check.py` defines `check(ctx)` returning `[{level, message}]`; read-only with zero side effects; fixes belong to commands/humans; an AST static check validates the contract's shape
 
-## 依赖机制
+## Dependency mechanics
 
-- `depends` 声明行为或语义依赖（如桥接件依赖两端概念插件）；validate 校验存在性与无环（DFS）
-- **域件** = depends 链可达 `domain`；直接 depends domain 者为**域基座**（vault / lark / project / email / bb）。域内件经传递属域，不必直连 domain
-- **注入序 = 依赖拓扑（被依赖者先注入）+ 同批字母序**——消费侧插件在生产者披露在场之后注入（如 bb-track 先于 bb-teach / bb-quiz），无分层概念
-- 域须在 wiki 内可发现（声明页或注入行）；域件不立根容器——课程/域内产物住域领地（双侧 `<term>/<course>/` 同构），泛用容器（vault）或指针为默认姿态
+- `depends` declares behavioral or semantic dependencies (e.g. a bridging piece depends on the concept plugins on both ends); validate checks existence and acyclicity (DFS)
+- **Domain plugins** = those whose depends chain reaches `domain`; those directly depending on domain are **domain bases** (vault / lark / project / email / bb). In-domain plugins belong to the domain transitively and need not connect to domain directly
+- **Injection order = dependency topology (the depended-on injected first) + alphabetical within a batch** — consumer-side plugins are injected after the producers' disclosures are present (e.g. bb-track before bb-teach / bb-quiz); there is no layering concept
+- A domain must be discoverable within the wiki (declaration page or injection line); domain plugins create no root container — course/in-domain artifacts live in the domain territory (both sides `<term>/<course>/` isomorphic), with the general-purpose container (vault) or pointers as the default posture
 
-## 命令-插件绑定
+## Command-plugin binding
 
-- **owner × commands 双向声明**：命令 SKILL.md frontmatter `owner: 插件id`（或 `framework`，显式无主），插件 manifest `commands: [命令名]`；任一侧单边声明即 error
-- **consumes（拉取侧）**：命令 frontmatter `consumes: [插件列表]`——目的地声明要拉取哪些插件的 usage；owner 驱动的命令必填且含全部 owner
-- **usage_routes（源侧路由）**：插件 manifest `usage_routes: [命令名列表]`——用法额外落向的命令，装插件即落投影、无需改目的地命令（在场即注册的推侧）；validate 校验目标在场、路由件带 usage、与 consumes 重复即 error
-- **披露序**：owner 块在前（consumes 序）、路由块居中（依赖拓扑加字母序）、其余 consumes 殿后——序是呈现序，不是执行序
-- 首例：bb-teach 与 bb-quiz 各声明 `usage_routes: [bb-track]`——认知枢纽自动聚合采集通道用法；bb-track 命令 consumes 只余自属与工具；`ls` 出用法路由表（无落向者标注契约文档面）
-- **披露在消费现场**原则：集成格式的权威源是 usage（随投影到达命令），不是插件散文——见桥法则末条
+- **owner × commands bidirectional declaration**: the command SKILL.md frontmatter `owner: <plugin id>` (or `framework`, explicitly ownerless), the plugin manifest `commands: [command name]`; a one-sided declaration on either side is an error
+- **consumes (pull side)**: the command frontmatter `consumes: [plugin list]` — the destination declares which plugins' usage to pull; mandatory for owner-driven commands and must include all owners
+- **usage_routes (source-side routing)**: the plugin manifest `usage_routes: [command name list]` — additional commands the usage lands in; installing a plugin lands its projections without touching the destination command (the push side of "presence means registration"); validate checks that targets are present, that routed plugins carry usage, and that duplication with consumes is an error
+- **Disclosure order**: owner blocks first (consumes order), routed blocks in the middle (dependency topology plus alphabetical), the rest of consumes last — this is a presentation order, not an execution order
+- First case: bb-teach and bb-quiz each declare `usage_routes: [bb-track]` — the cognition hub automatically aggregates the collection channels' usage; the bb-track command's consumes keeps only its own and tools; `ls` prints the usage routing table (those without a landing point are marked as contract-document surfaces)
+- The **disclosure at the point of consumption** principle: the authoritative source of integration formats is usage (reaching commands via projection), not plugin prose — see the last item of the bridge rules
 
-## 投影机制（三投影一源）
+## Projection mechanics (three projections, one source)
 
-- **manifest 是唯一文本源**，kernel 向三处机械投影，全部幂等重建、装卸自动同步：
-  1. **AGENTS.md 注入区**（`wiki-inject:start/end` 标记块）← `inject` 行——宪法级，每插件一块
-  2. **check 检查块**（check 命令内 `check-inject:start/end`）← `checks` 列表——语义项检查规则
-  3. **命令用法块**（各命令内 `cmd-inject:start/end`）← `usage` 列表按 consumes 序——写侧契约
-- 第四处机械投影：**registry.yaml 插件段** ← `fields`（字段全局词表）；第五处：**skill 副本**（deploy）
-- 手写区与机械区严格分界：标记块内禁手编（重建即覆写），块外正文属人；改契约 = 改 manifest → `all` 收敛，**不存在第二事实源**
+- **The manifest is the only text source**; the kernel mechanically projects into three places, all idempotently rebuilt and auto-synced on (un)install:
+  1. **The AGENTS.md injection region** (`wiki-inject:start/end` marker blocks) ← the `inject` line — constitutional level, one block per plugin
+  2. **The check check blocks** (`check-inject:start/end` inside the check command) ← the `checks` list — semantic-item check rules
+  3. **The command usage blocks** (`cmd-inject:start/end` inside each command) ← the `usage` list in consumes order — write-side contracts
+- A fourth mechanical projection: the **registry.yaml plugin section** ← `fields` (the global field vocabulary); a fifth: the **skill copies** (deploy)
+- Handwritten and mechanical regions are strictly separated: hand-editing inside marker blocks is forbidden (a rebuild overwrites); body text outside blocks belongs to humans; changing a contract = edit the manifest → converge with `all` — **there is no second source of truth**
 
-## 桥法则（宪法准则 11）
+## Bridge rules (constitutional principle 11)
 
-- **全局件**（横切服务与归宿：trust / log / todo / calendar / notes / user-profile…）可声明**桥**——manifest `bridge: 必依|按需`；**域件**不得持桥（depends 链可达 domain 者，持桥即 error）
-- **必依桥**：全部域基座必须有对应 depends 边，缺边即 error（拓扑完备性不变量——如 log 必依桥保证任何域的产生必有痕迹）；**按需桥**：缺席容忍（消费侧跳过不报错，如 user-profile 认知桥）
-- **桥与 cmd-inject 的分工**（2026-10-04 裁定）：桥持**校验与声明**（谁可挂、基数、完备性检查、缺席容忍）；披露分发归投影（集成格式细则的权威源 = usage，随 cmd-inject 到达消费现场，零检索成本）——桥节（PLUGIN.md）退为详述，不持格式权威。桥不可被 cmd-inject 替代的内核：必依完备校验是拓扑约束，consumes 表达不了；且领地间写入（todo/calendar/notes 派生）发生在一切命令执行中，无单点命令容器可挂载
+- **Global plugins** (cross-cutting services and destinations: trust / log / todo / calendar / notes / user-profile…) may declare **bridges** — manifest `bridge: 必依|按需` (must-attach|on-demand); **domain plugins** may not hold bridges (any plugin whose depends chain reaches domain — holding one is an error)
+- **必依 (must-attach) bridges**: every domain base must carry the corresponding depends edge; a missing edge is an error (the topological-completeness invariant — e.g. the log must-attach bridge guarantees that anything a domain produces leaves a trace); **按需 (on-demand) bridges**: absence is tolerated (consumers skip without error, e.g. the user-profile cognition bridge)
+- **Division of labor between bridges and cmd-inject** (ruled 2026-10-04): bridges hold **validation and declaration** (who may attach, cardinality, completeness checks, absence tolerance); disclosure distribution belongs to projection (the authoritative source of integration-format details = usage, arriving at the point of consumption via cmd-inject, zero retrieval cost) — the bridge section (PLUGIN.md) recedes into elaboration and holds no format authority. The kernel of a bridge that cmd-inject cannot replace: the must-attach completeness check is a topological constraint that consumes cannot express; and cross-territory writes (todo/calendar/notes derivations) happen during every command execution, with no single-point command container to mount them in
 
-## 分层原则（域内示例：bb 四件族）
+## Layering principles (in-domain example: the bb four-piece family)
 
-- **素材层在 bb/（外工作区），档案层在 wiki/（内属地）**：过程产物（拉取物、人的笔记、ai 笔记、考卷判分）住素材层；沉淀的结论（认知读数、投影页）住档案层——「bb/ notes/ 人为主 ai 共居」与「user.md 域内原生页」即此分层的实例
-- 一个域的生长路径：**domain 契约六问**（外领地 / 落地策略 / 身份证明 / wiki 属地 / 写模型 / 信任模型）→ 域基座立领地（如 bb v0.7：双侧同构 + notes/ 共居）→ 域内件族（bb-map 投影法则、bb-track 认知档案）→ 消费侧采集通道（bb-teach / bb-quiz：零领地工作流件，用法经 consumes 挂枢纽命令）——**消费侧插件可以是最薄的形态**（零自有字段，只贡献 usage 与检查规则）
-- 数据流闭环示例：teach 讲解 → ai 笔记落 notes/（弱证据）→ track 消费收敛 → quiz 出题参照 → 判分回流证据流（machine 证据）——素材产生、档案提炼、采集回写三段各归其件
+- **The material layer is in bb/ (the outer workspace), the archive layer in wiki/ (the inner territory)**: process artifacts (fetches, human notes, ai notes, exam grading) live in the material layer; settled conclusions (cognition readings, projection pages) live in the archive layer — "bb/ notes/: human-primary with ai cohabiting" and "user.md as a domain-native page" are instances of this layering
+- A domain's growth path: **the domain contract's six questions** (external territory / landing strategy / identity proof / wiki territory / write model / trust model) → the domain base establishes the territory (e.g. bb v0.7: both sides isomorphic + notes/ cohabitation) → the in-domain plugin family (bb-map projection rules, bb-track cognition profile) → consumer-side collection channels (bb-teach / bb-quiz: zero-territory workflow pieces whose usage mounts on the hub command via consumes) — **consumer-side plugins can take the thinnest form** (zero owned fields, contributing only usage and check rules)
+- A data-flow loop example: teach explains → ai notes land in notes/ (weak evidence) → track consumes and converges → quiz generates questions with reference → grading flows back into the evidence stream (machine evidence) — the three stages of material production, archive refinement, and collection write-back each belong to their own piece
 
-## 边界
+## Boundaries
 
-- 脚本只碰四处：插件目录进出、注入区标记块、registry 插件段、skill 部署副本；protocol / reserved 段与 AGENTS.md 手写区永不动
-- 纯标准库零依赖（Python 3）；中文输出
-- 数据区派生层（`wiki/index.md`、`tags.md`、`hot.md`、`log.md`）不归本 CLI——那是 `pipeline.py`（`index` / `tags` / `hot` / `log` / `verify`），由 map / save 的写后管道调用
+- The script touches only four sites: plugin directories in/out, injection-region marker blocks, the registry plugin section, and the skill deployment copies; the protocol / reserved sections and the AGENTS.md handwritten region are never touched
+- Pure standard library, zero dependencies (Python 3); Chinese output
+- The data-zone derived layer (`wiki/index.md`, `tags.md`, `hot.md`, `log.md`) is not this CLI's business — that is `pipeline.py` (`index` / `tags` / `hot` / `log` / `verify`), invoked by the post-write pipelines of map / save
 
 ## Parameters
 
-- 子命令（见上表）；`audit` 可带插件 id
+- Subcommand (see the table above); `audit` may take a plugin id

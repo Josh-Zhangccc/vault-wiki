@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""wiki 页面服务承重件：frontmatter 解析与页面遍历，供附检运行时装配进 ctx。
+"""Wiki page-service load-bearing piece: frontmatter parsing and page traversal, assembled into ctx for the attached-audit runtime.
 
-插件附检脚本不自行 import 本模块——wiki_plugin_kernel.audit 单次扫描 wiki/，
-把 (相对路径, frontmatter, 正文) 列表放进 ctx.pages 全体共享（调用节俭）。
-与 wiki_plugin_kernel.parse_manifest 同为最小 YAML 子集，但宽松策略不同：
-manifest 严格抛错（协议工件），页面 frontmatter 跳过坏行（用户内容不因
-格式瑕疵让附检崩溃）。键宽松（非空白非冒号即可）：块映射子键可为目录名、
-中文等（structure 声明页实锤需求），顶层协议字段仍为 ASCII。
+Plugin attached-audit scripts do not import this module themselves —
+wiki_plugin_kernel.audit scans wiki/ in a single pass and puts the (relative path,
+frontmatter, body) list into ctx.pages for everyone to share (frugal invocation).
+The same minimal YAML subset as wiki_plugin_kernel.parse_manifest, but with a
+different tolerance policy: manifests fail loudly (protocol artifacts), page
+frontmatter skips bad lines (user content must not crash attached audits over
+format blemishes). Keys are lenient (anything non-blank and colon-free):
+block-mapping subkeys may be directory names, Chinese, etc. (a proven need of the
+structure declaration page); top-level protocol fields remain ASCII.
 """
 import os
 import re
@@ -22,7 +25,7 @@ def _strip_comment(s):
 
 
 def parse_frontmatter(text):
-    """解析 --- 围栏内的最小 YAML 子集；无围栏返回空 dict，坏行跳过。"""
+    """Parse the minimal YAML subset inside the --- fence; returns an empty dict without a fence, skips bad lines."""
     m = re.match(r"^---\n(.*?)\n---", text, re.S)
     if not m:
         return {}
@@ -50,7 +53,7 @@ def parse_frontmatter(text):
                 data[key] = None
             elif val.startswith("[") and val.endswith("]"):
                 inner = val[1:-1].strip()
-                # token 先去空白再去引号：[ai, llm] 第二项带前导空格，不剥离会让词表碎片化
+                # strip whitespace before unquoting tokens: in [ai, llm] the second item carries a leading space; not stripping it fragments the vocabulary
                 data[key] = ([_strip_quotes(v.strip()) for v in inner.split(",") if v.strip()]
                              if inner else [])
             else:
@@ -59,7 +62,7 @@ def parse_frontmatter(text):
 
 
 def walk_pages(root):
-    """遍历 wiki/ 全部 md 页面，产出 (wiki 相对路径, frontmatter dict, 正文 str)。"""
+    """Walk all md pages under wiki/, yielding (wiki-relative path, frontmatter dict, body str)."""
     wiki = os.path.join(root, "wiki")
     for dirpath, dirs, files in os.walk(wiki):
         dirs.sort()

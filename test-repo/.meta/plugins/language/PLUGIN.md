@@ -1,36 +1,36 @@
-# language：产出语言与行文
+# language: output language and writing
 
-## 设计概要
+## Design Overview
 
-- **为什么存在**：产出语言选择与术语译名此前只散落在章程一句话（AGENTS 准则 7）与各域零散惯例里——跨 session 无处可查，译名随会话漂移（今天「检索增强生成」、明天「检索增强式生成」）。本件立一张声明页：语言与行文基线成文、术语表机械可查，落笔前有章可循
-- **族内位置**：全局横切件，声明页模式（structure 先例）——插件管机制，具体规范是实例配置落页面；与 user-profile 分工——画像管对使用者个人的动态认知（证据驱动、收敛式），本页管实例级恒定行文制度（声明式、对所有 session 恒真）；与 tag 分工——tag 管 `tags` 字段词形，本页管正文行文
-- **关键裁定**：
-  - 缺席容忍：页面或缺席键 = 跟会话语言（对话语言即产出语言），语言规范是可选增强非必须——structure 同构；专名、代码、路径、命令、文件名恒保留原文是语言中性纪律，不随配置变
-  - 语言中性（2026-10-04 批）：框架不硬编码具体语言——产出语言全部是实例数据（声明页值或会话语言）；分层裁定：源对齐（材料是什么语言就什么语言，如试题语言跟课程材料）归域件纪律，读者对齐（讲解、解析用什么语言）归本页规范键（teaching/annotation 先例）；「中文为主」降为开发期实例事实（AGENTS 准则 7），最终英文统一时改工程文档不动架构
-  - 默认基线非强制：域件源对齐纪律优先于本页，本页不覆盖域内自管语言纪律
-  - 术语涌现制：首现括注原文、反复命中才登记——email 源档涌现哲学，防一词一档爆炸
-  - 两形分区：frontmatter 两映射为机械区（可再生维护），正文沉淀节只增（译法理由、用法例、弃用译法）
-- **弃案**：
-  - 并入 user-profile：观察收敛与实例配置性质异构，且术语表是共享资产非个人认知——弃
-  - 写进 AGENTS 准则 7：章程是律不是数据，术语表会持续增长——弃
-  - 一词一页（`wiki/terms/`）：术语是查询件非写作物，单页映射够用，超窗再议升级路径——弃
-- **机制回指**：声明页缺席容忍先例 structure；涌现制先例 email 源档；块映射取 wiki frontmatter 最小 YAML 子集；usage 经 usage_routes 落 save 命令——2026-10-04 源侧路由机制首批应用
+- **Why it exists**: output-language choice and term translations were previously scattered across a one-line charter clause (AGENTS principle 7) and stray conventions in each domain — nowhere to look up across sessions, translations drifting with the session (today '检索增强生成', tomorrow '检索增强式生成'). This plugin establishes one declaration page: language and writing baselines in writing, the term table mechanically consultable, a rule to follow before the pen touches the page
+- **Position in the family**: a global cross-cutting plugin, declaration-page pattern (structure precedent) — the plugin governs the mechanism, concrete norms are instance configuration landing on the page; division of labor with user-profile — the profile governs dynamic cognition of the individual user (evidence-driven, convergence-style), this page governs the instance-level constant writing regime (declarative, true for all sessions); division of labor with tag — tag governs `tags` field word forms, this page governs body prose
+- **Key rulings**:
+  - Absence tolerance: page or key absent = follow the session language (conversation language is the output language); a language norm is an optional enhancement, not a requirement — isomorphic with structure; proper nouns, code, paths, commands, and file names always keeping their original form is the language-neutrality discipline, invariant under configuration
+  - Language neutrality (2026-10-04 batch): the framework hard-codes no specific language — output language is entirely instance data (declaration page values or session language); layered ruling: source alignment (materials are in whatever language they are in, e.g. exam language follows course materials) belongs to domain-plugin discipline, reader alignment (what language lectures and solutions use) belongs to this page's canonical keys (the teaching/annotation precedent); 'Chinese-first' demoted to a development-period instance fact (AGENTS principle 7) — when English unification finally comes, project docs change, not the architecture
+  - A default baseline, not a mandate: the domain plugins' source-alignment discipline takes precedence over this page; this page never overrides in-domain self-managed language discipline
+  - Emergence-based term registry: annotate the original on first occurrence, register only after recurring hits — the email source-archive emergence philosophy, preventing a page-per-term explosion
+  - Two-form partitioning: the two frontmatter mappings are the mechanical zone (regenerably maintained), the body distillation section is append-only (translation rationale, usage examples, abandoned renderings)
+- **Rejected alternatives**:
+  - Merging into user-profile: observation-convergence and instance configuration are heterogeneous in nature, and the term table is a shared asset, not personal cognition — rejected
+  - Writing into AGENTS principle 7: the charter is law, not data, and the term table keeps growing — rejected
+  - A page per term (`wiki/terms/`): terms are lookup pieces, not written artifacts; a single-page mapping suffices, with an upgrade path to discuss if it overflows the window — rejected
+- **Mechanism back-references**: declaration-page absence-tolerance precedent structure; emergence precedent the email source archive; block mappings draw on the wiki frontmatter minimal YAML subset; usage lands on the save command via usage_routes — the first application of the source-side routing mechanism, 2026-10-04
 
 ## Structure
 
-- `wiki/language.md`——行文声明页，type: language。frontmatter `language` 块映射 = 规范键→一句话规则（开放词表，实例自扩）；`terms` 块映射 = 术语原文→统一译名（单行值）；正文 `## 沉淀` 节收长注记，只增
-- 零命令：读取即消费（经 usage_routes 挂 save），写入走对话编辑；v0.1 不设登记命令
+- `wiki/language.md` — the writing declaration page, type: language. Frontmatter `language` block mapping = canonical key → one-sentence rule (open vocabulary, self-extended by instances); `terms` block mapping = term original → unified translation (single-line value); the body `## Distillations` section holds long notes, append-only
+- Zero commands: reading is consuming (hung on save via usage_routes), writing goes through conversational editing; v0.1 sets no registration command
 
 ## Invariants
 
-- 本页是默认基线非强制：域件源对齐纪律优先，本页不涉域内自管纪律
-- 边界三不涉：称呼与个人动态偏好归 user-profile、tag 词形归 tag、域内术语表（bb courseware 专有名词对照表）域内自管不提升
-- 规范键开放词表，架构不枚举（准则 3）
-- 术语登记涌现制；人直接编辑合法，agent 不覆写人定条目（异议呈报）
-- 页面缺席 = 合法状态（跟会话语言），不报错不代建
-- 框架不预设具体语言：产出语言全部是实例数据（声明页值或会话语言）；中文只是本工程开发期事实
+- This page is a default baseline, not a mandate: the domain plugins' source-alignment discipline takes precedence; this page never touches in-domain self-managed discipline
+- Three boundary non-involvements: forms of address and personal dynamic preferences belong to user-profile, tag word forms belong to tag, in-domain term tables (the bb courseware glossary) are self-managed in-domain and never lifted up
+- Canonical keys are an open vocabulary, not enumerated by the architecture (principle 3)
+- Emergence-based term registration; direct human edits are legitimate, the agent never overwrites human-defined entries (objections reported)
+- Page absence = a legal state (follow the session language); no error, no proxy-creation
+- The framework presets no specific language: output language is entirely instance data (declaration page values or session language); Chinese is merely a development-period fact of this project
 
 ## Changelog
 
-- 0.2 2026-10-04：语言中性化——缺席回落自「中文为主」改「跟会话语言」，中文降为开发期实例事实；分层裁定：源对齐归域件、读者对齐归本页规范键（teaching/annotation 先例）；与 bb-teach/bb-quiz v0.4 同批
-- 0.1 2026-10-04：立设——行文声明页两形分区（language/terms 块映射 + 沉淀节）、缺席容忍、默认基线非强制、术语涌现制；usage_routes 落 save 首批应用；depends wiki
+- 0.2 2026-10-04: language neutralization — the absence fallback changed from 'Chinese-first' to 'follow the session language', Chinese demoted to a development-period instance fact; layered ruling: source alignment belongs to domain plugins, reader alignment to this page's canonical keys (the teaching/annotation precedent); same batch as bb-teach/bb-quiz v0.4
+- 0.1 2026-10-04: established — the writing declaration page with two-form partitioning (language/terms block mappings + distillation section), absence tolerance, default-baseline-not-mandate, emergence-based term registry; usage_routes landing on save, first application; depends wiki

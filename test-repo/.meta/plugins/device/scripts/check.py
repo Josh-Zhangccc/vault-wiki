@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""device 插件附检：设备档案页 warranty_until 临期与过期扫描。
+"""device plugin attached audit: scan device profile pages for warranty_until near-expiry and expiry.
 
-临期窗口 30 天（写死，边用边改）；处置经确认走 todo，本脚本只报告。
+Near-expiry window is 30 days (hardcoded, adjust as we go); disposal goes through todo upon confirmation — this script only reports.
 """
 from datetime import date
 
@@ -20,10 +20,10 @@ def check(ctx):
         try:
             due = date.fromisoformat(wu)
         except ValueError:
-            issues.append({"level": "warning", "message": f"{rel}：warranty_until 非法日期：{wu}"})
+            issues.append({"level": "warning", "message": f"{rel}: warranty_until invalid date: {wu}"})
             continue
         if due < today:
-            issues.append({"level": "warning", "message": f"{rel}：保修/保障已过期 {wu}（处置经确认入 todo）"})
+            issues.append({"level": "warning", "message": f"{rel}: warranty/coverage expired {wu} (add to todo upon confirmation for disposal)"})
         elif (due - today).days <= 30:
-            issues.append({"level": "warning", "message": f"{rel}：保修/保障临期 {wu}（≤30 天，处置经确认入 todo）"})
+            issues.append({"level": "warning", "message": f"{rel}: warranty/coverage near-expiry {wu} (≤30 days; add to todo upon confirmation for disposal)"})
     return issues

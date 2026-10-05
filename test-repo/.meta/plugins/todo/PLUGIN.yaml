@@ -4,18 +4,18 @@ bridge: 按需
 depends:
   - wiki
   - log
-updated: 2026-10-02
+updated: 2026-10-06
 attachment:
-  - "wiki/todo.md —— 临时记忆页（跨 session 委托队列）"
+  - "wiki/todo.md — temporary memory page (cross-session delegation queue)"
 fields: {}
-inject: "临时记忆 `wiki/todo.md`（type: todo）：跨 session 委托与提醒，条目 = 触发条件（日期或情境）+ 一句话 + by/at；新 session 开始先读此页（先于 hot，缺席即建空页），日期已到或已过的条目主动提醒用户；受托即追加，完成即销账（`[x]` 并写 log 行——历史归 log），已结 ≤20 条超限静默清理，本页只留活工作集；todo 按需桥——域件单向派生行动项入本页（宪法准则 11，格式归本桥）"
+inject: "Temporary memory `wiki/todo.md` (type: todo): cross-session delegations and reminders; an entry = trigger condition (date or context) + one sentence + by/at; read this page first at the start of a new session (before hot; if absent, create an empty page); entries whose date has arrived or passed are proactively raised with the user; append upon delegation, settle upon completion (`[x]` plus a log line — history goes to log); settled entries capped at 20, silently cleaned beyond the cap; this page keeps only the live working set; todo on-demand bridge — domain plugins one-way derive action items into this page (constitutional principle 11, format owned by this bridge)"
 usage:
-  - 受托即追加：`- [ ] <日期 YYYY-MM-DD 或情境短语>：一句话（by: <actor>, at: <日期>）`；日期条目机械可扫描，情境条目语义激活
-  - 新 session 开始先读此页（先于 hot，缺席即建空页）：now ≥ 触发日的条目主动提醒用户；逾期未销照提醒，标注逾期
-  - 销账 = `[ ]`→`[x]` + 写 log 行（类型 todo，一句话含内容与受托日）——事件即记，历史归 log
-  - 清理：已结 ≤20 条，超限静默删最老（log 已有销账记录，删除无事件）；有价值的内容完成时走 save 沉淀，本页不管历史
-  - 首次受托时自建页面（frontmatter：type: todo + generated），不依赖初始化机制
+  - Append upon delegation: `- [ ] <date YYYY-MM-DD or context phrase>: one sentence (by: <actor>, at: <date>)`; date entries are mechanically scannable, context entries are semantically activated
+  - Read this page first at the start of a new session (before hot; if absent, create an empty page): entries with now ≥ trigger day are proactively raised with the user; overdue and unsettled entries keep being raised, marked overdue
+  - Settlement = `[ ]`→`[x]` + a log line (type todo, one sentence covering content and delegation date) — events recorded as they happen, history goes to log
+  - Cleanup: settled entries capped at 20, silently delete the oldest beyond the cap (log already holds the settlement record, deletion is not an event); valuable content is distilled via save upon completion; this page keeps no history
+  - Self-create the page upon first delegation (frontmatter: type: todo + generated), independent of any initialization mechanism
 checks:
-  - 机械项（信息级）：日期触发已逾期且未销账条目清单（开 session 提醒的机械依据）；页面缺失（未受托常态）
-  - 机械项：条目缺触发条件或 by/at → warning；type: todo 落 `wiki/todo.md` 之外 → error
-  - 语义（check 命令）：open 条目 > 50 → warning（膨胀分诊：该做的做、该沉淀的走 save、该放弃的与用户确认）
+  - Mechanical (info-level): the list of date-triggered, overdue and unsettled entries (the mechanical basis for new-session reminders); page absent (the no-delegation norm)
+  - Mechanical: entry missing trigger condition or by/at → warning; type: todo landing outside `wiki/todo.md` → error
+  - Semantic (check command): open entries > 50 → warning (bloat triage: do what should be done, distill what should be distilled via save, confirm with the user what should be dropped)

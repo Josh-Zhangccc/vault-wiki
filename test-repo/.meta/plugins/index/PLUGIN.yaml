@@ -3,15 +3,15 @@ version: 0.12
 depends:
   - tag
   - wiki
-updated: 2026-09-23
+updated: 2026-10-06
 attachment:
-  - "wiki/index.md —— 根索引（恒在；含 format_version；直列可达页面）"
-  - "各目录 index.md —— 溢出减负制诞生（清单超窗时切出，并回上级后随重建消失）"
-  - "wiki/tags.md —— tag 反向索引"
+  - "wiki/index.md — root index (always present; carries format_version; directly lists reachable pages)"
+  - "Per-directory index.md — born of the overflow-offloading scheme (split out when a list overflows the window, disappearing on rebuild once merged back into the parent)"
+  - "wiki/tags.md — tag reverse index"
 fields: {}
-inject: "索引溢出减负制：根 `wiki/index.md` 恒在（含 format_version——页面格式契约版本，不兼容变更时进位），直列全部可达页（本目录 + 未切子树，全路径 wikilink）；某索引清单超窗（≤25 条，参数以 pipeline 源码为准）时按子树页数降序切子目录自立 `index.md`（入口行带页数）——小库常为单索引，披露边界随内容质量浮现；`wiki/tags.md`（tag 反向索引）不变；只聚合、永不手编、纯函数重建、索引不发明结构（本级平铺超窗如实全列，解药是分子目录非改索引）；重建走 `pipeline.py index`，检索第二入口"
+inject: "Index overflow-offloading scheme: the root `wiki/index.md` is always present (carries format_version — the page-format contract version, bumped on incompatible changes), directly listing all reachable pages (this directory + un-split subtrees, full-path wikilinks); when some index list overflows the window (≤25 entries, parameters per the pipeline source code), subtrees are split out in descending page-count order into their own `index.md` (entry line carrying the page count) — small repositories usually keep a single index, the disclosure boundary emerges with content quality; `wiki/tags.md` (tag reverse index) unchanged; aggregate only, never hand-edited, pure-function rebuild, indexes do not invent structure (a level's flat list overflowing the window is listed in full as-is; the cure is subdirectories, not index changes); rebuild via `pipeline.py index`, the second retrieval entry"
 usage:
-  - 写后重建（机械自动）：`python .meta/scripts/pipeline.py index`（索引——溢出减负制，含并回后多余旧索引删除）与同脚本 `tags`（tag 反向索引）；LLM 不手写索引
+  - Post-write rebuild (mechanical, automatic): `python .meta/scripts/pipeline.py index` (index — overflow-offloading scheme, including deletion of obsolete old indexes after merge-back) and the same script's `tags` (tag reverse index); LLMs never hand-write indexes
 checks:
-  - 索引与实际页面集偏差（含该删未删的并回索引）→ 跑 `pipeline.py index` 重建即修复（幂等，无 diff 即一致）；tags 同理（`pipeline.py tags`）
-  - 手编痕迹 → warning
+  - Deviation between indexes and the actual page set (including merged-back indexes pending deletion) → fixed by running `pipeline.py index` to rebuild (idempotent; no diff means consistent); same for tags (`pipeline.py tags`)
+  - Traces of hand editing → warning

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""log 插件附检：机械项（条目日期契约）。
+"""log plugin attached audit: mechanical items (entry date contract).
 
-历史条目被修改的审计靠 git 痕迹（语义项，归 check 命令）；容量归档由写管道收敛。
+Auditing modification of historical entries relies on git traces (semantic item, under the check command); capacity archiving is converged by the write pipeline.
 """
 import re
 
@@ -17,5 +17,5 @@ def check(ctx):
         for i, raw in enumerate(body.splitlines(), 1):
             line = raw.rstrip()
             if line.startswith("- ") and not DATE_RE.match(line):
-                issues.append({"level": "error", "message": f"{rel}:{i}：条目缺日期（{line[:40]}…）"})
+                issues.append({"level": "error", "message": f"{rel}:{i}: entry missing date ({line[:40]}…)"})
     return issues
