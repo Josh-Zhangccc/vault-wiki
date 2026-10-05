@@ -1,54 +1,69 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""vault-wiki 插件生命周期机械核心（装卸 / 合规 / 依赖 / 注入 / 注册表 / 副本同步）。
+"""vault-wiki plugin lifecycle mechanical kernel ((un)install / compliance / dependencies / injection / registry / copy sync).
 
-定位（见 .meta/protocol/actions.md 执行原则）：确定性的结构操作交给本脚本，
-语义判断交给 LLM。脚本只碰四处：插件目录进出、AGENTS.md 注入区标记块、
-registry.yaml 插件段、.agents/skills/ 命令副本；protocol / reserved 段与手写区永不动。
+Positioning (see .meta/protocol/actions.md execution principles): deterministic structural
+operations go to this script; semantic judgment goes to the LLM. The script touches only
+four places: plugin directories in and out, AGENTS.md injection-region marker blocks,
+the registry.yaml plugin section, and .agents/skills/ command copies; the protocol /
+reserved sections and handwritten regions are never touched.
 
-用法:
-  python .meta/scripts/wiki_plugin_kernel.py ls          # 清单 + 依赖
-  python .meta/scripts/wiki_plugin_kernel.py validate    # 合规与依赖检查（只读，错误退出码 1）
-  python .meta/scripts/wiki_plugin_kernel.py audit       # 插件附检（发现式执行各插件 scripts/check.py）
-  python .meta/scripts/wiki_plugin_kernel.py inject      # 重建 AGENTS.md 注入区、check 检查块与命令用法块（幂等）
-  python .meta/scripts/wiki_plugin_kernel.py registry    # 重建 registry.yaml 插件段（幂等）
-  python .meta/scripts/wiki_plugin_kernel.py deploy      # 同步命令与连接器 skill 部署副本（幂等）
+Usage:
+  python .meta/scripts/wiki_plugin_kernel.py ls          # list + dependencies
+  python .meta/scripts/wiki_plugin_kernel.py validate    # compliance and dependency check (read-only, exit code 1 on errors)
+  python .meta/scripts/wiki_plugin_kernel.py audit       # plugin attached audits (discovery-style execution of each plugin's scripts/check.py)
+  python .meta/scripts/wiki_plugin_kernel.py inject      # rebuild AGENTS.md injection region, check inspection blocks and command usage blocks (idempotent)
+  python .meta/scripts/wiki_plugin_kernel.py registry    # rebuild the registry.yaml plugin section (idempotent)
+  python .meta/scripts/wiki_plugin_kernel.py deploy      # sync command and connector skill deployment copies (idempotent)
   python .meta/scripts/wiki_plugin_kernel.py all         # validate + inject + registry + deploy
 
-manifest 最小 YAML 子集：顶层 `key: value`、`key: []`、块式列表（`  - 项`）、
-一层字段字典（`  name: 描述`）；双引号包裹的值去引号；行内注释（` #` 起）剥离。
+The manifest is a minimal YAML subset: top-level `key: value`, `key: []`, block lists
+(`  - item`), one-level field dicts (`  name: description`); double-quoted values are
+unquoted; inline comments (starting with ` #`) are stripped.
 
-依赖与注入序：
-- depends 声明行为或语义依赖（桥接件依赖两端概念插件即语义依赖）；validate 校验存在性与无环
-- 注入序 = 依赖拓扑（被依赖者先注入）+ 同批字母序；无分层概念
+Dependencies and injection order:
+- depends declares behavioral or semantic dependencies (a bridging piece depending on the
+  concept plugins at both ends is a semantic dependency); validate checks existence and acyclicity
+- injection order = dependency topology (dependees injected first) + alphabetical within
+  the same batch; no layering concept
 
-命令-插件绑定（双向声明，validate 校验一致）：
-- 命令 frontmatter 增 owner：插件 id（多个用 [a, b] 列表）或 framework（跨切面，显式无主）
-- 插件 manifest 增可选字段 commands：本插件驱动的命令名列表
-- error 情形：命令缺 owner、owner 指向未装插件、framework 与其他 owner 并列、
-  插件声明不存在的命令、任一侧单边声明（owner 未被 commands 认领，或反之）
+Command-plugin binding (mutual declaration, validate checks consistency):
+- command frontmatter adds owner: plugin id (multiple as an [a, b] list) or framework
+  (cross-cutting, explicitly ownerless)
+- plugin manifest adds the optional field commands: list of command names this plugin drives
+- error cases: command missing owner, owner pointing at an uninstalled plugin, framework
+  combined with other owners, plugin declaring a nonexistent command, one-sided declaration
+  on either side (owner not claimed by commands, or the reverse)
 
-命令注入（第三种投影：插件写侧契约 → 命令）：
-- 命令 frontmatter 增可选 consumes：消费其写侧契约的插件 id 列表（拉取侧，目的地声明）；
-  owner 驱动的命令必填且须含全部 owner
-- manifest 增可选 usage_routes：本插件用法额外落向的命令名列表（源侧路由）——
-  在场即注册的推侧：装插件即落投影，无需改枢纽命令；validate 校验路由目标在场、
-  路由件带 usage、与 consumes 重复路由为 error
-- manifest 的 usage / checks 列表是写侧契约与检查规则的唯一投影源：checks 按注入序
-  投影进 check 命令，usage 投影进各命令 SKILL.md 的 cmd-inject 标记块——披露序：
-  owner 块在前（consumes 序）、路由块居中（依赖拓扑加字母序）、其余 consumes 殿后；
-  改契约改 PLUGIN.yaml，命令正文只留操作流程。
-  PLUGIN.md 回归纯文档（Role / Structure / Invariants / Changelog）
+Command injection (the third projection: plugin write-side contract -> command):
+- command frontmatter adds optional consumes: list of plugin ids whose write-side contract
+  it consumes (pull side, destination declaration); owner-driven commands must fill it in
+  and include all owners
+- manifest adds optional usage_routes: list of extra command names this plugin's usage
+  lands on (source-side routing) — presence-as-registration on the push side: installing
+  the plugin lands the projection, no need to edit hub commands; validate checks routing
+  targets exist, routing plugins carry usage, and routing duplicating consumes is an error
+- the manifest's usage / checks lists are the sole projection source of write-side contracts
+  and inspection rules: checks project into the check command in injection order, usage
+  projects into each command SKILL.md's cmd-inject marker block — disclosure order: owner
+  blocks first (consumes order), routed blocks in the middle (dependency topology plus
+  alphabetical), remaining consumes last; to change a contract, change PLUGIN.yaml —
+  command bodies keep only the operational flow.
+  PLUGIN.md returns to pure documentation (Role / Structure / Invariants / Changelog)
 
-全局件与域件（宪法准则 11）：
-- manifest 可选 bridge 键（必依|按需）：全局件声明的扩展点与挂靠基数，披露正文落 PLUGIN.md 桥节
-- 域件 = depends 链可达 domain；直接 depends domain 者为域基座
-- validate 校验：bridge 只许全局件持有；必依桥要求全部域基座有对应 depends 边（缺边即 error）
+Global pieces and domain pieces (constitution principle 11):
+- the optional manifest bridge key (必依|按需): the extension point and attach cardinality
+  declared by a global piece; disclosure prose lands in PLUGIN.md's bridge section
+- a domain piece = depends chain reaches domain; depending on domain directly makes a domain base
+- validate checks: bridges may only be held by global pieces; a must-attach (必依) bridge
+  requires every domain base to have the corresponding depends edge (missing edge is an error)
 
-插件附检契约（scripts/check.py，可选）：
-- 必须定义 check(ctx)，返回 issue 列表：{"level": "error"|"warning"|"info", "message": str}
-- ctx.root = 仓库根；ctx.pages = [(wiki 相对路径, frontmatter dict, 正文)]，单次扫描共享
-- 只读零副作用：修复动作归命令/人，附检只报告；中文消息，无第三方依赖
+Plugin attached-audit contract (scripts/check.py, optional):
+- must define check(ctx), returning an issue list: {"level": "error"|"warning"|"info", "message": str}
+- ctx.root = repository root; ctx.pages = [(wiki-relative path, frontmatter dict, body)],
+  shared across the single scan
+- read-only with zero side effects: repair actions belong to commands/humans, attached
+  audits only report; messages in Chinese, no third-party dependencies
 """
 import ast
 import importlib.util
@@ -70,7 +85,7 @@ SKILLS_DIR = os.path.join(ROOT, ".agents", "skills")
 AGENTS_MD = os.path.join(ROOT, "AGENTS.md")
 REGISTRY = os.path.join(ROOT, ".meta", "protocol", "registry.yaml")
 
-# manifest 七字段（id / version / depends / updated / attachment / fields / inject）+ 可选 commands
+# manifest's seven fields (id / version / depends / updated / attachment / fields / inject) + optional commands
 REQUIRED_KEYS = ["id", "version", "depends", "updated", "attachment", "fields", "inject"]
 INJECT_START = "<!-- wiki-inject:start -->"
 INJECT_END = "<!-- wiki-inject:end -->"
@@ -82,9 +97,10 @@ CMD_INJECT_END = "<!-- cmd-inject:end -->"
 
 
 def ordered_plugins(plugins):
-    """注入序 = 依赖拓扑（被依赖者先注入）+ 同批字母序；投影区共用。
+    """Injection order = dependency topology (dependees injected first) + alphabetical within a batch; shared by projection regions.
 
-    环或悬挂依赖时按字母序兜底输出（validate 另行报错，不在此重复）。
+    On cycles or dangling dependencies, falls back to alphabetical output (validate
+    reports the error separately; not duplicated here).
     """
     remaining = dict(plugins)
     order = []
@@ -107,12 +123,12 @@ def strip_quotes(s):
 
 
 def strip_comment(s):
-    """剥离行内注释（` #` 起）；完整值含 # 前须加引号。"""
+    """Strip inline comments (from ` #` on); quote the whole value first if it contains #."""
     return re.split(r"\s+#", s, maxsplit=1)[0].strip()
 
 
 def parse_manifest(path):
-    """解析 manifest 的最小 YAML 子集；失败抛出 ValueError。"""
+    """Parse the manifest's minimal YAML subset; raises ValueError on failure."""
     data, target = {}, None
     for raw in open(path, encoding="utf-8").read().splitlines():
         if not raw.strip() or raw.lstrip().startswith("#"):
@@ -129,7 +145,7 @@ def parse_manifest(path):
         if not m:
             raise ValueError(f"unparsable line: {raw!r}")
         key, val = m.group(2), strip_comment(m.group(3))
-        if m.group(1):  # 缩进行：fields 字典项
+        if m.group(1):  # indented line: fields dict item
             if target is None:
                 raise ValueError(f"field item before any key: {raw!r}")
             if not isinstance(data.get(target), dict):
@@ -138,7 +154,7 @@ def parse_manifest(path):
         else:
             target = key
             if val == "":
-                data[key] = None  # 块式，待后续行填充
+                data[key] = None  # block style, filled by following lines
             elif val == "[]":
                 data[key] = []
             elif val == "{}":
@@ -149,7 +165,7 @@ def parse_manifest(path):
 
 
 def load_plugins():
-    """读取全部插件 manifest；返回 (plugins, errors)。"""
+    """Read all plugin manifests; returns (plugins, errors)."""
     plugins, errors = {}, []
     for name in sorted(os.listdir(PLUGINS_DIR)):
         pdir = os.path.join(PLUGINS_DIR, name)
@@ -170,7 +186,7 @@ def load_plugins():
 
 
 def validate(plugins, errors):
-    """合规与依赖检查；错误追加进 errors。"""
+    """Compliance and dependency checks; errors are appended to errors."""
     for name, m in sorted(plugins.items()):
         for k in REQUIRED_KEYS:
             if k not in m:
@@ -186,7 +202,7 @@ def validate(plugins, errors):
             errors.append(f"[error] {name}/: depends must be a list")
         if not m.get("inject"):
             errors.append(f"[error] {name}/: inject (projection line) empty")
-        # 附检契约（可选）：scripts/check.py 存在则必须定义 check(ctx)——AST 静态查，不执行
+        # attached-audit contract (optional): if scripts/check.py exists it must define check(ctx) — checked statically via AST, not executed
         cpath = os.path.join(PLUGINS_DIR, name, "scripts", "check.py")
         if os.path.exists(cpath):
             try:
@@ -196,12 +212,12 @@ def validate(plugins, errors):
             else:
                 if not any(isinstance(n, ast.FunctionDef) and n.name == "check" for n in tree.body):
                     errors.append(f"[error] {name}/scripts/check.py: check(ctx) not defined (audit contract)")
-    # 依赖存在性
+    # dependency existence
     for name, m in sorted(plugins.items()):
         for dep in m.get("depends") or []:
             if dep not in plugins:
                 errors.append(f"[error] {name}/: dependency {dep} not found")
-    # 环检测（DFS 三色标记）
+    # cycle detection (DFS three-color marking)
     WHITE, GRAY, BLACK = 0, 1, 2
     color = {k: WHITE for k in plugins}
 
@@ -222,7 +238,7 @@ def validate(plugins, errors):
 
 
 def _owner_list(owner):
-    """owner 值规范化为 id 列表：list 原样，字符串按逗号拆（容忍 [a, b] 形态）。"""
+    """Normalize the owner value into an id list: lists as-is, strings split on commas (tolerating the [a, b] form)."""
     if isinstance(owner, list):
         vals = [str(v).strip() for v in owner]
     else:
@@ -231,10 +247,10 @@ def _owner_list(owner):
 
 
 def validate_bindings(plugins, errors):
-    """命令-插件绑定：owner × commands 双向一致；consumes 拉取与 usage_routes 源侧路由。"""
+    """Command-plugin binding: owner × commands mutual consistency; consumes pull and usage_routes source-side routing."""
     import wikilib
 
-    commands, claimed, consumes_map = [], {}, {}  # claimed: 命令 -> owner 集合（framework 除外）
+    commands, claimed, consumes_map = [], {}, {}  # claimed: command -> owner set (framework excluded)
     for name in sorted(os.listdir(COMMANDS_DIR)):
         cdir = os.path.join(COMMANDS_DIR, name)
         path = os.path.join(cdir, "SKILL.md")
@@ -246,7 +262,7 @@ def validate_bindings(plugins, errors):
             errors.append(f"[error] command {name}/: frontmatter missing owner (plugin id or framework)")
             continue
         owners = _owner_list(fm["owner"])
-        # consumes（可选；owner 驱动的命令必填且须含全部 owner）：写侧契约拉取声明
+        # consumes (optional; required for owner-driven commands and must include all owners): write-side contract pull declaration
         consumes = fm.get("consumes")
         consumes = _owner_list(consumes) if consumes else []
         consumes_map[name] = consumes
@@ -288,7 +304,7 @@ def validate_bindings(plugins, errors):
         for pid in owners:
             if pid in plugins and c not in (plugins[pid].get("commands") or []):
                 errors.append(f"[error] command {c}/: owner {pid} not claimed in manifest commands (one-sided)")
-    # 源侧路由（usage_routes）：装插件即落投影，无需改目的地命令
+    # source-side routing (usage_routes): installing a plugin lands the projection, no destination-command edit needed
     for pid, m in sorted(plugins.items()):
         routes = m.get("usage_routes")
         if routes is None:
@@ -306,7 +322,7 @@ def validate_bindings(plugins, errors):
 
 
 def validate_bridges(plugins, errors):
-    """全局件/域件桥法则（宪法准则 11）：桥为全局件扩展点；必依桥校验域基座依赖完备。"""
+    """Global/domain piece bridge law (constitution principle 11): bridges are global-piece extension points; must-attach bridges check domain-base dependency completeness."""
     def reaches_domain(pid, seen=None):
         seen = set() if seen is None else seen
         if pid in seen or pid not in plugins:
@@ -321,7 +337,7 @@ def validate_bridges(plugins, errors):
         if bridge is None:
             continue
         if bridge not in ("必依", "按需"):
-            errors.append(f"[error] {pid}/: bridge ({bridge}) must be 必依 or 按需")
+            errors.append(f"[error] {pid}/: bridge ({bridge}) must be 必依 (required) or 按需 (on-demand)")
             continue
         if reaches_domain(pid):
             errors.append(f"[error] {pid}/: bridge is global-only (depends chain reaches domain)")
@@ -329,19 +345,21 @@ def validate_bridges(plugins, errors):
         if bridge == "必依":
             for base in bases:
                 if pid not in (plugins[base].get("depends") or []):
-                    errors.append(f"[error] {base}/: missing depends {pid} (必依桥：全部域基座须挂边)")
+                    errors.append(f"[error] {base}/: missing depends {pid} (必依 bridge: every domain base must carry this edge)")
 
 
 def do_audit(plugins, only=None):
-    """插件附检：发现式执行各插件 scripts/check.py（契约见模块 docstring）。
+    """Plugin attached audits: discovery-style execution of each plugin's scripts/check.py (contract in the module docstring).
 
-    这是「代码注入」的机制形态：插件目录里存在契约合规的附检脚本即自动入列，
-    卸载目录移出即自动出列——与 AGENTS.md 注入区同构（在场即注册），但代码
-    不做文本拼接（避免命名空间与合并噪音），改为发现 + 调用。
+    This is the mechanical shape of "code injection": a contract-compliant attached-audit
+    script present in a plugin directory is automatically listed, and moving the directory
+    out on uninstall automatically delists it — isomorphic to the AGENTS.md injection
+    region (presence as registration), but the code does no text splicing (avoiding
+    namespace and merge noise), using discovery + invocation instead.
     """
     import wikilib
 
-    pages = list(wikilib.walk_pages(ROOT))  # 单次扫描，全部插件共享（调用节俭）
+    pages = list(wikilib.walk_pages(ROOT))  # single scan shared by all plugins (frugal invocation)
     ctx = types.SimpleNamespace(root=ROOT, pages=pages)
     counts = {"error": 0, "warning": 0, "info": 0}
     ran = 0
@@ -356,7 +374,7 @@ def do_audit(plugins, only=None):
         try:
             spec.loader.exec_module(mod)
             issues = mod.check(ctx) or []
-        except Exception as e:  # 附检脚本自身故障按 error 报告，不拖垮其余插件
+        except Exception as e:  # a check script's own failure is reported as an error, without taking down the other plugins
             print(f"[error] ({pid}) check script failed: {e}")
             counts["error"] += 1
             ran += 1
@@ -374,7 +392,7 @@ def do_audit(plugins, only=None):
 
 
 def do_inject(plugins):
-    """自 manifests 重建 AGENTS.md 注入区（保留前置说明，块按依赖拓扑+字母序，幂等）。"""
+    """Rebuild the AGENTS.md injection region from manifests (preamble preserved, blocks in dependency topology + alphabetical order, idempotent)."""
     text = open(AGENTS_MD, encoding="utf-8").read()
     m = re.search(re.escape(INJECT_START) + r"\n(.*?)" + re.escape(INJECT_END), text, re.S)
     if not m:
@@ -400,10 +418,11 @@ def do_inject(plugins):
 
 
 def do_check_inject(plugins):
-    """自各 manifest 的 checks 列表重建 check 命令注入区（在场即注册，幂等）。
+    """Rebuild the check command's injection region from each manifest's checks list (presence as registration, idempotent).
 
-    与 AGENTS.md 注入区同构：manifest 是本体，check 块是投影——改检查规则
-    改 manifest checks 列表，投影与手写块的漂移就此消失。
+    Isomorphic to the AGENTS.md injection region: the manifest is the body, the check
+    block is the projection — to change inspection rules, change the manifest's checks
+    list, and drift between projection and handwritten blocks disappears.
     """
     if not os.path.exists(CHECK_SKILL):
         print("[check-inject] check command absent, skipped")
@@ -432,15 +451,17 @@ def do_check_inject(plugins):
 
 
 def do_cmd_inject(plugins):
-    """自 manifests 重建命令注入区：consumes 拉取 + usage_routes 源侧路由（在场即注册，幂等）。
+    """Rebuild command injection regions from manifests: consumes pull + usage_routes source-side routing (presence as registration, idempotent).
 
-    第三种投影：插件写侧契约 → 命令。披露序：owner 块在前（consumes 序）、路由块
-    居中（依赖拓扑加字母序）、其余 consumes 殿后。各块为对应 manifest usage 列表
-    原文——命令正文只留操作流程，装卸插件自动增删。
+    The third projection: plugin write-side contract -> command. Disclosure order: owner
+    blocks first (consumes order), routed blocks in the middle (dependency topology plus
+    alphabetical), remaining consumes last. Each block is the corresponding manifest usage
+    list verbatim — command bodies keep only the operational flow; (un)installing plugins
+    adds and removes them automatically.
     """
     import wikilib
 
-    routed = {}  # 命令 -> [插件]（源侧路由，拓扑加字母序）
+    routed = {}  # command -> [plugins] (source-side routing, topology + alphabetical)
     for pid in ordered_plugins(plugins):
         for c in plugins[pid].get("usage_routes") or []:
             routed.setdefault(c, []).append(pid)
@@ -485,7 +506,7 @@ def do_cmd_inject(plugins):
 
 
 def do_registry(plugins):
-    """自 manifests 的 fields 重建 registry.yaml 插件段（protocol / reserved 段不动）。"""
+    """Rebuild the registry.yaml plugin section from the manifests' fields (protocol / reserved sections untouched)."""
     text = open(REGISTRY, encoding="utf-8").read()
     m = re.search(r"^plugins:\n(.*?)^reserved:", text, re.S | re.M)
     if not m:
@@ -495,7 +516,7 @@ def do_registry(plugins):
     for pid in sorted(plugins):
         fields = plugins[pid].get("fields")
         if not fields:
-            continue  # 无自有字段的插件不入注册表插件段
+            continue  # plugins with no fields of their own stay out of the registry plugin section
         lines.append(f"  {pid}:")
         for f in sorted(fields):
             lines.append(f"    {f}:")
@@ -512,7 +533,7 @@ def do_registry(plugins):
 
 
 def do_deploy():
-    """同步 .meta/command/*/SKILL.md 与 connectors/*/SKILL.md → .agents/skills/*/SKILL.md；孤儿副本仅报告。"""
+    """Sync .meta/command/*/SKILL.md and connectors/*/SKILL.md -> .agents/skills/*/SKILL.md; orphan copies are reported only."""
     sources = {}
     for base in (COMMANDS_DIR, CONNECTORS_DIR):
         if not os.path.isdir(base):
@@ -549,7 +570,7 @@ def do_ls(plugins):
         cmds = ", ".join(plugins[pid].get("commands") or []) or "—"
         print(f"  {pid:<10} {plugins[pid].get('version', '?'):<6} deps {deps}; commands {cmds}")
     print(f"{len(plugins)} plugins (.meta/plugins/; injection order = dependency topo + alphabetical)")
-    # 用法路由表：插件 → 落向命令（自属 + 源侧路由 + 命令拉取）
+    # usage routing table: plugin -> landing commands (own + source-side routes + command pulls)
     import wikilib
 
     consumes_map = {}
@@ -569,7 +590,7 @@ def do_ls(plugins):
             list(plugins[pid].get("commands") or [])
             + list(plugins[pid].get("usage_routes") or [])
             + [c for c, lst in consumes_map.items() if pid in lst]))
-        rows.append(f"  {pid:<12} → {', '.join(targets) if targets else '（无落向——契约文档面）'}")
+        rows.append(f"  {pid:<12} -> {', '.join(targets) if targets else '(no targets — contract documentation surface)'}")
     if rows:
         print("usage routing (plugin → commands):")
         print("\n".join(rows))

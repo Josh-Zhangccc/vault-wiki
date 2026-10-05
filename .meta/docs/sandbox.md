@@ -1,39 +1,39 @@
-# 沙箱使用
+# Using the sandbox
 
-> 读者：要在真实数据上做实验的组员。沙箱的治理红线权威源是 AGENTS.md「用户要求」节；本文讲操作。撰写 2026-10-04。
+> Reader: team members who need to run experiments against real data. The authoritative source for sandbox governance red lines is the "User requirements" section of AGENTS.md; this document covers operations. Written 2026-10-04.
 
-## 是什么
+## What it is
 
-test-repo 是住在开发仓库里的一个部署实例。框架两棵树——`.meta/` 与 `.agents/`——以白名单镜像入库，随根侧批次收尾重拷；其余一切是沙箱自己的数据区，只在本地、永不入库。沙箱内部不感知本工程：在沙箱根打开的会话，读的是沙箱自己的 AGENTS.md 与 skills。
+test-repo is a deployment instance living inside the development repository. The two framework trees—`.meta/` and `.agents/`—enter git as a whitelisted mirror, re-copied wholesale when a root-side batch closes; everything else is the sandbox's own data zone, local only and never committed. The inside of the sandbox is unaware of this project: a session opened at the sandbox root reads the sandbox's own AGENTS.md and skills.
 
-## 启用
+## Enabling it
 
-沙箱当前已初始化：AGENTS.md 外壳带注入区，四个空数据目录已建。若从零重来，三步：
+The sandbox is currently initialized: the AGENTS.md shell carries the injection region, and the four empty data directories exist. To redo it from scratch, three steps:
 
-1. 建 `AGENTS.md` 外壳：一段身份自述加布局说明，插入注入区标记块——从 `<!-- wiki-inject:start -->` 到 `<!-- wiki-inject:end -->`，块内保留区头与说明行
-2. 建四个空目录：`vault/`、`wiki/notes/`、`wiki/sessions/`、`wiki/vault/`
-3. 沙箱根执行 `python .meta/scripts/wiki_plugin_kernel.py all`——注入区由镜像填充，validate 全绿即成可用实例
+1. Create the `AGENTS.md` shell: one identity paragraph plus a layout description, and insert the injection region marker block—from `<!-- wiki-inject:start -->` to `<!-- wiki-inject:end -->`, keeping the region header and the explanatory lines inside the block
+2. Create four empty directories: `vault/`, `wiki/notes/`, `wiki/sessions/`, `wiki/vault/`
+3. Run `python .meta/scripts/wiki_plugin_kernel.py all` at the sandbox root—the injection region is filled from the mirror, and all-green validate makes it a usable instance
 
-## 跑实验
+## Running experiments
 
-沙箱根开 agent 会话，正常用命令：映射、保存、检索、检查、课程族皆可。数据区自然生长——wiki 派生页首跑自建，课程数据落 bb 侧。产物与派生物一律视为本地临时物。
+Open an agent session at the sandbox root and use commands normally: map, save, query, check, and the course family all work. The data zone grows naturally—wiki derived pages are built on first run, course data lands on the bb side. Artifacts and derivatives are all to be treated as local temporary material.
 
-## 红线
+## Red lines
 
-摘要三条，权威源为 AGENTS.md：
+Three summarized here; the authoritative source is AGENTS.md:
 
-- 实验内容永不提交。白名单外的一切变更不进 git——课程数据、派生页、会话记录皆是
-- 镜像更新只走根侧重拷。沙箱侧可以改镜像文件做框架实验，但下次重拷即被覆盖；框架性改动应在根侧开分支做，走审合
-- 当心一个坑：动了沙箱镜像后，根侧 git 会看到已跟踪文件变更——那不是你的提交物，恢复它，勿顺手入库
+- Experiment content is never committed. All changes outside the whitelist stay out of git—course data, derived pages, session records, all of it
+- Mirror updates go only through root-side re-copy. The sandbox side may modify mirror files for framework experiments, but the next re-copy overwrites them; framework-level changes should be made on a root-side branch and go through review-and-merge
+- Watch out for one trap: after touching the sandbox mirror, root-side git will see changes to tracked files—those are not your commit material; restore them and do not casually commit them
 
-## 收尾与重置
+## Wrap-up and reset
 
-结论走对话报告或 docs，不入沙箱档案。实验数据去留自定；重置即删白名单外的一切——`bb/`、`wiki/` 与镜像里的 `__pycache__`——再按「启用」走一遍即是干净沙箱。
+Conclusions go into conversation reports or docs, never into sandbox archives. Whether experiment data stays or goes is up to you; resetting means deleting everything outside the whitelist—`bb/`, `wiki/`, and `__pycache__` inside the mirror—then walking "Enabling it" once more yields a clean sandbox.
 
-## 镜像同步
+## Mirror sync
 
-根侧批次收尾时重拷。需要自己触发时：删沙箱两棵镜像树，从根侧整树拷入，再跑一次内核收敛。沙箱不带 `connectors/` 源，内核 deploy 会报 bb-cli 副本孤儿——警告属预期，副本保留可用。
+Re-copy happens when a root-side batch closes. To trigger it yourself: delete the sandbox's two mirror trees, copy the whole trees in from the root side, then run kernel convergence once more. The sandbox carries no `connectors/` sources, so kernel deploy will report the bb-cli copy as an orphan—the warning is expected; keep the copy, it remains usable.
 
-## 沙箱与本地
+## Sandbox vs. local
 
-宪法与使用指南都说「实验落沙箱或本地」。两者是同一件事的两种规模：test-repo 是仓库内的共享沙箱，组员共用、随根侧镜像同步；本地自开沙箱就是一次 quickstart 部署——拷两棵树、写外壳、建目录、跑收敛，目标库随你挑。选择标准一条：要与仓库镜像同步的用 test-repo；要长期私有或贴近真实库的，本地部署。
+The constitution and the usage guide both say "experiments land in the sandbox or locally". The two are the same thing at two scales: test-repo is the shared sandbox inside the repository, shared by team members and synced via the root-side mirror; opening your own local sandbox is just a quickstart deployment—copy two trees, write the shell, create the directories, run convergence—and the target vault is your choice. One selection criterion: use test-repo when you need to stay in sync with the repository mirror; deploy locally for long-term private use or for something close to your real vault.
