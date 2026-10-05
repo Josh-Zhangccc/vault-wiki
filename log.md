@@ -20,6 +20,7 @@
 
 ## 过往操作
 
+- 2026-10-06 治理：PR #9 审合入库（bilibili 域 + bili-cli v0.1.0，管理者代行 --admin，GitHub 评论留痕）；删已合分支
 - 2026-10-06 域构：bilibili 域立设（所有者问答收敛七项——功能三合一/web cookie/低危写白名单三项双层门/自研轻实现/先现拉后 cron/查询即答+涌现档案/连接器+域全套）——插件 bili v0.1（挂 todo/calendar/notes 三桥），连接器 bili-cli v0.1.0（WBI 签名+space 风控参数自研实测通，公开查询免登录、写命令 --yes 双门）；README/AGENTS 章程同步（三十四插件、connectors 四件，顺手修 bb/→cuhksz/ 陈旧引用）
 - 2026-10-05 域构修：官方个人文件物化改域内（cuhksz/sis/ + 属地 docs/ 代理页，所有者裁定）——落地判据定为「域有自立容器则域内落地，vault 兜底无容器域」；cuhksz 0.2 / sis 0.2
 - 2026-10-05 连接器：sis-cli v0.3（issue #6 实例首报三缺口）——ICAction POST 导航原语（submit_icaction + raw --post）、transcript 命令（SSS_TSRQST_UNOFF 真 身 + View Report → 官方 PDF 三语言）、identity 命令（prsnldata + PDF 双源 12 字段，覆盖 cuhksz 身份页全字段）、dpr 如实报告（Request Audit 待裁定）；issue 关闭留痕
