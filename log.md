@@ -15,7 +15,7 @@
 - teach/quiz 首轮实测（伸缩/越界/判分）
 - AIE2040 归位补测 + 复问失败问题
 - bb-cli 用户信息优化；email 探路；日更 cron（部署侧）
-- sis-cli v0.2：grades 组件 term 交互查询与结构化解析、周课表星期归属、学费/考试计划组件登记（raw 探路）
+- sis-cli v0.2：grades/history/appt 的 term 交互查询（POST ICSID）与结构化解析、周课表星期归属（改从 center 页取——Tu/ThFr 实证在场）、学费/考试计划组件登记（raw 探路）
 
 ## 过往操作
 
