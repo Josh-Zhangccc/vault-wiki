@@ -20,6 +20,7 @@
 
 ## 过往操作
 
+- 2026-10-06 治理：PR #10 审合入库（cron v0.1 + 三件挂桥，管理者代行 --admin，GitHub 评论留痕）；删已合分支
 - 2026-10-06 插件：cron 时间自动化领地立设（用户三问收敛——统一登记处/对账+重放/每任务一页；声明为源执行侧为投影，session|script 两形态判据与失败纪律上提）——lark-calendar 0.2 / bili 0.2 / email 0.4 挂桥随迁，散落节奏披露归位；validate 35 全绿
 - 2026-10-06 治理：PR #9 审合入库（bilibili 域 + bili-cli v0.1.0，管理者代行 --admin，GitHub 评论留痕）；删已合分支
 - 2026-10-06 域构：bilibili 域立设（所有者问答收敛七项——功能三合一/web cookie/低危写白名单三项双层门/自研轻实现/先现拉后 cron/查询即答+涌现档案/连接器+域全套）——插件 bili v0.1（挂 todo/calendar/notes 三桥），连接器 bili-cli v0.1.0（WBI 签名+space 风控参数自研实测通，公开查询免登录、写命令 --yes 双门）；README/AGENTS 章程同步（三十四插件、connectors 四件，顺手修 bb/→cuhksz/ 陈旧引用）
