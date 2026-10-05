@@ -97,13 +97,14 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 - 语义项（v0.1 人工，附检后置）：月页文件名非 YYYY-MM 或落 wiki/calendar/ 之外 → error；已过月份月页改写痕迹 → error（git 审计）；声明页缺 `calendar` 块 → info（manual-only 常态）
 <!-- /check:calendar -->
 
+<!-- check:cron -->
+- 机械项：type: cron 页落 wiki/cron/ 之外 → error；任务页缺 cron 块或最小键集（schedule/action/form/status）→ warning；last_run 超 schedule 周期且 active → warning（投影丢失信号）
+- 语义项（附检后置）：执行侧清单（harness/系统任务，尽力读）与声明页集漂移 → warning
+<!-- /check:cron -->
+
 <!-- check:cuhksz -->
 - 语义项（v0.1 人工，附检后置）：type: cuhksz 页落 wiki/cuhksz/ 之外 → error；identity.md 缺 sis 块映射或 student_id → error
 <!-- /check:cuhksz -->
-
-<!-- check:email -->
-- 语义项（v0.1 人工，附检后置）：type: email 页落 `wiki/email/` 之外 → error；人档 token（地址）重复 → error；线程档机械区缺 members（Message-ID 列表）→ warning；速写手编痕迹 → warning；stale 清单（信息级：拉取日 + TTL）
-<!-- /check:email -->
 
 <!-- check:index -->
 - 索引与实际页面集偏差（含该删未删的并回索引）→ 跑 `pipeline.py index` 重建即修复（幂等，无 diff 即一致）；tags 同理（`pipeline.py tags`）
@@ -137,6 +138,10 @@ grep / 读文件即够；一次读取够用的不做第二次扫描（调用节�
 <!-- check:bili -->
 - 语义项（v0.1 人工，附检后置）：type: bili 页落 wiki/bili/ 之外 → error；UP 主档案 mid 重复或与页声明不对应 → error；速写页手编痕迹 → warning；stale 清单（信息级：拉取日 + TTL）
 <!-- /check:bili -->
+
+<!-- check:email -->
+- 语义项（v0.1 人工，附检后置）：type: email 页落 `wiki/email/` 之外 → error；人档 token（地址）重复 → error；线程档机械区缺 members（Message-ID 列表）→ warning；速写手编痕迹 → warning；stale 清单（信息级：拉取日 + TTL）
+<!-- /check:email -->
 
 <!-- check:lark-calendar -->
 - 语义项（v0.1 人工）：声明页 lark 源的 profile 不在 wiki/lark/ 目录集 → warning；日程行源键无对应声明 → warning

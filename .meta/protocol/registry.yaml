@@ -62,6 +62,9 @@ plugins:
   calendar:
     calendar:
       note: 块映射（声明页）——源键 → 源声明（值语法归适配器：lark-calendar 用 `lark/<profile> <calendar_id|primary>`）；源键即日程行尾标
+  cron:
+    cron:
+      note: 块映射（任务页）——schedule（节奏：crontab 5 字段或人读描述，本地时区默认）/ action（动作一句话）/ form（执行形态：session 会话版 | script 脚本版——判据：有 agent 判断环节 session、纯机械 script）/ domain（属域，域件经桥登记时标，跨域任务可缺省）/ status（active 现役 | paused 暂停 | deprecated 废止）/ last_run（最近运行时刻，机器维护）/ machine（可选：执行机锚，多设备定位，v0.1 只留键不建联动）
   cuhksz:
     sis:
       note: 块映射（学籍身份页 identity.md）——student_id / college / school / major / admitted / status（数据源 sis-cli transcript；与连接器身份一比一，即域身份证明）
