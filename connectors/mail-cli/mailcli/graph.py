@@ -1,23 +1,24 @@
-"""Microsoft Graph provider（学校/office 账户，device flow）。"""
+"""Microsoft Graph provider (school/office accounts, device flow)."""
 import base64, json, os, sys, time, urllib.parse, urllib.error
 from datetime import datetime, timedelta, timezone
 from .common import GRAPH, out, fail, http, load_tok, save_tok, cfg_path, strip_html
 
 TENANT = "common"
-CLIENT_ID = "14d82eec-204b-4c2f-b7e8-296a70dab67e"  # Microsoft Graph PowerShell 公开 client
-# 最小授权：默认只请求只读 scope（管理员审批通常只拦含写/发的 consent 面）；
-# 写/发 scope 须 auth start --send 显式申请，届时才可能触发租户管理员审批。
+CLIENT_ID = "14d82eec-204b-4c2f-b7e8-296a70dab67e"  # public Microsoft Graph PowerShell client
+# Least privilege: by default only read-only scopes are requested (admin approval usually only blocks
+# consent surfaces that include write/send); write/send scopes must be explicitly requested via
+# auth start --send — that is when tenant admin approval may be triggered.
 READ_SCOPE = "Mail.Read offline_access"
 FULL_SCOPE = "Mail.Read Mail.ReadWrite Mail.Send offline_access"
 
 def scope_of(tok):
-    """token 实际持有的 scope 集（Graph token 响应带 scope 字段；旧凭据无此字段回退全量，兼容判断）。"""
+    """The set of scopes the token actually holds (Graph token responses carry a scope field; old credentials without it fall back to the full set, for compatible judgment)."""
     return set((tok.get("scope") or FULL_SCOPE).split())
 
 def need_write(account):
     if not {"Mail.ReadWrite", "Mail.Send"} <= scope_of(load_tok(account) or {}):
-        fail(f"token_read_only（当前凭据只含只读权限；如需草稿/发送请 auth start --account {account} "
-             "--send 重新授权——宽 scope 可能触发租户管理员审批）")
+        fail(f"token_read_only (current credentials are read-only; for drafts/sending re-authorize with auth start --account {account} "
+             "--send — the broad scope may trigger tenant admin approval)")
 
 # ---------- auth ----------
 
@@ -58,7 +59,7 @@ def auth_complete(args):
         return
     fail("timeout")
 
-# ---------- 视图 ----------
+# ---------- views ----------
 
 def hdrs(m):
     hs = m.get("internetMessageHeaders") or []
@@ -86,7 +87,7 @@ def draft_view(d):
             "body": d.get("body", {}).get("content", ""),
             "attachments": [{"name": a.get("name"), "size": a.get("size")} for a in d.get("attachments", [])]}
 
-# ---------- 命令实现 ----------
+# ---------- command implementations ----------
 
 def folders(args, at):
     def walk(parent=None, depth=0, max_depth=1):
@@ -124,7 +125,7 @@ def fetch(args, at):
     url = args.next or f"{GRAPH}/me/mailFolders/{args.folder}/messages?{urllib.parse.urlencode(q)}"
     d = http(url, tok=at)
     msgs = [form(m, args.headers) for m in d.get("value", [])]
-    if args.from_addr and "@" not in args.from_addr:  # 子串匹配退回客户端
+    if args.from_addr and "@" not in args.from_addr:  # substring matching falls back to the client side
         msgs = [m for m in msgs if (m["from"] or "").lower().find(args.from_addr.lower()) >= 0]
     out({"ok": True, "count": len(msgs), "next": d.get("@odata.nextLink"), "messages": msgs})
 
@@ -167,21 +168,21 @@ def attach(args, at):
 def draft(args, at):
     if args.act in ("create", "delete"): need_write(args.account)
     if args.act == "create":
-        if not args.to and not args.reply_to: fail("需要 --to 或 --reply-to")
+        if not args.to and not args.reply_to: fail("--to or --reply-to required")
         body = open(args.body_file).read() if args.body_file else (args.body or "")
-        if not body and not args.attach: fail("正文为空（--body / --body-file），且无附件")
+        if not body and not args.attach: fail("body is empty (--body / --body-file) and there are no attachments")
         payload = {"subject": args.subject,
                    "body": {"contentType": "html" if args.html else "text", "content": body}}
         if args.to: payload["toRecipients"] = rcpt_list(args.to)
         if args.cc: payload["ccRecipients"] = rcpt_list(args.cc)
         atts = []
         for path in args.attach or []:
-            if not os.path.exists(path): fail(f"附件不存在: {path}")
+            if not os.path.exists(path): fail(f"attachment not found: {path}")
             atts.append({"@odata.type": "#microsoft.graph.fileAttachment",
                          "name": os.path.basename(path),
                          "contentBytes": base64.b64encode(open(path, "rb").read()).decode()})
         if atts: payload["attachments"] = atts
-        if args.reply_to:  # 服务端 createReply 保线程（References/主题 Re:），再 PATCH 填内容
+        if args.reply_to:  # server-side createReply preserves the thread (References/Re: subject), then PATCH fills in the content
             d = http(f"{GRAPH}/me/messages/{urllib.parse.quote(args.reply_to)}/createReply",
                      tok=at, method="POST", jdata={})
             d = http(f"{GRAPH}/me/messages/{urllib.parse.quote(d['id'])}",

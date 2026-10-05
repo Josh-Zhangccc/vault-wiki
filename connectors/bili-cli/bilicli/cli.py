@@ -1,7 +1,8 @@
-"""bili-cli 命令面：argparse 子命令，输出恒单行 JSON。
+"""bili-cli command surface: argparse subcommands, output always single-line JSON.
 
-读 = 查询即答（蒸馏字段，非全量透传）；写 = 低危白名单（watchlater/fav/like），
-全部须 --yes 显式门——agent 层另有「用户明示动词」纪律，双层防误触。
+Read = query-and-answer (distilled fields, not full passthrough); write = low-risk whitelist (watchlater/fav/like),
+all requiring the explicit --yes gate — the agent layer adds its own "explicit user verb" discipline:
+a double gate against accidental writes.
 """
 
 import argparse
@@ -23,7 +24,7 @@ def _ts(v):
 
 def _need_yes(args, action: str) -> None:
     if not getattr(args, "yes", False):
-        print(f"写操作 {action} 须 --yes（agent 层另须用户明示动词）", file=sys.stderr)
+        print(f"write operation {action} requires --yes (the agent layer additionally requires an explicit user verb)", file=sys.stderr)
         raise SystemExit(2)
 
 
@@ -85,12 +86,12 @@ def cmd_fav(args):
     _need_yes(args, args.action)
     if args.action == "move":
         if not (args.src_fid and args.dst_fid):
-            raise SystemExit("fav move 须 --from <源夹id> --to <目标夹id>（先 `bili-cli fav` 查清单）")
+            raise SystemExit("fav move requires --from <source fid> --to <target fid> (run `bili-cli fav` first to list folders)")
         _emit({**api.fav_move(args.bvid, args.src_fid, args.dst_fid), "action": "fav move",
                "bvid": args.bvid, "from": args.src_fid, "to": args.dst_fid})
         return
     if not args.fid:
-        raise SystemExit("--fid 必带（收藏夹 id，先 `bili-cli fav` 查清单）")
+        raise SystemExit("--fid is required (favorites folder id; run `bili-cli fav` first to list folders)")
     fn = {"add": api.fav_add, "remove": api.fav_del}[args.action]
     _emit({**fn(args.bvid, args.fid), "action": f"fav {args.action}",
            "bvid": args.bvid, "fid": args.fid})
@@ -109,7 +110,7 @@ def cmd_history(args):
 
 def cmd_search(args):
     import re
-    clean = lambda t: re.sub(r"<[^>]+>", "", t or "")  # 剥搜索高亮 <em> 标签
+    clean = lambda t: re.sub(r"<[^>]+>", "", t or "")  # strip search-highlight <em> tags
     rows = BiliAPI().search(args.query, args.kind, args.limit)
     if args.kind == "up":
         _emit([{
@@ -144,7 +145,7 @@ def cmd_subtitle(args):
 
 
 def cmd_summary(args):
-    api = BiliAPI(); api.require_auth("summary")  # 实测 -101：官方总结仅登录态开放
+    api = BiliAPI(); api.require_auth("summary")  # measured -101: the official summary is only available logged in
     _emit(api.summary(args.bvid))
 
 
@@ -176,71 +177,71 @@ def cmd_raw(args):
 
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="bili-cli",
-                                description="bilibili 只读为主连接器（web cookie；写命令须 --yes）")
+                                description="bilibili read-mostly connector (web cookie; write commands require --yes)")
     p.add_argument("--version", action="version", version=__version__)
     sub = p.add_subparsers(dest="cmd", required=True)
 
-    s = sub.add_parser("login", help="导入浏览器 cookie（SESSDATA/bili_jct）")
-    s.add_argument("--cookie", help='cookie 串，如 "SESSDATA=..; bili_jct=..; buvid3=.."')
+    s = sub.add_parser("login", help="import browser cookies (SESSDATA/bili_jct)")
+    s.add_argument("--cookie", help='cookie string, e.g. "SESSDATA=..; bili_jct=..; buvid3=.."')
     s.add_argument("--file", type=argparse.FileType("r", encoding="utf-8"),
-                   help="或自文件读同格式串")
+                   help="or read a same-format string from a file")
     s.set_defaults(fn=cmd_login)
 
-    s = sub.add_parser("me", help="我的信息（mid/昵称/等级/VIP）")
+    s = sub.add_parser("me", help="my info (mid/name/level/VIP)")
     s.set_defaults(fn=cmd_me)
 
-    s = sub.add_parser("watchlater", help="稍后再看（读 / 增删写）")
+    s = sub.add_parser("watchlater", help="watch-later (read / add-remove writes)")
     s.add_argument("action", nargs="?", choices=["list", "add", "remove"], default="list")
-    s.add_argument("bvid", nargs="?", help="写操作目标（如 BV1xx411c7mD）")
-    s.add_argument("--yes", action="store_true", help="写操作显式确认门")
+    s.add_argument("bvid", nargs="?", help="write-operation target (e.g. BV1xx411c7mD)")
+    s.add_argument("--yes", action="store_true", help="explicit confirmation gate for write operations")
     s.set_defaults(fn=cmd_watchlater)
 
-    s = sub.add_parser("fav", help="收藏夹（夹清单/内容读 / 增删移写）")
+    s = sub.add_parser("fav", help="favorites (folder list / contents read / add-remove-move writes)")
     s.add_argument("action", nargs="?", choices=["list", "add", "remove", "move"], default="list")
-    s.add_argument("bvid", nargs="?", help="写操作目标")
-    s.add_argument("--fid", type=int, help="收藏夹 id（读内容/写操作均需）")
-    s.add_argument("--from", dest="src_fid", type=int, help="move 源夹 id")
-    s.add_argument("--to", dest="dst_fid", type=int, help="move 目标夹 id")
+    s.add_argument("bvid", nargs="?", help="write-operation target")
+    s.add_argument("--fid", type=int, help="favorites folder id (needed for reading contents and for write operations)")
+    s.add_argument("--from", dest="src_fid", type=int, help="move source folder id")
+    s.add_argument("--to", dest="dst_fid", type=int, help="move target folder id")
     s.add_argument("--limit", type=int, default=30)
     s.add_argument("--yes", action="store_true")
     s.set_defaults(fn=cmd_fav)
 
-    s = sub.add_parser("history", help="观看历史（近窗）")
+    s = sub.add_parser("history", help="view history (recent window)")
     s.add_argument("--limit", type=int, default=30)
     s.set_defaults(fn=cmd_history)
 
-    s = sub.add_parser("search", help="搜索（视频 / UP 主）")
+    s = sub.add_parser("search", help="search (videos / UPs)")
     s.add_argument("query")
     s.add_argument("--kind", choices=["video", "up"], default="video")
     s.add_argument("--limit", type=int, default=10)
     s.set_defaults(fn=cmd_search)
 
-    s = sub.add_parser("video", help="视频详情（分P/统计/简介）")
+    s = sub.add_parser("video", help="video detail (pages/stats/description)")
     s.add_argument("bvid")
     s.set_defaults(fn=cmd_video)
 
-    s = sub.add_parser("subtitle", help="字幕正文（默认 CC 轨道，--ai 强制 AI 轨道）")
+    s = sub.add_parser("subtitle", help="subtitle text (CC track by default, --ai forces the AI track)")
     s.add_argument("bvid")
-    s.add_argument("--page", type=int, default=1, help="分P 序号")
-    s.add_argument("--ai", action="store_true", help="取 AI 字幕轨道（lan ai-*）")
+    s.add_argument("--page", type=int, default=1, help="page (part) number")
+    s.add_argument("--ai", action="store_true", help="take the AI subtitle track (lan ai-*)")
     s.set_defaults(fn=cmd_subtitle)
 
-    s = sub.add_parser("summary", help="官方 AI 视频总结（无则 has_summary=false，走降级链）")
+    s = sub.add_parser("summary", help="official AI video summary (has_summary=false if none; follow the degradation chain)")
     s.add_argument("bvid")
     s.set_defaults(fn=cmd_summary)
 
-    s = sub.add_parser("up", help="UP 主信息（可带投稿列表）")
+    s = sub.add_parser("up", help="UP info (optionally with the upload list)")
     s.add_argument("mid", type=int)
-    s.add_argument("--arcs", action="store_true", help="带最新投稿")
-    s.add_argument("--limit", type=int, default=20, help="投稿条数（--arcs 时）")
+    s.add_argument("--arcs", action="store_true", help="include recent uploads")
+    s.add_argument("--limit", type=int, default=20, help="number of uploads (with --arcs)")
     s.set_defaults(fn=cmd_up)
 
-    s = sub.add_parser("like", help="点赞视频（写，须 --yes）")
+    s = sub.add_parser("like", help="like a video (write, requires --yes)")
     s.add_argument("bvid")
     s.add_argument("--yes", action="store_true")
     s.set_defaults(fn=cmd_like)
 
-    s = sub.add_parser("raw", help="任意端点透传（GET/POST JSON）")
+    s = sub.add_parser("raw", help="arbitrary endpoint passthrough (GET/POST JSON)")
     s.add_argument("url")
     s.add_argument("--post", action="store_true")
     s.set_defaults(fn=cmd_raw)

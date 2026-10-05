@@ -1,4 +1,4 @@
-"""CLI：参数解析与 provider 分派。"""
+"""CLI: argument parsing and provider dispatch."""
 import argparse, json, os, sys
 from . import graph, gmail, imapc
 from .common import (out, fail, cfg_dir, cfg_path, load_tok, save_tok,
@@ -7,12 +7,12 @@ from .common import (out, fail, cfg_dir, cfg_path, load_tok, save_tok,
 def _impl(account):
     return {"graph": graph, "gmail": gmail, "imap": imapc}[P(account)]
 
-# ---------- 命令 ----------
+# ---------- commands ----------
 
 def cmd_auth(args):
     provider = getattr(args, "provider", None) or "graph"
     if args.act == "setup":
-        if provider != "imap": fail("setup 仅用于 imap（graph/gmail 走 start）")
+        if provider != "imap": fail("setup is only for imap (graph/gmail use start)")
         save_tok(args.account, {"provider": "imap", "account": args.user, "user": args.user,
                                 "auth_code": args.auth_code,
                                 "imap_host": args.imap_host, "smtp_host": args.smtp_host})
@@ -21,7 +21,7 @@ def cmd_auth(args):
     elif args.act == "start":
         (gmail if provider == "gmail" else graph).auth_start(args)
     elif args.act == "complete":
-        graph.auth_complete(args)  # gmail 走 loopback 一步完成，无 complete
+        graph.auth_complete(args)  # gmail completes in one step via loopback, no complete
     elif args.act == "status":
         tok = load_tok(args.account)
         out({"ok": bool(tok), "provider": (tok or {}).get("provider", "graph"),
@@ -60,27 +60,27 @@ def cmd_send(args):
     impl = _impl(args.account)
     mode, allow = send_policy(args.account)
     if mode == "deny": fail("send_denied_by_policy")
-    if P(args.account) == "graph": graph.need_write(args.account)  # 只读凭据提前拒绝
+    if P(args.account) == "graph": graph.need_write(args.account)  # reject early under read-only credentials
     if P(args.account) == "imap":
         imsg, s = impl.send_summary(at, args.id)
         do = lambda: impl.send_do(at, args.id, imsg)
     else:
         s = impl.send_summary(at, args.id)
         do = lambda: impl.send_do(at, args.id)
-    if not s["to"]: fail("草稿无收件人")
+    if not s["to"]: fail("draft has no recipients")
     eff = mode
     if eff == "auto" and allow and not all(a in allow for a in s["to"]): eff = "confirm"
     summary = {"account": args.account, "address": (load_tok(args.account) or {}).get("account"),
                "subject": s["subject"], "to": s["to"], "cc": s["cc"], "attachments": s["attachments"]}
     if eff == "confirm" and not args.yes:
-        if not sys.stdin.isatty(): fail("confirmation_required（非交互须 --yes，代表用户已在对话明示）")
+        if not sys.stdin.isatty(): fail("confirmation_required (non-interactive requires --yes, meaning the user has already explicitly consented in conversation)")
         print(json.dumps({"ok": True, "will_send": summary}, ensure_ascii=False), file=sys.stderr)
-        if input("发送以上内容？输入 yes 确认: ").strip() != "yes": fail("aborted_by_user")
+        if input("Send the above? Type yes to confirm: ").strip() != "yes": fail("aborted_by_user")
     do()
     out({"ok": True, "sent": summary, "message_id": args.id,
-         "note": "副本见已发送邮件文件夹"})
+         "note": "copy is in the Sent folder"})
 
-# ---------- 参数 ----------
+# ---------- arguments ----------
 
 def main():
     ap = argparse.ArgumentParser(prog="mail-cli")
@@ -92,7 +92,7 @@ def main():
         if act == "start":
             p.add_argument("--provider", choices=["graph", "gmail"], default="graph")
             p.add_argument("--send", action="store_true",
-                           help="申请含写/发的宽 scope（默认仅 Mail.Read 只读——只读面通常无需管理员审批）")
+                           help="request the broad scope including write/send (default is Mail.Read read-only only — the read-only surface usually needs no admin approval)")
         if act == "setup":
             p.add_argument("--provider", default="imap")
             p.add_argument("--user", required=True); p.add_argument("--auth-code", required=True)

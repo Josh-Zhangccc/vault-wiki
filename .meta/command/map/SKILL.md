@@ -2,71 +2,71 @@
 name: map
 owner: mapping
 consumes: [mapping, trust, tag, index, hot, log]
-description: "把 vault/ 中的资产映射为 wiki 代理页：SHA-256、镜像路径、frontmatter、索引/热缓存/日志联动。Triggers on: map, 映射, process this source, add this to the wiki."
+description: "Map assets in vault/ into wiki proxy pages: SHA-256, mirror path, frontmatter, index/hot-cache/log linkage. Triggers on: map, 映射, process this source, add this to the wiki."
 ---
 
-# map：映射
+# map: mapping
 
-把 `vault/` 中的资产映射为 `wiki/vault/` 的代理页——映射和理解解耦，纯登记动作（登记字段与正文尺度等写侧契约见注入区）。只面向已在 vault 的资产，不做任何 vault 侧处理（整理与打磨属 vault 治理，另议）。
+Map assets in `vault/` into `wiki/vault/` proxy pages — mapping and understanding are decoupled: a pure registration action (registration fields, body scale, and other write-side contracts are in the injection region). It targets only assets already in vault and does no vault-side processing (organizing and polishing belong to vault governance, discussed separately).
 
 ## Scope
 
-写：mapping（代理页）、log、hot、index
-读：registry（`.meta/protocol/registry.yaml`，字段与值集锚点）、tag（词表 `wiki/tags.md`）、trust（generated）、vault（原文）
+Write: mapping (proxy pages), log, hot, index
+Read: registry (`.meta/protocol/registry.yaml`, field and value-set anchor), tag (vocabulary `wiki/tags.md`), trust (generated), vault (originals)
 
 ## Steps
 
-1. **锚点（一次读取）**：读 `.meta/protocol/registry.yaml` 与 `wiki/tags.md`——值集与既有词表在写入前可见
-2. 读 vault/ 中目标资产
-3. 按注入区写侧契约组装代理页草稿（mapping 镜像与登记字段、trust generated、tag 打标）；**呈映射预览**（路径 / 哈希 / 描述 / tags），等用户确认
-4. 确认后写代理页
-5. **写后管道**（确定性，机械自动不询问）：按注入区序执行各插件写入调用，毕即 `python .meta/scripts/pipeline.py verify`（写后自证，未过即回修）；随即按提交纪律入库（`映射: <资产名>`，词表见 `.meta/protocol/actions.md`）
-6. 回报：路径 / 哈希 / 描述 / tags
+1. **Anchor (one-time read)**: read `.meta/protocol/registry.yaml` and `wiki/tags.md` — value sets and the existing vocabulary are visible before writing
+2. Read the target asset in vault/
+3. Assemble the proxy-page draft per the write-side contracts in the injection region (mapping mirror and registration fields, trust generated, tag labeling); **present the mapping preview** (path / hash / description / tags) and wait for user confirmation
+4. After confirmation, write the proxy page
+5. **Post-write pipeline** (deterministic, mechanical and automatic, no prompting): execute each plugin's write calls in injection-region order, then finish with `python .meta/scripts/pipeline.py verify` (post-write self-verification; on failure, go back and fix); then commit per the commit discipline (`映射: <asset name>`, see the vocabulary in `.meta/protocol/actions.md`)
+6. Report: path / hash / description / tags
 
 ## Prohibitions
 
-- 不修改 vault/ 任何文件（命令侧对 vault 只增）；其余硬规则（哈希必算、正文不复制全文等）以注入区 mapping 块为准
+- Never modify any vault/ file (the command side is append-only toward vault); other hard rules (hash always computed, body never a full copy, etc.) defer to the mapping block of the injection region
 
 ## Language
 
-产出语言取行文声明页 `wiki/language.md` 的 default 键（页面或缺席键跟会话语言）；专名与路径保留原形。
+Output language takes the default key of the language declaration page `wiki/language.md` (a missing page or missing key falls back to the session language); proper nouns and paths keep their original form.
 
 ## Parameters
 
-- 资产路径（vault/ 内相对路径）；可批量
+- Asset path (relative inside vault/); batching allowed
 
 ## Injected Section (plugin usage blocks)
 
-> 本区为 wiki_plugin_kernel 投影：consumes 拉取与源侧路由 usage_routes 合流，披露序 = owner 在前、路由居中、拉取殿后（inject / all 重建）；手写内容不进此区，改写侧契约改 PLUGIN.yaml。
+> This region is a wiki_plugin_kernel projection: consumes pulls merged with usage_routes source-side routing; disclosure order = owner first, routed blocks in the middle, pulled blocks last (rebuilt by inject / all); handwritten content does not belong here — to change the write-side contract, edit PLUGIN.yaml.
 
 <!-- cmd-inject:start -->
 <!-- usage:mapping -->
-- 镜像定位：代理路径 = `wiki/vault/<原路径>.md`（原名 + .md，防同名碰撞）；md 资产同样有代理，无特例
-- 登记字段：`type: source` + `raw_file`（根相对路径）/ `raw_sha256`（十六进制 SHA-256，不跳过计算）
-- 正文一行描述起步，不复制原文全文；摘要 / 结构抽取为可选增强；日记类资产以登记为主，不强制摘要
-- URL 型资产：代理页带 `url`（vault 字段——来源链接，来源保全；agent 通道放入必填、人工放入可选）
+- Mirror locating: proxy path = `wiki/vault/<original-path>.md` (original name + .md, prevents name collisions); md assets also get proxies, no exceptions
+- Registration fields: `type: source` + `raw_file` (root-relative path) / `raw_sha256` (hexadecimal SHA-256, never skip the computation)
+- Body starts with a one-line description, never copying the full original text; summary / structure extraction are optional enhancements; diary-type assets are registration-first, summaries not enforced
+- URL-type assets: the proxy page carries `url` (vault field — source link, source preservation; required when placed via agent channels, optional for manual placement)
 <!-- /usage:mapping -->
 
 <!-- usage:trust -->
-- 写页随手写 `generated`（块式：`by: agent/<当前模型>` / `at: 今日`）
-- 复核动作发生时追加 `verified` 事件（单行 `by: <actor>, at: <日期>`），不为凑水位伪造
-- 复核由用户发起（人指令触发），agent 不自发追加 verified 事件
+- When writing a page, write `generated` along the way (block style: `by: agent/<current-model>` / `at: <today>`)
+- When a review action happens, append a `verified` event (single line `by: <actor>, at: <date>`), never fabricated to inflate the level
+- Reviews are initiated by the user (triggered by human instruction); agents never append verified events on their own
 <!-- /usage:trust -->
 
 <!-- usage:tag -->
-- 写入前读 `wiki/tags.md`，优先复用既有词
-- 新词规范：主语言跟 language 页 default 键（缺席跟会话语言，防中英混杂碎片化）、英文小写 kebab-case、层级 ≤2、每页 ≤5、禁复述 type
+- Before writing, read `wiki/tags.md` and prefer reusing existing terms
+- New-term conventions: primary language follows the language page's default key (absent → session language, preventing mixed Chinese-English fragmentation of the vocabulary); English lowercase kebab-case; hierarchy ≤2; ≤5 per page; restating type forbidden
 <!-- /usage:tag -->
 
 <!-- usage:index -->
-- 写后重建（机械自动）：`python .meta/scripts/pipeline.py index`（索引——溢出减负制，含并回后多余旧索引删除）与同脚本 `tags`（tag 反向索引）；LLM 不手写索引
+- Post-write rebuild (mechanical, automatic): `python .meta/scripts/pipeline.py index` (index — overflow-offloading scheme, including deletion of obsolete old indexes after merge-back) and the same script's `tags` (tag reverse index); LLMs never hand-write indexes
 <!-- /usage:index -->
 
 <!-- usage:hot -->
-- 写条目（机械自动）：`python .meta/scripts/pipeline.py hot <类型> "<wikilink + 一句话核心>"`（类型值集同 log，见 AGENTS 注入区 log 块）；窗口淘汰与截短由脚本执行
+- Writing entries (mechanical, automatic): `python .meta/scripts/pipeline.py hot <type> "<wikilink + one-sentence essence>"` (type value set same as log, see the log block of the AGENTS injection region); window eviction and truncation are performed by the script
 <!-- /usage:hot -->
 
 <!-- usage:log -->
-- 写行（机械自动）：`python .meta/scripts/pipeline.py log <类型> "<一句话>" [--domain 域]`（类型值集见 AGENTS 注入区 log 块；域标 = 域件名如 bb/lark/vault，域内事务必带、框架与原生事务缺省）；滚动窗口与归档由脚本执行
+- Writing lines (mechanical, automatic): `python .meta/scripts/pipeline.py log <type> "<one sentence>" [--domain <domain>]` (type value set in the log block of the AGENTS injection region; domain tag = domain-plugin name such as bb/lark/vault, mandatory for in-domain transactions, omitted for framework and native transactions); rolling window and archiving are performed by the script
 <!-- /usage:log -->
 <!-- cmd-inject:end -->

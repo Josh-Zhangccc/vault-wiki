@@ -2,92 +2,92 @@
 name: save
 owner: [notes, sessions]
 consumes: [notes, sessions, trust, index, hot, log]
-description: "把当前对话、答案或洞见存为 wiki 原生笔记。先去重再落档，推断类型与标题，长会话分块提取，更新索引/日志/热缓存。Triggers on: save this, /save, file this, save to wiki, 保存."
+description: "Save the current conversation, answers, or insights as wiki native notes. Deduplicate before filing, infer type and title, chunk-extract long sessions, update index/log/hot cache. Triggers on: save this, /save, file this, save to wiki, 保存."
 ---
 
-# save：沉淀
+# save: capture
 
-好答案不该消失在聊天记录里。把刚讨论的内容存为 wiki 永久页。wiki 靠它复利，勤存。
+Good answers should not vanish in chat history. Save what was just discussed as permanent wiki pages. The wiki compounds through it — save often.
 
 ## Scope
 
-写：sessions（会话骨干页）、notes（原生笔记）、log、hot、index
-读：registry（`.meta/protocol/registry.yaml`，字段与值集锚点）、tag（词表 `wiki/tags.md`）、trust（generated）、index / hot（去重前置）
+Write: sessions (session backbone pages), notes (native notes), log, hot, index
+Read: registry (`.meta/protocol/registry.yaml`, field and value-set anchor), tag (vocabulary `wiki/tags.md`), trust (generated), index / hot (dedup prerequisites)
 
 ## Dedup Before Filing (required)
 
-1. 读 wiki/hot.md 与 wiki/index.md 了解近期上下文
-2. 按标题与关键概念搜既有页面
-3. 已有相关页：不直接改写——展示差异由用户裁决（追加式并入须用户指令并留痕，或人手改，或另立新页）；部分重叠：同上展示差异由用户选
-4. 确认无覆盖页后才新建
+1. Read wiki/hot.md and wiki/index.md for recent context
+2. Search existing pages by title and key concepts
+3. A related page exists: never rewrite directly — show the differences and let the user adjudicate (append-style merging requires a user instruction and leaves traces, or the human edits by hand, or a new page is created); partial overlap: likewise, show the differences and let the user choose
+4. Create a new page only after confirming none covers it
 
 ## Type and Destination
 
-type / status 值集以 registry 为准（一次读取锚点，不复抄表）；真歧义才问。落点按 type 分流：session 走下方长会话段，其余原生型落 `wiki/notes/`（各型落点与契约见注入区）；source 型不在此列——有 vault 对应物的走 map。
+type / status value sets defer to the registry (a one-time read anchor; do not re-copy the table); ask only on genuine ambiguity. Destination splits by type: session goes to the long-sessions section below, other native types land in `wiki/notes/` (per-type destinations and contracts in the injection region); the source type is out of scope here — anything with a vault counterpart goes through map.
 
 ## Workflow
 
-1. **锚点（一次读取）**：读 `.meta/protocol/registry.yaml` 与 `wiki/tags.md`——type / status 值集与既有词表写入前可见
-2. 扫描对话，识别高价值内容（非显然的洞见、带理由的决策、费力得出的分析、会被再次引用的对比）；跳过机械问答 / 调试过程 / 已在库内容
-3. 定 type（真歧义才问）与标题（歧义或冲突才问）
-4. 以陈述句现在时重写：写知识，不写对话
-5. 按注入区写侧契约建页（notes / sessions 落点与形状、trust generated、tag 打标）；session 型走长会话段
-6. 对话中提到的 wiki 页写入 related 并加 wikilink
-7. **写后管道**（确定性，机械自动）：按注入区序执行各插件写入调用，毕即 `python .meta/scripts/pipeline.py verify`（写后自证，未过即回修）；随即按提交纪律入库（`保存: <页标题>`，见 `.meta/protocol/actions.md`）
-8. 回报：`Saved as [[标题]] in wiki/notes/`（session 型：`... in wiki/sessions/`）
+1. **Anchor (one-time read)**: read `.meta/protocol/registry.yaml` and `wiki/tags.md` — type / status value sets and the existing vocabulary are visible before writing
+2. Scan the conversation for high-value content (non-obvious insights, decisions with reasons, hard-won analyses, comparisons that will be cited again); skip mechanical Q&A / debugging processes / content already in the repository
+3. Set the type (ask only on genuine ambiguity) and title (ask only on ambiguity or conflict)
+4. Rewrite in declarative present tense: write knowledge, not dialogue
+5. Create the page per the write-side contracts in the injection region (notes / sessions destinations and shapes, trust generated, tag labeling); the session type goes to the long-sessions section
+6. Write wiki pages mentioned in the conversation into related with wikilinks
+7. **Post-write pipeline** (deterministic, mechanical, automatic): execute each plugin's write calls in injection-region order, then finish with `python .meta/scripts/pipeline.py verify` (post-write self-verification; on failure, go back and fix); then commit per the commit discipline (`保存: <page title>`, see `.meta/protocol/actions.md`)
+8. Report: `Saved as [[title]] in wiki/notes/` (session type: `... in wiki/sessions/`)
 
 ## Long Sessions (session backbone)
 
-1. 按主题切 3-8 段（不按消息数），合并去机械细节
-2. 建 session 骨干页：落点、默认命名、participants、骨干页形状与提升规则见注入区 sessions 块
-3. 标题真歧义才问
+1. Split into 3-8 sections by topic (not by message count); merge and drop mechanical details
+2. Create the session backbone page: destination, default naming, participants, backbone-page shape, and promotion rules in the sessions block of the injection region
+3. Ask about the title only on genuine ambiguity
 
 ## Writing Rules
 
-陈述句现在时；产出语言取行文声明页 `wiki/language.md` 的 default 键（页面或缺席键跟会话语言）；提到的概念 / 页面全部 wikilink；未来会话能冷读此页。
+Declarative present tense; output language takes the default key of the language declaration page `wiki/language.md` (a missing page or missing key falls back to the session language); every concept / page mentioned gets a wikilink; a future session must be able to cold-read this page.
 
 ## Parameters
 
-- `/save` 全会话；`/save <主题>` 只存该主题；`--force` 跳过确认（仅无冲突时）
+- `/save` saves the whole session; `/save <topic>` saves only that topic; `--force` skips confirmation (only when conflict-free)
 
 ## Injected Section (plugin usage blocks)
 
-> 本区为 wiki_plugin_kernel 投影：consumes 拉取与源侧路由 usage_routes 合流，披露序 = owner 在前、路由居中、拉取殿后（inject / all 重建）；手写内容不进此区，改写侧契约改 PLUGIN.yaml。
+> This region is a wiki_plugin_kernel projection: consumes pulls merged with usage_routes source-side routing; disclosure order = owner first, routed blocks in the middle, pulled blocks last (rebuilt by inject / all); handwritten content does not belong here — to change the write-side contract, edit PLUGIN.yaml.
 
 <!-- cmd-inject:start -->
 <!-- usage:notes -->
-- 落点 `wiki/notes/<标题>.md`，文件名自由（人起名）；type 形态词表见 registry（开放自扩），领地值不落本区
-- 只增：命令不整页重写既有笔记；更新 = 用户指令下的追加式并入（正文留痕）或人手改
+- Landing spot `wiki/notes/<title>.md`, file name free (named by humans); type form vocabulary in registry (open, self-extended by instances), territory values do not land in this zone
+- Append-only: commands never rewrite an existing note wholesale; updating = append-style merge under user instruction (trace left in the body) or manual human edits
 <!-- /usage:notes -->
 
 <!-- usage:sessions -->
-- 落点 `wiki/sessions/YYYY-MM-DD-<主题>.md`（默认命名），type: session，participants 必填（actor 列表）
-- 骨干页五节形状：核心结论 / 决策与理由 / 非显然洞见 / 开放问题 / 相关页（全形状样例见 `.meta/plugins/sessions/PLUGIN.md` Example 节）
-- 独立高价值主题提升为 `wiki/notes/` 页，骨干页留 wikilink；提升前先去重
+- Landing spot `wiki/sessions/YYYY-MM-DD-<topic>.md` (default naming), type: session, participants required (actor list)
+- Backbone page five-section shape: Core Conclusions / Decisions & Rationale / Non-obvious Insights / Open Questions / Related Pages (full-shape sample in the Example section of `.meta/plugins/sessions/PLUGIN.md`)
+- Standalone high-value topics promoted to `wiki/notes/` pages, the backbone page keeping a wikilink; dedupe before promotion
 <!-- /usage:sessions -->
 
 <!-- usage:language -->
-- 读取时机：产出写作物（wiki 页面、文档、讲解沉淀）落笔前读声明页；页面或缺席键 = 跟会话语言（对话语言即产出语言），专名、代码、路径、命令、文件名恒保留原文（语言中性，不随配置变）——框架不预设具体语言，中文只是本工程开发期实例事实（AGENTS 准则 7）
-- 术语纪律：写作遇术语先查 `terms` 映射，有表从表；无表首现括注原文（如「检索增强生成（RAG）」），反复命中才登记（涌现制）；登记条目 = 原文→译名单行，长注记（译法理由、用法例）入正文沉淀节
-- 层级：默认基线非强制——域件源对齐纪律（试题语言跟样例/课程材料）优先于本页；tag 词形归 tag、称呼与个人动态偏好归 user-profile、域内术语表（bb courseware 对照表）域内自管，本页皆不复述
-- 维护：`language` 映射以人定为主、agent 可提议；`terms` 映射 agent 可登记但不覆写人定条目（异议呈报）；正文沉淀节只增
+- When to read: read the declaration page before writing any artifact (wiki pages, documents, lecture distillates); page or key absent = follow the session language (conversation language is the output language); proper nouns, code, paths, commands, and file names always keep their original form (language neutrality, invariant under configuration) — the framework presets no specific language; Chinese is merely an instance fact of this project's development period (AGENTS principle 7)
+- Term discipline: when writing hits a term, consult the `terms` mapping first — if tabled, follow the table; otherwise annotate the original in parentheses on first occurrence (e.g. '检索增强生成 (RAG)'), registering only after recurring hits (emergence-based); a registered entry = a single line original→translation, long notes (translation rationale, usage examples) go to the body distillation section
+- Layering: a default baseline, not a mandate — the domain plugins' source-alignment discipline (exam language follows samples/course materials) takes precedence over this page; tag word forms belong to tag, forms of address and personal dynamic preferences belong to user-profile, in-domain term tables (the bb courseware glossary) are self-managed within the domain — none of these are restated on this page
+- Maintenance: the `language` mapping is human-defined first, the agent may propose; the `terms` mapping may be registered by the agent but never overwrites human-defined entries (objections reported); the body distillation section is append-only
 <!-- /usage:language -->
 
 <!-- usage:trust -->
-- 写页随手写 `generated`（块式：`by: agent/<当前模型>` / `at: 今日`）
-- 复核动作发生时追加 `verified` 事件（单行 `by: <actor>, at: <日期>`），不为凑水位伪造
-- 复核由用户发起（人指令触发），agent 不自发追加 verified 事件
+- When writing a page, write `generated` along the way (block style: `by: agent/<current-model>` / `at: <today>`)
+- When a review action happens, append a `verified` event (single line `by: <actor>, at: <date>`), never fabricated to inflate the level
+- Reviews are initiated by the user (triggered by human instruction); agents never append verified events on their own
 <!-- /usage:trust -->
 
 <!-- usage:index -->
-- 写后重建（机械自动）：`python .meta/scripts/pipeline.py index`（索引——溢出减负制，含并回后多余旧索引删除）与同脚本 `tags`（tag 反向索引）；LLM 不手写索引
+- Post-write rebuild (mechanical, automatic): `python .meta/scripts/pipeline.py index` (index — overflow-offloading scheme, including deletion of obsolete old indexes after merge-back) and the same script's `tags` (tag reverse index); LLMs never hand-write indexes
 <!-- /usage:index -->
 
 <!-- usage:hot -->
-- 写条目（机械自动）：`python .meta/scripts/pipeline.py hot <类型> "<wikilink + 一句话核心>"`（类型值集同 log，见 AGENTS 注入区 log 块）；窗口淘汰与截短由脚本执行
+- Writing entries (mechanical, automatic): `python .meta/scripts/pipeline.py hot <type> "<wikilink + one-sentence essence>"` (type value set same as log, see the log block of the AGENTS injection region); window eviction and truncation are performed by the script
 <!-- /usage:hot -->
 
 <!-- usage:log -->
-- 写行（机械自动）：`python .meta/scripts/pipeline.py log <类型> "<一句话>" [--domain 域]`（类型值集见 AGENTS 注入区 log 块；域标 = 域件名如 bb/lark/vault，域内事务必带、框架与原生事务缺省）；滚动窗口与归档由脚本执行
+- Writing lines (mechanical, automatic): `python .meta/scripts/pipeline.py log <type> "<one sentence>" [--domain <domain>]` (type value set in the log block of the AGENTS injection region; domain tag = domain-plugin name such as bb/lark/vault, mandatory for in-domain transactions, omitted for framework and native transactions); rolling window and archiving are performed by the script
 <!-- /usage:log -->
 <!-- cmd-inject:end -->

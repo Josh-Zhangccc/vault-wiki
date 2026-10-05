@@ -2,47 +2,47 @@
 name: query
 owner: framework
 consumes: [log]
-description: "在 wiki 中检索并综合回答：热缓存→索引→grep→读页，产出带 wikilink 引用的答案。Triggers on: query, what do you know about, what is, explain, find in wiki, 检索."
+description: "Retrieve from the wiki and answer synthetically: hot cache → index → grep → read pages, producing answers with wikilink citations. Triggers on: query, what do you know about, what is, explain, find in wiki, 检索."
 ---
 
-# query：检索
+# query: retrieval
 
-读为主，唯一写动作是 log 一行（读信号）。分层递进，便宜的先上。
+Read-mostly; the only write action is one log line (a read signal). Layered progression — the cheapest goes first.
 
 ## Scope
 
-读：hot、index、tags、页面
-写：log（仅一行，type "query"）
+Read: hot, index, tags, pages
+Write: log (one line only, type "query")
 
 ## Read Order
 
-1. wiki/hot.md（最近上下文，最便宜）
-2. wiki/index.md / wiki/tags.md（目录与 tag 索引）
-3. grep（路径 / 标题 / 正文关键词）
-4. 读具体页面确认（每次查询 ≤3-5 页）
+1. wiki/hot.md (recent context, cheapest)
+2. wiki/index.md / wiki/tags.md (directory and tag indexes)
+3. grep (path / title / body keywords)
+4. Read specific pages to confirm (≤3-5 pages per query)
 
 ## Answer Rules
 
-- 产出语言取行文声明页 `wiki/language.md` 的 default 键（页面或缺席键跟会话语言）；页名以 wikilink 保留
-- 引用内联标注出处
-- 与库内既有内容矛盾时明确标出
+- Output language takes the default key of the language declaration page `wiki/language.md` (a missing page or missing key falls back to the session language); page names are preserved as wikilinks
+- Cite sources inline
+- Explicitly flag contradictions with existing repository content
 
 ## Not For
 
-- 不为通用编程问题读库（训练数据已覆盖）
-- 不为对话或项目文件已有内容读库
+- Do not read the repository for general programming questions (training data already covers them)
+- Do not read the repository for content already in the conversation or project files
 
 ## Wrap-up
 
-- 写 log 一行（读信号，读热度由此可测）：调用方式见注入区 log 块
-- log 行即数据区变更：按提交纪律随即提交（`检索: <主题>`，见 `.meta/protocol/actions.md`），不攒批
+- Write one log line (a read signal — this is how read popularity becomes measurable): see the log block of the injection region for how to call it
+- A log line is a data-zone change: commit immediately per the commit discipline (`检索: <topic>`, see `.meta/protocol/actions.md`); do not batch up
 
 ## Injected Section (plugin usage blocks)
 
-> 本区为 wiki_plugin_kernel 投影：consumes 拉取与源侧路由 usage_routes 合流，披露序 = owner 在前、路由居中、拉取殿后（inject / all 重建）；手写内容不进此区，改写侧契约改 PLUGIN.yaml。
+> This region is a wiki_plugin_kernel projection: consumes pulls merged with usage_routes source-side routing; disclosure order = owner first, routed blocks in the middle, pulled blocks last (rebuilt by inject / all); handwritten content does not belong here — to change the write-side contract, edit PLUGIN.yaml.
 
 <!-- cmd-inject:start -->
 <!-- usage:log -->
-- 写行（机械自动）：`python .meta/scripts/pipeline.py log <类型> "<一句话>" [--domain 域]`（类型值集见 AGENTS 注入区 log 块；域标 = 域件名如 bb/lark/vault，域内事务必带、框架与原生事务缺省）；滚动窗口与归档由脚本执行
+- Writing lines (mechanical, automatic): `python .meta/scripts/pipeline.py log <type> "<one sentence>" [--domain <domain>]` (type value set in the log block of the AGENTS injection region; domain tag = domain-plugin name such as bb/lark/vault, mandatory for in-domain transactions, omitted for framework and native transactions); rolling window and archiving are performed by the script
 <!-- /usage:log -->
 <!-- cmd-inject:end -->

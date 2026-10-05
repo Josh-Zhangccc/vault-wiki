@@ -1,13 +1,13 @@
-"""IMAP/SMTP provider（163 等，授权码登录）。
+"""IMAP/SMTP provider (163 etc., authorization-code login).
 
-坑（实测）：163 须发 IMAP ID 自报身份否则 select 报 Unsafe Login；
-中文文件夹名为 modified UTF-7；imaplib 参数仅 ascii，中文搜索退回客户端过滤。
+Pitfalls (measured): 163 requires sending IMAP ID to self-identify, otherwise select reports Unsafe Login;
+Chinese folder names are modified UTF-7; imaplib parameters are ascii-only, so Chinese searches fall back to client-side filtering.
 """
 import base64, email, email.policy, os, re
 from datetime import datetime, timedelta
 from .common import out, fail, strip_html, build_mime, sender_of
 
-# ---------- 连接 ----------
+# ---------- connection ----------
 
 def conn(cfg):
     import imaplib
@@ -16,14 +16,14 @@ def conn(cfg):
     c.login(cfg["user"], cfg["auth_code"])
     try: c.enable("UTF8=ACCEPT")
     except Exception: pass
-    try:  # 163 要求 IMAP ID 自报身份
+    try:  # 163 requires IMAP ID self-identification
         c._simple_command("ID", '("name" "mail-cli" "version" "1.0" "vendor" "vault-wiki")')
         c._untagged_response("OK", None, "ID")
     except Exception: pass
     return c
 
 def utf7_decode(s):
-    """IMAP modified UTF-7 → utf-8（163 中文文件夹名）。"""
+    """IMAP modified UTF-7 -> utf-8 (163 Chinese folder names)."""
     res, i = [], 0
     while i < len(s):
         if s[i] == "&":
@@ -39,7 +39,7 @@ def utf7_decode(s):
     return "".join(res)
 
 def find_folder(c, want):
-    """按特殊属性或常见名找文件夹（返回原始 wire 名，中文为 modified UTF-7）。"""
+    """Find a folder by special attribute or common name (returns the raw wire name; Chinese ones are modified UTF-7)."""
     typ, data = c.list()
     marks = {"drafts": "\\Drafts", "sent": "\\Sent"}
     names = {"drafts": ["草稿箱", "Drafts"], "sent": ["已发送", "Sent"],
@@ -58,10 +58,10 @@ def find_folder(c, want):
 
 def draft_folder(c):
     f = find_folder(c, "drafts")
-    if not f: fail("找不到草稿文件夹（可在 folders 里查名字）")
+    if not f: fail("drafts folder not found (look up its name via folders)")
     return f
 
-# ---------- 视图 ----------
+# ---------- views ----------
 
 def parse(raw):
     return email.message_from_bytes(raw, policy=email.policy.default)
@@ -101,7 +101,7 @@ def crit(args):
     if fa: c.append(f'FROM "{fa}"')
     return " ".join(c) or "ALL"
 
-# ---------- 命令实现 ----------
+# ---------- command implementations ----------
 
 def folders(args, cfg):
     c = conn(cfg)
@@ -181,14 +181,14 @@ def attach(args, cfg):
                     open(os.path.join(args.dest, name), "wb").write(data)
                     out({"ok": True, "saved": os.path.join(args.dest, name), "bytes": len(data)})
                     return
-            fail(f"附件不存在: {args.att}")
+            fail(f"attachment not found: {args.att}")
     finally: c.logout()
 
 def draft(args, cfg):
     c = conn(cfg)
     try:
         if args.act == "create":
-            if not args.to and not args.reply_to: fail("需要 --to 或 --reply-to")
+            if not args.to and not args.reply_to: fail("--to or --reply-to required")
             text = open(args.body_file).read() if args.body_file else (args.body or "")
             msg = build_mime(args.to, args.cc, args.subject, text, args.html, args.attach)
             if args.reply_to:
@@ -204,7 +204,7 @@ def draft(args, cfg):
                     new_refs = (refs + " " + (orig.get("Message-ID") or "")).strip()
                     if new_refs: msg["References"] = new_refs
                     if not args.to:
-                        msg["To"] = sender_of(orig.get("From")) or fail("原信 From 无法解析")
+                        msg["To"] = sender_of(orig.get("From")) or fail("original message From cannot be parsed")
             df = draft_folder(c)
             c.append(df, "\\Seen", None, msg.as_bytes())
             typ, _ = c.select(df)
@@ -214,7 +214,7 @@ def draft(args, cfg):
                  "subject": args.subject, "to": args.to})
         else:
             df = draft_folder(c)
-            c.select(df, readonly=(args.act != "delete"))  # delete 需读写才能 expunge
+            c.select(df, readonly=(args.act != "delete"))  # delete needs read-write access to expunge
             if args.act == "list":
                 typ, data = c.uid("search", None, "ALL")
                 uids = (data[0].split() if data and data[0] else [])[-args.limit:][::-1]

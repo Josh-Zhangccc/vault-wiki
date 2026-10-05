@@ -1,39 +1,39 @@
 ---
 name: asset-read
 owner: framework
-description: "按路径取任意格式资产的文本（md 直读 / pdf 经 PyMuPDF / docx 与 xlsx 标准库解包），产物缓存 wiki/tmp 并标 stale_after——回源读取的统一通道与缓存惯例。Triggers on: asset-read, 读资产, 回源, 提取文本, 读课件原文, read asset."
+description: "Extract text from assets of any format by path (md read directly / pdf via PyMuPDF / docx and xlsx unpacked with the standard library); outputs are cached in wiki/tmp and marked with stale_after — the unified channel and caching convention for source-origin reads. Triggers on: asset-read, 读资产, 回源, 提取文本, 读课件原文, read asset."
 ---
 
-# asset-read：资产回源读取
+# asset-read: source-origin asset reading
 
-按路径读取任意格式资产的文本——回源的统一通道：vault 资产、bb/ 拉取物、库外相对路径皆可。读取是登记的增强而非替代：代理页一行描述管概览，深问才回源。
+Read the text of assets of any format by path — the unified channel for source-origin reads: vault assets, bb/ fetched artifacts, and relative paths outside the repository are all eligible. Reading augments registration rather than replacing it: the proxy page's one-line description covers the overview; only a deep question goes back to the source.
 
 ## Scope
 
-读：任意格式资产（wiki 外文件系统，只读）
-写：`wiki/tmp/` 提取缓存（唯一落点）
+Read: assets of any format (file system outside wiki, read-only)
+Write: `wiki/tmp/` extraction cache (the only landing spot)
 
 ## Steps
 
-1. 定位资产路径与扩展名；md / txt / csv 直读即毕，不落缓存
-2. 查缓存：`wiki/tmp/<资产名>.txt` 在场且未过 stale_after → 直读缓存，不重抽
-3. 未命中则提取：
-   - pdf：PyMuPDF（`import fitz`；缺失先 `pip install pymupdf`）；大文件按页区间或关键词定位抽取，不整本进上下文
-   - docx / xlsx：纯标准库 zipfile + xml 文本节点提取
-   - 其他二进制：不深读，如实报「不支持文本提取」
-4. 产物落 `wiki/tmp/<资产名>.txt`，文件头三行注释：源路径 / 提取日 / stale_after = 提取日 + 7 天
-5. 回报要点与出处（页码或节名）
+1. Locate the asset path and extension; md / txt / csv are read directly and done — no cache is written
+2. Check the cache: if `wiki/tmp/<asset name>.txt` is present and not past stale_after → read the cache directly, do not re-extract
+3. On a miss, extract:
+   - pdf: PyMuPDF (`import fitz`; if missing, first `pip install pymupdf`); for large files, extract by page range or keyword location — never feed the whole book into context
+   - docx / xlsx: pure standard-library zipfile + xml text-node extraction
+   - other binaries: no deep read; report honestly "text extraction not supported"
+4. Write the output to `wiki/tmp/<asset name>.txt`, with a three-line comment header: source path / extraction date / stale_after = extraction date + 7 days
+5. Report key points with provenance (page number or section name)
 
 ## Prohibitions
 
-- 不修改资产原件（只读纪律随所在域不变）
-- 禁全量批量提取——按需单件；一次性查看不落缓存
-- 缓存过期由 check 报清单、处置经确认（tmp 插件既有规则，本命令不自行清理）
+- Never modify asset originals (the read-only discipline holds in whatever domain they live)
+- No bulk full extraction — single items on demand; one-off views are not cached
+- Cache expiry is reported as a list by check, and disposal requires confirmation (an existing rule of the tmp plugin; this command does not clean up on its own)
 
 ## Language
 
-产出语言取行文声明页 `wiki/language.md` 的 default 键（页面或缺席键跟会话语言）；资产原文保留原语言原形。
+Output language takes the default key of the language declaration page `wiki/language.md` (a missing page or missing key falls back to the session language); asset originals keep their original language and form.
 
 ## Parameters
 
-- 资产路径（根相对）；可选页区间或定位关键词
+- Asset path (root-relative); optional page range or locating keyword

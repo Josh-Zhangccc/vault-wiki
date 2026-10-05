@@ -1,3 +1,3 @@
-"""bili-cli：bilibili web API 只读为主连接器（轻自研，requests + 自实现 WBI 签名）。"""
+"""bili-cli: read-mostly connector over the bilibili web API (lightweight homegrown build, requests + self-implemented WBI signing)."""
 
 __version__ = "0.2.0"

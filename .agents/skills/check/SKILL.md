@@ -1,190 +1,190 @@
 ---
 name: check
 owner: framework
-description: "审计库的健康状态：底座与插件硬结构检查 + 插件与页面语义检查。Triggers on: check, 健康检查, 检查插件, lint."
+description: "Audit the repository's health: hard-structure checks on the foundation and plugins + semantic checks on plugins and pages. Triggers on: check, 健康检查, 检查插件, lint."
 ---
 
-# check：库健康审计
+# check: repository health audit
 
-审，不防。输出分级报告：error = 结构破损需处理；warning = 提示待办。检查规则来自两处：本文件底座部分（协议级）+ 下方注入区（wiki_plugin_kernel 自各插件 manifest checks 列表机械化投影，在场即注册）。
+This is an audit, not a guardrail. It outputs a graded report: error = structural breakage requiring action; warning = a suggested to-do. Check rules come from two places: the foundation part of this file (protocol level) + the injection region below (a mechanical projection by wiki_plugin_kernel from each plugin manifest's checks list; presence means registration).
 
 ## Purpose
 
-对整个实例（底座 + 插件 + wiki 页面）做一次健康审计。
+Run one health audit over the entire instance (foundation + plugins + wiki pages).
 
 ## Scope
 
-读：全部（.meta/、AGENTS.md 注入区、.agents/skills/、wiki/、vault/ 目录树）
-写：wiki/log.md 一行（type "check"）；可再生区按动作纪律直接重建（脚本：注入区 / registry / 命令副本；语义：索引 / tags / hot 淘汰 / log 归档 / 哈希重算）
+Read: everything (.meta/, the AGENTS.md injection region, .agents/skills/, the wiki/, vault/ directory trees)
+Write: one line in wiki/log.md (type "check"); regenerable zones are rebuilt directly per the action discipline (scripts: injection region / registry / command copies; semantics: index / tags / hot eviction / log archiving / hash recomputation)
 
 ## Steps
 
-1. **底座硬检查**（协议级）：
-   - **静态自检脚本**：`python .meta/scripts/wiki_plugin_kernel.py validate`（目录完整、manifest 七字段 + 可选 commands、id 一致、依赖存在、无环、命令绑定 owner×commands 双向一致）——错误即 FAIL
-   - **幂等重建**：`python .meta/scripts/wiki_plugin_kernel.py all`（注入区 / registry 插件段 / 命令副本——机械自动，漂移在此修复，脚本源码即规则清单）
-   - `.meta/protocol/registry.yaml` 在位且 protocol / reserved 段完好（脚本不触碰这两段，缺段即报错）
-   - **值集越界**：扫 wiki/ 全部页面 frontmatter，type / status 取值不在注册表值集 → error
-   - `.meta/command/` 每个 SKILL.md 有 frontmatter（name / description / owner；可选 consumes——消费写侧契约的插件有序列表，引用插件须在场且带 usage 列表，owner 驱动命令必填）
-2. **插件检查**：先跑附检 `python .meta/scripts/wiki_plugin_kernel.py audit`（机械项：各插件 scripts/check.py 发现式执行，只读报告，error 计入 FAIL）；再执行下方注入区块中标注「语义」的项
-3. **语义检查**：读插件与命令文件，查悬挂引用（命令涉及不存在的结构）、幽灵字段（页面字段无拥有插件且非注册表预留）、注入区块与 PLUGIN.md Checks 节不一致
-4. 汇总输出：PASS / WARN / FAIL 计数 + 分级明细 + vault 积压计数（信息项）
-5. **修复按动作纪律分级执行**（`.meta/protocol/actions.md`）：机械自动项直接做——`pipeline.py index` / `tags`（索引重建）、`wiki_plugin_kernel.py all`（注册表 / 注入区 / 副本）、哈希重算（改 frontmatter 的 raw_sha256），hot / log 越界由各自写管道命令收敛；机械确认项呈清单问一次，语义项只报告；历史条目永不自动改
-6. wiki/log.md 置顶追加一行（type "check"，走 `pipeline.py log check "<一句话>"`）；有变更（修复 / log 行）即按提交纪律入库（`检查: <结论>`，见 `.meta/protocol/actions.md`）
+1. **Foundation hard checks** (protocol level):
+   - **Static self-check script**: `python .meta/scripts/wiki_plugin_kernel.py validate` (directory completeness, manifest seven fields + optional commands, id consistency, dependency existence, acyclicity, command binding owner×commands bidirectional consistency) — any error means FAIL
+   - **Idempotent rebuild**: `python .meta/scripts/wiki_plugin_kernel.py all` (injection region / registry plugin section / command copies — mechanical and automatic; drift is fixed here, the script source is the rule list)
+   - `.meta/protocol/registry.yaml` is in place with the protocol / reserved sections intact (the script never touches these two sections; a missing section is an error)
+   - **Value-set violation**: scan the frontmatter of all wiki/ pages; a type / status value outside the registry value set → error
+   - Every `.meta/command/` SKILL.md has frontmatter (name / description / owner; optional consumes — an ordered list of plugins whose write-side contracts are consumed; referenced plugins must be present with a usage list; mandatory for owner-driven commands)
+2. **Plugin checks**: first run the attached audit `python .meta/scripts/wiki_plugin_kernel.py audit` (mechanical items: each plugin's scripts/check.py executed on audit discovery, read-only reporting; errors count toward FAIL); then execute the items marked "semantic" in the injection-region blocks below
+3. **Semantic checks**: read plugin and command files, looking for dangling references (a command referring to nonexistent structure), ghost fields (page fields with no owning plugin and not registry-reserved), and injection-region blocks inconsistent with the PLUGIN.md Checks section
+4. Summary output: PASS / WARN / FAIL counts + graded details + vault backlog count (informational)
+5. **Fixes are executed by grade per the action discipline** (`.meta/protocol/actions.md`): mechanical-automatic items are done directly — `pipeline.py index` / `tags` (index rebuild), `wiki_plugin_kernel.py all` (registry / injection region / copies), hash recomputation (raw_sha256 of changed frontmatter); hot / log overflows are converged by their own write-pipeline commands; mechanical-confirmation items present a list and ask once; semantic items are reported only; historical entries are never automatically changed
+6. Prepend one line to wiki/log.md (type "check", via `pipeline.py log check "<one line>"`); if anything changed (fixes / a log line), commit per the commit discipline (`检查: <conclusion>`, see `.meta/protocol/actions.md`)
 
 ## Tools
 
-grep / 读文件即够；一次读取够用的不做第二次扫描（调用节俭）。
+grep / file reading suffice; no second scan when one read is enough (call frugality).
 
 ## Parameters
 
-- 无：全库审计
-- 插件 id：只查该插件
+- None: full-repository audit
+- Plugin id: check that plugin only
 
 ## Injected Section (plugin check blocks)
 
-> 本区为 wiki_plugin_kernel 自各插件 manifest checks 列表投影（`inject` / `all` 重建，在场即注册）；手写内容不进此区，改检查规则改 PLUGIN.yaml。
+> This region is a wiki_plugin_kernel projection from each plugin manifest's checks list (rebuilt by `inject` / `all`; presence means registration); handwritten content does not belong here — to change check rules, edit PLUGIN.yaml.
 
 <!-- check-inject:start -->
 <!-- check:device -->
-- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：device 块映射的 warranty_until 距今 ≤30 天 → warning 临期；已过期 → warning 过期；日期非法 → warning
+- Mechanical (attached-audit script `scripts/check.py`, executed discovery-style by audit): device block mapping's warranty_until within ≤30 days of today → warning nearing expiry; already expired → warning expired; invalid date → warning
 <!-- /check:device -->
 
 <!-- check:hot -->
-- 窗口越界（超 25 条 / 超 5 日 / 单条超 200 字）→ 走一次 `pipeline.py hot <类型> "<补录>"` 或等下次写入自然收敛后复查
-- 与 log 矛盾（log 有记录而 hot 全无踪迹）→ warning
+- Window out of bounds (>25 entries / >5 days / >200 chars per entry) → run `pipeline.py hot <type> "<backfill>"` once, or wait for the next write to converge naturally then re-check
+- Contradiction with log (log has records while hot shows no trace) → warning
 <!-- /check:hot -->
 
 <!-- check:language -->
-- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：type: language 落 `wiki/language.md` 之外 → error；terms 空值 → warning；声明页缺席 → info（跟会话语言容忍）
+- Mechanical (attached-audit script `scripts/check.py`, executed discovery-style by audit): type: language landing outside `wiki/language.md` → error; terms empty values → warning; declaration page absent → info (session-language fallback tolerated)
 <!-- /check:language -->
 
 <!-- check:link -->
-- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：断链（目标既非页面全名，也非任何页的 aliases）→ warning；hot 手写断链 → warning（不作入链源）；乱码链接（目标含 U+FFFD 替换符，含 related 项）→ error；别名二义（两页声明同一 aliases，解析不确定）→ error；孤儿页（无入链且无 related 引用，入链源只计概念页）→ notes 知识页 warning、领地值登记页 info（registry 领地值除 session，暂无入链为登记常态）；related 单向（A 列 B 而 B 未回列）→ 信息
-- 语义项（check 命令）：入链密度 top 榜 → 信息项（hub 涌现依据，不告警）
+- Mechanical items (attached-audit script `scripts/check.py`, executed on audit discovery): broken link (target is neither a page full name nor any page's aliases) → warning; hand-written broken link in hot → warning (not counted as an inbound-link source); garbled link (target contains the U+FFFD replacement character, including related items) → error; alias ambiguity (two pages declaring the same aliases, resolution indeterminate) → error; orphan page (no inbound links and no related references, inbound sources counting concept pages only) → warning for notes knowledge pages, info for territory-value registration pages (registry territory values except session, having no inbound links yet being the registration norm); one-way related (A lists B while B does not list back) → info
+- Semantic items (check command): inbound-link density top list → info item (evidence for hub emergence, no alert)
 <!-- /check:link -->
 
 <!-- check:log -->
-- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：无日期条目（`- ` 开头而不匹配日期格式，主文件与归档同检）→ error
-- 语义项（check 命令）：历史条目被修改（git 可核）→ error；容量超限 → 机械归档后复查
+- Mechanical items (attached-audit script `scripts/check.py`, executed on audit discovery): undated entries (starting with `- ` yet not matching the date format, main file and archive checked alike) → error
+- Semantic items (check command): historical entries modified (verifiable via git) → error; capacity over the limit → re-check after mechanical archiving
 <!-- /check:log -->
 
 <!-- check:notes -->
-- 笔记被命令覆盖的痕迹 → error
-- 近似重复笔记（Jaccard > 0.7）→ warning
+- Traces of a note overwritten by a command → error
+- Near-duplicate notes (Jaccard > 0.7) → warning
 <!-- /check:notes -->
 
 <!-- check:sessions -->
-- 机械项（audit 覆盖）：session 型页面在 `wiki/sessions/` 之外（或反向）→ warning；participants 缺失或项不符 actor 约定 → warning
-- 语义：骨干页过度膨胀（该提升未提升）→ warning
+- Mechanical (covered by audit): session-type pages outside `wiki/sessions/` (or the reverse) → warning; participants missing or entries violating the actor convention → warning
+- Semantic: backbone page bloated past due promotion (should have been promoted but was not) → warning
 <!-- /check:sessions -->
 
 <!-- check:tag -->
-- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：单页 >5 个 tag → warning；tags 复述 type → warning；层级超限（父/子 ≤2）或空段 → warning
-- 语义项（check 命令）：近重复 tag → warning 提示合并；合并为机械确认项（呈清单，用户确认后执行）
+- Mechanical items (attached-audit script `scripts/check.py`, executed on audit discovery): >5 tags on one page → warning; tags restating type → warning; hierarchy over the limit (parent/child ≤2) or empty segment → warning
+- Semantic items (check command): near-duplicate tags → warning suggesting a merge; merging is a mechanically-confirmed item (list presented, executed after user confirmation)
 <!-- /check:tag -->
 
 <!-- check:tmp -->
-- 语义项（v0.1 人工，附检后置）：type: tmp 落 wiki/tmp/ 之外 → error；stale_after 已过 → warning（清理提示）；tmp 页数 > 20 → info（积压分诊）
+- Semantic (v0.1 manual, attached audit deferred): type: tmp landing outside wiki/tmp/ → error; stale_after already past → warning (cleanup prompt); tmp page count > 20 → info (backlog triage)
 <!-- /check:tmp -->
 
 <!-- check:trust -->
-- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：generated 缺 by/at 或 actor 格式错、verified 事件缺 by/at 或格式错、stale_after 非 YYYY-MM-DD、sources 非列表 → warning
-- 机械项（信息级）：stale 页清单（已过 stale_after）；信任水位（human-reviewed / machine-confirmed 计数）
-- 语义（check 命令）：stale 页处置分诊（刷新时刻 / 重验证 / 废弃）——人决
+- Mechanical items (attached-audit script `scripts/check.py`, executed on audit discovery): generated missing by/at or wrong actor format, verified event missing by/at or wrong format, stale_after not YYYY-MM-DD, sources not a list → warning
+- Mechanical items (info level): stale page list (past stale_after); trust-level counts (human-reviewed / machine-confirmed counts)
+- Semantic (check command): stale-page disposition triage (refresh the moment / re-verify / deprecate) — human decides
 <!-- /check:trust -->
 
 <!-- check:calendar -->
-- 语义项（v0.1 人工，附检后置）：月页文件名非 YYYY-MM 或落 wiki/calendar/ 之外 → error；已过月份月页改写痕迹 → error（git 审计）；声明页缺 `calendar` 块 → info（manual-only 常态）
+- Semantic (v0.1 manual, attached audit deferred): month page file name not YYYY-MM or landing outside wiki/calendar/ → error; traces of rewriting a past month's page → error (git audit); declaration page missing the `calendar` block → info (the manual-only norm)
 <!-- /check:calendar -->
 
 <!-- check:cron -->
-- 机械项：type: cron 页落 wiki/cron/ 之外 → error；任务页缺 cron 块或最小键集（schedule/action/form/status）→ warning；last_run 超 schedule 周期且 active → warning（投影丢失信号）
-- 语义项（附检后置）：执行侧清单（harness/系统任务，尽力读）与声明页集漂移 → warning
+- Mechanical: a type: cron page landing outside wiki/cron/ → error; task page missing the cron block or the minimal key set (schedule/action/form/status) → warning; last_run beyond the schedule period with active → warning (projection-lost signal)
+- Semantic (attached audit deferred): drift between the execution-side list (harness/system tasks, best-effort read) and the declaration page set → warning
 <!-- /check:cron -->
 
 <!-- check:cuhksz -->
-- 语义项（v0.1 人工，附检后置）：type: cuhksz 页落 wiki/cuhksz/ 之外 → error；identity.md 缺 sis 块映射或 student_id → error
+- Semantic items (v0.1 manual, attached audit deferred): a type: cuhksz page outside wiki/cuhksz/ → error; identity.md missing the sis block mapping or student_id → error
 <!-- /check:cuhksz -->
 
 <!-- check:index -->
-- 索引与实际页面集偏差（含该删未删的并回索引）→ 跑 `pipeline.py index` 重建即修复（幂等，无 diff 即一致）；tags 同理（`pipeline.py tags`）
-- 手编痕迹 → warning
+- Deviation between indexes and the actual page set (including merged-back indexes pending deletion) → fixed by running `pipeline.py index` to rebuild (idempotent; no diff means consistent); same for tags (`pipeline.py tags`)
+- Traces of hand editing → warning
 <!-- /check:index -->
 
 <!-- check:lark -->
-- 语义项（v0.1 人工，附检后置）：指针页缺 token / token 重复 → error；lark.profile 与所在目录名不符 → warning；type: lark 落 wiki/lark/ 之外 → error；域枢纽页（docs.md 等）落 profile 目录之外 → warning
+- Semantic items (v0.1 manual, attached audit deferred): pointer page missing token / duplicate token → error; lark.profile not matching the containing directory name → warning; type: lark outside wiki/lark/ → error; domain hub page (docs.md etc.) outside a profile directory → warning
 <!-- /check:lark -->
 
 <!-- check:project -->
-- 语义项（v0.1 人工，附检后置）：type: project 落 `wiki/projects.md` 之外 → error；声明键无对应目录 / 目录未声明 → warning（双向 diff）；进行中项目自述 updated 超 30 天 → warning（停滞分诊）
+- Semantic items (v0.1 manual, attached audit deferred): type: project outside `wiki/projects.md` → error; a declared key with no directory / an undeclared directory → warning (bidirectional diff); an in-progress project's self-description updated over 30 days ago → warning (stall triage)
 <!-- /check:project -->
 
 <!-- check:todo -->
-- 机械项（信息级）：日期触发已逾期且未销账条目清单（开 session 提醒的机械依据）；页面缺失（未受托常态）
-- 机械项：条目缺触发条件或 by/at → warning；type: todo 落 `wiki/todo.md` 之外 → error
-- 语义（check 命令）：open 条目 > 50 → warning（膨胀分诊：该做的做、该沉淀的走 save、该放弃的与用户确认）
+- Mechanical (info-level): the list of date-triggered, overdue and unsettled entries (the mechanical basis for new-session reminders); page absent (the no-delegation norm)
+- Mechanical: entry missing trigger condition or by/at → warning; type: todo landing outside `wiki/todo.md` → error
+- Semantic (check command): open entries > 50 → warning (bloat triage: do what should be done, distill what should be distilled via save, confirm with the user what should be dropped)
 <!-- /check:todo -->
 
 <!-- check:user-profile -->
-- 语义（check 命令）：画像断言缺证据 wikilink → warning
-- 机械项：type: profile 页面落 `wiki/notes/` 或 `wiki/vault/`（走错领地）→ error
-- 机械项（信息级）：画像页缺失（未触发常态，profile 首建随触发）
+- Semantic (check command): profile assertion missing an evidence wikilink → warning
+- Mechanical: a type: profile page landing in `wiki/notes/` or `wiki/vault/` (wrong territory) → error
+- Mechanical (info-level): profile page absent (the untriggered norm; profile self-creates on first trigger)
 <!-- /check:user-profile -->
 
 <!-- check:bb -->
-- 语义项（v0.1 人工，附检后置）：type: bb 页落 wiki/cuhksz/bb/ 之外 → error；身份页 bb 块映射缺 course_id 或与目录不对应 → error；速写页手编痕迹 → warning；stale 清单（信息级）
+- Semantic items (v0.1 manual, attached audit deferred): a type: bb page outside wiki/cuhksz/bb/ → error; identity-page bb block mapping missing course_id or not matching the directory → error; manual-edit traces on the digest page → warning; stale list (info level)
 <!-- /check:bb -->
 
 <!-- check:bili -->
-- 语义项（v0.1 人工，附检后置）：type: bili 页落 wiki/bili/ 之外 → error；UP 主档案 mid 或视频档案 bvid 重复、与页声明不对应 → error；速写页手编痕迹 → warning；stale 清单（信息级：拉取日 + TTL）
+- Semantic items (v0.1 manual, attached audit deferred): a type: bili page outside wiki/bili/ → error; duplicate UP-archive mid or video-archive bvid, or mismatching the page's declarations → error; manual-edit traces on the digest page → warning; stale list (info level: pull date + TTL)
 <!-- /check:bili -->
 
 <!-- check:email -->
-- 语义项（v0.1 人工，附检后置）：type: email 页落 `wiki/email/` 之外 → error；人档 token（地址）重复 → error；线程档机械区缺 members（Message-ID 列表）→ warning；速写手编痕迹 → warning；stale 清单（信息级：拉取日 + TTL）
+- Semantic items (v0.1 manual, attached audit deferred): a type: email page outside `wiki/email/` → error; duplicate person-archive token (address) → error; a thread archive's mechanical section missing members (Message-ID list) → warning; manual-edit traces on the digest → warning; stale list (info level: pull date + TTL)
 <!-- /check:email -->
 
 <!-- check:lark-calendar -->
-- 语义项（v0.1 人工）：声明页 lark 源的 profile 不在 wiki/lark/ 目录集 → warning；日程行源键无对应声明 → warning
+- Semantic items (v0.1 manual): a declaration-page lark source's profile not among the wiki/lark/ directory set → warning; a schedule line's source key with no matching declaration → warning
 <!-- /check:lark-calendar -->
 
 <!-- check:lark-docs -->
-- 语义项（v0.1 人工，附检后置）：`docs.md` 缺 `docs` 块映射 → warning；指针页落 `docs/` 子树之外 → warning；kind 不在词表 → info
+- Semantic items (v0.1 manual, attached audit deferred): `docs.md` missing the `docs` block mapping → warning; pointer page outside the `docs/` subtree → warning; kind not in the vocabulary → info
 <!-- /check:lark-docs -->
 
 <!-- check:lark-im -->
-- 语义项（v0.1 人工，附检后置）：群档 / 人档缺 token → error；kind 落 chat|person 之外 → error；type: lark 页落 im/ 之外而自称本域 → warning；人档沉淀区空白 → info（骨架常态）；正文沉淀区改写痕迹 → error（git 审计）
+- Semantic items (v0.1 manual, attached audit deferred): group archive / person archive missing token → error; kind outside chat|person → error; a type: lark page outside im/ claiming this domain → warning; blank accumulation section on a person archive → info (normal at skeleton stage); traces of rewriting in a body accumulation section → error (git audit)
 <!-- /check:lark-im -->
 
 <!-- check:mapping -->
-- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：镜像 diff（vault 有文件无代理 → info 积压；代理无对应物 → error，报文含引用计数——删前见影响面）、缺登记字段（raw_file / raw_sha256）→ error、raw_file 悬挂 → error、raw_sha256 失配 → warning、疑似全文复制（md 资产正文 ≥80% 原文）→ warning、无描述 stub 且 updated 超 90 天 → warning
-- 语义项（check 命令）：失配处置分诊（描述仍适用 → 机械重算自动修复，毕即写 log 行（类型 map，一句话含资产名与「原文已变，描述仍适用」）；疑似失效 → 人决重映射或删）；日记类全文复制豁免判断；孤儿代理处置前先处置引用（同步改引用或留 aliases 重定向）
+- Mechanical items (attached-audit script `scripts/check.py`, executed on audit discovery): mirror diff (file in vault without proxy → info backlog; proxy without counterpart → error, message carries the reference count — see the impact surface before deleting); missing registration fields (raw_file / raw_sha256) → error; dangling raw_file → error; raw_sha256 mismatch → warning; suspected full-text duplication (md asset body ≥80% of the original) → warning; description-less stub with updated older than 90 days → warning
+- Semantic items (check command): mismatch-disposition triage (description still applies → mechanical recalculation auto-repairs, writing a log line on completion (type map, one sentence with the asset name and 'original changed, description still applies'); suspected invalid → human decides remap or delete); diary-type full-text duplication exemption judgment; before disposing an orphan proxy, handle its references first (update references in sync or leave aliases to redirect)
 <!-- /check:mapping -->
 
 <!-- check:registry -->
-- 语义项（v0.1 人工，附检后置）：代理页缺 raw_file/raw_sha256 → error；索引页指针 URL 抽查失效 → warning；物化区文件无对应代理页 → warning
+- Semantic items (v0.1 manual, attached audit deferred): a proxy page missing raw_file/raw_sha256 → error; a broken index-page pointer URL on spot-check → warning; a materialization-zone file with no proxy page → warning
 <!-- /check:registry -->
 
 <!-- check:sis -->
-- 语义项（v0.1 人工，附检后置）：type: sis 页落 wiki/cuhksz/sis/ 之外 → error；速写页手编痕迹 → warning；stale 清单（信息级）
+- Semantic items (v0.1 manual, attached audit deferred): a type: sis page outside wiki/cuhksz/sis/ → error; manual-edit traces on the digest page → warning; stale list (info level)
 <!-- /check:sis -->
 
 <!-- check:structure -->
-- 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：声明 diff——vault 顶层目录未声明 → warning、声明键指向不存在目录 → warning；type: structure 落 `wiki/structure.md` 之外 → error；声明页缺席 → info（平铺容忍）
+- Mechanical items (attached-audit script `scripts/check.py`, executed on audit discovery): declaration diff — vault top-level directory undeclared → warning, declaration key pointing to a nonexistent directory → warning; type: structure landing outside `wiki/structure.md` → error; declaration page absent → info (flat tolerance)
 <!-- /check:structure -->
 
 <!-- check:bb-map -->
-- 语义项（v0.1 人工，附检后置）：属地页落四桶之外 → error（课程根 user.md 除外——bb-track 域内原生页）；知识点页 raw_path 悬挂 → error（缺省合法——未下载单元以清单标注即构成记录）；info.md 缺 bb 块映射（term_id/course_id/term_status）或与目录不对应 → error；attachments 代理 raw_file 指 bb/ 不存在文件 → error；assessments 页缺 raw 块映射或 column_id → warning；汇总列（Weighted Total/Total）建页 → warning；知识点页缺 `## 知识点摘要` 或摘要点缺 sm-N 锚点 → warning；知识点页缺 `## 专有名词` → info；info 蒸馏节缺课程政策类要点 → info；assessments 有要求源但要求节未蒸馏 → info；源文件消失未标 deprecated → warning；沉淀区（备注/复盘）被重建改写 → error；映射完整性（bb/ 内容单元无对应页）→ info
+- Semantic items (v0.1 manual, attached audit deferred): a territory page outside the four buckets → error (except the course-root user.md — a bb-track domain-native page); a knowledge-point page's raw_path dangling → error (absence is legitimate — an undownloaded unit marked in the list is itself a record); info.md missing the bb block mapping (term_id/course_id/term_status) or not matching the directory → error; an attachments proxy's raw_file pointing at a nonexistent bb/ file → error; an assessments page missing the raw block mapping or column_id → warning; a page created for a summary column (Weighted Total/Total) → warning; a knowledge-point page missing `## Knowledge Point Summary` or summary items missing sm-N anchors → warning; a knowledge-point page missing `## Terminology` → info; an info distillation section missing course-policy key points → info; assessments having a requirement source but an undistilled requirements section → info; a vanished source file not marked deprecated → warning; an accumulation region (notes/review) rewritten by a rebuild → error; mapping completeness (a bb/ content unit with no corresponding page) → info
 <!-- /check:bb-map -->
 
 <!-- check:bb-track -->
-- 语义项（v0.1 人工，附检后置）：user.md 落课程根之外或四桶内 → error；证据流条目被改写删除 → error；读数条目无可溯证据 → warning；读数仅凭 origin: ai 无复核 → warning；stale 超窗后消费未核对 → info；笔记属性值出开放词表 → info
+- Semantic items (v0.1 manual, attached audit deferred): user.md outside the course root or inside the four buckets → error; an evidence-stream entry rewritten or deleted → error; a reading entry without traceable evidence → warning; a reading based only on origin: ai without review → warning; consuming stale beyond the window without verification → info; note attribute values outside the open vocabulary → info
 <!-- /check:bb-track -->
 
 <!-- check:bb-quiz -->
-- 语义项（v0.1 人工，附检后置）：考卷落 notes/testing/ 之外 → error；覆写或删除已有考卷 → error；题干/解析引用范围外或课程外知识点 → warning（语义判断）；解析缺知识点 sm-N 标注 → warning；quiz 块映射缺 course 或 scope → warning；试题页出现答案/解析 → warning；判分后未经确认即写 user.md → error；判分缺逐题对错 → warning
+- Semantic items (v0.1 manual, attached audit deferred): a paper landed outside notes/testing/ → error; overwriting or deleting an existing paper → error; stems/explanations citing knowledge points outside the scope or the course → warning (semantic judgment); an explanation missing its sm-N knowledge-point mark → warning; the quiz block mapping missing course or scope → warning; answers/explanations appearing on the questions page → warning; writing user.md after grading without confirmation → error; grading missing per-question correctness → warning
 <!-- /check:bb-quiz -->
 
 <!-- check:bb-teach -->
-- 语义项（v0.1 人工，附检后置）：未读 user.md 即讲解 → warning；术语超已锚点集且未当场解释 → warning；对「掌握」档仍长篇灌输 → info；未经确认即写 user.md → error；单轮「懂了」即写「掌握」入 user.md → error；讲解缺 courseware 锚点回链 → info；ai 笔记落 notes/ 之外 → error；ai 笔记缺 origin: ai 或缺锚点回链 → warning；覆写已有 ai 笔记 → error
+- Semantic items (v0.1 manual, attached audit deferred): explaining without reading user.md → warning; a term beyond the anchored set left unexplained on the spot → warning; long lectures at the 'mastered' tier → info; writing user.md without confirmation → error; a single 'got it' written as 'mastered' into user.md → error; an explanation missing courseware anchor backlinks → info; ai notes landed outside notes/ → error; ai notes missing origin: ai or anchor backlinks → warning; overwriting an existing ai note → error
 <!-- /check:bb-teach -->
 <!-- check-inject:end -->
