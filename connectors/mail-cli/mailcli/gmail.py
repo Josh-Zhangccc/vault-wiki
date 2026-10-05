@@ -1,6 +1,6 @@
-"""Gmail API provider（loopback 授权流——device flow 不放行 Gmail scope，实测 invalid_scope）。
+"""Gmail API provider (loopback auth flow — device flow does not grant Gmail scopes; measured invalid_scope).
 
-授权需 ssh -L <port>:localhost:<port> 隧道使浏览器回调直达本机。
+Auth needs an ssh -L <port>:localhost:<port> tunnel so the browser callback reaches this machine directly.
 """
 import base64, os, re, threading, time, urllib.parse
 from datetime import datetime, timezone
@@ -12,7 +12,7 @@ def b64u_dec(s): return base64.urlsafe_b64decode(s + "=" * (-len(s) % 4))
 # ---------- auth ----------
 
 def auth_start(args):
-    """loopback：本机临时 HTTP 服务收回调。"""
+    """loopback: a temporary local HTTP service receives the callback."""
     from http.server import BaseHTTPRequestHandler, HTTPServer
     import socket
     creds = gcp_creds()
@@ -24,7 +24,7 @@ def auth_start(args):
             box["code"] = (q.get("code") or [None])[0]; box["error"] = (q.get("error") or [None])[0]
             self.send_response(200); self.send_header("Content-Type", "text/html; charset=utf-8")
             self.end_headers()
-            self.wfile.write("<html><body><h3>授权成功，可关闭此页回到终端</h3></body></html>".encode())
+            self.wfile.write("<html><body><h3>Authorization successful; you may close this page and return to the terminal</h3></body></html>".encode())
         def log_message(*a): pass
     srv = HTTPServer(("127.0.0.1", port), H)
     threading.Thread(target=srv.serve_forever, daemon=True).start()
@@ -33,13 +33,13 @@ def auth_start(args):
         "response_type": "code", "scope": GMAIL_SCOPE, "access_type": "offline",
         "prompt": "consent"}))
     out({"ok": True, "flow": "loopback", "auth_url": url,
-         "hint": f"需先在访问端执行 ssh -L {port}:localhost:{port} april@<本机>，再在浏览器打开 auth_url"})
+         "hint": f"First run ssh -L {port}:localhost:{port} april@<this machine> on the accessing side, then open auth_url in a browser"})
     deadline = time.time() + 900
     while time.time() < deadline and not box.get("code") and not box.get("error"):
         time.sleep(1)
     srv.shutdown()
     if box.get("error"): fail(box["error"])
-    if not box.get("code"): fail("timeout（900 秒内未收到回调）")
+    if not box.get("code"): fail("timeout (no callback received within 900 seconds)")
     _exchange(args.account, box["code"], f"http://localhost:{port}", creds)
 
 def _exchange(account, code, redirect_uri, creds):
@@ -53,7 +53,7 @@ def _exchange(account, code, redirect_uri, creds):
     save_tok(account, tok)
     out({"ok": True, "provider": "gmail", "account": tok["account"]})
 
-# ---------- 视图 ----------
+# ---------- views ----------
 
 def headers(m):
     return {h["name"].lower(): h["value"] for h in (m.get("payload") or {}).get("headers", [])}
@@ -94,7 +94,7 @@ def label_id(name, tok):
     if name in ("inbox", "INBOX"): return "INBOX"
     for lb in http(f"{GMAIL}/labels", tok=tok).get("labels", []):
         if lb["name"].lower() == name.lower() or lb["id"] == name: return lb["id"]
-    fail(f"label 不存在: {name}")
+    fail(f"label not found: {name}")
 
 def parts(m):
     r = []
@@ -104,7 +104,7 @@ def parts(m):
     walk(m.get("payload") or {})
     return r
 
-# ---------- 命令实现 ----------
+# ---------- command implementations ----------
 
 def folders(args, at):
     labels = http(f"{GMAIL}/labels", tok=at).get("labels", [])
@@ -163,9 +163,9 @@ def attach(args, at):
 
 def draft(args, at):
     if args.act == "create":
-        if not args.to and not args.reply_to: fail("需要 --to 或 --reply-to")
+        if not args.to and not args.reply_to: fail("--to or --reply-to required")
         body = open(args.body_file).read() if args.body_file else (args.body or "")
-        if not body and not args.attach: fail("正文为空（--body / --body-file），且无附件")
+        if not body and not args.attach: fail("body is empty (--body / --body-file) and there are no attachments")
         msg = build_mime(args.to, args.cc, args.subject, body, args.html, args.attach)
         thread_id = None
         if args.reply_to:
@@ -177,7 +177,7 @@ def draft(args, at):
             msg["In-Reply-To"] = oh.get("message-id", "")
             if oh.get("references"): msg["References"] = oh["references"]
             elif oh.get("message-id"): msg["References"] = oh["message-id"]
-            if not args.to: msg["To"] = sender_of(oh.get("from")) or fail("原信 From 无法解析")
+            if not args.to: msg["To"] = sender_of(oh.get("from")) or fail("original message From cannot be parsed")
             thread_id = orig.get("threadId")
         payload = {"message": {"raw": b64u(msg.as_bytes()),
                                **({"threadId": thread_id} if thread_id else {})}}

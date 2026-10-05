@@ -1,38 +1,38 @@
-# email：个人邮箱域
+# email: personal mailbox domain
 
-## 设计概要
+## Design summary
 
-- **为什么存在**：把一个或多个个人邮箱接为 wiki 外信息源。设计主轴是**流与慢资产的速度差过滤**：收件箱是高频流，wiki 是低速沉淀层；本域是过滤器——流中只留三种慢资产即人、源、线程，加一张可再生的当下速写；其余一切现拉即弃
-- **关键裁定**：
-  - 全量映射禁止在本域是生死线，不是风格偏好：一封邮件一页的诱惑永远存在，克制写在前面。检索现拉即弃；反复命中才立档，涌现制，条件在账户身份页
-  - 指针模型：真相在邮箱，活源；wiki 侧只投影。已发送旧邮件近乎不可变，冷源——快照节按值可全文，蒸馏仍是默认姿态
-  - 人档 token = 邮箱地址，**全局作用域**——对照 lark open_id 的租户内作用域；token 作用域决定页面的家；跨账户一人一页
-  - 只读纪律不随信任前提变化：拉信 PEEK 不隐式标已读，不移动不归档不删除——邮箱是人每天亲手耕的地；发送类操作永远须用户明示
-  - 声明先行，2026-09-29 立设裁定：契约活在 manifest usage，calendar 形，无命令无适配器；连接器实验随后
+- **Why it exists**: hooking one or more personal mailboxes into the wiki as external sources. The design axis is **velocity-gap filtering between the stream and slow assets**: the inbox is a high-frequency stream, the wiki a low-velocity accumulation layer; this domain is the filter — from the stream it keeps only three slow assets, people, sources and threads, plus one regenerable present-tense digest; everything else is pull-and-discard
+- **Key rulings**:
+  - The full-mapping ban is this domain's lifeline, not a stylistic preference: the one-page-per-mail temptation is permanent, so restraint is written up front. Retrieval is pull-and-discard; only repeated hits earn an archive, emergence-based, conditions on the account identity page
+  - Pointer model: the truth is in the mailbox, a live source; the wiki side holds projections only. Old sent mails are near-immutable, cold sources — snapshot sections may hold full text by value, distillation remains the default posture
+  - Person archive token = email address, **global scope** — versus lark open_id's tenant scope; the token's scope decides the page's home; one page per person across accounts
+  - The read-only discipline does not vary with trust assumptions: pulls PEEK without implicitly marking read, no moving, no archiving, no deleting — the mailbox is ground the human tills by hand daily; send-type operations always require explicit user request
+  - Declaration first, ruled 2026-09-29 at establishment: the contract lives in manifest usage, calendar form, no command no adapter; connector experiments follow
 
 ## Structure
 
-- `wiki/email/inbox.md`——统一收件箱速写：跨账户蒸馏，行标账户，配额见各身份页；整页可再生，短 TTL 默认 1 天；单账户自然退化为单组
-- `wiki/email/people/`——人档：token = 邮箱地址，**全局作用域**——与 lark open_id 的租户内作用域相对，token 作用域决定页面的家；跨账户一人一页；aliases 收多地址同人；语域差异——工作走 A 账户、私交走 B——记正文；正文 = 与我的关系，只增收敛，加关键线程 wikilink
-- `wiki/email/<账户>/`——一账户一目录；目录名 = 连接器 profile 名，凭证隔离：
-  - `account.md` 身份页：地址、协议、拉取窗口、TTL 覆写、涌现条件、关心区声明、别名认领——实例配置住这里
-  - `threads/` 线程档：机械区即 `email` 块映射 members = Message-ID 列表加最后拉取日；沉淀区 `## 日期 议题→结果` 只增，`## 快照 YYYY-MM-DD` 按值可全文；默认命名 `YYYY-MM-DD-<主题>`
-  - `sources/` 源档：订阅与通知的治理单位——类型 newsletter、账单、通知、验证码源；节奏；最近投递；阅读信号；处置策略
-- 单件指针页不预置目录：仅当某封邮件要被库内其他页 wikilink 引用为证据时按需立，token = Message-ID
+- `wiki/email/inbox.md` — unified inbox digest: cross-account distillation, lines tagged with the account, quotas on the identity pages; whole page regenerable, short TTL default 1 day; a single account naturally degrades to a single group
+- `wiki/email/people/` — person archives: token = email address, **global scope** — against lark open_id's tenant scope, the token's scope decides the page's home; one page per person across accounts; aliases collect multiple addresses of the same person; register differences — work via account A, personal ties via account B — recorded in the body; body = relationship with me, append-only converging, plus key-thread wikilinks
+- `wiki/email/<account>/` — one directory per account; directory name = connector profile name, credentials isolated:
+  - `account.md` identity page: address, protocol, pull window, TTL override, emergence conditions, areas-of-interest declaration, alias claiming — instance configuration lives here
+  - `threads/` thread archives: mechanical section i.e. the `email` block mapping members = Message-ID list plus last pull date; accumulation section `## date topic→result` append-only, `## Snapshot YYYY-MM-DD` full text by value; default naming `YYYY-MM-DD-<topic>`
+  - `sources/` source archives: the governance unit for subscriptions and notifications — types newsletter, bills, notifications, verification-code sources; cadence; latest delivery; reading signals; handling policy
+- Single-item pointer pages get no preset directory: created on demand only when some mail is to be wikilinked as evidence from other pages in the vault, token = Message-ID
 
 ## Invariants
 
-- 全量映射禁止：枚举只服务速写与关心区解析；检索现拉即弃，反复命中才立档——涌现制，条件在账户身份页
-- 只读纪律：拉信 PEEK 不隐式标已读、不移动不归档不删除——邮箱是人每天亲手耕的地，源的原状属于人；写模型如此，不随信任前提变化
-- 发送红线：起草可以；发出、转发、移动、删除永远须用户明示
-- 单向派生只出不回：行动项进 todo；邀请进 calendar；附件进 vault——物化后出身随落地改变，走 map 代理；高价值进 notes，回链线程档。todo、calendar、notes 三桥；格式权威在各全局件 usage，经投影到消费现场；本域领地只留三资产加速写
-- 契约六问：外领地 = 在线邮箱，连接器可达；落地 = 指针为主加附件借 vault；身份证明 = Message-ID 与页一比一，线程档为 members 列表；属地 = `wiki/email/`；写模型 = 源侧只读加发送须明示；信任 = TTL 懒刷新，agent 即同步器，天花板 machine-confirmed
-- 资源消失——邮件被删、账户关闭——标 status: deprecated，不删
-- 隐私红线：实例数据不入框架仓库与 test-repo——宪法级，仓库受众问题，不随信任前提变化；实例内的隐私边界归后续隐私插件
+- Full mapping forbidden: enumeration serves only the digest and area-of-interest resolution; retrieval is pull-and-discard, only repeated hits earn an archive — emergence-based, conditions on the account identity page
+- Read-only discipline: pulls PEEK without implicitly marking read, no moving, no archiving, no deleting — the mailbox is ground the human tills by hand daily, the source's original state belongs to the human; such is the write model, unvarying with trust assumptions
+- Send red line: drafting allowed; sending, forwarding, moving, deleting always require explicit user request
+- One-way derivation out-only: action items go to todo; invitations go to calendar; attachments go to vault — once materialized, origin follows the landing, via the map proxy; high value goes to notes, backlinking the thread archive. The todo, calendar, notes bridges; format authority in each global plugin's usage, projected to the point of consumption; this domain's territory keeps only the three assets plus the digest
+- Contract six questions: external territory = the online mailbox, connector-reachable; landing = pointers primarily plus attachments via vault; identity proof = Message-ID one-to-one with the page, thread archives as a members list; territory = `wiki/email/`; write model = source side read-only plus sending by explicit request; trust = TTL lazy refresh, the agent is the synchronizer, ceiling machine-confirmed
+- Resources gone — a mail deleted, an account closed — mark status: deprecated, never delete
+- Privacy red line: instance data never enters the framework repo or test-repo — constitution-level, an audience question, unvarying with trust assumptions; in-instance privacy boundaries belong to a future privacy plugin
 
 ## Changelog
 
-- 0.4 2026-10-06：挂 cron 桥——可选日更披露改写为经任务页登记（form: session），depends 加 cron
-- 0.3 2026-10-02：全局域批二——派生句加桥指针
-- 0.2 2026-10-02：全局域批一——挂 log 必依桥边；宪法准则 11，kernel 校验完备性
-- 0.1 2026-09-29：立设——声明先行，用户裁定先立后验；无命令无适配器，calendar 形，契约活在 manifest usage；连接器实验随后——服务端检索能力与线程头完好度将回写机械区字段形态，如兜底聚类软字段
+- 0.4 2026-10-06: attach the cron bridge — the optional daily-refresh disclosure reworded to task-page registration (form: session), depends adds cron
+- 0.3 2026-10-02: global-domain batch two — derivation sentences gain bridge pointers
+- 0.2 2026-10-02: global-domain batch one — attach the mandatory log bridge edge; constitution principle 11, kernel verifies completeness
+- 0.1 2026-09-29: established — declaration first, the user ruled establish first verify later; no command no adapter, calendar form, the contract lives in manifest usage; connector experiments follow — server-side search capability and thread-header integrity will write back mechanical-section field shapes, e.g. fallback-clustering soft fields

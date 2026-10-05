@@ -1,35 +1,35 @@
-# calendar：时间领地
+# calendar: time territory
 
-## 设计概要
+## Design Overview
 
-- **为什么存在**：wiki 的时间维度——何时有何事。源模型开放：manual 手记加各适配器投影同页汇流，lark-calendar 是首个适配器。时间是跨租户的单一维度；多源合流正是本领地的存在理由
-- **关键裁定**：
-  - 事件是行不是页：日历只登记时间线；有分量的事件经 save 沉淀为 note 或 session，再从日历行 wikilink 过去——与「wiki 收蒸馏物」一致
-  - 与 todo 的边界：日历存「何时有何事」，todo 存「何事待办」；事件可派生 todo，反向不合并
-  - 月页两节制：`## 日程` 源投影整节重刷；`## 手记` 只增——机械区与沉淀区的分界在节级
-  - 未来滚动，过去冻结：月份走完不可改写，改写痕迹 = error，git 审计；错过的变更记入新月页——历史保持如实
-  - 月页是全库唯一混合出身页：领地归属与节内容出身分离。记名不机制化，单一实例不立架构概念
+- **Why it exists**: the wiki's time dimension — what happens when. The source model is open: manual notes plus each adapter's projections converge on the same page, lark-calendar being the first adapter. Time is a single cross-tenant dimension; multi-source convergence is precisely this territory's reason for being
+- **Key rulings**:
+  - Events are lines, not pages: the calendar registers only the timeline; weighty events are distilled via save into a note or session, then wikilinked from the calendar line — consistent with 'the wiki receives distillates'
+  - Boundary with todo: the calendar stores 'what happens when', todo stores 'what is pending'; events may derive todo entries, never merged the other way
+  - Month pages two-section scheme: `## Schedule` is the source projection, refreshed wholesale by section; `## Manual Notes` is append-only — the mechanical-zone/distillation-zone boundary sits at section level
+  - Future rolling, past frozen: a month may not be rewritten once over; rewrite traces = error, git audit; missed changes are recorded in the new month's page — history stays truthful
+  - The month page is the only mixed-provenance page in the whole library: territory ownership and section-content provenance are separated. Named, not mechanized; a single instance raises no architectural concept
 
 ## Structure
 
-- `wiki/calendar.md`——声明页，type: calendar。frontmatter `calendar` 块映射 = 源键到源声明；值语法归适配器，如 `lark/<profile> <calendar_id>`。正文放使用说明；manual-only 时可缺
-- `wiki/calendar/<YYYY-MM>.md`——月页，一页一月，ASCII 文件名。**两节制**：`## 日程` 是源投影区，整节可再生重刷；`## 手记` 给人写与 agent 写，只增
-- 事件行：`- MM-DD HH:MM~HH:MM 标题（源键）`，可带 wikilink——人物、群档、笔记；全天事件写 `MM-DD 全天`
+- `wiki/calendar.md` — declaration page, type: calendar. Frontmatter `calendar` block mapping = source key to source declaration; value syntax belongs to the adapter, e.g. `lark/<profile> <calendar_id>`. The body holds usage notes; may be absent when manual-only
+- `wiki/calendar/<YYYY-MM>.md` — month page, one page per month, ASCII file name. **Two-section scheme**: `## Schedule` is the source-projection zone, regenerable and refreshed wholesale by section; `## Manual Notes` is for human and agent writing, append-only
+- Event line: `- MM-DD HH:MM~HH:MM Title (source key)`, may carry a wikilink — people, group archives, notes; all-day events written `MM-DD all-day`
 
 ## Invariants
 
-- 未来滚动、过去冻结：月份走完即冻结，月页不再改写；改写痕迹 → error，git 审计；错过的变更记入新月页，历史保持如实
-- 重刷只整节替换 `## 日程`；手记节永不被源同步触碰
-- 月页挂 trust：stale_after 短 TTL，默认 2 天，日更节奏留余量
-- 事件不建页；会议结论归群档议题记录或 notes，日历行只留链接
-- 声明页源清单是实例配置；无声明页 = manual-only，合法常态
-- 月页是全库唯一混合出身页：`## 日程` 节为可对账外源的真投影借住原生领地，领地归属与节内容出身分离——记名不机制化，单一实例不立架构概念
+- Future rolling, past frozen: a month freezes once over, its page never rewritten; rewrite traces → error, git audit; missed changes are recorded in the new month's page, history staying truthful
+- A refresh only wholesale-replaces the `## Schedule` section; the manual-notes section is never touched by source sync
+- Month pages carry trust: stale_after short TTL, default 2 days, leaving headroom for the daily-refresh cadence
+- Events get no pages; meeting conclusions go to group-archive topic records or notes, the calendar line keeping only the link
+- The declaration page's source list is instance configuration; no declaration page = manual-only, a legal norm
+- The month page is the only mixed-provenance page in the whole library: the `## Schedule` section is a true projection, reconcilable with an external source, lodging in a native territory — territory ownership and section-content provenance separated; named, not mechanized; a single instance raises no architectural concept
 
-## 桥：按需
+## Bridge: on-demand
 
-派生归宿桥，管日程：域件单向派生带源键日程行入当月 `## 日程`，只出不回；不碰手记，不碰冻结月页。宪法准则 11。挂靠基数**按需**。格式权威在本件 usage，经投影到消费现场，分工裁定。本节详述：事件行带源键；源键由派生域自定并在声明页登记。
+A derivation-destination bridge governing schedules: domain plugins one-way derive source-keyed schedule lines into the current month's `## Schedule`, out-only; never touching manual notes, never touching frozen month pages. Constitutional principle 11. Attachment cardinality **on-demand**. Format authority is in this plugin's usage, projected to the point of consumption — division-of-labor ruling. This section elaborates: event lines carry the source key; the source key is defined by the deriving domain itself and registered on the declaration page.
 
 ## Changelog
 
-- 0.2 2026-10-02：全局域批二——立按需桥即派生归宿；域件自述保留加指针
-- 0.1 2026-09-19：立设——月页两节制、源开放模型、冻结制；lark-calendar 为首个源适配器
+- 0.2 2026-10-02: global-domain batch two — established the on-demand bridge as the derivation destination; domain-plugin self-descriptions retained with a pointer
+- 0.1 2026-09-19: established — month-page two-section scheme, the open source model, the freezing regime; lark-calendar as the first source adapter

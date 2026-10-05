@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""mapping 插件附检：镜像 diff、登记字段完备、raw_file 悬挂、哈希核验、疑似全文复制、stub 老化。
+"""mapping plugin attached audit: mirror diff, registry-field completeness, raw_file dangling, hash verification, suspected full-text copies, stub aging.
 
-只读报告——哈希重算等修复动作归命令（actions.md 机械自动项），附检不执行。
-参数依据：原库取证（哈希失配 40%、全文复制 33%）与渐进富化承诺（新 stub 免告）。
+Read-only report — repair actions such as hash recalculation belong to the command (actions.md mechanical automatic items); the attached audit does not execute them.
+Parameter basis: forensic evidence from the original library (40% hash mismatch, 33% full-text copies) and the progressive-enrichment promise (new stubs exempt from alerts).
 """
 import datetime
 import hashlib
@@ -14,7 +14,7 @@ TODAY = datetime.date.today()
 
 
 def _file_set(root, sub, strip_md):
-    """收集子目录文件集（忽略 .gitkeep）；strip_md 时只收 md 并去后缀（代理页集）。"""
+    """Collect the file set under a subdirectory (ignore .gitkeep); when strip_md, collect md only and strip the suffix (proxy page set)."""
     out = set()
     base = os.path.join(root, sub)
     for dirpath, dirs, files in os.walk(base):
@@ -23,7 +23,7 @@ def _file_set(root, sub, strip_md):
             if fn == ".gitkeep":
                 continue
             if strip_md and fn == "index.md":
-                continue  # 目录索引：导航层保留名（index 插件每目录化），非概念页无对应物
+                continue  # directory index: navigation-layer reserved name (per-directory by the index plugin), not a concept page, no counterpart
             if strip_md and not fn.endswith(".md"):
                 continue
             rel = os.path.relpath(os.path.join(dirpath, fn), base).replace(os.sep, "/")
@@ -32,7 +32,7 @@ def _file_set(root, sub, strip_md):
 
 
 def _ref_count(ctx, full):
-    """统计全库指向 full（页面全名）的引用：正文 wikilink + related 字段。"""
+    """Count references across the whole library pointing to full (page full name): body wikilinks + related field."""
     n = 0
     pat = re.compile(r"\[\[([^\]\|#]+)")
     for _rel, fm, body in ctx.pages:
@@ -51,40 +51,40 @@ def check(ctx):
     real = _file_set(root, "vault", strip_md=False)
     proxy = _file_set(root, os.path.join("wiki", "vault"), strip_md=True)
     for f in sorted(real - proxy):
-        issues.append({"level": "info", "message": f"vault 待登记（积压）：{f}"})
+        issues.append({"level": "info", "message": f"vault pending registration (backlog): {f}"})
     for p in sorted(proxy - real):
         refs = _ref_count(ctx, f"vault/{p}")
-        note = f"，被 {refs} 处引用" if refs else "，无引用"
-        issues.append({"level": "error", "message": f"孤儿代理（vault 无对应物{note}）：wiki/vault/{p}"})
+        note = f", referenced from {refs} places" if refs else ", no references"
+        issues.append({"level": "error", "message": f"orphan proxy (no vault counterpart{note}): wiki/vault/{p}"})
     for rel, fm, body in ctx.pages:
         if not rel.startswith("vault/"):
             continue
         if os.path.basename(rel) == "index.md":
-            continue  # 目录索引：导航层保留名，非代理页
+            continue  # directory index: navigation-layer reserved name, not a proxy page
         rf = fm.get("raw_file")
         if not rf:
-            issues.append({"level": "error", "message": f"{rel}：缺登记字段 raw_file（代理页必有）"})
+            issues.append({"level": "error", "message": f"{rel}: missing registry field raw_file (mandatory on proxy pages)"})
             continue
         if not fm.get("raw_sha256"):
-            issues.append({"level": "error", "message": f"{rel}：缺登记字段 raw_sha256（代理页必有）"})
+            issues.append({"level": "error", "message": f"{rel}: missing registry field raw_sha256 (mandatory on proxy pages)"})
         fp = os.path.join(root, rf)
         if not os.path.exists(fp):
-            issues.append({"level": "error", "message": f"{rel}：raw_file 指向不存在（{rf}）"})
+            issues.append({"level": "error", "message": f"{rel}: raw_file points to a nonexistent file ({rf})"})
             continue
         sh = fm.get("raw_sha256")
         if sh and hashlib.sha256(open(fp, "rb").read()).hexdigest() != sh:
-            issues.append({"level": "warning", "message": f"{rel}：raw_sha256 失配（原文已变；描述仍适用则机械重算）"})
+            issues.append({"level": "warning", "message": f"{rel}: raw_sha256 mismatch (source file changed; if the description still applies, recalculate mechanically)"})
         if rf.endswith(".md"):
             try:
                 raw_text = open(fp, encoding="utf-8").read()
             except UnicodeDecodeError:
                 raw_text = open(fp, encoding="utf-8", errors="replace").read()
             if raw_text and len(body) >= 0.8 * len(raw_text):
-                issues.append({"level": "warning", "message": f"{rel}：疑似全文复制（正文 ≥80% 原文；日记类豁免为语义判断）"})
-        if not body.strip():  # stub：正文无一行描述
+                issues.append({"level": "warning", "message": f"{rel}: suspected full-text copy (body ≥80% of the source; diary-type exemption is a semantic judgment)"})
+        if not body.strip():  # stub: body has no one-line description
             m = re.fullmatch(r"(\d{4})-(\d{2})-(\d{2})", str(fm.get("updated") or ""))
             if m:
                 age = (TODAY - datetime.date(*map(int, m.groups()))).days
                 if age > 90:
-                    issues.append({"level": "warning", "message": f"{rel}：stub 超 90 天无描述（新 stub 免告）"})
+                    issues.append({"level": "warning", "message": f"{rel}: stub over 90 days without a description (new stubs exempt)"})
     return issues

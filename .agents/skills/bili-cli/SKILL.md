@@ -1,7 +1,7 @@
 ---
 name: bili-cli
 owner: framework
-description: "Access bilibili.com via the connectors/bili-cli CLI (web-cookie auth, read-mostly): search videos, fetch video details / subtitles / official AI summary, list and manage favorites / watch-later, view history, track UP uploads, relay as answer. Watching pipeline (degradation chain): CC subtitle -> AI subtitle -> official summary -> audio-to-tmp transcription. Small low-risk write whitelist (watch-later add/remove, favorites add/remove/move, like) — every write needs explicit user request plus the CLI --yes gate. Triggers on: bilibili, bili-cli, B站, B 站, 收藏夹, 稍后再看, 观看历史, UP主, UP 主投稿, 搜索视频, 看视频, 视频摘要."
+description: "Access bilibili.com via the connectors/bili-cli CLI (web-cookie auth, read-mostly): search videos, fetch video details / subtitles / official AI summary, list and manage favorites / watch-later, view history, track UP uploads, relay as answer. Watching pipeline (degradation chain): CC subtitle -> AI subtitle -> official summary -> audio-to-tmp transcription. Small low-risk write whitelist (watch-later add/remove, favorites add/remove/move, like) — every write needs explicit user request plus the CLI --yes gate. Triggers on: bilibili, bili-cli, B站/B 站 (Bilibili), 收藏夹 (favorites), 稍后再看 (watch-later), 观看历史 (view history), UP主/UP 主 (uploader), UP 主投稿 (uploader's uploads), 搜索视频 (search videos), 看视频 (watch a video), 视频摘要 (video summary)."
 ---
 
 # bili-cli: bilibili Read-Mostly Connector

@@ -1,56 +1,56 @@
-# 导论
+# Introduction
 
-> 读者：组员、贡献者、想理解这套设计的人。机制是什么，权威源是内核参考 skill 与 AGENTS.md 注入区。本文讲为什么走到这里：叙事与谱系，不镜像机制。撰写 2026-10-04。
+> Reader: team members, contributors, and anyone who wants to understand this design. For what the mechanics *are*, the authoritative sources are the kernel reference skill and the AGENTS.md injection region. This document explains *why* we arrived here: narrative and lineage, not a mirror of the mechanics. Written 2026-10-04.
 
-## 1. 起点问题
+## 1. The starting problem
 
-每次会话，agent 按 SASU-L 顺序获取信息：system prompt、AGENTS.md、Skills、用户原话、loop。system prompt 不携带库内信息；用户默认 agent 记得上次，这不可能。跨 session 的信息获取只能依靠 agent 主动读取，而真实部署中的 agent 对库零先验。用 AI 助手的痛点常常不是不够聪明，是每次都要重新介绍自己：你的资产在哪、你在学什么、上次决定到哪了。
+In every session, the agent acquires information in SASU-L order: system prompt, AGENTS.md, Skills, the user's own words, loop. The system prompt carries no information about the vault; users assume the agent remembers last time, which is impossible. Cross-session information acquisition can only rely on the agent actively reading, and in real deployments the agent has zero prior knowledge of the vault. The pain of using an AI assistant is often not a lack of intelligence, but having to reintroduce yourself every time: where your assets are, what you are studying, where the last decision left off.
 
-## 2. 文件底座
+## 2. The file foundation
 
-md 加纯文件是底座。无工具私有格式；Obsidian、WebUI 都只是可替换 viewer。agent 能读库了，但「能读」不等于「知道该读什么」。没有路标的读取是盲的：全读则上下文爆炸，漏读则信息失联。框架要解决的不是存储，是信息披露的结构。
+Markdown plus plain files is the foundation. No tool-private formats; Obsidian and WebUIs are merely replaceable viewers. Now the agent can read the vault—but "being able to read" is not "knowing what to read". Reading without signposts is blind: read everything and the context explodes; miss a read and information goes dark. What the framework solves is not storage, but the structure of information disclosure.
 
-## 3. 指针机制
+## 3. The pointer mechanism
 
-指针是常驻上下文的低成本路标：位置与概述必有，概述是筛选效率的全部来源；触发条件与触发后行动按需配对。渐进披露三层：指针常驻，占极小上下文；指向物按需读取；引用物再下钻。index 逐层下钻即此结构。
+Pointers are low-cost signposts resident in context: location and summary are always present, and the summary is the entire source of filtering efficiency; trigger conditions and post-trigger actions are paired as needed. Progressive disclosure has three layers: pointers stay resident at minimal context cost; the pointed-to targets are read on demand; referenced material is drilled into further. index drilling down level by level is exactly this structure.
 
-两条推论贯穿全框架：
+Two corollaries run through the whole framework:
 
-- **能派生不手写**。手写指针会烂——指向物移动、描述过时；派生指针机械再生，免疫腐烂。这是一源五投影的哲学起点
-- **披露的终极目的不是「可被找到」，而是「该想起时被想起」**。todo 是时间维指针的显式实例，指向未来某时该想起什么；注入行携带「何时先读」条件是主动型指针；consumes 让规则在命令触发时到场，同一思想
+- **Never hand-write what can be derived**. Hand-written pointers rot—targets move, descriptions go stale; derived pointers are mechanically regenerated, immune to rot. This is the philosophical starting point of one source, five projections
+- **The ultimate purpose of disclosure is not "can be found", but "recalled when it should be recalled"**. todo is the explicit instance of a time-dimension pointer, pointing at what should be recalled at some future moment; injection lines carrying a "when to read first" condition are proactive pointers; consumes brings rules on-site when a command triggers—the same idea
 
-## 4. 插件化
+## 4. Pluginization
 
-架构不枚举。文件格式与笔记类型不进宪法——类型是 frontmatter 字段；结构由插件各自规范。一插件一目录：manifest 是机器可读本体；PLUGIN.md 记设计理由；附检脚本可选。插件持有领地，即哪片路径归谁、写模型是什么；持有对外字段与纪律。
+The architecture does not enumerate. File formats and note types do not enter the constitution—types are frontmatter fields; structure is specified by each plugin on its own. One plugin, one directory: the manifest is the machine-readable essence; PLUGIN.md records the design rationale; attached-audit scripts are optional. A plugin holds a territory—which slice of paths belongs to whom, and what the write model is—and holds the outward-facing fields and disciplines.
 
-域是核心抽象。wiki 只认内外；外域是一份适配器契约，六问为体：外领地、落地策略、身份证明、wiki 属地、写模型、信任模型。落地本质是写模型选择：终态资产进只增仓储；过程容器全权读写；真相在别处用指针。借 vault 或指针为默认姿态；自立容器是例外。
+The domain is the core abstraction. wiki recognizes only inside versus outside; an external domain is an adapter contract, embodied in six questions: external territory, landing strategy, identity proof, wiki territory, write model, trust model. Landing is essentially a write-model choice: final-state assets go into append-only storage; process containers get full read-write authority; when the truth lives elsewhere, use pointers. Borrowing vault or pointers is the default posture; a self-standing container is the exception.
 
-## 5. 投影
+## 5. Projections
 
-一套 manifest，向五处机械投影：AGENTS 注入区；check 检查块；命令用法块，按 consumes 序；registry 字段段；skills 部署副本。全部幂等重建，装卸自动同步，在场即注册。不存在第二事实源：改契约改 manifest，一条命令收敛。部署实例只带注入区与 skills 即自足——机制文档就住在运行时可见面里，不另写一套会漂移的架构文档。
+One set of manifests is mechanically projected to five places: the AGENTS injection region; the check inspection blocks; the command usage blocks, ordered by consumes; the registry field section; the deployed skill copies. All are idempotently rebuilt, automatically synchronized on (un)install, and presence is registration. There is no second source of truth: to change the contract, change the manifest, and one command converges everything. A deployed instance is self-sufficient carrying only the injection region and skills—mechanism documentation lives in the runtime-visible surface, and no separate set of architecture documents that would drift is written.
 
-## 6. 分层与桥
+## 6. Layering and bridges
 
-- **素材层与档案层**：过程产物住域工作区，拉取物、笔记、考卷判分皆是；沉淀的结论住 wiki。wiki 收蒸馏物，不收过程
-- **全局件与域件**：横切服务与归宿是全局件，如 trust、log、todo、calendar、notes、user-profile，可声明桥；域件经 depends 传递属域。桥持校验与声明——必依完备性、按需容忍；披露分发归投影
-- **采集通道**：消费侧插件可以是最薄形态——零领地纯工作流，用法经源侧路由聚合到枢纽命令现场。教与考都围绕认知档案闭环
+- **Material layer vs. archive layer**: process artifacts live in domain workspaces—fetched material, notes, graded quizzes all included; distilled conclusions live in the wiki. The wiki receives distillates, not process
+- **Global components vs. domain components**: cross-cutting services and their homes are global components—trust, log, todo, calendar, notes, user-profile—which may declare bridges; domain components belong to a domain transitively via depends. The bridge carries validation and declaration—required-bridge completeness, optional-bridge tolerance; disclosure distribution belongs to the projections
+- **Collection channels**: consumer-side plugins can take the thinnest form—zero territory, pure workflow, with usage routed via the source side and aggregated on-site at the hub command. Teaching and quizzing both close the loop around the cognition profile
 
-## 7. 团队态
+## 7. The team turn
 
-2026-10-02 由个人自用转轨为团队项目。协作红线——数据边界、git 纪律、提交流程——见 AGENTS「用户要求」节，权威源恒为 AGENTS.md。开发产物入 git；实例数据永不入库。框架是普世产出；真实课程、成绩、隐私、凭据属部署实例。
+On 2026-10-02 the project switched from personal use to a team project. Collaboration red lines—data boundaries, git discipline, the commit process—see the "User requirements" section of AGENTS.md, whose authority always remains AGENTS.md itself. Development artifacts enter git; instance data never does. The framework is a universal product; real courses, grades, privacy, and credentials belong to the deployment instance.
 
-## 8. 谱系与地图
+## 8. Lineage and map
 
-极简年表：2026-08 个人库创始；09-08 原型落地，插件加命令；09-12 以用代验裁定；09-19 到 09-30 域化与连接器；10-02 团队转轨与治理立规；10-04 认知消费侧立设，机制文档开卷。完整流水见 `log.md` 与 git 史。
+A minimal chronology: 2026-08 the personal vault founded; 09-08 the prototype landed, plugins plus commands; 09-12 the validate-by-use ruling; 09-19 to 09-30 domainization and connectors; 10-02 the team turn and governance rules; 10-04 the cognition consumer side established and mechanism documentation opened. For the full stream see `log.md` and git history.
 
-| 想知道 | 去读 |
+| Want to know | Go read |
 |---|---|
-| 宪法与协作红线 | `AGENTS.md` |
-| 机制总纲 | 内核参考 skill |
-| 机制怎么运作 | `.meta/docs/mechanics.md` |
-| 日常怎么用 | `.meta/docs/usage.md` |
-| 沙箱怎么用 | `.meta/docs/sandbox.md` |
-| 某插件为什么这样设计 | 该插件 `PLUGIN.md` |
-| 调研依据 | `.meta/docs/research-*.md` |
-| 部署走查 | `.meta/docs/quickstart.md` |
-| 运行史与当前状态 | `log.md` |
+| Constitution and collaboration red lines | `AGENTS.md` |
+| Mechanics overview | the kernel reference skill |
+| How the mechanics work | `.meta/docs/mechanics.md` |
+| Daily usage | `.meta/docs/usage.md` |
+| Using the sandbox | `.meta/docs/sandbox.md` |
+| Why a plugin is designed this way | that plugin's `PLUGIN.md` |
+| Research basis | `.meta/docs/research-*.md` |
+| Deployment walkthrough | `.meta/docs/quickstart.md` |
+| Run history and current state | `log.md` |

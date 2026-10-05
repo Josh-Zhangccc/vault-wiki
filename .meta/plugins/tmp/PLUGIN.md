@@ -1,26 +1,26 @@
-# tmp：临时区
+# tmp: temporary zone
 
-## 设计概要
+## Design Overview
 
-- **为什么存在**：wiki 的 /tmp——草稿与解析中间产物的合法住所。框架此前所有领地都是正式的：不可改、只增、事实源；中间态没有去处。本件补此缺口：允许可失败，可不完整
-- **关键裁定**：
-  - 对派生层隐身，同 archive 待遇：不入 index 与 tags，不作链接源，断链豁免——草稿里 [[还不存在的页]] 是「尚未写下」的正常态，转正时才要求闭合
-  - 无留存承诺但不自动清理：随时可清；处置经确认——check 报超龄清单，转正或删属人。删除属人，不破
-  - 转正即删稿：珍贵草稿及时转正，save 进 notes 或并入 project 决策区；tmp 不长存珍宝
-  - 路径即领地：`wiki/tmp/**` 下一切皆 tmp
+- **Why it exists**: the wiki's /tmp — a legitimate home for drafts and parsing intermediates. All the framework's territories until now were formal: immutable, append-only, sources of truth; intermediate states had nowhere to go. This plugin fills the gap: failure allowed, incompleteness allowed
+- **Key rulings**:
+  - Invisible to the derived layer, treated like archive: absent from index and tags, never a link source, broken links exempt — [[a page not yet written]] in a draft is the normal state of 'not yet written down'; closure is required only upon promotion
+  - No retention promise, yet no automatic cleanup: cleanable at any time; disposal goes through confirmation — check reports the over-age list; promotion or deletion belongs to the human. Deletion belongs to the human, breaking nothing
+  - Delete the draft upon promotion: promote precious drafts promptly, via save into notes or merged into a project decision section; tmp hoards no treasures
+  - The path is the territory: everything under `wiki/tmp/**` is tmp
 
 ## Structure
 
-- `wiki/tmp/**`——路径即领地，下属一切皆 tmp；type 可标可不标，`type: tmp` 落领地外 → error
-- 平铺容忍，子目录自由，无保留名约束
+- `wiki/tmp/**` — the path is the territory; everything below is tmp; type optional, `type: tmp` landing outside the territory → error
+- Flat layout tolerated, subdirectories free, no reserved-name constraints
 
 ## Invariants
 
-- 无留存承诺，/tmp 契约：随时可清理；珍贵草稿及时转正——save 进 notes、并入 project 决策区等——转正即删稿
-- 清理不自动：解析产物随手设 `stale_after`，check 报超龄清单，处置经确认；无 stale_after 的草稿不提示——删除属人不破
-- 隐身三件套：概念页判定排除，index 与 tags 不见；link 不作链接源且不受图检查；hot 天然无关，手写制
-- 敏感提醒：解析中间产物可能含聊天原文等个人数据；实例可 gitignore `wiki/tmp/`
+- No retention promise, the /tmp contract: cleanable at any time; promote precious drafts promptly — via save into notes, merged into a project decision section, etc. — deleting the draft upon promotion
+- Cleanup is never automatic: parsing intermediates set `stale_after` as they go, check reports the over-age list, disposal goes through confirmation; drafts without stale_after are not flagged — deletion belongs to the human, breaking nothing
+- The invisibility triple: excluded from concept-page determination, unseen by index and tags; under link never a link source and exempt from graph checks; hot naturally uninvolved, being hand-written
+- Sensitivity reminder: parsing intermediates may contain personal data such as chat transcripts; instances may gitignore `wiki/tmp/`
 
 ## Changelog
 
-- 0.1 2026-09-19：立设——路径领地、派生层隐身、stale_after 清理提示、转正即删
+- 0.1 2026-09-19: established — path-as-territory, invisible to the derived layer, stale_after cleanup prompts, delete upon promotion

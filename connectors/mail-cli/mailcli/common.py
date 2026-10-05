@@ -1,12 +1,12 @@
-"""公共层：配置/凭据/HTTP/策略/token 续期/视图工具。"""
+"""Common layer: config/credentials/HTTP/policy/token renewal/view utilities."""
 import email, email.policy, json, mimetypes, os, re, sys, time
 import urllib.request, urllib.parse, urllib.error
 
 GRAPH = "https://graph.microsoft.com/v1.0"
 GMAIL = "https://gmail.googleapis.com/gmail/v1/users/me"
-GMAIL_SCOPE = "https://mail.google.com/"  # 全权——gmail 账户须用户明示全托
+GMAIL_SCOPE = "https://mail.google.com/"  # full access — gmail accounts require explicit user delegation
 
-# ---------- 配置与凭据（只存本机，不入库） ----------
+# ---------- config & credentials (local machine only, never in any repo) ----------
 
 def cfg_dir():
     d = os.path.expanduser("~/.config/mail-cli")
@@ -21,9 +21,9 @@ def save_tok(p, t): json.dump(t, open(cfg_path(p), "w"))
 def gcp_creds():
     f = os.path.join(cfg_dir(), "gcp.json")
     try: return json.load(open(f))
-    except Exception: fail("缺 ~/.config/mail-cli/gcp.json（GCP OAuth 客户端，人工提供，不入库）")
+    except Exception: fail("missing ~/.config/mail-cli/gcp.json (GCP OAuth client, human-provided, never in any repo)")
 
-# ---------- 输出 ----------
+# ---------- output ----------
 
 def out(d): print(json.dumps(d, ensure_ascii=False))
 def fail(e): sys.exit(json.dumps({"ok": False, "error": e}, ensure_ascii=False))
@@ -48,24 +48,24 @@ def http(url, data=None, tok=None, binary=False, method=None, jdata=None, raise_
         if isinstance(err, dict): err = err.get("code") or err.get("message") or str(err)
         fail(err)
 
-# ---------- 发送策略（人工配置 policy.json，连接器只读，缺席 = deny） ----------
+# ---------- send policy (manually configured policy.json; the connector only reads it; absent = deny) ----------
 
 def load_policy():
     f = os.path.join(cfg_dir(), "policy.json")
     try: return json.load(open(f))
     except FileNotFoundError: return {}
-    except Exception as e: fail(f"policy.json 解析失败: {e}")
+    except Exception as e: fail(f"policy.json parse failed: {e}")
 
 def send_policy(account):
     p = load_policy().get(account) or {}
     return p.get("send", "deny"), p.get("auto_allow") or []
 
-# ---------- provider 与 token 续期 ----------
+# ---------- provider & token renewal ----------
 
 def P(account): return (load_tok(account) or {}).get("provider", "graph")
 
 def refresh(account):
-    """返回 graph/gmail 的 access_token；imap 返回配置 dict 本身。"""
+    """Return the graph/gmail access_token; for imap return the config dict itself."""
     tok = load_tok(account)
     if not tok: fail("not_authorized")
     if tok.get("provider") == "imap": return tok
@@ -85,11 +85,11 @@ def refresh(account):
     nt.setdefault("provider", tok.get("provider", "graph"))
     nt["expires_at"] = time.time() + nt.get("expires_in", 3600)
     nt["account"] = tok.get("account")
-    if tok.get("scope"): nt.setdefault("scope", tok["scope"])  # 保留原授权面（响应可无 scope）
+    if tok.get("scope"): nt.setdefault("scope", tok["scope"])  # preserve the originally granted surface (response may lack scope)
     save_tok(account, nt)
     return nt["access_token"]
 
-# ---------- 视图工具 ----------
+# ---------- view utilities ----------
 
 def strip_html(h):
     h = re.sub(r"(?is)<(script|style).*?>.*?</\1>", "", h)

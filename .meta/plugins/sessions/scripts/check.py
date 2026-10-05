@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""sessions 插件附检：机械项（领地边界 / participants 契约）。
+"""sessions plugin attached audit: mechanical items (territory boundary / participants contract).
 
-骨干页是否该提升未提升是语义项（膨胀判断），归 check 命令。
+Whether a backbone page should have been promoted but was not is a semantic item (bloat judgment), under the check command.
 """
 import re
 
@@ -13,21 +13,21 @@ def check(ctx):
     issues = []
     for rel, fm, body in ctx.pages:
         if rel.endswith("/index.md") or rel == "index.md":
-            continue  # 派生页非骨干页，不参与领地判定
+            continue  # derived pages are not backbone pages and take no part in territory determination
         ptype = fm.get("type")
         in_sessions = rel.startswith("sessions/")
         if ptype == "session" and not in_sessions:
-            issues.append({"level": "warning", "message": f"{rel}：session 型页面应在 wiki/sessions/（sessions 插件领地）"})
+            issues.append({"level": "warning", "message": f"{rel}: session-type page should live under wiki/sessions/ (sessions plugin territory)"})
         elif in_sessions and ptype != "session":
-            issues.append({"level": "warning", "message": f"{rel}：wiki/sessions/ 内页面应为 type: session（实为 {ptype or '未标'}）"})
+            issues.append({"level": "warning", "message": f"{rel}: pages under wiki/sessions/ should be type: session (actually {ptype or 'untyped'})"})
         if ptype == "session" or in_sessions:
             parts = fm.get("participants")
             if parts is None:
-                issues.append({"level": "warning", "message": f"{rel}：缺 participants（actor 列表）"})
+                issues.append({"level": "warning", "message": f"{rel}: missing participants (actor list)"})
             else:
                 if not isinstance(parts, list):
                     parts = [parts]
                 for p in parts:
                     if not ACTOR_RE.match(str(p)):
-                        issues.append({"level": "warning", "message": f"{rel}：participants 项 {p!r} 不符 actor 约定（human:名 / process:名 / agent/模型）"})
+                        issues.append({"level": "warning", "message": f"{rel}: participants item {p!r} does not match the actor convention (human:name / process:name / agent/model)"})
     return issues

@@ -1,7 +1,7 @@
-"""bilibili web API 薄封装：session（cookie/buvid/UA/Referer）、WBI 签名、端点方法。
+"""Thin wrapper over the bilibili web API: session (cookie/buvid/UA/Referer), WBI signing, endpoint methods.
 
-只读为主；写方法仅限连接器纪律放行的低危白名单（稍后再看/收藏/点赞），
-调用方（cli.py）负责 --yes 门与 csrf 注入。
+Read-mostly; write methods are limited to the low-risk whitelist the connector discipline allows
+(watch-later/favorites/like); the caller (cli.py) owns the --yes gate and csrf injection.
 """
 
 import time
@@ -13,7 +13,8 @@ import requests
 from . import auth
 from .config import API_BASE, APP_URL, ENDPOINTS, USER_AGENT
 
-# WBI mixin key 重排表（社区稳定公开值，2023 起启用；随 nav 下发密钥轮换，表本身不变）
+# WBI mixin key rearrangement table (stable community-published values, in use since 2023;
+# the keys handed out by nav rotate, the table itself never changes)
 _MIXIN_TAB = [
     46, 47, 18, 2, 53, 8, 23, 32, 15, 50, 10, 31, 58, 3, 45, 35, 27, 43, 5, 49,
     33, 9, 42, 19, 29, 28, 14, 39, 12, 38, 41, 13, 37, 48, 7, 16, 24, 55, 40,
@@ -33,22 +34,22 @@ class BiliAPI:
             try:
                 jar = auth.load_cookies()
             except SystemExit:
-                jar = None  # 无凭据文件 → 匿名（search/video/up 等公开端点仍可用）
+                jar = None  # no credentials file -> anonymous (public endpoints like search/video/up still work)
             if jar:
                 self.s.cookies.update(jar)
                 self.csrf = jar.get("bili_jct", "")
                 self.authed = True
-        # buvid3 是风控基础面，匿名（search 等 WBI 端点）同样需要
+        # buvid3 is the risk-control baseline; anonymous calls (WBI endpoints like search) need it too
         self._ensure_buvid()
         self._wbi_key = None
 
     def require_auth(self, cmd: str) -> None:
-        """个人数据与写命令的登录门槛；公开查询（search/video/up/subtitle）不设。"""
+        """Login gate for personal data and write commands; public queries (search/video/up/subtitle) are ungated."""
         if not self.authed:
             raise SystemExit(
-                f"{cmd} 需登录态：先 bili-cli login --cookie '...'（凭据只存 ~/.bili-cli/）")
+                f"{cmd} requires login state: run bili-cli login --cookie '...' first (credentials stay in ~/.bili-cli/ only)")
 
-    # -- 基础件 ---------------------------------------------------------
+    # -- basics ---------------------------------------------------------
 
     def _ensure_buvid(self):
         if self.s.cookies.get("buvid3"):
@@ -75,7 +76,8 @@ class BiliAPI:
         qs = urlencode(sorted(params.items(), key=lambda kv: kv[0]))
         for ch in "!'()*":
             qs = qs.replace(ch, "")
-            # 注：过滤针对 value；此处整体替换足够（这些字符在键中不出现，值中出现即被剥离，与站方行为一致）
+            # note: the filtering targets values; wholesale replacement suffices here
+            # (these characters never appear in keys; appearing in values they get stripped, matching site behavior)
         params["w_rid"] = md5((qs + self._wbi_mixin_key()).encode()).hexdigest()
         return params
 
@@ -96,13 +98,14 @@ class BiliAPI:
         try:
             body = r.json()
         except ValueError:
-            raise SystemExit(f"非 JSON 响应（HTTP {r.status_code}）——端点可能改版，用 raw 透传核对")
+            raise SystemExit(f"non-JSON response (HTTP {r.status_code}) — the endpoint may have changed; verify via raw passthrough")
         if body.get("code") != 0:
-            raise SystemExit(f"API 错误 code={body.get('code')}: {body.get('message')}")
+            raise SystemExit(f"API error code={body.get('code')}: {body.get('message')}")
         return body.get("data")
 
-    # space 系端点（up_info/up_arc）风控最严：需 space 页 Referer + 浏览器指纹参数，
-    # 否则 -352；指纹值取社区通行静态串（与真实指纹无关，仅满足校验存在性）
+    # space-family endpoints (up_info/up_arc) have the strictest risk control: they need the space-page
+    # Referer + browser fingerprint params, otherwise -352; the fingerprint values are common community
+    # static strings (unrelated to real fingerprints, merely satisfying the existence check)
     _DM_PARAMS = {
         "dm_img_list": "[]",
         "dm_img_str": "V2ViR0wgMS4wIChXaW5kb3dzKQ==",
@@ -113,7 +116,7 @@ class BiliAPI:
     def _space_headers(self, mid: int) -> dict:
         return {"Referer": f"https://space.bilibili.com/{mid}/"}
 
-    # -- 读（查询即答） ---------------------------------------------------
+    # -- reads (query-and-answer) ----------------------------------------
 
     def me(self):
         return self.s.get(API_BASE + ENDPOINTS["nav"][0], timeout=15).json().get("data")
@@ -154,8 +157,8 @@ class BiliAPI:
         return self._call("view", {"bvid": bvid})
 
     def subtitle(self, bvid: str, page: int = 1, ai: bool = False):
-        """字幕正文。轨道选择：默认取首个非 AI 轨道（无则回落 AI），--ai 强制 AI 轨道；
-        tracks 字段列全部轨道供 agent 判断降级。"""
+        """Subtitle text. Track selection: by default take the first non-AI track (fall back to AI if none),
+        --ai forces the AI track; the tracks field lists all tracks so the agent can judge degradation."""
         view = self._call("view", {"bvid": bvid})
         pages = view.get("pages") or [{}]
         cid = pages[min(page, len(pages)) - 1].get("cid")
@@ -179,8 +182,9 @@ class BiliAPI:
         }
 
     def summary(self, bvid: str):
-        """官方 AI 视频总结（"视频速览"）。端点按 bvid+cid+up_mid 取，WBI 签名；
-        data.code != 0 或空载荷 = 该视频无官方总结（降级链见 SKILL）。"""
+        """Official AI video summary (the site's "视频速览" feature). The endpoint takes bvid+cid+up_mid
+        with WBI signing; data.code != 0 or an empty payload = this video has no official summary
+        (degradation chain: see SKILL)."""
         view = self._call("view", {"bvid": bvid})
         cid = (view.get("pages") or [{}])[0].get("cid")
         up_mid = (view.get("owner") or {}).get("mid")
@@ -211,7 +215,7 @@ class BiliAPI:
         vlist = ((data or {}).get("list") or {}).get("vlist") or []
         return vlist[:limit]
 
-    # -- 写（低危白名单；--yes 门在 cli 层） -------------------------------
+    # -- writes (low-risk whitelist; the --yes gate lives in the cli layer) --
 
     def watchlater_add(self, bvid: str):
         aid = self._bvid_to_aid(bvid)
@@ -234,7 +238,7 @@ class BiliAPI:
         })
 
     def fav_move(self, bvid: str, src_fid: int, dst_fid: int):
-        """跨夹移动 = 同一 deal 调用内 add 目标夹 + del 源夹（白名单内组合操作）。"""
+        """Cross-folder move = add to the target folder + del from the source folder within one deal call (a whitelisted composite operation)."""
         rid = self._bvid_to_aid(bvid)
         return self._call("fav_deal", post=True, extra_form={
             "rid": rid, "type": 2, "add_media_ids": dst_fid, "del_media_ids": src_fid,
@@ -247,7 +251,7 @@ class BiliAPI:
     def _bvid_to_aid(self, bvid: str) -> int:
         return int(self._call("view", {"bvid": bvid}).get("aid") or 0)
 
-    # -- 透传 -------------------------------------------------------------
+    # -- passthrough ------------------------------------------------------
 
     def raw(self, url: str, post: bool = False):
         r = (self.s.post if post else self.s.get)(url, timeout=20)

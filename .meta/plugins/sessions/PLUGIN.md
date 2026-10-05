@@ -1,24 +1,24 @@
-# sessions：原生会话
+# sessions: native sessions
 
-## 设计概要
+## Design Overview
 
-- **为什么存在**：会话沉淀的骨干结构——一次协作会话的知识以骨干页归档，高价值主题提升为独立笔记。原 wiki 思想中 sessions 是一等区；2026-09-08 并入 notes 时降格为 type，结构寄居 save 命令；本件立设后结构归位，命令回归纯操作——领地与命令职责分离的一例
-- **关键裁定**：
-  - 会话页是纪要非镜像：对话消逝后页面即真身，写作即出生——wiki 出身判定的样本
-  - participants 必填，用 actor 约定：单 agent 亦记；多 agent 协作直接扩展列表——为协作态留位
-  - 提升规则：独立高价值主题升 notes 页，出身是知识非会话记录；骨干页留 wikilink——蒸馏物归 notes
-  - 不可再生区：只增不改
+- **Why it exists**: the backbone structure for session distillation — the knowledge of one collaboration session is archived as a backbone page, high-value topics promoted to standalone notes. In the original wiki vision sessions were a first-class zone; when merged into notes on 2026-09-08 they were demoted to a type, with the structure lodged in the save command; once this plugin was established the structure returned home and the command went back to pure operation — an example of separating territory and command responsibilities
+- **Key rulings**:
+  - Session pages are minutes, not mirrors: once the conversation fades the page is the true copy, writing is birth — a specimen of wiki provenance determination
+  - participants required, using the actor convention: recorded even for a single agent; multi-agent collaboration extends the list directly — reserved for the collaborative state
+  - Promotion rule: standalone high-value topics rise to notes pages, whose provenance is knowledge rather than session record; the backbone page keeps a wikilink — distillates belong to notes
+  - No-regeneration zone: append-only, never modified
 
 ## Structure
 
-- `wiki/sessions/**`；默认命名 `YYYY-MM-DD-<主题>.md`
-- type: session，值集见 registry；participants 必填：YAML 列表，actor 约定即 human:名字、process:流程名、agent/模型标识——单 agent 亦记，多 agent 协作直接扩展此列表
-- 骨干页形状：核心结论；决策与理由；非显然洞见；开放问题；相关页——提升出的主题以 wikilink 挂接
-- 提升规则：独立高价值主题升为 `wiki/notes/` 页，出身是知识非会话记录；骨干页留 wikilink
+- `wiki/sessions/**`; default naming `YYYY-MM-DD-<topic>.md`
+- type: session, value set in registry; participants required: YAML list, the actor convention being human:name, process:flow name, agent/model id — recorded even for a single agent; multi-agent collaboration extends this list directly
+- Backbone page shape: Core Conclusions; Decisions & Rationale; Non-obvious Insights; Open Questions; Related Pages — promoted topics attached via wikilink
+- Promotion rule: standalone high-value topics promoted to `wiki/notes/` pages, whose provenance is knowledge rather than session record; the backbone page keeps a wikilink
 
 ## Example
 
-`wiki/sessions/2026-09-12-雾港美术风格定稿.md`：
+`wiki/sessions/2026-09-12-雾港美术风格定稿.md`:
 
 ```markdown
 ---
@@ -28,36 +28,36 @@ participants: [human:Joss, agent/GLM-5.3]
 created: 2026-09-12
 tags: [游戏/美术]
 ---
-# 核心结论
-低多边形 + 体积雾定稿，进入场景外包询价。
+# Core Conclusions
+Low-poly plus volumetric fog finalized; moving on to scene art outsourcing inquiries.
 
-# 决策与理由
-像素风被否：剪影可读性差。详见 [[notes/雾港美术风格决策]]。
+# Decisions & Rationale
+Pixel art rejected: poor silhouette readability. See [[notes/雾港美术风格决策]].
 
-# 非显然洞见
-预算超支风险集中在场景美术外包（报价 16.8 万，超支 40%）。
+# Non-obvious Insights
+The budget-overrun risk concentrates in scene art outsourcing (quoted 168k, 40% over budget).
 
-# 开放问题
-体积雾在低端机的性能预算？
+# Open Questions
+The performance budget for volumetric fog on low-end machines?
 
-# 相关页
-- [[notes/雾港美术风格决策]]（本次会话提升出的决策页）
+# Related Pages
+- [[notes/雾港美术风格决策]] (the decision page promoted out of this session)
 ```
 
 ## Invariants
 
-- 不可再生区：管道与命令只增不改
-- 领地边界与 notes 互补：type: session 必落 `wiki/sessions/`；其余原生笔记落 `wiki/notes/`
-- 提升出的页面属 notes 领地；本插件只拥有骨干页
+- No-regeneration zone: pipelines and commands append-only, never modify
+- Territory boundary complementary with notes: type: session must land in `wiki/sessions/`; all other native notes land in `wiki/notes/`
+- Promoted pages belong to the notes territory; this plugin owns only backbone pages
 
 ## Changelog
 
-- 0.9 2026-09-23：补 wiki 依赖边——内侧插件挂 wiki，对齐 domain 0.1 声明；2026-09-22 域化批次漏收
-- 0.8 2026-09-13：usage 样例指针显式化——补 `.meta/plugins/sessions/PLUGIN.md` 路径，零先验
-- 0.7 2026-09-13：注入源移交 manifest——删 Checks、Usage、Inject、Attachments 节，md 回归纯文档
-- 0.6 2026-09-13：立「Usage」节——写侧契约交由命令注入区投影，单一文本源
-- 0.5 2026-09-12：manifest 去 layer——废分层：注入序改依赖拓扑加字母序，方向校验撤除
-- 0.4 2026-09-12：标识符英文化——节头、附检契约键、类型枚举、管道调用参数
-- 0.3 2026-09-12：披露修补——内联骨干页全形状样例；冷启动审计猜点：区内无实例
-- 0.2 2026-09-11：manifest 增 commands: [save]——save 由本插件与 notes 共同驱动
-- 0.1 2026-09-10：立设——自 save 命令长会话段与 notes 合并区抽出，2026-09-08「细分第二批」回归；领地 `wiki/sessions/`；participants 用 actor 约定留多 agent 扩展点
+- 0.9 2026-09-23: added the wiki dependency edge — inner plugins attach to wiki, aligning with the domain 0.1 declaration; missed in the 2026-09-22 domainization batch
+- 0.8 2026-09-13: made the usage sample pointer explicit — added the `.meta/plugins/sessions/PLUGIN.md` path, zero priors
+- 0.7 2026-09-13: inject source moved to the manifest — deleted the Checks, Usage, Inject, Attachments sections; md returns to pure documentation
+- 0.6 2026-09-13: established the Usage section — write-side contracts handed to command injection regions for projection, single text source
+- 0.5 2026-09-12: manifest dropped layer — layering abolished: injection order changed to dependency topology plus alphabetical, direction checks removed
+- 0.4 2026-09-12: identifiers anglicized — section headers, attached-audit contract keys, type enumerations, pipeline call parameters
+- 0.3 2026-09-12: disclosure repair — inlined the full-shape backbone page sample; a cold-start audit guess point: no instances in the zone
+- 0.2 2026-09-11: manifest added commands: [save] — save is jointly driven by this plugin and notes
+- 0.1 2026-09-10: established — extracted from the save command's long-session segment and the merged notes zone, a return of the 2026-09-08 'subdivision batch two'; territory `wiki/sessions/`; participants uses the actor convention, reserving a multi-agent extension point

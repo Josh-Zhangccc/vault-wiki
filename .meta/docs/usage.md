@@ -1,45 +1,45 @@
-# 使用指南
+# Usage Guide
 
-> 读者：部署完成后的库主人，即 quickstart 的下一步；以及想了解协作形态的组员。命令细节以 `.agents/skills/` 各 SKILL.md 披露为准。本文讲工作流串联：单条命令怎么连成循环。撰写 2026-10-04。
+> Audience: the vault owner after deployment completes — the next step after quickstart — plus members who want to understand the collaboration shape. Command details are authoritatively disclosed in each SKILL.md under `.agents/skills/`. This document is about chaining workflows: how single commands connect into loops. Written 2026-10-04.
 
-## 循环一：库经营
+## Loop One: Vault Stewardship
 
-通用循环，每天几分钟。
+The general loop; a few minutes a day.
 
-**输入**：文件丢进 `vault/`，对 agent 说「映射」，得到 `wiki/vault/` 代理页，含 SHA-256 与元数据；索引、标签、热缓存自动更新。对话里出现值得留的洞见，说「保存」，沉淀为 `wiki/notes/` 原生笔记——type 分类，tags 归类。珍贵草稿从 `wiki/tmp/` 及时转正；转正即删稿。
+**Input**: drop files into `vault/` and tell the agent "map" — you get `wiki/vault/` proxy pages carrying SHA-256 and metadata; index, tags, and hot cache update automatically. When a conversation yields an insight worth keeping, say "save" and it settles into `wiki/notes/` as a native page — type for classification, tags for grouping. Promote precious drafts out of `wiki/tmp/` promptly; promotion deletes the draft.
 
-**取回**：说「检索」。agent 先读热缓存与索引再综合回答；答案带 wikilink 引用，可一路点下去。index 逐层下钻本身是指针结构。
+**Retrieval**: say "query". The agent reads the hot cache and the index first, then answers synthetically; answers carry wikilink citations you can follow all the way down. Drilling down through index levels is itself a pointer structure.
 
-**受托与提醒**：委托 agent 的事落 `wiki/todo.md`，一条 = 触发条件加一句话。新 session 开始 agent 先读此页；到期主动提醒；完成即销账，历史归 log。
+**Delegation and reminders**: tasks delegated to the agent land in `wiki/todo.md`; one entry = a trigger condition plus one sentence. At the start of a new session the agent reads this page first; due items are proactively raised; completion closes the entry — history goes to log.
 
-**健康**：定期说「检查」，机械项与语义项全审计。「画像」随时把对你的新认知收敛进 `wiki/profile.md`：断言带证据，偏好会过期。称呼、风格等个性化决策前，agent 会先读它。
+**Health**: periodically say "check" for a full audit of mechanical and semantic items. Say "profile" anytime to converge new knowledge about you into `wiki/profile.md`: assertions carry evidence, preferences expire. Before personalization decisions — forms of address, style — the agent reads it first.
 
-纪律一句话：wiki 收蒸馏物，不收过程。过程产物归 vault、tmp 与各域工作区；沉淀的结论才进 notes。
+The discipline in one sentence: the wiki takes distillates, not process. Process products belong to vault, tmp, and the domain workspaces; only settled conclusions enter notes.
 
-## 循环二：课程学习
+## Loop Two: Course Study
 
-bb 域循环，一学期节奏。
+The bb domain loop; one semester's rhythm.
 
-**接课**，学期初一次：bb-cli 拉取，凭据只存本机；`bb/<term>/<course>/` 工作区物化——文档类全量，媒体类指针；bb-map 投影出 wiki 属地四桶：info 课程信息、courseware 知识点、assessments 作业档案、attachments 附件；域根 inbox.md 速写，公告蒸馏加临近截止加未交提醒，双源合成。
+**Onboarding a course**, once at term start: bb-cli pulls, with credentials stored only on the local machine; the `bb/<term>/<course>/` workspace materializes — document-type content in full, media as pointers; bb-map projects the wiki-side territory into four buckets: info for course information, courseware for knowledge points, assessments for assignment dossiers, attachments for attachments; the domain-root inbox.md digest page — announcement distillation plus approaching deadlines plus unsubmitted reminders, synthesized from both sources.
 
-**日常**，每周：
+**Daily**, weekly:
 
-1. 读 inbox，近窗公告与截止一览
-2. 「讲解答疑」bb-teach：哪里不懂问哪里。agent 先读认知档案；未知讲透，已知略讲甚至反问你。显著答疑沉淀 ai 笔记进 notes/
-3. 「出题自测」bb-quiz：给范围，可给样例。英文试题加中文解析落 notes/testing/；作答后判分，经你确认回流认知档案
-4. 「认知档案」bb-track：读档与差距分析。知识点全集减已锚点集即差距；错题自 assessments 复盘
+1. Read inbox for a near-window view of announcements and deadlines
+2. "Explain and answer" bb-teach: ask about whatever is unclear. The agent reads the cognition profile first; the unknown is explained thoroughly, the known skimmed — or met with a question back at you. Significant explanations settle as ai notes into notes/
+3. "Quiz me" bb-quiz: give a scope, optionally samples. English questions with Chinese annotations land in notes/testing/; after you answer, grading flows back into the cognition profile with your confirmation
+4. "Cognition profile" bb-track: reading the profile and gap analysis. The knowledge-point universe minus the anchored set is the gap; wrong answers trace back to the assessments review
 
-**闭环**：teach 讲解，ai 笔记为弱证据；track 收敛；quiz 参照出题；判分回流为 machine 证据；下轮 teach 按新档伸缩。素材住 bb 侧——笔记、考卷、判分过程；结论住 wiki 侧——认知读数。学期走完随 term_status 冻结。
+**Closed loop**: teach explains, with ai notes as weak evidence; track converges; quiz generates questions by the profile; grading flows back as machine evidence; the next round of teach flexes against the new profile. Material lives on the bb side — notes, exam papers, the grading process; conclusions live on the wiki side — cognition readings. When the semester ends, everything freezes with term_status.
 
-## 循环三：协作开发
+## Loop Three: Collaborative Development
 
-改框架的标准流，详见 AGENTS「提交流程」：自最新 master 拉分支；改 manifest 或命令，动手前读 `log.md` 对表现状与下一步；`kernel all` 绿；小步提交，格式 `模块: 概述`；push 开 PR；管理者审合。
+The standard flow for changing the framework — see AGENTS "commit flow" for details: branch off the latest master; before touching manifests or commands, read `log.md` to align with current state and next steps; `kernel all` green; small commits in the `module: summary` format; push and open a PR; the manager reviews and merges.
 
-**装一个新域**，把外部源接进来：拷对应 connector 进 `connectors/`；plugin 命令装域插件；首次使用读连接器 skill 披露，如 bb-cli 的凭据与用法。域的生长路径与判断法见机制详解「域的生长」节。
+**Installing a new domain**, bringing an external source in: copy the corresponding connector into `connectors/`; the plugin command installs the domain plugins; on first use read the connector skill disclosure, e.g. bb-cli's credentials and usage. The domain growth path and its decision criteria are in the mechanics doc, "How Domains Grow" section.
 
-**实验**一律落 test-repo 沙箱或本地。沙箱用法见 `.meta/docs/sandbox.md`；沙箱实验内容不入史，结论走对话报告或 docs。
+**Experiments** always land in the test-repo sandbox or locally. Sandbox usage is in `.meta/docs/sandbox.md`; sandbox experiment content never enters history — conclusions travel via conversation reports or docs.
 
-## 节奏
+## Rhythm
 
-- calendar 源日更走部署侧 cron 无人值守会话，lark-calendar 设计内建；bb 数据 TTL 默认 1 天，agent 即同步器，stale 即现拉
-- 学期初接课，学期末冻结；每周一次检查加差距分析；其余随用随触发。命令是自然语言触发，没有仪式
+- calendar sources refresh daily via deployment-side cron unattended sessions — built into lark-calendar's design; bb data TTL defaults to 1 day, the agent is the synchronizer — stale means pull now
+- Onboard courses at term start, freeze at term end; a weekly check plus gap analysis; everything else triggers on use. Commands are natural-language triggered — no ceremony

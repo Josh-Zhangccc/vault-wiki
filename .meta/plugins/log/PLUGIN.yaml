@@ -3,15 +3,15 @@ version: 0.15
 bridge: 必依
 depends:
   - wiki
-updated: 2026-10-02
+updated: 2026-10-06
 attachment:
-  - "wiki/log.md —— 单文件操作流水（滚动窗口）"
-  - "wiki/archive/YYYY-MM/log.md —— 归档分流（不可变区，按条目月份分组）"
-  - "scripts/check.py —— 附检（条目日期契约）"
+  - "wiki/log.md — single-file operation journal (rolling window)"
+  - "wiki/archive/YYYY-MM/log.md — archive spillover (immutable zone, grouped by entry month)"
+  - "scripts/check.py — attached audit (entry date contract)"
 fields: {}
-inject: "运行日志 `wiki/log.md`：置顶追加、条目不改写，条目 = 日期 + 类型（map/save/query/check/plugin/todo/profile/other）+ [域]（可缺省——无域事务；log 必依桥：域基座必依赖本件，宪法准则 11）+ 一句话；窗口 ≤100 条，超限机械归档至 `wiki/archive/月/log.md`"
+inject: "Run log `wiki/log.md`: new entries prepended at the top, entries never rewritten; entry = date + type (map/save/query/check/plugin/todo/profile/other) + [domain] (omissible — domainless transactions; log is a mandatory bridge: domain bases must depend on this plugin, constitution principle 11) + one sentence; window ≤100 entries, overflow is mechanically archived to `wiki/archive/<month>/log.md`"
 usage:
-  - 写行（机械自动）：`python .meta/scripts/pipeline.py log <类型> "<一句话>" [--domain 域]`（类型值集见 AGENTS 注入区 log 块；域标 = 域件名如 bb/lark/vault，域内事务必带、框架与原生事务缺省）；滚动窗口与归档由脚本执行
+  - Writing lines (mechanical, automatic): `python .meta/scripts/pipeline.py log <type> "<one sentence>" [--domain <domain>]` (type value set in the log block of the AGENTS injection region; domain tag = domain-plugin name such as bb/lark/vault, mandatory for in-domain transactions, omitted for framework and native transactions); rolling window and archiving are performed by the script
 checks:
-  - 机械项（附检脚本 `scripts/check.py`，audit 发现式执行）：无日期条目（`- ` 开头而不匹配日期格式，主文件与归档同检）→ error
-  - 语义项（check 命令）：历史条目被修改（git 可核）→ error；容量超限 → 机械归档后复查
+  - Mechanical items (attached-audit script `scripts/check.py`, executed on audit discovery): undated entries (starting with `- ` yet not matching the date format, main file and archive checked alike) → error
+  - Semantic items (check command): historical entries modified (verifiable via git) → error; capacity over the limit → re-check after mechanical archiving

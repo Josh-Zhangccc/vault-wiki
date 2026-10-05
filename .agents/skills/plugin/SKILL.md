@@ -1,48 +1,48 @@
 ---
 name: plugin
 owner: framework
-description: "插件生命周期管理：装/升/卸/清单。机械步骤（合规、依赖、注入区、注册表、副本同步）由 .meta/scripts/wiki_plugin_kernel.py 执行，agent 只做语义部分。Triggers on: plugin, 插件, 装插件, 卸插件, install plugin, uninstall plugin."
+description: "Plugin lifecycle management: install/upgrade/uninstall/list. Mechanical steps (compliance, dependencies, injection regions, registry, copy sync) are executed by .meta/scripts/wiki_plugin_kernel.py; the agent does only the semantic part. Triggers on: plugin, 插件, 装插件, 卸插件, install plugin, uninstall plugin."
 ---
 
-# plugin：插件装卸
+# plugin: plugin (un)install
 
-框架的自管理命令。机械步骤全部走脚本，agent 只做语义部分（插件主体内容、变更记录审读、流程冒烟）。生命周期规则：装卸前必过自检，被依赖者卸载阻断。
+The framework's self-management command. All mechanical steps go through scripts; the agent does only the semantic part (plugin body content, changelog review, flow smoke test). Lifecycle rules: self-check must pass before (un)installing; uninstalling a depended-on plugin is blocked.
 
 ## Scope
 
-写：`.meta/plugins/<id>/`（装卸）、AGENTS.md 注入区、`.meta/protocol/registry.yaml` 插件段、`.agents/skills/` 命令副本、wiki/log.md（以上四处投影均经脚本）
-读：全部 manifest、`.meta/scripts/wiki_plugin_kernel.py`
+Write: `.meta/plugins/<id>/` ((un)install), the AGENTS.md injection region, the `.meta/protocol/registry.yaml` plugin section, `.agents/skills/` command copies, wiki/log.md (all four projection sites go through the script)
+Read: all manifests, `.meta/scripts/wiki_plugin_kernel.py`
 
 ## Install <id>
 
-1. 准备 `.meta/plugins/<id>/`：
-   - PLUGIN.yaml：必填七字段 id / version / depends / updated / attachment / fields / inject（`inject` 即注入区投影行，一行中文）+ 可选 commands（驱动的命令）/ usage / checks（块式列表：写侧契约与检查规则的投影源）/ usage_routes（用法额外落向的命令，源侧路由——装插件即落投影）
-   - PLUGIN.md 结构：设计概要（为什么存在 / 族内位置 / 关键裁定含弃案 / 机制回指 mechanics）→ Structure → Invariants → Changelog（纯文档；注入源全在 manifest）
-2. `python .meta/scripts/wiki_plugin_kernel.py validate` —— 合规与依赖检查，错误阻断
-3. `python .meta/scripts/wiki_plugin_kernel.py all` —— 注入区 / registry / 命令副本同步
-4. 流程冒烟：`python .meta/scripts/wiki_plugin_kernel.py audit <id>`（如插件带附检脚本）+ 按新插件 PLUGIN.md 的关键流程对测试资产走一遍（草案三级检查之行为层）
-5. wiki/log.md 置顶追加一行（type "plugin"）
+1. Prepare `.meta/plugins/<id>/`:
+   - PLUGIN.yaml: seven required fields id / version / depends / updated / attachment / fields / inject (`inject` is the injection-region projection line, one line in Chinese) + optional commands (the commands this plugin drives) / usage / checks (block-style lists: the projection sources of write-side contracts and check rules) / usage_routes (additional commands the usage lands in, source-side routing — installing a plugin lands its projections)
+   - PLUGIN.md structure: design summary (why it exists / position in the family / key rulings including rejected alternatives / mechanics back-references) → Structure → Invariants → Changelog (pure documentation; all injection sources live in the manifest)
+2. `python .meta/scripts/wiki_plugin_kernel.py validate` — compliance and dependency checks; errors block
+3. `python .meta/scripts/wiki_plugin_kernel.py all` — injection region / registry / command-copy sync
+4. Flow smoke test: `python .meta/scripts/wiki_plugin_kernel.py audit <id>` (if the plugin carries an attached-audit script) + walk the key flows from the new plugin's PLUGIN.md against test assets (the behavior layer of the draft three-tier check)
+5. Prepend one line to wiki/log.md (type "plugin")
 
 ## Upgrade <id>
 
-1. 修改插件；manifest `version` 进位、`updated` 刷新；PLUGIN.md 变更记录加一行
-2. `python .meta/scripts/wiki_plugin_kernel.py all` —— validate + 注入块版本号同步
-3. wiki/log.md「plugin」行
+1. Modify the plugin; bump the manifest `version`, refresh `updated`; add a line to the PLUGIN.md changelog
+2. `python .meta/scripts/wiki_plugin_kernel.py all` — validate + injection-block version sync
+3. A wiki/log.md "plugin" line
 
 ## Uninstall <id>
 
-1. `python .meta/scripts/wiki_plugin_kernel.py validate` —— 有插件依赖它 → 阻断（除非用户显式级联）
-2. 目录移出 `.meta/plugins/`（归档留存；物理删除永远属人）
-3. `python .meta/scripts/wiki_plugin_kernel.py all` —— 注入区 / registry 中随之消失
-4. wiki/log.md「plugin」行
+1. `python .meta/scripts/wiki_plugin_kernel.py validate` — if any plugin depends on it → blocked (unless the user explicitly cascades)
+2. Move the directory out of `.meta/plugins/` (kept as archive; physical deletion always belongs to the human)
+3. `python .meta/scripts/wiki_plugin_kernel.py all` — it disappears from the injection region / registry accordingly
+4. A wiki/log.md "plugin" line
 
 ## ls
 
-- `python .meta/scripts/wiki_plugin_kernel.py ls`（清单 + 依赖）
+- `python .meta/scripts/wiki_plugin_kernel.py ls` (list + dependencies)
 
 ## Boundaries
 
-- 脚本只碰四处：插件目录进出、注入区标记块、registry 插件段、命令副本；protocol / reserved 段与 AGENTS.md 手写区永不动
-- 附检契约（可选）：`scripts/check.py` 定义 `check(ctx)`，返回 issue 列表（级别 + 消息），只读零副作用，中文消息、无第三方依赖；ctx.root = 仓库根，ctx.pages = 单次扫描的 wiki 页面集
-- 卸载归档与删除分离：移出 = 卸，删除属人
-- 脚本输出的错误一律阻断操作，修复后重跑；警告（如孤儿副本）仅报告
+- The script touches only four sites: plugin directories in/out, injection-region marker blocks, the registry plugin section, and command copies; the protocol / reserved sections and the AGENTS.md handwritten region are never touched
+- Attached-audit contract (optional): `scripts/check.py` defines `check(ctx)` returning an issue list (level + message), read-only with zero side effects, Chinese messages, no third-party dependencies; ctx.root = repository root, ctx.pages = the wiki page set from a single scan
+- Uninstall archiving and deletion are separate: moving out = uninstalling; deletion belongs to the human
+- Errors printed by the script always block the operation — rerun after fixing; warnings (e.g. orphan copies) are reported only

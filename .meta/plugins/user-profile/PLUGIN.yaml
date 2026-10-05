@@ -5,25 +5,25 @@ depends:
   - wiki
   - trust
   - sessions
-updated: 2026-10-02
+updated: 2026-10-06
 attachment:
-  - "wiki/profile.md —— 用户画像页（对使用者的持续认知档案）"
+  - "wiki/profile.md — user profile page (a continuing cognition profile of the user)"
 fields: {}
 commands:
   - profile
-inject: "用户画像 `wiki/profile.md`（type: profile）：对使用者的持续认知档案，静态身份层 + 动态偏好层，维度不枚举；收敛式更新——新值取代旧值、正文留痕；断言必带证据 wikilink（wiki 内页面皆可：会话页、vault 代理页、lark 档案页），偏好层挂 stale_after；零自有字段复用 trust，不属 notes 领地，不打 tags（单页直接读取，不入词表检索）；更新走 profile 命令——双轨触发（用户明示 / agent 识别显著信号自发调用），首次触发即自建页面；个性化决策（称呼、风格、偏好）前先读此页；认知桥（按需，宪法准则 11）——域认知页经画像正文 `## 域认知` 节登记（行 = 域名 + 路径形 wikilink，如 bb-track user.md），画像只聚合指针不复制域状态，个性化输出前读画像及其登记认知页；桥只持「谁在、去哪读」，认知页形态归域插件"
+inject: "User profile `wiki/profile.md` (type: profile): a continuing cognition profile of the user, static identity layer + dynamic preference layer, dimensions not enumerated; convergence-style updates — new values replace old, trace left in the body; assertions must carry evidence wikilinks (any page inside wiki works: session pages, vault proxy pages, lark archive pages), the preference layer carries stale_after; zero own fields, reuses trust; not part of the notes territory, no tags (a single page read directly, not in vocabulary retrieval); updates go through the profile command — dual-track triggering (explicit user request / the agent's spontaneous call upon recognizing significant signals), first trigger self-creates the page; read this page before personalized decisions (form of address, style, preferences); cognition bridge (on-demand, constitutional principle 11) — domain cognition pages register via the `## Domain Cognition` section of the profile body (line = domain name + path-form wikilink, e.g. bb-track user.md); the profile only aggregates pointers, never copying domain state; read the profile and its registered cognition pages before personalized output; the bridge holds only 'who is present, where to read' — cognition page shape belongs to the domain plugins"
 usage:
-  - 触发双轨：用户明示 profile；agent 在任意会话识别显著信号后自发调用——信号沉淀统一走本命令，不寄生其他命令流程
-  - 信号判据：自述信号（偏好表达、纠正、背景）与行为信号（题材、领域、素材习惯）；只记反复出现的题材/领域、显式偏好表达、对输出的纠正、稳定的背景事实（身份/工具/环境）；一次性、工具性内容与不确定的观察不记
-  - 证据域：wiki 内页面皆可（会话页、vault 代理页、lark 档案页、notes）——引用即 wikilink，跨域不立依赖
-  - 分层落点：不变的身份事实入静态层；会漂移的兴趣与习惯入动态层并挂 stale_after（随观察续期）
-  - 断言 = 一行具体可证的主张 + 行内证据 wikilink（「偏好中文简洁回复」优于「喜欢简洁」）；单条增量断言不直接升格为偏好，偏好为页内聚合出的模式
-  - 收敛式更新：新值取代旧值时正文留痕（单行：谁何时改了什么）；整页重写仅限画像建构/整合（呈预览等确认）
-  - 首建：首次触发即自建页面（frontmatter：type: profile + generated，动态层挂 stale_after），不依赖初始化机制
-  - 日记类资产只记元信号（有无、节奏），内容不进画像（豁免随 mapping）
-  - 隐私红线：画像内容是实例数据，不入框架仓库与 test-repo
-  - 认知桥注册（域件侧动作，披露于本侧）：域认知插件建档时若画像在场，维护画像 `## 域认知` 节一行（域名 + 路径形 wikilink）；画像缺席跳过不代建（按需桥缺席容错）；多课多档登记路径形通配（bb：<term>/<course> 形）
+  - Dual-track triggering: the user explicitly invokes profile; the agent calls it spontaneously in any session upon recognizing significant signals — signal distillation uniformly goes through this command, not parasitic on other command flows
+  - Signal criteria: self-reported signals (preference expressions, corrections, background) and behavioral signals (subjects, fields, material habits); record only recurring subjects/fields, explicit preference expressions, corrections to output, and stable background facts (identity/tools/environment); one-off and instrumental content and uncertain observations are not recorded
+  - Evidence domain: any page inside wiki works (session pages, vault proxy pages, lark archive pages, notes) — a citation is a wikilink, no cross-domain dependencies established
+  - Layered placement: immutable identity facts go to the static layer; drifting interests and habits go to the dynamic layer with stale_after (renewed as observed)
+  - An assertion = one line of concrete, verifiable claim + inline evidence wikilink ('prefers concise Chinese replies' beats 'likes brevity'); a single incremental assertion is not directly promoted to a preference — preferences are patterns aggregated within the page
+  - Convergence-style updates: when a new value replaces an old one, a trace is left in the body (single line: who changed what, when); full-page rewrites are limited to profile construction/consolidation (preview shown, awaiting confirmation)
+  - First creation: the first trigger self-creates the page (frontmatter: type: profile + generated, dynamic layer carries stale_after), independent of any initialization mechanism
+  - Diary-type assets record only meta-signals (presence, cadence); content never enters the profile (the exemption followed mapping)
+  - Privacy red line: profile content is instance data, never entering the framework repo or test-repo
+  - Cognition bridge registration (a domain-plugin-side action, disclosed on this side): when a domain cognition plugin creates its archive and the profile is present, maintain one line in the profile's `## Domain Cognition` section (domain name + path-form wikilink); if the profile is absent, skip without proxy-creating it (on-demand bridge absence tolerance); multiple courses and archives register via the path-form wildcard (bb: <term>/<course> form)
 checks:
-  - 语义（check 命令）：画像断言缺证据 wikilink → warning
-  - 机械项：type: profile 页面落 `wiki/notes/` 或 `wiki/vault/`（走错领地）→ error
-  - 机械项（信息级）：画像页缺失（未触发常态，profile 首建随触发）
+  - Semantic (check command): profile assertion missing an evidence wikilink → warning
+  - Mechanical: a type: profile page landing in `wiki/notes/` or `wiki/vault/` (wrong territory) → error
+  - Mechanical (info-level): profile page absent (the untriggered norm; profile self-creates on first trigger)

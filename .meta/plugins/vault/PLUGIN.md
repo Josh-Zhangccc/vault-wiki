@@ -1,28 +1,28 @@
-# vault：默认域
+# vault: Default Domain
 
-## 设计概要
+## Design Summary
 
-- **为什么存在**：domain 的第一个实例，即**默认域**——容纳真实资产的仓库：任意格式原样进入，完整性以哈希登记。双重角色：自身是本地文件域；兼作他域按需落地的通用资产仓储，`url` 字段即借道接口，bb 与 email 附件物化走此通道
-- **关键裁定**：
-  - 命令侧只增，删改自由属于人：agent 写入只产生新文件——原文不可变是信任的根基；代理与索引皆可再生，唯原文是唯一真相
-  - 概念声明件：只阐述 vault 是什么、立什么规矩——映射法则归 mapping，布局规约归 structure，域契约归 domain；与 wiki 侧「概念与结构」对称分工
-  - 治理后置，0.4 三块认领完毕：来源保全即 url 字段；结构规约移交 structure；生命周期传导归 mapping 与 check 协作——先立概念、真实使用后认领的范例
+- **Why it exists**: the first instance of domain, i.e. the **default domain** — a repository holding real assets: any format enters as-is, integrity registered by hash. Dual role: itself a local-file domain; and doubling as the general asset repository where other domains land on demand, the `url` field being the passthrough interface — bb and email attachment materialization goes through this channel
+- **Key rulings**:
+  - Append-only on the command side, freedom to delete and modify belongs to the human: agent writes only produce new files — immutable originals are the foundation of trust; proxies and indexes are all regenerable, only the original is the single truth
+  - A concept-declaration plugin: it only states what vault is and what rules it sets — mapping rules belong to mapping, layout rules to structure, the domain contract to domain; a symmetric division of labor with the wiki side's "concept and structure"
+  - Governance deferred, all three blocks claimed by 0.4: source preservation is the url field; structure rules moved to structure; lifecycle propagation belongs to mapping working with check — a paradigm of establishing the concept first and claiming after real use
 
 ## Structure
 
-无自有结构与脚本。外领地即根目录 `vault/` 容器本身；wiki 侧属地 `wiki/vault/`，属地惯例归 mapping。
+No structure or scripts of its own. The external territory is the root-level `vault/` container itself; the wiki-side territory is `wiki/vault/`, territory conventions belong to mapping.
 
 ## Invariants
 
-- 命令侧对 vault 只增：agent 写入只产生新文件，不修改既有文件
-- 删改自由属于人：删除、修改、移动是人的权利，命令不执行
-- 原文不可变是信任的根基：代理与索引皆可再生，唯原文是唯一真相
+- The command side is append-only toward vault: agent writes only produce new files, never modifying existing ones
+- Freedom to delete and modify belongs to the human: deleting, modifying, moving are human rights, commands do not perform them
+- Immutable originals are the foundation of trust: proxies and indexes are all regenerable, only the original is the single truth
 
 ## Changelog
 
-- 0.6 2026-10-02：全局域批一——挂 trust 与 log 必依桥边；vault 此前连 trust 边都缺，审计实锤；宪法准则 11，kernel 校验完备性
-- 0.5 2026-09-22：域化——depends 增 domain 即默认域定位，增 wiki 即属地声明 `wiki/vault/`；双重角色说破：兼作他域落地仓储，url 字段即借道接口
-- 0.4 2026-09-14：治理三块认领完毕——来源保全，认领 registry 预留段 `url`，URL 型资产出处登记，写入契约在 mapping usage；结构规约移交 structure 插件 0.1 立设；生命周期与变更传导归 mapping 引用计数、重算留痕，与 check 分诊协作
-- 0.3 2026-09-13：注入源移交 manifest——删 Checks、Inject、Attachments 节，md 回归纯文档
-- 0.2 2026-09-13：纯化——删对 mapping 与 check 的职能引用，规矩自足
-- 0.1 2026-09-12：立设——概念声明插件；治理后置：来源保全、结构规约、生命周期建议待真实使用后认领
+- 0.6 2026-10-02: global-domain batch one — added the trust and log mandatory-bridge edges; vault previously lacked even the trust edge, confirmed by audit; constitution principle 11, kernel verifies completeness
+- 0.5 2026-09-22: domain-ization — depends gained domain, i.e. the default-domain positioning, and wiki, i.e. the territory declaration `wiki/vault/`; the dual role spelled out: doubling as the landing repository for other domains, the url field as the passthrough interface
+- 0.4 2026-09-14: all three governance blocks claimed — source preservation, claiming the registry-reserved field `url`, provenance registration for URL-type assets, the write contract in mapping usage; structure rules moved to the structure plugin established at 0.1; lifecycle and change propagation go to mapping reference counting with recomputation audit trails, in coordination with check triage
+- 0.3 2026-09-13: injection source moved to the manifest — removed Checks, Inject, Attachments sections, md returned to pure documentation
+- 0.2 2026-09-13: purification — removed functional references to mapping and check, rules stated self-sufficiently
+- 0.1 2026-09-12: established — concept-declaration plugin; governance deferred: source preservation, structure rules, and lifecycle suggestions to be claimed after real use

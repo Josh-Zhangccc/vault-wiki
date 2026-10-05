@@ -1,29 +1,29 @@
-# structure：vault 布局
+# structure: vault Layout
 
-## 设计概要
+## Design Summary
 
-- **为什么存在**：vault 不预设结构，但完全无结构意味着熵的快速增长——user-write 手稿 2026-09-07。本件立布局规约：结构由实例声明，框架提供预设菜单、落位规则与漂移检测。骨架与实例分离的又一实例；vault 侧自此与 wiki 侧对称：概念插件管「是什么」，结构插件管「怎么组织」
-- **关键裁定**：
-  - 声明页机器可读加人读分区：frontmatter `structure` 块映射放声明本体，正文放预设说明；页面缺席 = 平铺容忍，是合法状态——结构是可选增强，非必须
-  - vault 属人：结构调整自由；agent 只落放与提示，不强制。声明是意图，diff 是漂移提示，处置永远属人
-  - 双向 diff 机械可判，走附检：只约束顶层目录；顶层散文件是平铺位
-  - 治理页在 wiki 内，治理对象在 vault 外——domain 契约同形通则
+- **Why it exists**: vault presets no structure, but a total absence of structure means fast-growing entropy — user-write manuscript 2026-09-07. This plugin sets the layout rules: structure is declared by the instance, the framework provides a preset menu, placement rules, and drift detection. Another instance of skeleton/instance separation; the vault side is henceforth symmetric with the wiki side: the concept plugin governs "what it is", the structure plugin governs "how it is organized"
+- **Key rulings**:
+  - Declaration page machine-readable plus a human-readable body: the frontmatter `structure` block mapping holds the declaration proper, the body holds preset notes; page absent = flat tolerance, a legal state — structure is an optional enhancement, not a requirement
+  - vault belongs to the human: structural adjustment is free; the agent only places and reminds, never coerces. The declaration is intent, the diff is a drift reminder, disposition always belongs to the human
+  - The two-way diff is mechanically decidable, done by the attached audit: constraining only top-level directories; loose top-level files are the flat slot
+  - Governance pages inside wiki, governance targets outside in vault — the same-shaped general rule of the domain contract
 
 ## Structure
 
-- `wiki/structure.md`——结构声明页，type: structure。frontmatter `structure` 块映射放声明本体——顶层目录到一句话语义，机器可读；正文放预设选择与说明，给人读；页面缺席 = 平铺容忍，合法状态
-- 预设菜单：日期——`xxxx-xx-xx` 每日文件夹；格式——`pdf/`、`md/`；类型——日记、切片等语义分类；混合——嵌套不互斥
-- 外壳自然语言声明退役：wiki 内才是 agent 检索可达区；外壳留指针指向声明页
+- `wiki/structure.md` — the structure declaration page, type: structure. The frontmatter `structure` block mapping holds the declaration proper — top-level directory to one-line semantics, machine-readable; the body holds preset choices and notes, for humans; page absent = flat tolerance, a legal state
+- Preset menu: date — `xxxx-xx-xx` daily folders; format — `pdf/`, `md/`; type — semantic categories such as diary, clippings; mixed — nesting without mutual exclusion
+- The shell's natural-language declaration retired: inside wiki is the only retrieval-reachable zone for agents; the shell keeps a pointer to the declaration page
 
 ## Invariants
 
-- 结构选择是实例配置，不进架构。试金石：具体目录布局搬不进新实例
-- vault 属人：结构调整自由；agent 只落放与提示，不强制
-- 声明与现状的双向 diff 机械可判，走附检脚本；声明是意图，diff 是漂移提示，处置永远属人
-- diff 只约束顶层目录；顶层散文件是平铺位，不受声明约束
+- Structural choice is instance configuration, not architecture. Touchstone: a concrete directory layout cannot be carried into a new instance
+- vault belongs to the human: structural adjustment is free; the agent only places and reminds, never coerces
+- The two-way diff between declaration and reality is mechanically decidable, via the attached-audit script; the declaration is intent, the diff is a drift reminder, disposition always belongs to the human
+- The diff constrains only top-level directories; loose top-level files are the flat slot, unconstrained by the declaration
 
 ## Changelog
 
-- 0.3 2026-09-22：域化——首段补域内治理定位，传递属 vault 域，治理页在内对象在外；depends 维持，传递即成员
-- 0.2 2026-09-14：领地落 wiki——声明页 `wiki/structure.md`，frontmatter structure 块映射机械可读；漂移检测自语义项升级附检脚本即声明 diff；depends 增 wiki；外壳自然语言声明退役
-- 0.1 2026-09-14：立设——自 user-write 手稿即四预设加 AGENTS 声明，与 vault 治理讨论蒸馏；布局职责自 vault 概念插件独立，对称于 wiki 侧概念与结构分层
+- 0.3 2026-09-22: domain-ization — the first paragraph gained in-domain governance positioning, transitively belonging to the vault domain, governance page inside and target outside; depends unchanged, transitivity means membership
+- 0.2 2026-09-14: territory moved into wiki — declaration page `wiki/structure.md`, frontmatter structure block mapping machine-readable; drift detection upgraded from a semantic item to the attached-audit script, i.e. the declaration diff; depends gained wiki; the shell's natural-language declaration retired
+- 0.1 2026-09-14: established — from the user-write manuscript, i.e. the four presets plus the AGENTS declaration, distilled with the vault governance discussion; the layout responsibility separated from the vault concept plugin, symmetric to the wiki side's concept-and-structure layering

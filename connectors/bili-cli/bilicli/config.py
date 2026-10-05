@@ -1,6 +1,7 @@
-"""bili-cli 常量：端点表、请求头、本机凭据路径。
+"""bili-cli constants: endpoint table, request headers, local credential paths.
 
-端点均为 web 端非公开 API，B 站随时可能改版——以实测为准，未覆盖面走 raw 透传探路。
+Endpoints are unofficial web-side APIs that bilibili may change at any time — measured behavior
+is authoritative; uncovered surfaces go through raw passthrough for probing.
 """
 
 from pathlib import Path
@@ -12,30 +13,30 @@ USER_AGENT = (
     "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 )
 
-# 本机凭据（0600，永不入库、永不落屏）
+# local credentials (0600, never in any repo, never on screen)
 CONFIG_DIR = Path.home() / ".bili-cli"
 COOKIE_FILE = CONFIG_DIR / "cookies.json"
 
-# 登录态所需最小 cookie 键；buvid3 缺席时经 spi 端点现补（风控基础）
+# minimal cookie keys needed for login state; when buvid3 is absent it is fetched via the spi endpoint (risk-control baseline)
 AUTH_KEYS = ("SESSDATA", "bili_jct")
 BUVID_KEYS = ("buvid3", "buvid4")
 
-# endpoint -> (路径, 是否需 WBI 签名)
+# endpoint -> (path, needs WBI signing)
 ENDPOINTS = {
-    "nav": ("/x/web-interface/nav", False),            # 我的信息 + WBI 密钥源
-    "spi": ("/x/frontend/finger/spi", False),          # buvid 现补，免登录
+    "nav": ("/x/web-interface/nav", False),            # my info + WBI key source
+    "spi": ("/x/frontend/finger/spi", False),          # buvid fetched on demand, no login needed
     "watchlater": ("/x/v2/history/toview/web", False),
     "watchlater_add": ("/x/v2/history/toview/add", False),   # POST aid
     "watchlater_del": ("/x/v2/history/toview/del", False),   # POST aid
-    "history": ("/x/v2/history", False),               # GET ps/max 翻页
+    "history": ("/x/v2/history", False),               # GET ps/max pagination
     "fav_folders": ("/x/v3/fav/folder/created/list-all", False),
     "fav_list": ("/x/v3/fav/resource/list", False),    # GET media_id/pn/ps
-    "fav_deal": ("/x/v3/fav/resource/deal", False),    # POST 增删收藏
+    "fav_deal": ("/x/v3/fav/resource/deal", False),    # POST favorites add/remove
     "like": ("/x/web-interface/archive/like", False),  # POST bvid/like + csrf
     "search": ("/x/web-interface/search/type", True),  # search_type=video|bili_user
-    "view": ("/x/web-interface/view", False),          # 视频详情 bvid
-    "player": ("/x/player/wbi/v2", True),              # 字幕字典 bvid/cid
-    "up_arc": ("/x/space/wbi/arc/search", True),       # UP 主投稿 mid/pn
-    "up_info": ("/x/space/wbi/acc/info", True),        # UP 主信息 mid
-    "conclusion": ("/x/web-interface/view/conclusion/get", True),  # 官方 AI 视频总结
+    "view": ("/x/web-interface/view", False),          # video detail, bvid
+    "player": ("/x/player/wbi/v2", True),              # subtitle dictionary, bvid/cid
+    "up_arc": ("/x/space/wbi/arc/search", True),       # UP uploads, mid/pn
+    "up_info": ("/x/space/wbi/acc/info", True),        # UP info, mid
+    "conclusion": ("/x/web-interface/view/conclusion/get", True),  # official AI video summary
 }

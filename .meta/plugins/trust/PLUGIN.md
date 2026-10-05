@@ -1,20 +1,20 @@
-# trust：信任字段
+# trust: Trust Fields
 
-## 设计概要
+## Design Summary
 
-- **为什么存在**：知识会老化——让「这条知识还可信吗」从通读原文变成读字段。横切字段件：四个信任字段，认领自 registry 预留段，全库共用；必依桥挂全部域基座
-- **关键裁定**：
-  - 层级推导不落盘：读取时纯计算——unverified、machine-confirmed、human-reviewed、stale。可再生区不造第二份会漂移的真相
-  - 四字段全部可选：不写 = unverified，不阻断任何读写——信任是增强，不是门槛
-  - verified 只追加不改写：事件是历史；追加由复核动作触发，复核由用户发起，agent 不自发；不为凑水位伪造
-  - stale_after 语义是「此后无人复核就应视为过期」——刷新它，就是一次续期决策
+- **Why it exists**: knowledge ages — turn "is this piece of knowledge still trustworthy" from re-reading the full text into reading a field. A cross-cutting field plugin: four trust fields, claimed from the registry-reserved section, shared repository-wide; a mandatory bridge attached to all domain bases
+- **Key rulings**:
+  - Level derivation is never persisted: pure computation at read time — unverified, machine-confirmed, human-reviewed, stale. The regenerable zone does not create a second truth that would drift
+  - All four fields optional: not written = unverified, blocking no read or write — trust is an enhancement, not a threshold
+  - verified is append-only, never rewritten: events are history; appends are triggered by review actions, reviews are initiated by the user, agents never spontaneously; never fabricated to inflate the level
+  - The semantics of stale_after is "if no one reviews after this point, it should be considered expired" — refreshing it is itself a renewal decision
 
 ## Structure
 
-- `generated`：块式映射 `by` 加 `at`——actor 约定加 YYYY-MM-DD；页面由谁生成。map 与 save 写代理页与笔记时随手写
-- `verified`：事件列表；项单行 `by: <actor>, at: <日期>`；可多次追加，即复核历史。谁可写：human 复核，与 agent 或 process 机械核验如哈希重算
-- `stale_after`：YYYY-MM-DD 绝对时刻；语义是「此后无人复核就应视为过期」；刷新它 = 一次续期决策
-- `sources`：来源列表；项含 id、resource、可信度信号——author、usage_count、last_modified
+- `generated`: block-style mapping of `by` plus `at` — actor convention plus YYYY-MM-DD; who generated the page. map and save write it along the way when producing proxy pages and notes
+- `verified`: event list; items single-line `by: <actor>, at: <date>`; appendable multiple times, i.e. the review history. Who may write: human review, and mechanical verification by agent or process such as hash recalculation
+- `stale_after`: YYYY-MM-DD absolute moment; semantics "if no one reviews after this point, it should be considered expired"; refreshing it = a renewal decision
+- `sources`: source list; items contain id, resource, credibility signals — author, usage_count, last_modified
 
 ## Example
 
@@ -34,37 +34,37 @@ sources:
     last_modified: 2026-09-05
 ```
 
-上例水位 = human-reviewed，含 human 事件；2026-12-31 之后读取显示 stale。四字段全部可选，通常只写 `generated`。
+In the example above the level = human-reviewed, containing a human event; after 2026-12-31 reads show stale. All four fields are optional; usually only `generated` is written.
 
 ## Level Derivation
 
-读取时现算，永不落盘：
+Computed at read time, never persisted:
 
-- **unverified**：无 verified 记录
-- **machine-confirmed**：仅含 agent 或 process 事件
-- **human-reviewed**：含 human 事件，最高级
-- **stale**：now 不早于 stale_after——独立于上述层级，覆盖显示
+- **unverified**: no verified records
+- **machine-confirmed**: only agent or process events
+- **human-reviewed**: contains a human event, the highest level
+- **stale**: now not earlier than stale_after — independent of the levels above, overrides the display
 
-推导禁止生成派生页：可再生区不造第二份会漂移的真相；消费方——query、check、viewer——按上表现算。
+Derivation must not generate derived pages: the regenerable zone does not create a second truth that would drift; consumers — query, check, viewer — compute per the table above on the fly.
 
 ## Invariants
 
-- verified 事件只追加不改写，事件是历史；追加由复核动作触发，不为凑水位伪造
-- 层级与 stale 判定均为纯比较，无隐藏状态
-- 字段全部可选：不写 = unverified，不阻断任何读写
+- verified events are append-only, never rewritten; events are history; appends are triggered by review actions, never fabricated to inflate the level
+- Level and stale judgments are pure comparisons, no hidden state
+- All fields optional: not written = unverified, blocking no read or write
 
-## 桥：必依
+## Bridge: mandatory
 
-字段桥：全域域件共用的信任字段契约，宪法准则 11。挂靠基数**必依**——全部域基座，即直接 depends domain 者，须依赖本件；kernel validate 校验完备。格式权威在本件 usage，经投影到消费现场，分工裁定。本节详述：域页面可选携带四信任字段；各域自声明信任天花板，如 machine-confirmed；层级推导读取时现算不落盘。
+Field bridge: the trust-field contract shared by all domain plugins across domains, constitution principle 11. Attachment cardinality **mandatory** — all domain bases, i.e. plugins directly depending on domain, must depend on this plugin; kernel validate verifies completeness. Format authority lives in this plugin's usage, projected to the consumption sites, per the division-of-labor ruling. This section details: domain pages may optionally carry the four trust fields; each domain self-declares its trust ceiling, e.g. machine-confirmed; level derivation is computed at read time, never persisted.
 
 ## Changelog
 
-- 0.9 2026-10-02：全局域批一——立必依桥即字段桥，域基座必依赖，kernel 校验完备性
-- 0.8 2026-09-23：补 wiki 依赖边——内侧插件挂 wiki，对齐 domain 0.1 声明；2026-09-22 域化批次漏收
-- 0.7 2026-09-13：usage 补 verified 产生通道——复核由用户发起，agent 不自发追加；专家评审：输入通道空转
-- 0.6 2026-09-13：注入源移交 manifest——删 Checks、Usage、Inject、Attachments 节，md 回归纯文档
-- 0.5 2026-09-13：立「Usage」节——写侧契约交由命令注入区投影，单一文本源
-- 0.4 2026-09-12：manifest 去 layer——废分层：注入序改依赖拓扑加字母序，方向校验撤除
-- 0.3 2026-09-12：标识符英文化——节头、附检契约键、类型枚举、管道调用参数
-- 0.2 2026-09-12：披露修补——内联四字段全形状样例；冷启动审计猜点：规格无实例
-- 0.1 2026-09-11：立设——认领 registry 预留段四字段回填插件段；层级推导不落盘；附检覆盖字段契约、stale 清单、信任水位
+- 0.9 2026-10-02: global-domain batch one — established the mandatory bridge, i.e. the field bridge; domain bases must depend on it, kernel verifies completeness
+- 0.8 2026-09-23: added the wiki dependency edge — inner-side plugins attach to wiki, aligning with the domain 0.1 declaration; omitted from the 2026-09-22 domain-ization batch
+- 0.7 2026-09-13: usage gained the verified production channel — reviews are initiated by the user, agents never append spontaneously; expert review: the input channel was idling
+- 0.6 2026-09-13: injection source moved to the manifest — removed Checks, Usage, Inject, Attachments sections, md returned to pure documentation
+- 0.5 2026-09-13: established the "Usage" section — the write-side contract is projected by the command's injection region, a single text source
+- 0.4 2026-09-12: manifest dropped layer — layering abolished: injection order changed to dependency topology plus alphabetical order, direction checks removed
+- 0.3 2026-09-12: identifiers anglicized — section headers, attached-audit contract keys, type enums, pipeline call parameters
+- 0.2 2026-09-12: disclosure patch — inlined a full-shape example of the four fields; cold-start audit guess point: spec without instances
+- 0.1 2026-09-11: established — claimed the four registry-reserved fields and backfilled the plugin section; level derivation never persisted; attached audit covers the field contract, the stale list, and trust-level counts

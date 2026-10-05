@@ -5,17 +5,17 @@ depends:
   - wiki
   - trust
   - log
-updated: 2026-10-02
+updated: 2026-10-06
 attachment:
-  - "projects/ —— 项目容器（根下第三容器，工作区：agent 全权读写；一项目一目录）"
-  - "wiki/projects.md —— 声明页（`projects` 块映射 = 项目名→一句话；双向 diff 漂移检测，structure 先例）"
+  - "projects/ — project containers (the third container under the root, workspaces: full agent read/write; one directory per project)"
+  - "wiki/projects.md — declaration page (`projects` block mapping = project name → one sentence; bidirectional diff drift detection, the structure precedent)"
 fields:
-  projects: "块映射（声明页）——项目名 → 一句话定位；键应与 projects/ 下目录一一对应（双向 diff）"
-inject: "项目容器 `projects/<项目名>/`（工作区，agent 全权读写——与 vault 只增相对）：项目本体与跟踪全住文件夹，惯例自述 `project.md`（四区：目标与上下文 / 阶段（checkbox+日期）/ 任务（行不建页）/ 决策（只增）；stage 规划/进行/暂停/完成开放词表）；wiki 端仅声明页 `wiki/projects.md`（type: project，`projects` 块映射 = 项目名→一句话，与目录双向 diff，漂移同 structure）；涉及项目内容的检索直查 projects/ 子树；与 todo 边界——todo 是 agent 委托活工作集，project.md 任务是持久分解事实源"
+  projects: "block mapping (declaration page) — project name → one-sentence positioning; keys should correspond one-to-one with the directories under projects/ (bidirectional diff)"
+inject: "Project containers `projects/<project name>/` (workspaces, full agent read/write — versus vault's append-only): the project body and its tracking live entirely in the folder, the conventional self-description `project.md` (four sections: goal & context / stages (checkboxes + dates) / tasks (lines, not pages) / decisions (append-only); stage vocabulary planning/in-progress/paused/completed open); on the wiki side only the declaration page `wiki/projects.md` (type: project, `projects` block mapping = project name → one sentence, bidirectional diff against the directories, drift same as structure); searches involving project content go directly to the projects/ subtree; boundary with todo — todo is the agent's working set of delegated tasks, project.md tasks are the persistent decomposition source of truth"
 usage:
-  - 建项目：`projects/` 下建目录 + `project.md` 自述（四区起步可空），声明页补一行（键 = 目录名）
-  - 任务流转：自述内 `[ ]`→`[x]` 完成留痕（不删行）；阶段 checkbox 同理
-  - 漂移处置：check 报未声明目录 / 无目录声明 → 补声明或迁移，处置属人
-  - 检索：涉及项目内容时直查 `projects/<名>/` 子树（wiki 索引不覆盖容器）
+  - Creating a project: create a directory under `projects/` + the `project.md` self-description (four sections, may start empty), add a line on the declaration page (key = directory name)
+  - Task flow: `[ ]`→`[x]` inside the self-description leaves the completion trace (lines never deleted); stage checkboxes likewise
+  - Drift handling: check reports undeclared directories / declarations without directories → add the declaration or migrate, disposal belongs to the human
+  - Retrieval: when project content is involved, search the `projects/<name>/` subtree directly (the wiki index does not cover containers)
 checks:
-  - 语义项（v0.1 人工，附检后置）：type: project 落 `wiki/projects.md` 之外 → error；声明键无对应目录 / 目录未声明 → warning（双向 diff）；进行中项目自述 updated 超 30 天 → warning（停滞分诊）
+  - Semantic items (v0.1 manual, attached audit deferred): type: project outside `wiki/projects.md` → error; a declared key with no directory / an undeclared directory → warning (bidirectional diff); an in-progress project's self-description updated over 30 days ago → warning (stall triage)

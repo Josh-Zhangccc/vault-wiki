@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""trust 插件附检：机械项（信任字段契约 / stale 清单 / 信任水位）。
+"""trust plugin attached audit: mechanical items (trust-field contract / stale list / trust watermark).
 
-stale 页处置分诊（刷新 stale_after、重验证或废弃）是语义项，归 check 命令。
+Triage of stale pages (refresh stale_after, re-verify, or deprecate) is a semantic item, under the check command.
 """
 import datetime
 import re
@@ -19,7 +19,7 @@ def _bad_date(val):
     s = str(val)
     if not DATE_RE.match(s):
         return True
-    try:  # 日历合法性（2026-13-99 这类格式对但非法的日期）
+    try:  # calendar validity (dates like 2026-13-99 that match the format but are not real dates)
         datetime.date.fromisoformat(s)
         return False
     except ValueError:
@@ -36,14 +36,14 @@ def check(ctx):
         stale_after = fm.get("stale_after")
         if gen is not None:
             if not isinstance(gen, dict):
-                issues.append({"level": "warning", "message": f"{rel}：generated 应为块式映射 by/at"})
+                issues.append({"level": "warning", "message": f"{rel}: generated should be a block mapping by/at"})
             elif gen.get("by") is None or gen.get("at") is None:
-                issues.append({"level": "warning", "message": f"{rel}：generated 缺 by 或 at"})
+                issues.append({"level": "warning", "message": f"{rel}: generated missing by or at"})
             else:
                 if _bad_actor(gen["by"]):
-                    issues.append({"level": "warning", "message": f"{rel}：generated.by {gen['by']!r} 不符 actor 约定"})
+                    issues.append({"level": "warning", "message": f"{rel}: generated.by {gen['by']!r} does not match the actor convention"})
                 if _bad_date(gen["at"]):
-                    issues.append({"level": "warning", "message": f"{rel}：generated.at {gen['at']!r} 非 YYYY-MM-DD"})
+                    issues.append({"level": "warning", "message": f"{rel}: generated.at {gen['at']!r} not YYYY-MM-DD"})
         if verified is not None:
             events = verified if isinstance(verified, list) else [verified]
             has_human = False
@@ -52,13 +52,13 @@ def check(ctx):
                 m_by = re.search(r"by:\s*(.+?)(?:\s*,\s*at:|$)", text)
                 m_at = re.search(r"at:\s*(\S+)", text)
                 if not m_by or not m_at:
-                    issues.append({"level": "warning", "message": f"{rel}：verified 事件缺 by 或 at（{text.strip()!r}）"})
+                    issues.append({"level": "warning", "message": f"{rel}: verified event missing by or at ({text.strip()!r})"})
                     continue
-                by, at = m_by.group(1).strip(), m_at.group(1).rstrip(",");  # 容忍尾逗号
+                by, at = m_by.group(1).strip(), m_at.group(1).rstrip(",");  # tolerate trailing comma
                 if _bad_actor(by):
-                    issues.append({"level": "warning", "message": f"{rel}：verified.by {by!r} 不符 actor 约定"})
+                    issues.append({"level": "warning", "message": f"{rel}: verified.by {by!r} does not match the actor convention"})
                 if _bad_date(at):
-                    issues.append({"level": "warning", "message": f"{rel}：verified.at {at!r} 非 YYYY-MM-DD"})
+                    issues.append({"level": "warning", "message": f"{rel}: verified.at {at!r} not YYYY-MM-DD"})
                 if by.startswith("human:"):
                     has_human = True
             if has_human:
@@ -67,11 +67,11 @@ def check(ctx):
                 confirmed += 1
         if stale_after is not None:
             if _bad_date(stale_after):
-                issues.append({"level": "warning", "message": f"{rel}：stale_after {stale_after!r} 非 YYYY-MM-DD"})
+                issues.append({"level": "warning", "message": f"{rel}: stale_after {stale_after!r} not YYYY-MM-DD"})
             elif datetime.date.fromisoformat(str(stale_after)) <= today:
-                issues.append({"level": "info", "message": f"{rel}：已过 stale_after（{stale_after}）——stale 页，处置归人"})
+                issues.append({"level": "info", "message": f"{rel}: past stale_after ({stale_after}) — stale page, disposal belongs to the human"})
         if fm.get("sources") is not None and not isinstance(fm.get("sources"), list):
-            issues.append({"level": "warning", "message": f"{rel}：sources 应为列表"})
+            issues.append({"level": "warning", "message": f"{rel}: sources should be a list"})
     if reviewed or confirmed:
-        issues.append({"level": "info", "message": f"信任水位：human-reviewed {reviewed} 页 / machine-confirmed {confirmed} 页（其余 unverified）"})
+        issues.append({"level": "info", "message": f"trust watermark: human-reviewed {reviewed} pages / machine-confirmed {confirmed} pages (the rest unverified)"})
     return issues

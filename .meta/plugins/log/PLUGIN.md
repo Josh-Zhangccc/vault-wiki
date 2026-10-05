@@ -1,58 +1,58 @@
-# log：运行日志
+# log: Run Log
 
-## 设计概要
+## Design Summary
 
-- **为什么存在**：库的操作流水——什么时候对库做了什么。与 hot 相对：hot 是会淘汰的现在，log 是只增不删的历史。必依桥保证任何域的产生必有痕迹——拓扑完备性不变量的实例，见 mechanics 第 5 节
-- **关键裁定**：
-  - 条目只增不改写，置顶追加：修改历史条目 = error；归档搬移不改条目一字
-  - 滚动窗口而非无限账本：主文件至多 100 条，超限按条目月份分组机械归档到 `wiki/archive/月/log.md`——新鲜度与全史兼得
-  - 写入机械化：走 `pipeline.py log`，容量检查与归档由脚本执行；参数权威源在脚本源码
-  - 域标，0.15 起：域内事务条目带 `[域]`；无域事务缺省——流水可按域检索
+- **Why it exists**: the repository's operation journal — what was done to the repository and when. Opposite of hot: hot is the present that gets evicted, log is append-only never-deleted history. The mandatory bridge guarantees that anything any domain produces always leaves a trace — an instance of the topological-completeness invariant, see Section 5 of mechanics
+- **Key rulings**:
+  - Entries are append-only and never rewritten, prepended at the top: modifying a historical entry = error; archival moves don't change a single character of an entry
+  - Rolling window rather than an infinite ledger: the main file holds at most 100 entries; overflow is mechanically archived, grouped by entry month, to `wiki/archive/<month>/log.md` — freshness and full history both served
+  - Writing is mechanized: via `pipeline.py log`; capacity checks and archiving are performed by the script; the authoritative source of parameters is the script source
+  - Domain tags, since 0.15: in-domain transaction entries carry `[domain]`; domainless transactions omit it — the journal becomes searchable by domain
 
 ## Structure
 
-- 单文件 `wiki/log.md`；条目置顶追加，最新在最上
-- 条目格式：`- YYYY-MM-DD <类型> [<域>]：一句话概述`，可含 wikilink；域标可缺省，即无域事务
-- 类型枚举：map、save、query、check、plugin、todo、other；实例可扩
+- Single file `wiki/log.md`; entries prepended at the top, newest on top
+- Entry format: `- YYYY-MM-DD <type> [<domain>]: one-sentence summary`, may contain wikilinks; the domain tag is omissible, i.e. domainless transactions
+- Type enum: map, save, query, check, plugin, todo, other; instances may extend
 
-## 桥：必依
+## Bridge: mandatory
 
-记录桥：全域域件共用的操作流水归宿，宪法准则 11。挂靠基数**必依**——全部域基座须依赖本件；kernel validate 校验完备；拓扑保证：任何域的产生必有痕迹。格式权威在本件 usage，经投影到消费现场，分工裁定。本节详述：域内事务条目带域标 `[域]`，如 `[bb]`，无域事务缺省；写经 `pipeline.py log --domain`。
+Recording bridge: the operation-journal home shared by all domain plugins across domains, constitution principle 11. Attachment cardinality **mandatory** — all domain bases must depend on this plugin; kernel validate verifies completeness; the topology guarantees: anything a domain produces leaves a trace. Format authority lives in this plugin's usage, projected to the consumption sites, per the division-of-labor ruling. This section details: in-domain transaction entries carry the domain tag `[domain]`, e.g. `[bb]`; domainless transactions omit it; written via `pipeline.py log --domain`.
 
 ## Invariants
 
-- 条目只增不改写——「只增不删」的对象是条目内容，非文件物理位置；修改历史条目 = error
-- 每条必须标日期，精确到天
-- 归档搬移不改动条目内容一字
+- Entries are append-only and never rewritten — the object of "append-only, never delete" is entry content, not the file's physical location; modifying a historical entry = error
+- Every entry must carry a date, accurate to the day
+- Archival moves don't change a single character of entry content
 
 ## Rolling
 
-主文件是滚动窗口，不是无限账本：
+The main file is a rolling window, not an infinite ledger:
 
-- 窗口至多 100 条，约 14k 字符；机械权威源在 `pipeline.py`，本节为语义说明
-- 超限自动把最旧一段按条目月份分组搬入 `wiki/archive/YYYY-MM/log.md`；条目内容一字不改，只搬位置。归档文件是所在目录的保留名 log.md——保留名文件非概念页，天然豁免 frontmatter
-- 归档目录落入不可变区；压缩整合仍须人确认，见宪法准则 5
+- Window of at most 100 entries, about 14k characters; the mechanical authoritative source is `pipeline.py`, this section is the semantic description
+- On overflow the oldest segment is automatically moved, grouped by entry month, into `wiki/archive/YYYY-MM/log.md`; entry content unchanged by a single character, only moved. The archive file is the reserved name log.md of its directory — reserved-name files are not concept pages, naturally exempt from frontmatter
+- The archive directory falls into the immutable zone; compression and consolidation still require human confirmation, see constitution principle 5
 
 ## Config
 
 ```yaml config
-log.max_entries: 100     # 主文件滚动窗口，条
-log.max_chars: 14000     # 窗口字符上限，约
+log.max_entries: 100     # main-file rolling window, entries
+log.max_chars: 14000     # window character cap, approximate
 ```
 
 ## Changelog
 
-- 0.15 2026-10-02：全局域批一——立必依桥即记录桥，域基座必依赖，kernel 校验完备性；条目增域标 `[域]` 可缺省；pipeline log 增 `--domain` 参
-- 0.13 2026-09-23：补 wiki 依赖边——内侧插件挂 wiki，对齐 domain 0.1 声明；2026-09-22 域化批次漏收
-- 0.12 2026-09-14：类型值集扩 todo——todo 插件销账事件的归属地；历史归 log，todo 页只留活工作集
-- 0.11 2026-09-13：usage 类型参数补值集出处——AGENTS 注入区 log 块，消跨块猜点
-- 0.10 2026-09-13：注入源移交 manifest——删 Checks、Usage、Inject、Attachments 节，md 回归纯文档
-- 0.9 2026-09-13：立「Usage」节——写侧契约交由命令注入区投影，单一文本源
-- 0.8 2026-09-12：manifest 去 layer——废分层：注入序改依赖拓扑加字母序，方向校验撤除
-- 0.7 2026-09-12：标识符英文化——节头、附检契约键、类型枚举、管道调用参数
-- 0.6 2026-09-11：无日期条目校验收编附检脚本，主文件与归档同检；历史修改审计留语义项，git 可核
-- 0.5 2026-09-10：写入机械化——走 pipeline.py log，容量检查与归档由脚本执行；参数权威源移交脚本源码
-- 0.4 2026-09-10：归档路径改轨 `wiki/archive/YYYY-MM/log.md`——按条目月份分组；保留名豁免 frontmatter
-- 0.3 2026-09-10：manifest 增 layer: derived——分层立设：派生层，零依赖
-- 0.2 2026-09-09：滚动归档机制明文化，窗口 100 条；类型枚举增「检索」；参数依原库实测校准，条均 139 字
-- 0.1 2026-09-08：自原 wiki log 规则转化
+- 0.15 2026-10-02: global-domain batch one — established the mandatory bridge, i.e. the recording bridge; domain bases must depend on it, kernel verifies completeness; entries gained the omissible `[domain]` tag; pipeline log gained the `--domain` parameter
+- 0.13 2026-09-23: added the wiki dependency edge — inner-side plugins attach to wiki, aligning with the domain 0.1 declaration; omitted from the 2026-09-22 domain-ization batch
+- 0.12 2026-09-14: type value set extended with todo — the home of the todo plugin's task-settlement events; history goes to log, the todo page keeps only the active working set
+- 0.11 2026-09-13: usage's type parameter gained its value-set source — the log block of the AGENTS injection region, removing cross-block guess points
+- 0.10 2026-09-13: injection source moved to the manifest — removed Checks, Usage, Inject, Attachments sections, md returned to pure documentation
+- 0.9 2026-09-13: established the "Usage" section — the write-side contract is projected by the command's injection region, a single text source
+- 0.8 2026-09-12: manifest dropped layer — layering abolished: injection order changed to dependency topology plus alphabetical order, direction checks removed
+- 0.7 2026-09-12: identifiers anglicized — section headers, attached-audit contract keys, type enums, pipeline call parameters
+- 0.6 2026-09-11: the undated-entry check moved into the attached-audit script, main file and archive checked alike; the historical-modification audit kept as a semantic item, verifiable via git
+- 0.5 2026-09-10: writing mechanized — via pipeline.py log; capacity checks and archiving performed by the script; the authoritative source of parameters moved to the script source
+- 0.4 2026-09-10: archive path rerouted to `wiki/archive/YYYY-MM/log.md` — grouped by entry month; reserved names exempt from frontmatter
+- 0.3 2026-09-10: manifest gained layer: derived — layering established: derived layer, zero dependencies
+- 0.2 2026-09-09: the rolling-archive mechanism written down, window of 100 entries; the type enum gained "query"; parameters calibrated against the original repository's measurements, averaging 139 characters per entry
+- 0.1 2026-09-08: converted from the original wiki log rules

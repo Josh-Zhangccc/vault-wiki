@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""tag 插件附检：机械项（单页数量上限 / 复述 type / 层级深度）。
+"""tag plugin attached audit: mechanical items (per-page count cap / restating type / hierarchy depth).
 
-近重复 tag 是语义项（跨语言同义词字符串层面不可判），归 check 命令。
+Near-duplicate tags are a semantic item (cross-language synonyms are not decidable at the string level), under the check command.
 """
 
 
@@ -15,14 +15,14 @@ def check(ctx):
         if not isinstance(tags, list):
             tags = [tags]
         if len(tags) > 5:
-            issues.append({"level": "warning", "message": f"{rel}：{len(tags)} 个 tag（>5 软上限）"})
+            issues.append({"level": "warning", "message": f"{rel}: {len(tags)} tags (>5 soft cap)"})
         ptype = fm.get("type")
         if ptype and ptype in tags:
-            issues.append({"level": "warning", "message": f"{rel}：tag 复述 type（{ptype}）"})
+            issues.append({"level": "warning", "message": f"{rel}: tag restates type ({ptype})"})
         for t in tags:
             s = str(t)
             if "/" in s:
                 parts = s.split("/")
                 if len(parts) > 2 or any(not p.strip() for p in parts):
-                    issues.append({"level": "warning", "message": f"{rel}：tag 层级超限或空段（{s}，父/子 ≤2）"})
+                    issues.append({"level": "warning", "message": f"{rel}: tag hierarchy over limit or empty segment ({s}, parent/child ≤2)"})
     return issues

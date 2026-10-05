@@ -1,38 +1,38 @@
-# device：设备档案
+# device: device profiles
 
-## 设计概要
+## Design Overview
 
-- **为什么存在**：个人设备（电脑、手机、外设）的静态资产事实——序列号、购入、保修截止——此前无处安放：检索靠聊天记忆，保修过期靠人脑。本件立最小规范：一设备一页原生知识，字段机械可查，到期有提醒流
-- **族内位置**：全局件，零领地零命令零 type 扩值——设备不是 wiki 外信息源（无拉取无对账，人登记的原生知识），不立域；页面复用 notes 领地（type: entity 形态建议），检索天然覆盖；本件只加「字段规范 + 临期机制」两层
-- **关键裁定**：
-  - 复用 notes 不立领地：entity 已在 registry 形态默认词表，出身定义吻合（真身在 wiki 的知识）；独立领地结构成本高一档，弃
-  - 最小键集 + 开放扩展：serial / purchased / warranty_until 三键固定（附检只扫第三键），余键（model、vendor 等）实例自由——架构不枚举
-  - 到期提醒走受托流不挂桥：附检呈清单 → 用户确认 → 受托追加 todo 行——todo 页「受托即追加」既有语义，不自动写、不立 todo 依赖边；临期窗口 30 天写死，边用边改
-  - 资产关联跨件不立依赖：发票照片 vault 物化、wikilink 关联——user-profile 证据域先例
-  - 静态事实无 TTL：device 块映射不挂 stale_after——非拉取物，无过期语义；trust 可选挂，人手登记即 human 证据
-  - 工具环境摘要节（2026-10-04 v0.2）：正文 `## 工具环境` 记连接器/运行时/通道在场级信息——多设备互查注册表（AGENTS 外壳只及本机，设备页覆盖全部相关设备，外壳以指针引页）；在场级粒度防漂移（精确版本现查），装卸软件时同步；全量软件清单不记——「应知不存、现算」
-- **弃案**：
-  - 立域（domain 家族）：设备非外源，无适配器无拉取——弃
-  - 独立领地 wiki/devices/：结构成本高、notes 检索已覆盖——弃
-  - device 命令：登记低频（买新设备才登记），对话编辑够，命令数不膨胀——弃
-  - 自动写入 todo：与「处置经确认」惯例相左——弃
-- **机制回指**：notes 领地规则与只增纪律；trust 事件（verified 随复核追加）；todo 受托即追加；附检契约 scripts/check.py
+- **Why it exists**: static asset facts of personal devices (computers, phones, peripherals) — serial number, purchase date, warranty end — previously had nowhere to live: retrieval relied on chat memory, warranty expiry on human memory. This plugin establishes the minimal norm: one page per device as native knowledge, fields mechanically consultable, an expiry reminder flow
+- **Position in the family**: a global plugin, zero territories, zero commands, zero type value additions — devices are not a source outside wiki (no pulling, no reconciliation; human-registered native knowledge), so no domain is established; pages reuse the notes territory (type: entity as a suggested form), retrieval covered naturally; this plugin adds only two layers, 'field norm + expiry mechanism'
+- **Key rulings**:
+  - Reuse notes, no new territory: entity is already in the registry's default form vocabulary, the provenance definition fits (knowledge whose true copy lives in wiki); an independent territory costs one notch more in structure — rejected
+  - Minimal key set + open extension: serial / purchased / warranty_until fixed as three keys (the attached audit scans only the third), remaining keys (model, vendor, etc.) free for instances — the architecture does not enumerate
+  - Expiry reminders go through the delegation flow, not a bridge: the attached audit presents a list → user confirms → a todo line appended as a delegation — the todo page's existing 'append upon delegation' semantics; nothing written automatically, no todo dependency edge; the 30-day expiry window is hard-coded, refine through use
+  - Asset linking across plugins establishes no dependency: invoice photos materialized in vault, linked via wikilink — the user-profile evidence-domain precedent
+  - Static facts carry no TTL: the device block mapping gets no stale_after — not a pulled artifact, no expiry semantics; trust optional, human registration being itself human evidence
+  - Tool-environment summary section (2026-10-04 v0.2): the body's `## Tool Environment` records presence-level info on connectors/runtimes/channels — a cross-device lookup registry (the AGENTS shell reaches only this machine; device pages cover all relevant devices, the shell pointing to the pages); presence-level granularity prevents drift (exact versions looked up live), synced when software is (un)installed; no full software inventory — 'what should be known is not stored; it is computed on demand'
+- **Rejected alternatives**:
+  - Establishing a domain (the domain family): devices are not an external source, no adapter, no pulling — rejected
+  - An independent territory wiki/devices/: high structural cost, notes retrieval already covers it — rejected
+  - A device command: registration is low-frequency (only when a new device is bought), conversational editing suffices, no command-count bloat — rejected
+  - Automatic writes to todo: contrary to the 'disposal goes through confirmation' convention — rejected
+- **Mechanism back-references**: notes territory rules and the append-only discipline; trust events (verified appended with each review); todo append-upon-delegation; the attached-audit contract scripts/check.py
 
 ## Structure
 
-- `wiki/notes/` 一设备一页：type: entity（形态建议、开放），页名自由、同名尾缀消歧
-- `device` 块映射：serial / purchased / warranty_until 最小键集，余开放；发票照片 vault 物化 wikilink 关联
-- 零命令：登记走对话编辑，检索走 query，临期走附检
+- `wiki/notes/` one page per device: type: entity (suggested form, open); page name free, same names disambiguated by suffix
+- `device` block mapping: serial / purchased / warranty_until minimal key set, the rest open; invoice photos materialized in vault, linked via wikilink
+- Zero commands: registration via conversational editing, retrieval via query, expiry via the attached audit
 
 ## Invariants
 
-- 一设备一页，notes 只增纪律适用；删改自由属于人
-- 最小键集之外不枚举——实例自由扩展字段
-- 到期处置永远经用户确认，附检只报告不写入；todo 行 = 触发条件（到期日）+ 一句话 + by/at
-- 实时状态监控与控制、团队借还登记不做——范围边界；工具环境是半静态摘要非实时状态，可记
-- 静态事实不挂 stale_after；trust 为可选项，人手登记天然含 human 证据
+- One page per device; the notes append-only discipline applies; deletion and modification remain the human's freedom
+- Nothing enumerated beyond the minimal key set — instances extend fields freely
+- Expiry disposal always goes through user confirmation; the attached audit only reports, never writes; a todo line = trigger condition (expiry date) + one sentence + by/at
+- Real-time status monitoring and control, and team device lending registration are not done — scope boundary; the tool environment is a semi-static summary, not real-time status, and may be recorded
+- Static facts carry no stale_after; trust is optional, human registration naturally carrying human evidence
 
 ## Changelog
 
-- 0.2 2026-10-04：增工具环境摘要节——正文 `## 工具环境` 记连接器/运行时/通道在场级信息，多设备互查注册表，AGENTS 外壳以指针引页；在场级粒度、装卸同步、全量清单不记
-- 0.1 2026-10-04：立设——复用 notes 领地（type: entity 建议）、device 块映射最小键集、附检临期扫描（30 天窗口）、到期走受托确认入 todo；零命令；depends wiki
+- 0.2 2026-10-04: added the tool-environment summary section — the body's `## Tool Environment` records presence-level info on connectors/runtimes/channels, a cross-device lookup registry, the AGENTS shell pointing to the pages; presence-level granularity, (un)install syncing, no full inventory
+- 0.1 2026-10-04: established — reusing the notes territory (type: entity suggested), the device block mapping minimal key set, the attached-audit expiry scan (30-day window), expiry entering todo via delegation and confirmation; zero commands; depends wiki
