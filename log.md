@@ -22,7 +22,8 @@ Framework build (done 09-08~12) → daily use & fix-as-used (**current**).
 
 ## Past operations
 
-- 2026-10-06 议题：架构演进 issue #12 立档（单仓分层显性化→包格式+索引→subtree split 拆仓三步路线 + 第三方三通道与两安全面；方向共识未排期，痛点到达再走）
+- 2026-10-06 governance: PR #13 merged (i18n batch 1/4 — charters to English; manager delegated --admin, GitHub comment trail); merged branch deleted
+- 2026-10-06 topic：架构演进 issue #12 立档（单仓分层显性化→包格式+索引→subtree split 拆仓三步路线 + 第三方三通道与两安全面；方向共识未排期，痛点到达再走）
 - 2026-10-06 治理：PR #11 审合入库（bili 0.3 + bili-cli 0.2.0，管理者代行 --admin，GitHub 评论留痕）；删已合分支
 - 2026-10-06 域构：bili 0.3 视频入库批（用户四场景对照——看视频/评观点/管账号/追 UP）：改「视频不建页」为视频档案明示制涌现（video/ 两区制：摘要 ai 可覆写 + 评价 human 只增）；看视频降级链披露（实测：官方总结与 AI 字幕需登录 -101）；连接器 bili-cli 0.2.0（subtitle --ai / summary / fav move）
 - 2026-10-06 治理：PR #10 审合入库（cron v0.1 + 三件挂桥，管理者代行 --admin，GitHub 评论留痕）；删已合分支
