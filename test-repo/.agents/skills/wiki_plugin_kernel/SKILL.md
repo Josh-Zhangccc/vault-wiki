@@ -46,7 +46,7 @@ description: "Kernel and mechanics reference: the projector's seven subcommands 
 
 - **`inject_tier: full | member`** (optional, default full): **full** projects into the AGENTS.md injection region; **member** exits it — exposure rides on the family root's roster line (every member named with id + one phrase), the skill catalog (trigger-surface awareness), and L-layer reads (the manifest `inject` field stays the full-disclosure home either way)
 - Validate requires a member to reach a **full-tier domain root** through depends (family membership, else it exits into invisibility)
-- The projected plugin blocks carry a **byte budget** (15 KiB, derived from the smallest mainstream whole-file AGENTS.md cap minus handwritten allowance): warning while the tier migration is pending, blocking after it lands — the A layer holds pointers and red lines only, never procedures or formats (content contract in `protocol/experiments.md`)
+- The projected plugin blocks carry a **byte budget** (15 KiB, derived from the smallest mainstream whole-file AGENTS.md cap minus handwritten allowance): over-budget is a validate error — compress pointer lines or re-tier domain members; the A layer holds pointers and red lines only, never procedures or formats (content contract in `protocol/experiments.md`)
 
 ## Command-plugin binding
 
