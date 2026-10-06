@@ -33,8 +33,8 @@ Injection tier and budget (issue #12 layer discipline, see protocol/experiments.
   L-layer reads (the manifest inject field stays the full-disclosure home either way)
 - validate requires a member to reach a full-tier domain root through depends (family
   membership, else it exits into invisibility)
-- the projected plugin blocks carry a byte budget (INJECT_BUDGET): warning while the tier
-  migration is pending, blocking after it lands the region under budget
+- the projected plugin blocks carry a byte budget (INJECT_BUDGET): over-budget is a validate
+  error (compress pointer lines or re-tier domain members) the region under budget
 
 Command-plugin binding (mutual declaration, validate checks consistency):
 - command frontmatter adds owner: plugin id (multiple as an [a, b] list) or framework
@@ -107,8 +107,7 @@ CMD_INJECT_END = "<!-- cmd-inject:end -->"
 # region — exposure rides on the family root's roster line, the skill catalog, and L-layer reads
 INJECT_TIERS = ("full", "member")
 # injection budget on the projected plugin blocks: smallest mainstream whole-file AGENTS.md cap
-# (Devin 16 KiB) minus ~1 KiB instance handwritten allowance; warning until the issue #12 tier
-# migration lands the region under budget — that round flips it to a blocking validate error
+# (Devin 16 KiB) minus ~1 KiB instance handwritten allowance; over-budget is a validate error
 INJECT_BUDGET = 15 * 1024
 
 
@@ -270,12 +269,11 @@ def validate(plugins, errors):
     for name, m in sorted(plugins.items()):
         if m.get("inject_tier") == "member" and not any(reaches_plugin(plugins, name, r) for r in roots):
             errors.append(f"[error] {name}/: inject_tier member must reach a full-tier domain root through depends")
-    # injection budget: warning while the tier migration is pending, blocking after it lands
-    blocks, exited = build_inject_blocks(plugins)
+    # injection budget (hard since the issue #12 tier migration landed): over-budget blocks mechanical actions
+    blocks, _ = build_inject_blocks(plugins)
     size = sum(len(b.encode("utf-8")) for b in blocks)
     if size > INJECT_BUDGET:
-        note = f"{exited} member exits applied" if exited else "no member-tier exits yet (migration pending)"
-        print(f"[warning] projected injection region {size} B over the {INJECT_BUDGET} B budget ({note})")
+        errors.append(f"[error] projected injection region {size} B over the {INJECT_BUDGET} B budget — compress pointer lines or re-tier domain members (issue #12 layer discipline)")
     # dependency existence
     for name, m in sorted(plugins.items()):
         for dep in m.get("depends") or []:
