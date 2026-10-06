@@ -64,8 +64,8 @@ This repository (directory `agent-obsidian-template`, working name **vault-wiki*
 - wiki container `wiki/` (the inner side of the inner/outer distinction): origin dichotomy — territory pages in two forms: proxy pages (default, projections of reconcilable external sources, territory paths self-disclosed by each domain's injection line) and in-domain native pages (domain-side archives declared by the domain — the true body lives here, no external source to reconcile, shape owned by the domain plugin; first case bb-track cognition profile user.md); everything outside territories is native pages (writings whose true body lives here; session pages are minutes not mirrors — once the conversation vanishes the page is the true body, writing is birth); index / tags / hot / log are derived pages (mechanical projections); page frontmatter takes a minimal YAML subset (top-level scalars / block lists / one-level block mappings), more complex structures are not parsed
 <!-- /plugin:wiki -->
 
-<!-- plugin:device v0.3 -->
-- "Device profiles: one page per personal device in wiki/notes/ (type: entity suggested); device block mapping minimal keys serial/purchased/warranty_until, rest open; body
+<!-- plugin:device v0.4 -->
+- Device profiles: one page per personal device in wiki/notes/ (type: entity suggested); device block mapping minimal keys serial/purchased/warranty_until, rest open; body ## Tool Environment = presence-level connector/runtime/channel registry for cross-device lookup (synced on (un)install, no full inventory); invoice assets via vault + wikilink; attached audit scans warranty_until (30-day window → warning list; todo line only upon confirmation); no real-time monitoring, no team lending
 <!-- /plugin:device -->
 
 <!-- plugin:hot v0.10 -->
@@ -96,20 +96,20 @@ This repository (directory `agent-obsidian-template`, working name **vault-wiki*
 - Page `tags` field: YAML list; primary language follows the default key of the writing-style declaration page `wiki/language.md` (page or key absent → session language); English tags lowercase kebab-case; hierarchy ≤2 (`/` separated), ≤5 per page; open semantic classification, restating type forbidden
 <!-- /plugin:tag -->
 
-<!-- plugin:tmp v0.2 -->
-- Temporary zone wiki/tmp/ (the path is the territory; type: tmp optional, landing outside → error): drafts and parsing intermediates, no retention promise, cleanable any time; invisible to the derived layer — excluded from index/tags, never a link source, broken links exempt; promote precious drafts promptly (draft deleted on promotion); intermediates set stale_after as they go — check reports over-age, disposal via confirmation (no automatic deletion); sensitive intermediates best gitignored instance-side
+<!-- plugin:tmp v0.3 -->
+- Temporary zone `wiki/tmp/` (the path is the territory; type: tmp optional, landing outside → error): drafts and parsing intermediates, no retention promise, cleanable any time; invisible to the derived layer — excluded from index/tags, never a link source, broken links exempt; promote precious drafts promptly (draft deleted on promotion); intermediates set stale_after as they go — check reports over-age, disposal via confirmation (no automatic deletion); sensitive intermediates best gitignored instance-side
 <!-- /plugin:tmp -->
 
 <!-- plugin:trust v0.9 -->
 - Trust fields (optional per page): `generated` (who generated it) / `verified` (event list, items single-line by+at) / `stale_after` (expiry moment) / `sources` (sources and signals); level derivation never persisted — no record = unverified, only agent/process = machine-confirmed, contains human = human-reviewed, past stale_after = stale
 <!-- /plugin:trust -->
 
-<!-- plugin:calendar v0.3 -->
-- "Time territory: declaration page wiki/calendar.md (calendar block mapping = source key → declaration; absent = manual-only) + month pages wiki/calendar/YYYY-MM.md —
+<!-- plugin:calendar v0.4 -->
+- Time territory: declaration page wiki/calendar.md (calendar block mapping = source key → declaration; absent = manual-only) + month pages wiki/calendar/YYYY-MM.md — ## Schedule source projection refreshed wholesale + ## Manual Notes append-only; event lines may wikilink, events get no pages; future rolling, past frozen; month stale_after default 2 days; boundary — calendar stores what happens when, todo what is pending; on-demand bridge (domains derive source-keyed lines into the current month)
 <!-- /plugin:calendar -->
 
-<!-- plugin:cron v0.2 -->
-- "Time-automation territory wiki/cron/ (one page per task, the pure directory = the full declaration set): task page type: cron + cron block mapping (schedule/action/form session|script/domain/status/last_run/machine) +
+<!-- plugin:cron v0.3 -->
+- Time-automation territory wiki/cron/ (one page per task, the pure directory = the full declaration set): task page type: cron + cron block mapping (schedule/action/form session|script/domain/status/last_run/machine) + ## Task + ## Run Notes append-only; declaration-as-source, executor-as-projection — replay: active pages land execution-side (session → harness scheduler; script → system tasks, upon user confirmation); reconciliation three-way diff (declaration ↔ harness ↔ system) in the check attached audit; intent-change sync both directions, the page is the source of truth; failures report via log only, never blocking other tasks; boundaries — todo one-shot, calendar facts, cron recurring intent; on-demand bridge (domain tasks: page + depends)
 <!-- /plugin:cron -->
 
 <!-- plugin:cuhksz v0.3 -->
@@ -132,8 +132,8 @@ This repository (directory `agent-obsidian-template`, working name **vault-wiki*
 - Temporary memory wiki/todo.md (type: todo): cross-session delegations and reminders; entry = trigger condition (date or context) + one sentence + by/at; read first at session start (before hot; absent → create empty); due or past entries raised proactively; append upon delegation, settle upon completion ([x] + log line, history to log); settled capped at 20; live working set only; on-demand bridge — domain plugins one-way derive action items in
 <!-- /plugin:todo -->
 
-<!-- plugin:user-profile v0.5 -->
-- "User profile wiki/profile.md (type: profile): continuing cognition of the user, static identity + dynamic preference layers, dimensions open; convergence-style updates (new replaces old, trace in body), assertions carry evidence wikilinks, preference layer stale_after; zero own fields, reuses trust; not in the notes territory, no tags; updates via the profile command (dual-track trigger, self-creates on first, absence is the norm); read before personalized decisions; cognition bridge — domain cognition pages register one line each in
+<!-- plugin:user-profile v0.6 -->
+- User profile wiki/profile.md (type: profile): continuing cognition of the user, static identity + dynamic preference layers, dimensions open; convergence-style updates (new replaces old, trace in body), assertions carry evidence wikilinks, preference layer stale_after; zero own fields, reuses trust; not in the notes territory, no tags; updates via the profile command (dual-track trigger, self-creates on first); read before personalized decisions; cognition bridge — domain cognition pages register one line each in ## Domain Cognition, the profile aggregates pointers only
 <!-- /plugin:user-profile -->
 
 <!-- plugin:vault v0.6 -->
