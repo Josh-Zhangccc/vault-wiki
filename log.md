@@ -14,6 +14,7 @@ Framework build (done 09-08~12) → daily use & fix-as-used (**current**).
 ## Next steps
 
 - teach/quiz first real-use round (scaling / scope / grading)
+- issue #12 AGENTS.md slimming round: member-tier assignments (domain family members) + family-root roster compression + budget warning→error flip
 - AIE2040 re-basin + re-asking failed questions
 - bb-cli user-info polish; email exploration; first cron task pages + harness replay field-test
 - bili-cli logged-in field-test (personal data / write whitelist first round) and watch-list cold start
@@ -22,6 +23,7 @@ Framework build (done 09-08~12) → daily use & fix-as-used (**current**).
 
 ## Past operations
 
+- 2026-10-06 protocol+kernel: SASU-L layer content & capacity discipline landed (issue #12 comments synthesis — A/S/L content contract, one home per fact, pointer-dense inject, exposure ladder for exited members; kernel inject_tier full|member + member-must-reach-family-root check + 15 KiB inject budget, warning until the tier migration lands); slimming round next
 - 2026-10-06 governance: PR #15 merged (i18n batches 2-4, full English switch complete — 35 plugin disclosures + attached-audit scripts, 13 command skills, 4 connector docs & CLI messages, docs ×7, protocol artifacts, script comments; executed via 10 parallel subagents under a unified glossary + coordinator convergence; manager delegated --admin, GitHub comment trail); merged branch deleted
 - 2026-10-06 governance: PR #13 merged (i18n batch 1/4 — charters to English; manager delegated --admin, GitHub comment trail); merged branch deleted
 - 2026-10-06 topic：架构演进 issue #12 立档（单仓分层显性化→包格式+索引→subtree split 拆仓三步路线 + 第三方三通道与两安全面；方向共识未排期，痛点到达再走）
