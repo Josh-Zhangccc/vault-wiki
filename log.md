@@ -23,6 +23,7 @@ Framework build (done 09-08~12) → daily use & fix-as-used (**current**).
 
 ## Past operations
 
+- 2026-10-06 governance: PR #17 merged (SASU-L layer discipline step 0 — contract + kernel mechanism, dormant-compatible; manager delegated --admin, GitHub comment trail); merged branch deleted; tier migration next
 - 2026-10-06 protocol+kernel: SASU-L layer content & capacity discipline landed (issue #12 comments synthesis — A/S/L content contract, one home per fact, pointer-dense inject, exposure ladder for exited members; kernel inject_tier full|member + member-must-reach-family-root check + 15 KiB inject budget, warning until the tier migration lands); slimming round next
 - 2026-10-06 governance: PR #15 merged (i18n batches 2-4, full English switch complete — 35 plugin disclosures + attached-audit scripts, 13 command skills, 4 connector docs & CLI messages, docs ×7, protocol artifacts, script comments; executed via 10 parallel subagents under a unified glossary + coordinator convergence; manager delegated --admin, GitHub comment trail); merged branch deleted
 - 2026-10-06 governance: PR #13 merged (i18n batch 1/4 — charters to English; manager delegated --admin, GitHub comment trail); merged branch deleted
