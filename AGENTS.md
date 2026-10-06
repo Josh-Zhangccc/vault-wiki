@@ -54,7 +54,7 @@ This repository (directory `agent-obsidian-template`, working name **vault-wiki*
 
 ## wiki injection region
 
-> This region holds plugin-injected projections; marker blocks are added/removed as plugins are (un)installed; handwritten content does not belong here.
+> This region holds plugin-injected projections; marker blocks are added/removed as plugins are (un)installed or change injection tier (member-tier plugins exit the region — exposure rides on the family root's roster line, skills, and on-demand manifest reads; the region carries a byte budget); handwritten content does not belong here.
 
 <!-- plugin:domain v0.1 -->
 - Domain abstraction (outer): wiki recognizes only the inner/outer distinction; an outer domain = an adapter contract (external territory / landing strategy / identity proof / wiki-side territory / write model / trust model), declared by each domain plugin itself, with in-domain plugins belonging to the domain transitively; landing is essentially a write-model choice (final-state assets → append-only repository, process container → full read/write, truth elsewhere → pointer), and projection density follows translation cost (mirror / pointer / disclosure-only); borrowing vault or pointers is the default posture, self-standing containers are the exception (criteria: write-model or structural-rigidity divergence); a domain must be discoverable within wiki (declaration page or injection line)
