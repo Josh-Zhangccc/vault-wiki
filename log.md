@@ -22,6 +22,7 @@ Framework build (done 09-08~12) → daily use & fix-as-used (**current**).
 
 ## Past operations
 
+- 2026-10-07 topic: package-mechanism proposal filed as issue #20 (binding basis = family closure declared in PKG.yaml + kernel cross-check; directory-as-package core/ + domains/<pkg>/ with vault-trio exception; tap-style INDEX.yaml — no marketplace; flat package graph, compat ranges over framework VERSION+tag; three registration channels with the index PR as the human-review gate; two-round staging: binding round → split round via subtree under the owner's account); ruling recorded: cuhksz single package; execution pending team discussion
 - 2026-10-06 governance: PR #19 merged (inject-line clip fix — quoted-span protection + stray-quote lint; manager delegated --admin, GitHub comment trail); merged branch deleted
 - 2026-10-06 修复: inject-line clip bug (owner field report on the instance, issue #12) — kernel strip_comment fired inside quoted values, eating ` ## Section` tails (device/calendar/cron/user-profile, stray leading quote); quoted-span protection + stray-quote lint; four lines restored complete and tightened, tmp formatting back; region 15.2 K, blocks headroom 583 B
 - 2026-10-06 governance: PR #18 merged (issue #12 tier migration — region 38K→14K, hard budget; manager delegated --admin, GitHub comment trail); merged branch deleted; #12 first-step family lands, packaging/repo-split stay deferred
