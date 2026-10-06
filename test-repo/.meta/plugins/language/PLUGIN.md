@@ -32,5 +32,5 @@
 
 ## Changelog
 
-- 0.2 2026-10-04: language neutralization — the absence fallback changed from 'Chinese-first' to 'follow the session language', Chinese demoted to a development-period instance fact; layered ruling: source alignment belongs to domain plugins, reader alignment to this page's canonical keys (the teaching/annotation precedent); same batch as bb-teach/bb-quiz v0.4
+- 0.3 (2026-10-06) inject line compressed to pointer density (issue #12 layer discipline) — procedural detail lives in usage / PLUGIN.md / skills- 0.2 2026-10-04: language neutralization — the absence fallback changed from 'Chinese-first' to 'follow the session language', Chinese demoted to a development-period instance fact; layered ruling: source alignment belongs to domain plugins, reader alignment to this page's canonical keys (the teaching/annotation precedent); same batch as bb-teach/bb-quiz v0.4
 - 0.1 2026-10-04: established — the writing declaration page with two-form partitioning (language/terms block mappings + distillation section), absence tolerance, default-baseline-not-mandate, emergence-based term registry; usage_routes landing on save, first application; depends wiki
