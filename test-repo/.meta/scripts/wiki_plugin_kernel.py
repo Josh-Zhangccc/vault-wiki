@@ -138,7 +138,15 @@ def strip_quotes(s):
 
 
 def strip_comment(s):
-    """Strip inline comments (from ` #` on); quote the whole value first if it contains #."""
+    """Strip inline comments (from ` #` on) — a quoted value is protected up to its closing quote.
+
+    The manifest contract says "quote the whole value first if it contains #"; this honors it:
+    comment stripping never fires inside the quoted span (e.g. `## Section` names in disclosures).
+    """
+    if s.startswith('"'):
+        end = s.find('"', 1)
+        if end != -1:
+            return s[:end + 1] + strip_comment(s[end + 1:])
     return re.split(r"\s+#", s, maxsplit=1)[0].strip()
 
 
@@ -252,6 +260,10 @@ def validate(plugins, errors):
             errors.append(f"[error] {name}/: inject (projection line) empty")
         if m.get("inject_tier") is not None and m["inject_tier"] not in INJECT_TIERS:
             errors.append(f"[error] {name}/: inject_tier ({m['inject_tier']}) must be full or member")
+        # stray-quote smell (post-parse): a value still carrying a quote edge means unbalanced
+        # quoting — the classic artifact of a clipped value (issue #12 post-migration field report)
+        if isinstance(m.get("inject"), str) and (m["inject"].startswith('"') or m["inject"].endswith('"')):
+            print(f"[warning] {name}/: inject value carries a stray quote (unbalanced quoting — parse artifact or manifest typo)")
         # attached-audit contract (optional): if scripts/check.py exists it must define check(ctx) — checked statically via AST, not executed
         cpath = os.path.join(PLUGINS_DIR, name, "scripts", "check.py")
         if os.path.exists(cpath):
