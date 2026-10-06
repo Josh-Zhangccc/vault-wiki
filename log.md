@@ -22,6 +22,7 @@ Framework build (done 09-08~12) → daily use & fix-as-used (**current**).
 
 ## Past operations
 
+- 2026-10-06 governance: PR #18 merged (issue #12 tier migration — region 38K→14K, hard budget; manager delegated --admin, GitHub comment trail); merged branch deleted; #12 first-step family lands, packaging/repo-split stay deferred
 - 2026-10-06 migration: issue #12 tier migration landed — 10 domain family members exit the injection region (bb five-piece, sis, registry, lark-docs/im/calendar; exposure via family rosters + skills + on-demand manifests), 13 core/root lines compressed to pointer density with rosters (region 38K→14K, 35→25 blocks), injection budget hard (over-budget = validate error); plugin versions bumped along changelogs
 - 2026-10-06 governance: PR #17 merged (SASU-L layer discipline step 0 — contract + kernel mechanism, dormant-compatible; manager delegated --admin, GitHub comment trail); merged branch deleted; tier migration next
 - 2026-10-06 protocol+kernel: SASU-L layer content & capacity discipline landed (issue #12 comments synthesis — A/S/L content contract, one home per fact, pointer-dense inject, exposure ladder for exited members; kernel inject_tier full|member + member-must-reach-family-root check + 15 KiB inject budget, warning until the tier migration lands); slimming round next
