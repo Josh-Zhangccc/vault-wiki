@@ -177,7 +177,7 @@ grep / file reading suffice; no second scan when one read is enough (call frugal
 <!-- /check:bb-map -->
 
 <!-- check:bb-track -->
-- Semantic items (v0.1 manual, attached audit deferred): user.md outside the course root or inside the four buckets → error; an evidence-stream entry rewritten or deleted → error; a reading entry without traceable evidence → warning; a reading based only on origin: ai without review → warning; consuming stale beyond the window without verification → info; note attribute values outside the open vocabulary → info
+- Semantic items (v0.1 manual, attached audit deferred): user.md outside the course root or inside the four buckets → error; an evidence-stream entry rewritten or deleted → error; a reading entry without traceable evidence → warning; a reading based only on origin: ai without review → warning; a tier rise to proficient/mastered citing no retrieval-type evidence → warning; a persisted schedule or statistic (computed-view output landed into user.md) → error; a divergence facet still standing after contradicting retrieval evidence → info; consuming stale beyond the window without verification → info; note attribute values outside the open vocabulary → info
 <!-- /check:bb-track -->
 
 <!-- check:bb-quiz -->
@@ -185,6 +185,6 @@ grep / file reading suffice; no second scan when one read is enough (call frugal
 <!-- /check:bb-quiz -->
 
 <!-- check:bb-teach -->
-- Semantic items (v0.1 manual, attached audit deferred): explaining without reading user.md → warning; a term beyond the anchored set left unexplained on the spot → warning; long lectures at the 'mastered' tier → info; writing user.md without confirmation → error; a single 'got it' written as 'mastered' into user.md → error; an explanation missing courseware anchor backlinks → info; ai notes landed outside notes/ → error; ai notes missing origin: ai or anchor backlinks → warning; overwriting an existing ai note → error
+- Semantic items (v0.1 manual, attached audit deferred): explaining without reading user.md → warning; lecturing at a familiar-and-above point with no retrieval probe offered first → warning; a misconception-flagged point explained by mere restatement without the refutation structure → warning; the direct answer given on a problem-type ask before the ladder top (or absent explicit user override) → warning; a graded final answer dumped without an alternative offered → error; generic praise ('good job') with no specific content → info; unconditional agreement with a wrong user claim → error; a correct user answer marked wrong without source-anchored evidence → error; a term beyond the anchored set left unexplained on the spot → warning; long lectures at the 'mastered' tier → info; writing user.md without confirmation → error; a single 'got it' written as 'mastered' into user.md → error; a tier rise to proficient/mastered proposed without retrieval-type evidence → warning; an explanation missing courseware anchor backlinks → info; ai notes landed outside notes/ → error; ai notes missing origin: ai or anchor backlinks → warning; overwriting an existing ai note → error
 <!-- /check:bb-teach -->
 <!-- check-inject:end -->
