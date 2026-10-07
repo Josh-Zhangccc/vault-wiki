@@ -28,4 +28,4 @@
 
 ## Changelog
 
-- 0.1 2026-10-06: established — three questions converged (a unified registry covering both session/script shapes, reconciliation + replay, one page per task); lark-calendar 0.2 / bili 0.2 / email 0.4 moved along with the bridge attachment (scattered cadence disclosures rewritten into place)
+- 0.3 (2026-10-06) inject line: sections lost to the kernel comment-strip clip restored (quoted values are now protected), tightened for budget headroom — issue #12 post-migration nit- 0.2 (2026-10-06) inject line compressed to pointer density (issue #12 layer discipline) — procedural detail lives in usage / PLUGIN.md / skills- 0.1 2026-10-06: established — three questions converged (a unified registry covering both session/script shapes, reconciliation + replay, one page per task); lark-calendar 0.2 / bili 0.2 / email 0.4 moved along with the bridge attachment (scattered cadence disclosures rewritten into place)
