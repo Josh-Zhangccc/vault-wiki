@@ -36,6 +36,7 @@
 
 ## Changelog
 
+- 0.8 (2026-10-07): map-first — cognition reads/writes run only after the course is fully mapped, anchored on mapped sm-N (PR #23, renumbered past master's 0.7 inject_tier entry)
 - 0.7 (2026-10-06) inject_tier: member — exits the AGENTS.md injection region per the issue #12 layer discipline (exposure: family-root roster line + skill catalog + on-demand manifest reads)
 
 - 0.6 (2026-10-05) fix: the double-path typo in migration replacement wiki/cuhksz/cuhksz/bb/ → wiki/cuhksz/bb/ (first reported on the instance side; the spec's single layer prevails)

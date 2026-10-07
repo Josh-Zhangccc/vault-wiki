@@ -72,8 +72,8 @@ This repository (directory `agent-obsidian-template`, working name **vault-wiki*
 - Hot cache `wiki/hot.md`: recent-change digest (≤25 entries, <5 days, ≤200 chars per entry); agents read this page first on entering the repository; evict out-of-window entries before writing
 <!-- /plugin:hot -->
 
-<!-- plugin:language v0.3 -->
-- Writing declaration page wiki/language.md (type: language): language block mapping = key → one-sentence rule (consumer precedents: teaching bb-teach, annotation bb-quiz) + terms = original → unified translation; body distillation notes append-only; the agent reads it before producing written artifacts; page or key absent → session language (proper nouns/code/paths keep original); default baseline not a mandate — domain source-alignment disciplines take precedence; terms emergence-based (register after recurring hits); direct human edits legitimate
+<!-- plugin:language v0.4 -->
+- Writing declaration page wiki/language.md (type: language): language block mapping = key → one-sentence rule (consumer precedents: teaching bb-teach, annotation bb-quiz, register = audience reading level, program default first/second-year undergraduates per AGENTS principle 12) + terms = original → unified translation; body distillation notes append-only; the agent reads it before producing written artifacts; page or key absent → session language (proper nouns/code/paths keep original); default baseline not a mandate — domain source-alignment disciplines take precedence; terms emergence-based (register after recurring hits); direct human edits legitimate
 <!-- /plugin:language -->
 
 <!-- plugin:link v0.14 -->

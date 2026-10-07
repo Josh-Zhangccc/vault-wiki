@@ -76,7 +76,7 @@ plugins:
       note: block mapping — account (owning account, = the containing directory name) / kind (page form: account identity page / thread thread archive / source source archive / person person archive, open vocabulary) / token (identity proof: person archive = email address, single item = Message-ID one-to-one, thread archive = members list) / url (webmail or message:// deep link)
   language:
     language:
-      note: block mapping (declaration page) — canonical key → one-sentence rule (open vocabulary, e.g. default/teaching/annotation); output language and writing baseline
+      note: block mapping (declaration page) — canonical key → one-sentence rule (open vocabulary, e.g. default/teaching/annotation/register); output language and writing baseline — register = the writing register (audience reading level, default first/second-year undergraduates), consumed by bb-teach and bb-quiz
     terms:
       note: block mapping (declaration page) — term original → unified translation (single-line value); the cross-session translation-consistency lookup piece
   lark:

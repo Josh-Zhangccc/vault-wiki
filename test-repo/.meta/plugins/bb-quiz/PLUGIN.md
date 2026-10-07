@@ -20,6 +20,7 @@
 
 - Types follow the sample — single choice, multiple choice, fill-in, short answer, calculation, proof, etc., never enumerated; difficulty = cognitive level 1-5: remember, understand, apply, analyze, synthesize; the median M aligns to the sample, fallbacks in order being known assignments, user habits. M is an LLM semantic judgment, a soft constraint of three-layer approximate overlap; the effective guarantee granularity: unfamiliar leans easy, mastered leans challenging
 - Stem language source-aligned (sample → known assignments → course materials), terminology aligned to the courseware `## Terminology` glossary; explanation and grading language reader-aligned (the language page's annotation key, absent → session)
+- Register (audience reading level): answer explanations and grading are written at the first/second-year undergraduate register — intuition before formalism, one concept per step, a concrete example, each term explained at first use, plain prose, "brief" never "obscure" — taken from the language page's register key (absent → program default, AGENTS principle 12)
 - No out-of-scope: the full set = courseware sm-N intersected with the user scope; out-of-scope questions discarded and regenerated, unless the user says so — a semantic constraint, self-checked on the generation side, attached-audit warning level
 - Explanations mark the knowledge point with an sm-N wikilink; the position is the birth certificate
 - Following bb-track: proficiency drives selection and difficulty distribution; conservative tier before stale verification; cold start, i.e. no profile, everything unanchored, uniform question generation
@@ -30,6 +31,7 @@
 
 ## Changelog
 
+- 0.8 (2026-10-07): audience register + map-first + source citation — explanations and grading default to the first/second-year undergraduate register (overridable via the language page's register key, same batch as language v0.4), step 0 ensures the course is fully mapped (same batch as bb v0.11), and each question/answer cites its source via the mapping's raw_path (same batch as bb-map v0.17) (PR #23, collapsed past master's 0.7 inject_tier entry)
 - 0.7 (2026-10-06) inject_tier: member — exits the AGENTS.md injection region per the issue #12 layer discipline (exposure: family-root roster line + skill catalog + on-demand manifest reads)
 
 - 0.6 (2026-10-05) fix: the double-path typo in migration replacement wiki/cuhksz/cuhksz/bb/ → wiki/cuhksz/bb/ (first reported on the instance side; the spec's single layer prevails)
