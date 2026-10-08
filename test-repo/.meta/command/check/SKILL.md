@@ -98,8 +98,8 @@ grep / file reading suffice; no second scan when one read is enough (call frugal
 <!-- /check:calendar -->
 
 <!-- check:cron -->
-- Mechanical: a type: cron page landing outside wiki/cron/ → error; task page missing the cron block or the minimal key set (schedule/action/form/status) → warning; last_run beyond the schedule period with active → warning (projection-lost signal)
-- Semantic (attached audit deferred): drift between the execution-side list (harness/system tasks, best-effort read) and the declaration page set → warning
+- Mechanical: a type: cron page landing outside wiki/cron/ → error; task page missing the cron block or the minimal key set (trigger/action/form/status) → warning; malformed condition trigger (kind outside the open vocabulary or missing target) → warning; time form: last_run beyond the schedule period with active → warning (projection-lost signal)
+- Semantic (attached audit deferred): per-form drift between readable execution-side lists (scheduler / system tasks / conditional-executor watches, best-effort) and the declaration page set → warning; unreadable executor → info
 <!-- /check:cron -->
 
 <!-- check:cuhksz -->
