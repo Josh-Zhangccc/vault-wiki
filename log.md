@@ -22,6 +22,7 @@ Framework build (done 09-08~12) → daily use & fix-as-used (**current**).
 
 ## Past operations
 
+- 2026-10-08 governance: PR #31 merged (post-#30/#25-interleave convergence — registry rebuilt + test-repo mirrors re-copied; manager delegated --admin, GitHub comment trail); merged branch deleted; #29 closed with landing summary; interim upstream-tracking directive broadcast on #24 / #20
 - 2026-10-08 governance: PR #30 merged (cron v0.4 deferred-trigger generalization, issue #29; manager delegated --admin, GitHub comment trail); merged branch deleted
 - 2026-10-08 plugin: cron v0.4 — schedule → trigger (time | condition, open kind vocabulary), executor names withdrawn from the inject line into replay recipes (owner ruling 2026-10-08: executor-agnostic recording & archiving), 2×2 matrix, per-form best-effort reconciliation (unreadable executor → info); language projections side-converged to manifest state (#26 content ruling pending)
 - 2026-10-08 directive (interim): upstream-update tracking rides cron v0.4 task pages — instances declare template-repo watches (condition trigger where a conditional executor exists, else daily time trigger) until the #20 packaging lands; broadcast on issues #24 / #20 / #29
