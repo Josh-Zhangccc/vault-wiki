@@ -7,7 +7,7 @@ attachment:
   - "wiki/language.md — the writing declaration page (output-language and writing-baseline ontology: frontmatter language/terms block mappings + body distillation section)"
   - "scripts/check.py — attached audit (territory placement / terms empty values / declaration page presence)"
 fields:
-  language: block mapping (declaration page) — canonical key → one-sentence rule (open vocabulary, e.g. default/teaching/annotation); output language and writing baseline
+  language: block mapping (declaration page) — canonical key → one-sentence rule (open vocabulary, e.g. default/teaching/annotation/register); output language and writing baseline — register = the writing register (audience reading level, default first/second-year undergraduates), consumed by bb-teach and bb-quiz
   terms: block mapping (declaration page) — term original → unified translation (single-line value); the cross-session translation-consistency lookup piece
 usage_routes:
   - save
